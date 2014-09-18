@@ -17,7 +17,7 @@ install node.js
 3. tsd update --save --overwrite
 
 ## Build
-grunt build // all results will be in /dist/ directory
+grunt build
 
 ## Developing
 grunt serve
