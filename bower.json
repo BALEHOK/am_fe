@@ -1,0 +1,26 @@
+{
+  "name": "assetmanagerfrontend",
+  "version": "0.0.1",
+  "homepage": "",
+  "authors": [
+    ""
+  ],
+  "description": "",
+  "license": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "2.*",
+    "lodash": "*",
+    "backbone": "*",
+    "react": "*",
+    "react.backbone": "*",
+    "underscore": "~1.7.0"
+  }
+}
