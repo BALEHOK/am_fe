@@ -11,8 +11,8 @@ module.exports = function (grunt) {
   // Let *load-grunt-tasks* require everything
   require('load-grunt-tasks')(grunt);
 
-  // Read configuration from package.json
   var pkgConfig = grunt.file.readJSON('package.json');
+  pkgConfig.dist = grunt.option('dist') || pkgConfig.dist;
 
   grunt.initConfig({
     pkg: pkgConfig,
@@ -109,7 +109,10 @@ module.exports = function (grunt) {
       },
       dist: {
         path: 'http://localhost:<%= connect.options.port %>/'
-      }
+      },
+      aspnet: {
+        path: 'http://facilitymanager.facilityflexware.com/'
+      },
     },
 
     karma: {
@@ -136,7 +139,7 @@ module.exports = function (grunt) {
             dest: '<%= pkg.dist %>/images/'
           },
         ]
-      }
+      },
     },
 
     clean: {
@@ -151,8 +154,16 @@ module.exports = function (grunt) {
     }
   });
 
+  //// Read configuration from package.json
+  //var pkgConfig = grunt.file.readJSON('package.json');
+  //var pkg = pkgConfig;
+  //pkg.dist = grunt.option('target') || pkgConfig.dist;
+  //grunt.option('pkg', pkg);
+  //grunt.log.writeln(grunt.option('pkg').dist);
+
   grunt.registerTask('serve', function (target) {
-    if (target === 'dist') {
+      if (target === 'dist') {
+
       return grunt.task.run(['build', 'open:dist', 'connect:dist']);
     }
 
@@ -168,4 +179,6 @@ module.exports = function (grunt) {
   grunt.registerTask('build', ['clean', 'copy', 'typescript', 'webpack', 'stylus', 'autoprefixer']);
 
   grunt.registerTask('default', []);
+
+  grunt.registerTask('aspnet', ['copy', 'typescript', 'webpack', 'stylus', 'autoprefixer']);
 };
