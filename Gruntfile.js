@@ -4,11 +4,12 @@ var mountFolder = function (connect, dir) {
   return connect.static(require('path').resolve(dir));
 };
 
-var webpackDistConfig = require('./webpack.dist.config.js'),
-    webpackDevConfig = require('./webpack.config.js');
+var webpack = require('webpack');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var webpackEntries = require('./webpack.entries.js');
 
 module.exports = function (grunt) {
-  // Let *load-grunt-tasks* require everything
+
   require('load-grunt-tasks')(grunt);
 
   var pkgConfig = grunt.file.readJSON('package.json');
@@ -18,8 +19,38 @@ module.exports = function (grunt) {
     pkg: pkgConfig,
 
     webpack: {
-      options: webpackDistConfig,
-
+      options: {
+        entry: webpackEntries,
+        output: {
+          publicPath: '/assets/js',
+          path: '<%= pkg.dist %>/assets',
+          filename: 'bundle-[name].js'
+        },
+        debug: false,
+        devtool: false,
+        stats: {
+          colors: true,
+          reasons: false
+        },
+        plugins: [
+          new webpack.optimize.DedupePlugin(),
+          new webpack.optimize.UglifyJsPlugin(),
+          new webpack.optimize.OccurenceOrderPlugin(),
+          new webpack.optimize.AggressiveMergingPlugin()
+        ],
+        resolve: {
+          extensions: ['','.js','.jsx']
+        },
+        module: {
+          loaders: [
+            { test: /\.styl$/, loader: 'style-loader!css-loader!stylus-loader' },
+            { test: /\.gif/, loader: 'url-loader?limit=10000&mimetype=image/gif'},
+            { test: /\.jpg/, loader: 'url-loader?limit=10000&mimetype=image/jpg'},
+            { test: /\.png/, loader: 'url-loader?limit=10000&mimetype=image/png'},
+            { test: /\.jsx$/, loader: 'jsx-loader'}
+          ]
+        }
+      },
       dist: {
         cache: false
       }
@@ -28,13 +59,42 @@ module.exports = function (grunt) {
     'webpack-dev-server': {
       options: {
         port: 8000,
-        webpack: webpackDevConfig,
+        webpack: {
+          entry: webpackEntries,
+          output: {
+            publicPath: '/assets',
+            filename: 'bundle-[name].js'
+          },
+          cache: true,
+          debug: true,
+          devtool: false,
+          stats: {
+            colors: true,
+            reasons: true
+          },
+          resolve: {
+            extensions: ['','.js','.jsx']
+          },
+          module: {
+            loaders: [
+              { test: /\.styl$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader!stylus-loader') },
+              { test: /\.gif/, loader: 'url-loader?limit=10000&mimetype=image/gif'},
+              { test: /\.jpg/, loader: 'url-loader?limit=10000&mimetype=image/jpg'},
+              { test: /\.png/, loader: 'url-loader?limit=10000&mimetype=image/png'},
+              { test: /\.jsx$/, loader: 'jsx-loader'}
+            ]
+          },
+          plugins: [
+            new ExtractTextPlugin('css/style.css', {
+              allChunks: true
+            })
+          ]
+        },
         publicPath: '/assets/',
-        contentBase: './<%= pkg.src %>/',
+        contentBase: './<%= pkg.src %>/'
       },
-
       start: {
-        keepAlive: true,
+        keepAlive: true
       }
     },
 
@@ -74,8 +134,8 @@ module.exports = function (grunt) {
         src: ['./<%= pkg.src %>/scripts/**/*.ts'],
         dest: '',
         options: {
-          module: 'commonjs', //or commonjs
-          target: 'es5', //or es3
+          module: 'commonjs',
+          target: 'es5',
           basePath: './<%= pkg.src %>/scripts/',
           sourceMap: true,
           declaration: true
@@ -112,7 +172,7 @@ module.exports = function (grunt) {
       },
       aspnet: {
         path: 'http://facilitymanager.facilityflexware.com/'
-      },
+      }
     },
 
     karma: {
@@ -124,7 +184,6 @@ module.exports = function (grunt) {
     copy: {
       dist: {
         files: [
-          // includes files within path
           {
             flatten: true,
             expand: true,
@@ -137,9 +196,9 @@ module.exports = function (grunt) {
             expand: true,
             src: ['<%= pkg.src %>/images/*'],
             dest: '<%= pkg.dist %>/images/'
-          },
+          }
         ]
-      },
+      }
     },
 
     clean: {
@@ -153,13 +212,6 @@ module.exports = function (grunt) {
       }
     }
   });
-
-  //// Read configuration from package.json
-  //var pkgConfig = grunt.file.readJSON('package.json');
-  //var pkg = pkgConfig;
-  //pkg.dist = grunt.option('target') || pkgConfig.dist;
-  //grunt.option('pkg', pkg);
-  //grunt.log.writeln(grunt.option('pkg').dist);
 
   grunt.registerTask('serve', function (target) {
       if (target === 'dist') {
