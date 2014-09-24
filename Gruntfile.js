@@ -214,6 +214,18 @@ module.exports = function (grunt) {
                         ]
                     }
                 ]
+            },
+            aspnet: {
+                options: {
+                    force: true
+                },
+                files: [
+                    {
+                        src: [
+                            '<%= pkg.dist %>/*.html'
+                        ]
+                    }
+                ]
             }
         },
         processhtml: {
@@ -250,7 +262,10 @@ module.exports = function (grunt) {
             }
         });
         grunt.config.set('processhtml.dist.files', processFiles);
+        // inject html files into ASP.NET views
         grunt.task.run('processhtml:dist');
+        // remove html files from ASP.NET app
+        grunt.task.run('clean:aspnet');
     });
 
   grunt.registerTask('serve', function (target) {
@@ -272,5 +287,5 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', []);
 
-  grunt.registerTask('aspnet', [/*'clean', 'copy', 'typescript', 'webpack', 'stylus', 'autoprefixer',*/ 'inject']);
+  grunt.registerTask('aspnet', ['build', 'inject']);
 };
