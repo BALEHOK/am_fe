@@ -202,15 +202,20 @@ module.exports = function (grunt) {
     },
 
     clean: {
-      dist: {
-        files: [{
-          dot: true,
-          src: [
-            '<%= pkg.dist %>'
-          ]
-        }]
+          dist: {
+              options: {
+                  force: true
+              },
+              files: [
+                  {
+                      dot: true,
+                      src: [
+                          '<%= pkg.dist %>'
+                      ]
+                  }
+              ]
+          }
       }
-    }
   });
 
   grunt.registerTask('serve', function (target) {
@@ -232,5 +237,5 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', []);
 
-  grunt.registerTask('aspnet', ['copy', 'typescript', 'webpack', 'stylus', 'autoprefixer']);
+  grunt.registerTask('aspnet', ['clean', 'copy', 'typescript', 'webpack', 'stylus', 'autoprefixer']);
 };
