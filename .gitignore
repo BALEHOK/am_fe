@@ -26,7 +26,7 @@ Desktop.ini
 $RECYCLE.BIN/
 
 .idea/
-
+.sass-cache/
 # App specific
 
 node_modules/

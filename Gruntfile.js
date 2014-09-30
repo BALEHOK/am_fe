@@ -87,6 +87,9 @@ module.exports = function (grunt) {
                     plugins: [
                         new ExtractTextPlugin('css/style.css', {
                             allChunks: true
+                        }),
+                        new ExtractTextPlugin('css/style-old.css', {
+                            allChunks: true
                         })
                     ]
                 },
@@ -109,6 +112,16 @@ module.exports = function (grunt) {
                 files: {
                     '<%= pkg.dist %>/assets/css/ie/ie-lt-10.css': './<%= pkg.src %>/styles/ie/ie-lt-10.styl', // 1:1 compile
                     '<%= pkg.dist %>/assets/css/style.css': ['./<%= pkg.src %>/styles/*.styl'] // compile and concat into single file
+                }
+            }
+        },
+        sass: {                            
+            dist: {                            
+                options: {                       
+                    style: 'expanded'
+                },
+                files: {                         
+                    '<%= pkg.dist %>/assets/css/style-old.css': ['./<%= pkg.src %>/styles/old/style.scss']
                 }
             }
         },
@@ -150,6 +163,7 @@ module.exports = function (grunt) {
 
             dist: {
                 options: {
+                    hostname: 'localhost',
                     keepalive: true,
                     middleware: function(connect) {
                         return [
@@ -196,6 +210,12 @@ module.exports = function (grunt) {
                         expand: true,
                         src: ['<%= pkg.src %>/images/*'],
                         dest: '<%= pkg.dist %>/assets/images/'
+                    },
+                    {
+                        flatten: true,
+                        expand: true,
+                        src: ['<%= pkg.src %>/styles/old/fonts/*'],
+                        dest: '<%= pkg.dist %>/assets/fonts/'
                     }
                 ]
             }
@@ -283,7 +303,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', ['karma']);
 
-  grunt.registerTask('build', ['clean', 'copy', 'typescript', 'webpack', 'stylus', 'autoprefixer']);
+  grunt.registerTask('build', ['clean', 'copy', 'typescript', 'webpack', 'stylus', 'autoprefixer', 'sass']);
 
   grunt.registerTask('default', []);
 
