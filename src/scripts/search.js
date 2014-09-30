@@ -1,7 +1,8 @@
 ﻿var React = require('react');
 // Require the appropriate top level component
 
-var Page = require('./components/search/searchForm');
-var mountPoint = document.getElementById('search-form');
+var UserInfo = require('./components/common/userInfo');
+var SearchForm = require('./components/search/searchForm');
 
-React.renderComponent(Page(null), mountPoint);
+React.renderComponent(UserInfo(null), document.getElementById('user-info'));
+React.renderComponent(SearchForm(null), document.getElementById('search-form'));
