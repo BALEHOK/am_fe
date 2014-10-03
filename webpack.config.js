@@ -1,8 +1,4 @@
-﻿var path = require("path");
-var webpack = require("webpack");
-var webpackEntries = require("./webpack.entries.js");
-
-module.exports = {
+﻿module.exports = {
     target: "web",
     debug: true,
     devtool: "source-map",
@@ -11,10 +7,8 @@ module.exports = {
         reasons: false
     },
     output: {
-        //path: path.join(__dirname, "dist"),
         publicPath: "/assets/js",
-        filename: "bundle-[name].js",
-        chunkFilename: "[chunkhash].js"
+        filename: "/assets/bundle-[name].js"
     },
     plugins: [
        // new webpack.optimize.DedupePlugin(),

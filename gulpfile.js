@@ -9,11 +9,20 @@ var gulp = require('gulp'),
     stylus = require("gulp-stylus"),
     notify = require('gulp-notify'),
     rename = require('gulp-rename'),
-    minifycss = require('gulp-minify-css');
+    minifycss = require('gulp-minify-css'),
+    filter = require('gulp-filter'),
+    react = require('gulp-react'),
+    clean = require('gulp-clean');
 
 var jsSrc = 'src/scripts/**/*.*';
 var buildDest = 'dist';
-var cssSrc = 'src/styles/*';
+var cssSrc = 'src/styles/*',
+    cssDest = path.join(buildDest, "assets");
+
+gulp.task('clean', function () {
+    return gulp.src(buildDest)
+        .pipe(clean());
+});
 
 gulp.task("webpack:build", function (callback) {
     // modify some webpack config options
@@ -30,7 +39,8 @@ gulp.task("webpack:build", function (callback) {
     //);
     return gulp.src('webpack_entries/search.js')
         .pipe(webpack(myConfig))
-        .pipe(gulp.dest(buildDest));
+        .pipe(gulp.dest(buildDest))
+        .pipe(notify());
     // run webpack
     //webpack(myConfig, function (err, stats) {
     //    if (err) throw new gutil.PluginError("webpack:build", err);
@@ -48,11 +58,16 @@ gulp.task('css', function () {
         .pipe(autoprefixer({
             browsers: ['last 2 versions', '> 1%', 'ie 8', 'ie 9', 'Opera 12.1']
         }))
-        .pipe(gulp.dest(path.join(buildDest, "assets")))
+        .pipe(gulp.dest(cssDest))
         .pipe(rename({ suffix: '.min' }))
         .pipe(minifycss())
-        .pipe(gulp.dest(path.join(buildDest, "assets")))
+        .pipe(gulp.dest(cssDest))
         .pipe(notify({ message: 'Styles task complete' }));
+});
+
+gulp.task('views', function() {
+    return gulp.src(['src/*.html'])
+        .pipe(gulp.dest(buildDest));
 });
 
 gulp.task('watch', function() {
@@ -60,6 +75,6 @@ gulp.task('watch', function() {
 });
 
 // Production build
-gulp.task("build", ["webpack:build", "css"]);
+gulp.task("build", ["clean", "views", "webpack:build", "css"]);
 
 gulp.task('default', ['build']);
