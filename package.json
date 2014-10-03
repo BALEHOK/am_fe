@@ -35,6 +35,7 @@
     "gulp-autoprefixer": "^1.0.1",
     "gulp-concat": "^2.4.1",
     "gulp-stylus": "^1.3.3",
+    "gulp-webpack": "^0.4.1",
     "jsx-loader": "~0.9.0",
     "karma": "~0.10.9",
     "karma-chrome-launcher": "~0.1.2",
