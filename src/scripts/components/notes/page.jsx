@@ -3,7 +3,7 @@
  */
 
 var React = require('react'),
-    NoteModel = require('./noteModel'),
+    NoteModel = require('./noteModel.ts'),
     Note = require('./note'),
     note = new NoteModel();
 

@@ -31,9 +31,8 @@ $RECYCLE.BIN/
 
 node_modules/
 dist/
-src/scripts/components/**/*.js
-src/scripts/components/**/*.map
-src/scripts/components/**/*.d.ts
 src/scripts/libs
-
+webpack-loaders/ts-loader/node_modules/
 typings
+
+npm-debug.log

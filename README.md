@@ -5,7 +5,7 @@ Frontend stack for AssetManagerApp (using webpack, react, backbone, typescript, 
 ## For start
 install node.js
 
-1. npm install -g grunt-cli
+1. npm install -g gulp
 2. npm install -g bower
 3. npm install -g tsd
 
@@ -13,11 +13,9 @@ install node.js
 ### Commands below run in project dir
 
 1. npm install
-2. bower install
-3. tsd update --save --overwrite
 
 ## Build
-grunt build
+gulp build
 
 ## Developing
-grunt serve
+gulp server

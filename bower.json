@@ -1,6 +1,6 @@
 {
   "name": "assetmanagerfrontend",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "",
   "authors": [
     ""
@@ -16,11 +16,6 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "2.*",
-    "lodash": "*",
-    "backbone": "*",
-    "react": "*",
-    "react.backbone": "*",
-    "underscore": "~1.7.0"
+    "react.backbone": "*"
   }
 }
