@@ -12,7 +12,8 @@ var minifycss = require('gulp-minify-css');
 var filter = require('gulp-filter');
 //var clean = require('gulp-clean');
 var gulpif = require('gulp-if');
-var uglify = require('gulp-uglify');
+//var uglify = require('gulp-uglify');
+var browserSync = require('browser-sync');
 
 var buildDest = 'dist';
 var jsSrc = 'src/scripts/**/*.*',
@@ -54,11 +55,23 @@ gulp.task('views', function() {
         .pipe(gulp.dest(buildDest));
 });
 
+gulp.task('browser-sync', function() {
+    browserSync({
+        server: {
+            baseDir: 'dist/',
+            directory: true,
+            proxy: 'local.dev'
+        }
+    });
+});
+
 gulp.task('watch', function() {
-    gulp.watch('src/', ['build']);
+    gulp.watch('src/**/*.html', ['views', browserSync.reload]);
+    gulp.watch(['src/**/*.{js,ts,jsx}', 'webpack_entries/*.js'], ['webpack:build', browserSync.reload]);
+    gulp.watch('src/**/*.{styl,css}', ['css', browserSync.reload]);
 });
 
 // Production build
 gulp.task('build', ['views', 'css', 'webpack:build']);
-
+gulp.task('server', ['build', 'watch', 'browser-sync']);
 gulp.task('default', ['build']);
