@@ -1,4 +1,4 @@
-﻿var React = require('react');
+var React = require('react');
 // Require the appropriate top level component
 
 var UserInfo = require('./components/common/userInfo');
