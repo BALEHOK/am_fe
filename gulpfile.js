@@ -1,54 +1,38 @@
-var gulp = require('gulp'),
-    path = require("path"),
-    gutil = require("gulp-util"),
-    concat = require("gulp-concat"),
-    webpack = require("gulp-webpack"),
-    autoprefixer = require("gulp-autoprefixer"),
-    WebpackDevServer = require("webpack-dev-server"),
-    webpackConfig = require("./webpack.config.js"),
-    stylus = require("gulp-stylus"),
-    notify = require('gulp-notify'),
-    rename = require('gulp-rename'),
-    minifycss = require('gulp-minify-css'),
-    filter = require('gulp-filter'),
-    react = require('gulp-react'),
-    clean = require('gulp-clean');
+var gulp = require('gulp');
+var path = require('path');
+var gutil = require('gulp-util');
+var concat = require('gulp-concat');
+var webpack = require('gulp-webpack');
+var autoprefixer = require('gulp-autoprefixer');
+var webpackConfig = require('./webpack.config.js');
+var stylus = require('gulp-stylus');
+var notify = require('gulp-notify');
+var rename = require('gulp-rename');
+var minifycss = require('gulp-minify-css');
+var filter = require('gulp-filter');
+//var clean = require('gulp-clean');
+var gulpif = require('gulp-if');
+var uglify = require('gulp-uglify');
 
-var jsSrc = 'src/scripts/**/*.*';
 var buildDest = 'dist';
+var jsSrc = 'src/scripts/**/*.*',
+    jsDest = path.join(buildDest, 'assets/js');
 var cssSrc = 'src/styles/*',
-    cssDest = path.join(buildDest, "assets");
+    cssDest = path.join(buildDest, 'assets/css');
 
-gulp.task('clean', function () {
+/*gulp.task('clean', function () {
     return gulp.src(buildDest)
         .pipe(clean());
-});
+});*/
 
-gulp.task("webpack:build", function (callback) {
-    // modify some webpack config options
+var env = process.env.npm_config_siows_env || process.env.NODE_ENV;
+
+gulp.task('webpack:build', function (callback) {
     var myConfig = Object.create(webpackConfig);
-    //myConfig.plugins = myConfig.plugins.concat(
-    //    new webpack.DefinePlugin({
-    //        "process.env": {
-    //            // This has effect on the react lib size
-    //            "NODE_ENV": JSON.stringify("production")
-    //        }
-    //    }),
-    //    new webpack.optimize.DedupePlugin(),
-    //    new webpack.optimize.UglifyJsPlugin()
-    //);
-    return gulp.src('webpack_entries/search.js')
+    return gulp.src('webpack_entries/*.js')
         .pipe(webpack(myConfig))
-        .pipe(gulp.dest(buildDest))
-        .pipe(notify());
-    // run webpack
-    //webpack(myConfig, function (err, stats) {
-    //    if (err) throw new gutil.PluginError("webpack:build", err);
-    //    gutil.log("[webpack:build]", stats.toString({
-    //        colors: true
-    //    }));
-    //    callback();
-    //});
+        .pipe(gulp.dest(jsDest))
+        .pipe(notify({ message: 'Webpack build task complete' }));
 });
 
 gulp.task('css', function () {
@@ -75,6 +59,6 @@ gulp.task('watch', function() {
 });
 
 // Production build
-gulp.task("build", ["clean", "views", "webpack:build", "css"]);
+gulp.task('build', ['views', 'css', 'webpack:build']);
 
 gulp.task('default', ['build']);
