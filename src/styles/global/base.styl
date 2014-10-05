@@ -1,0 +1,40 @@
+*
+  box-sizing border-box
+
+//html
+//  -webkit-font-smoothing antialiased
+
+body
+  margin 0
+  padding 0
+  font-family $Regular
+  font-size $baseFontSize
+  line-height 1.5
+  color $baseColor
+  background #ffffff
+
+.clearfix
+  &:after
+  &:before
+    content ''
+    display table
+    line-height 0
+  &:after
+    clear both
+
+
+a
+.link
+  @extend $link
+
+strong
+  font-family $Medium
+  font-weight normal
+
+h1
+h2
+h3
+h4
+h5
+h6
+  color $colorBlack

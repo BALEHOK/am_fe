@@ -1,0 +1,25 @@
+opacity-ie(n)
+  -ms-filter unquote('"progid:DXImageTransform.Microsoft.Alpha(Opacity=' + round(n * 100) + ')"')
+  filter unquote('alpha(opacity=' + round(n * 100) + ')')
+
+$link
+  color $linkColor
+  text-decoration none
+  cursor pointer
+
+  &:hover
+    color $linkColorHover
+
+  &:active
+    color $linkColorActive
+
+$linkSecond
+  color $linkSecondColor
+  text-decoration none
+  cursor pointer
+
+  &:hover
+    color $linkSecondColorHover
+
+  &:active
+    color $linkSecondColorActive
