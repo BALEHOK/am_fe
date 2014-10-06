@@ -43,6 +43,6 @@
     "webpack": "^1.4.0-beta8"
   },
   "scripts": {
-    "postinstall": "bower install; tsd update --save --overwrite; cd ./webpack-loaders/ts-loader/ && npm install"
+    "postinstall": "bower install && tsd update --save --overwrite && cd ./webpack-loaders/ts-loader/ && npm install"
   }
 }
