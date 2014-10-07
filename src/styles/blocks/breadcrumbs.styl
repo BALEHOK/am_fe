@@ -1,0 +1,36 @@
+.breadcrumbs
+  display block
+  position relative
+  font-size 11px
+  line-height 1.5
+  margin 0 0 15px 0
+
+  &__list
+    display block
+    margin 0
+    padding 0
+    list-style none
+
+  &__item
+    display inline-block
+    vertical-align top
+
+    &::before
+      font-family $FontAwesome
+      color $baseColor
+      content "\f105"
+      margin 0 7px
+
+    &:first-child
+      margin 0
+
+      &::before
+        display none
+
+    &-link
+      display inline-block
+      color $linkColor
+
+    &_active
+      .breadcrumbs__item-link
+        color $baseColor
