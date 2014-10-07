@@ -6,16 +6,40 @@
  */
 
 var React = require('react');
+var ReactSelectize = require('../common/react-selectize');
+
+var SearchSelectValues = {
+    getSelectList: function () {
+        return [
+            { name: "Active assets", id: 1},
+            { name: "History", id: 2}
+        ];
+    }
+};
 
 var SearchSimpleForm = React.createClass({
+    getInitialState: function () {
+        return {
+            selectedItemId: 1,
+            selectItems: SearchSelectValues.getSelectList()
+        }
+    },
+    handleSelectChanged: function (value) {
+
+    },
     render: function() {
         return (
             <form className="form">
                 <div className="input-group">
-                    <select className="form-control" value="1">
-                        <option value="1">Active assets</option>
-                        <option value="2">History</option>
-                    </select>
+                    <ReactSelectize
+                    items={this.state.selectItems}
+                    value={this.state.selectedItemId}
+                    onChange={this.handleSelectChanged}
+                    selectId="select-country"
+                    placeholder=" "
+                    label=" "
+                    />
+                   
                     <label className="input-txt input-txt_width_475">
                         <input type="text" className="input-txt__field" placeholder="Search asset"/>
                     </label>
