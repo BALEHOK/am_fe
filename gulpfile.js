@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var path = require('path');
 var gutil = require('gulp-util');
+var copy= require('gulp-copy');
 var concat = require('gulp-concat');
 var webpack = require('gulp-webpack');
 var autoprefixer = require('gulp-autoprefixer');
@@ -26,7 +27,11 @@ var cssSrc = 'src/styles/*',
         .pipe(clean());
 });*/
 
-var env = process.env.npm_config_siows_env || process.env.NODE_ENV;
+
+function handleError(err) {
+    console.log(err.toString());
+    this.emit('end');
+}
 
 gulp.task('webpack:build', function (callback) {
     var myConfig = Object.create(webpackConfig);
@@ -39,6 +44,7 @@ gulp.task('webpack:build', function (callback) {
 gulp.task('css', function () {
     return gulp.src([cssSrc])
         .pipe(stylus())
+        .on('error', handleError)
         .pipe(concat('style.css'))
         .pipe(autoprefixer({
             browsers: ['last 2 versions', '> 1%', 'ie 8', 'ie 9', 'Opera 12.1']
@@ -46,12 +52,13 @@ gulp.task('css', function () {
         .pipe(gulp.dest(cssDest))
         .pipe(rename({ suffix: '.min' }))
         .pipe(minifycss())
+        .on('error', handleError)
         .pipe(gulp.dest(cssDest))
         .pipe(notify({ message: 'Styles task complete' }));
 });
 
 gulp.task('views', function() {
-    return gulp.src(['src/*.html'])
+    return gulp.src('src/*.html')
         .pipe(gulp.dest(buildDest));
 });
 
@@ -65,13 +72,25 @@ gulp.task('browser-sync', function() {
     });
 });
 
+gulp.task('fonts', function() {
+    return gulp.src('src/fonts/**/*')
+        .pipe(gulp.dest(path.join(buildDest, 'assets/fonts')));
+});
+gulp.task('images', function() {
+    return gulp.src('src/fonts/**/*')
+        .pipe(gulp.dest(path.join(buildDest, 'assets/images')));
+});
+
+
 gulp.task('watch', function() {
     gulp.watch('src/**/*.html', ['views', browserSync.reload]);
     gulp.watch(['src/**/*.{js,ts,jsx}', 'webpack_entries/*.js'], ['webpack:build', browserSync.reload]);
     gulp.watch('src/**/*.{styl,css}', ['css', browserSync.reload]);
+    gulp.watch('src/fonts/*.*', ['fonts', browserSync.reload]);
+    gulp.watch('src/images/*.*', ['images', browserSync.reload]);
 });
 
 // Production build
-gulp.task('build', ['views', 'css', 'webpack:build']);
+gulp.task('build', ['views', 'images', 'fonts', 'css', 'webpack:build']);
 gulp.task('server', ['build', 'watch', 'browser-sync']);
 gulp.task('default', ['build']);
