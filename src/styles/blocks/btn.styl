@@ -1,0 +1,46 @@
+.btn
+  display inline-block
+  vertical-align top
+  position relative
+  text-align center
+  cursor pointer
+  font-family $Regular
+  font-weight normal
+  height 42px
+  padding 11px 18px
+  font-size 13px
+  line-height 1.42857
+  white-space nowrap
+  border-radius $br
+  user-select none
+  background-color  $btnBgColor
+  background-image linear-gradient(bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 100%)
+  color $btnColor
+  border 1px solid $btnBorderColor
+  text-decoration none !important
+  outline 0
+  transition all .25s ease
+  -webkit-appearance none
+  box-shadow none
+  text-overflow ellipsis
+
+  &:hover
+    background-image linear-gradient(bottom, rgba(0, 0, 0, 0.06) 0%, rgba(0, 0, 0, 0) 100%)
+
+  &:active
+    outline 0
+    box-shadow inset 0 3px 5px rgba(0, 0, 0, 0.125)
+
+  &:focus
+    box-shadow inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(76, 159, 34, 0.6)
+
+  &_icon_search
+    &::before
+      content "\f002"
+      font-family $FontAwesome
+      font-size 18px
+      line-height 23px
+      position relative
+      top -1px
+
+

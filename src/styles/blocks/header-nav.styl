@@ -1,0 +1,70 @@
+.header-nav
+  display block
+  position relative
+  background #43ac19
+  border-top 2px solid #3e8a17
+  border-bottom 1px solid #3e8a17
+  padding 20px 0 0
+  font-family $Regular
+
+  &__list
+    display block
+    list-style none
+    padding 0
+    margin 0 0 -1px 0
+    font-size 0
+
+
+  &__item
+    display inline-block
+    vertical-align bottom
+    position relative
+    margin 0 3px 0 0
+
+    &-link
+      display inline-block
+      vertical-align top
+      font-size 13px
+      background #449918
+      color #ffffff
+      text-decoration none
+      padding 11px 19px
+      height 40px
+      cursor pointer
+
+      &:first-child
+        border-radius 4px 0 0 0
+
+      &:last-child
+        border-radius 0 4px 0 0
+
+      &:only-child
+        border-radius 4px 4px 0 0
+
+      &:hover
+        color #ffffff
+        background #2D7209
+
+      &_icon_add
+        color #81e151
+        padding 14px 13px 15px
+        font normal normal normal 13px/1 $FontAwesome !important
+        margin 0 0 0 1px
+        cursor pointer !important
+        &::before
+          content "\f055"
+
+
+    &_state_active
+
+      .header-nav__item-link
+        background #ffffff
+        color #616161
+        font-family $Bold
+        padding-top 16px
+        padding-bottom 6px
+        height 45px
+        cursor default
+
+
+
