@@ -8,6 +8,7 @@ var HeaderNav = require('./headerNav');
 var Breadcrumbs = require('./breadcrumbs');
 
 var Layout = React.createClass({
+    mixins: [Backbone.React.Component.mixin],
     propTypes: {
         children: React.PropTypes.component.isRequired
     },
@@ -20,7 +21,7 @@ var Layout = React.createClass({
                             <a className="page-header__logo hide-text" href="/">ACV CSC METEA</a>
                             <span className="page-header__banner hide-text">Asset Management</span>
                             <div className="page-header__user-nav pull-right">
-                                <UserNav/>
+                                <UserNav model={this.props.user}/>
                             </div>
                         </div>
                     </div>

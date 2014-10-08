@@ -5,13 +5,14 @@
 var React = require('react');
 
 var UserNav = React.createClass({
+    mixins: [Backbone.React.Component.mixin],
     render: function() {
         return (
             <div className="user-nav">
                 <a href="#" className="user-nav__pic">
                     <img src="assets/images/girl_avatar.jpg" alt=""/>
                 </a>
-                <a className="user-nav__profile-link" href="#">Anni Huber</a>
+                <a className="user-nav__profile-link" href="#">{this.userName}</a>
                 <span className="user-nav__actions">
                     <a className="user-nav__actions-item user-nav__actions-item_icon_settings" href="#" title="Settings"></a>
                     <a className="user-nav__actions-item user-nav__actions-item_icon_help" href="#" title="Help"></a>
