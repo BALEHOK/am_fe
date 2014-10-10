@@ -15,6 +15,7 @@
     "backbone-react-component": "^0.7.0",
     "extract-text-webpack-plugin": "^0.3.1",
     "jquery": "^2.1.1",
+    "moment": "^2.8.3",
     "react": "~0.10.0",
     "react-bootstrap": "^0.12.0",
     "underscore": "^1.7.0"
