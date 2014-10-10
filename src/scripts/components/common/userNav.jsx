@@ -10,7 +10,7 @@ var UserNav = React.createClass({
         return (
             <div className="user-nav">
                 <a href="#" className="user-nav__pic">
-                    <img src="assets/images/girl_avatar.jpg" alt=""/>
+                    <img src={this.props.user.userpicPath} alt=""/>
                 </a>
                 <a className="user-nav__profile-link" href="#">{this.props.user.userName}</a>
                 <span className="user-nav__actions">
@@ -18,7 +18,7 @@ var UserNav = React.createClass({
                     <a className="user-nav__actions-item user-nav__actions-item_icon_help" href="#" title="Help"></a>
                     <a className="user-nav__actions-item user-nav__actions-item_icon_msg" href="#" title="Messages"></a>
                 </span>
-                <span className="user-nav__login-date">Last login: 12:33 25.09.2014</span>
+                <span className="user-nav__login-date">Last login: {this.props.user.lastLogin.format('HH:mm DD.MM.YYYY')}</span>
             </div>
         );
     }
