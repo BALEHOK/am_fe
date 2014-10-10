@@ -1,7 +1,6 @@
 var gulp = require('gulp');
 var path = require('path');
 var gutil = require('gulp-util');
-var copy= require('gulp-copy');
 var concat = require('gulp-concat');
 var webpack = require('gulp-webpack');
 var autoprefixer = require('gulp-autoprefixer');
@@ -77,7 +76,7 @@ gulp.task('fonts', function() {
         .pipe(gulp.dest(path.join(buildDest, 'assets/fonts')));
 });
 gulp.task('images', function() {
-    return gulp.src('src/fonts/**/*')
+    return gulp.src('src/images/**/*')
         .pipe(gulp.dest(path.join(buildDest, 'assets/images')));
 });
 
