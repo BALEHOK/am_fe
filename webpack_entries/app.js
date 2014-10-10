@@ -4,6 +4,4 @@ var Backbone = require('script!backbone');
 var selectize = require('script!../src/scripts/libs/selectize/dist/js/standalone/selectize.js');
 
 require('script!backbone-react-component');
-require('../src/scripts/components/common/userModel.ts');
-require('../src/scripts/components/common/layoutModel.ts');
 require('../src/scripts/search.jsx');

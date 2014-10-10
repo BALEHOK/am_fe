@@ -36,3 +36,7 @@ webpack-loaders/ts-loader/node_modules/
 typings
 
 npm-debug.log
+
+# TypeScript compilation
+src/scripts/models/*.js
+
