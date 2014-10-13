@@ -6,9 +6,15 @@ var React = require('react');
 
 var Layout = require('./components/common/layout');
 var SearchPage = require('./components/search/searchPage');
+var Session = require('./components/common/Session').SessionModel;
+var UserModel = require('./models/userModel.ts').UserModel;
+var user = new UserModel();
+user.fetch();
 
-var UserModule = require('./models/userModel.ts');
-var user = new UserModule.UserModel();
+Session.getAuth(function(response){
+    var router = new Router();
+    Backbone.history.start();
+});
 
 React.renderComponent(
     <Layout user={user}>
