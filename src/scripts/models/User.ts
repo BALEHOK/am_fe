@@ -12,7 +12,7 @@ export class UserModel extends Backbone.Model {
         this.userName = 'Anni Huber';
         this.userpicPath = 'assets/images/girl_avatar.jpg';
         this.lastLogin = moment();
-        this.urlRoot = 'http://localhost:51541/api/auth';
+        this.urlRoot = '/api/auth';
     }
 }
 
