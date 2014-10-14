@@ -4,13 +4,13 @@
 
 var React = require('react');
 var SearchPage = require('../search/main.jsx');
+var LoginPage = require('../login/main.jsx');
 
 var InterfaceComponent = React.createClass({
     componentWillMount: function() {
         this.callback = (function() {
             this.forceUpdate();
         }).bind(this);
-
         this.props.router.on("route", this.callback);
     },
     componentWillUnmount: function() {
@@ -18,7 +18,7 @@ var InterfaceComponent = React.createClass({
     },
     render : function() {
         if (this.props.router.current == "login") {
-            return <div>login</div>;
+            return <LoginPage />;
         }
         if (this.props.router.current == "tasks") {
             return <div>tasks</div>;
