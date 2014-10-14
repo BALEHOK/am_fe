@@ -18,9 +18,6 @@ var InterfaceComponent = React.createClass({
     },
     render : function() {
         console.log(this.props.router.current);
-        if (this.props.router.current == "search") {
-            return <SearchPage />;
-        }
         if (this.props.router.current == "tasks") {
             return <div>tasks</div>;
         }
@@ -39,7 +36,7 @@ var InterfaceComponent = React.createClass({
         if (this.props.router.current == "reservations") {
             return <div>reservations</div>;
         }
-        return <div />;
+        return <SearchPage />;
     }
 });
 
