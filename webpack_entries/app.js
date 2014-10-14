@@ -7,4 +7,4 @@ var React = require('react');
 require('script!backbone-react-component');
 
 /// application initialization
-require('../src/scripts/app');
+require('../src/scripts/app.jsx');

@@ -16,10 +16,10 @@ export class SessionModel extends Backbone.Model {
             this.set('user', JSON.stringify(response.user));
         });
         Session.fail(response => {
-            response = JSON.parse(response.responseText);
-            self.clear();
+            //response = JSON.parse(response.responseText);
+            //self.clear();
             //csrf = response.csrf !== csrf ? response.csrf : csrf;
-            self.initialize();
+            //self.initialize();
         });
         Session.always(callback);
     }
