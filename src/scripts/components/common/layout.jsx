@@ -13,7 +13,6 @@ var Layout = React.createClass({
         children: React.PropTypes.component.isRequired
     },
     render: function() {
-        console.log(this.props);
         return (
             <div className="page-wrapper">
                 <header className="page-header">

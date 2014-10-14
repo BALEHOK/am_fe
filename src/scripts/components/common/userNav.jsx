@@ -7,7 +7,6 @@ var React = require('react');
 var UserNav = React.createClass({
     mixins: [Backbone.React.Component.mixin],
     render: function() {
-        console.log(this.props);
         return (
             <div className="user-nav">
                 <a href="#" className="user-nav__pic">

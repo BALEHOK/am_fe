@@ -17,7 +17,9 @@ var InterfaceComponent = React.createClass({
         this.props.router.off("route", this.callback);
     },
     render : function() {
-        console.log(this.props.router.current);
+        if (this.props.router.current == "login") {
+            return <div>login</div>;
+        }
         if (this.props.router.current == "tasks") {
             return <div>tasks</div>;
         }

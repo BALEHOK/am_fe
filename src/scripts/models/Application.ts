@@ -11,12 +11,15 @@ export class Application extends Backbone.Model {
         super();
         this.currentUser = new user.UserModel();
         this.session = session;
+        $.ajaxPrefilter((options, originalOptions, jqXHR) => {
+            options.url = 'http://am.local' + options.url;
+        });
     }
 
-    start() {
+    start(callback: any) {
         this.session.getAuth(response => {
-            console.log(response);
             Backbone.history.start();
-        });
+        })
+        .always(callback);
     }
 }

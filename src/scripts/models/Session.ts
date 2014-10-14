@@ -5,22 +5,36 @@ export class SessionModel extends Backbone.Model {
 
     constructor() {
         super();
+        var that = this;
         this.url = '/api/auth';
+        //$.ajaxPrefilter((options, originalOptions, jqXHR) => {
+        //    options.xhrFields = {
+        //        withCredentials: true
+        //    };
+        //    options.crossDomain = true;
+        //    options.headers = options.headers || {};
+        //    // If we have a csrf token send it through with the next request
+        //    if (typeof that.get('_csrf') !== 'undefined') {
+        //        jqXHR.setRequestHeader('X-CSRF-Token', that.get('_csrf'));
+        //    }
+        //});
     }
 
-    public getAuth(callback) {
+    public getAuth(callback) : JQueryXHR {
         var self = this;
-        var Session = this.fetch();
-        Session.done(response => {
+        var request = this.fetch();
+        request.done(response => {
             this.set('authenticated', true);
             this.set('user', JSON.stringify(response.user));
         });
-        Session.fail(response => {
+        request.fail(response => {
+            //console.log(response.status === 401);
             //response = JSON.parse(response.responseText);
-            //self.clear();
+            self.clear();
             //csrf = response.csrf !== csrf ? response.csrf : csrf;
             //self.initialize();
         });
-        Session.always(callback);
+        request.always(callback);
+        return request;
     }
 }

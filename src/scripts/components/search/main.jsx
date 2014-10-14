@@ -9,7 +9,6 @@ var SearchSimpleForm = require('./searchSimpleForm');
 
 var SearchPage = React.createClass({
     render: function() {
-        console.log(this.props);
         return (
             <div>
                 <h1 className="page-title">Search</h1>
