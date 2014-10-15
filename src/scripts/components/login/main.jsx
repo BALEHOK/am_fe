@@ -13,8 +13,10 @@ var LoginPage = React.createClass({
         e.preventDefault();
         var login = this.refs.login.getDOMNode().value.trim();
         var password = this.refs.password.getDOMNode().value.trim();
-        console.log(login, password);
-        //this.props.model.login();
+        this.props.session.login({
+            login: login,
+            password: password
+        });
     },
     render: function() {
         return (

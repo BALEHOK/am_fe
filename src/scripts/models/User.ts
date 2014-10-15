@@ -3,16 +3,35 @@
 import moment = require('moment');
 export class UserModel extends Backbone.Model {
 
-    userName: string;
-    userpicPath: string;
-    lastLogin: Moment;
+    get userName(): string {
+        return this.get('userName');
+    }
 
-    constructor() {
+    set userName(value: string) {
+        this.set('userName', value);
+    }
+
+    get lastLogin(): any {
+        return moment(this.get('lastLogin'));
+    }
+
+    set lastLogin(value: any) {
+        this.set('lastLogin', value);
+    }
+
+    get userpicPath(): string {
+        return this.get('userpicPath');
+    }
+
+    set userpicPath(value: string) {
+        this.set('userpicPath', value);
+    }
+
+    constructor(data?: any) {
         super();
-        this.userName = 'Anni Huber';
-        this.userpicPath = 'assets/images/girl_avatar.jpg';
-        this.lastLogin = moment();
-        this.urlRoot = '/api/auth';
+        for (var key in data) {
+            if (key) { this[key] = data[key]; }
+        }
     }
 }
 

@@ -9,9 +9,6 @@ var Breadcrumbs = require('./breadcrumbs');
 
 var Layout = React.createClass({
     mixins: [Backbone.React.Component.mixin],
-    propTypes: {
-        children: React.PropTypes.component.isRequired
-    },
     render: function() {
         return (
             <div className="page-wrapper">
@@ -21,7 +18,7 @@ var Layout = React.createClass({
                             <a className="page-header__logo hide-text" href="/">ACV CSC METEA</a>
                             <span className="page-header__banner hide-text">Asset Management</span>
                             <div className="page-header__user-nav pull-right">
-                                <UserNav user={this.props.user}/>
+                                {this.props.authenticated ? <UserNav model={this.props}/> : <div />}
                             </div>
                         </div>
                     </div>

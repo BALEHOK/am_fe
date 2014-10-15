@@ -18,7 +18,7 @@ var InterfaceComponent = React.createClass({
     },
     render : function() {
         if (this.props.router.current == "login") {
-            return <LoginPage />;
+            return <LoginPage session={this.props.session} />;
         }
         if (this.props.router.current == "tasks") {
             return <div>tasks</div>;

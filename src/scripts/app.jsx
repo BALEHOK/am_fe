@@ -10,14 +10,14 @@ var Router = require('./models/Router').Router;
 var Session = require('./models/Session').SessionModel;
 var Application = require('./models/Application').Application;
 
-var sessionModel = new Session();
-var router = new Router(sessionModel);
-var application = new Application(sessionModel);
+var session = new Session();
+var router = new Router(session);
+var application = new Application(session);
 
 application.start(function() {
     React.renderComponent(
-        <Layout user={application.currentUser}>
-            <InterfaceComponent router={router} />
+        <Layout model={session}>
+            <InterfaceComponent router={router} session={session} />
         </Layout>, 
         document.querySelector('.page-container'));
 });
