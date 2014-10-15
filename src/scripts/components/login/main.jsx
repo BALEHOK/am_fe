@@ -14,7 +14,7 @@ var LoginPage = React.createClass({
         var login = this.refs.login.getDOMNode().value.trim();
         var password = this.refs.password.getDOMNode().value.trim();
         this.props.session.login({
-            login: login,
+            username: login,
             password: password
         });
     },

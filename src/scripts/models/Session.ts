@@ -34,8 +34,10 @@ export class SessionModel extends Backbone.Model implements ISession {
 
     public login(credentials: any) {
         var self = this;
+        credentials['grant_type'] = 'password';
         var login = $.ajax({
-            url: this.url + '/login',
+            url: '/token',
+            crossDomain: true,
             data: credentials,
             type: 'POST'
         });
@@ -53,6 +55,23 @@ export class SessionModel extends Backbone.Model implements ISession {
         login.fail(function () {
             Backbone.history.navigate('login', { trigger: true });
         });
+    }
+
+    public logout() {
+        var self = this;
+        $.ajax({
+            url: this.url + '/logout',
+            type: 'DELETE'
+        }).done(function (response) {
+                //Clear all session data
+                self.clear();
+                //Set the new csrf token to csrf vaiable and
+                //call initialize to update the $.ajaxSetup
+                // with new csrf
+                //csrf = response.csrf;
+                self.initialize();
+                Backbone.history.navigate('login', { trigger: true });
+            });
     }
 
     public getAuth(callback) : JQueryXHR {
