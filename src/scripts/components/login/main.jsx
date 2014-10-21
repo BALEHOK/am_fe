@@ -20,8 +20,9 @@ var LoginPage = React.createClass({
         this.props.session.login({
             username: login,
             password: password
-        })
-        .fail(function(data){
+        }, 
+        null,
+        function(data){
             self.setState({errorMessage: data.responseJSON.error_description});
         });
     },

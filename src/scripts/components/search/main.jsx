@@ -5,6 +5,7 @@
 var React = require('react');
 var TabbedArea = require('react-bootstrap/TabbedArea');
 var TabPane = require('react-bootstrap/TabPane');
+
 var SearchSimpleForm = require('./searchSimpleForm');
 
 var SearchPage = React.createClass({

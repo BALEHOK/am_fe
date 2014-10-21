@@ -25,14 +25,17 @@ export class SessionModel extends Backbone.Model implements ISession {
     }
     
     private supportStorage: boolean;
+    private bearerToken: string;
+    private expirationDate: Date;
 
     constructor() {
         super();
-        var that = this;
         this.url = '/api/auth';
     }
 
-    public login(credentials: any) : JQueryXHR {
+    public login(credentials: any,
+                 successCallback: JQueryPromiseCallback<any>,
+                 errorCallback: JQueryPromiseCallback<any>) {
         var self = this;
         credentials['grant_type'] = 'password';
         var login = $.ajax({
@@ -48,6 +51,8 @@ export class SessionModel extends Backbone.Model implements ISession {
                 lastLogin: response.LastLogin,
                 email: response.Email
             });
+            self.bearerToken = response.access_token;
+            self.expirationDate = new Date(response['.expires']);
             if (self.get('redirectFrom')) {
                 var path = self.get('redirectFrom');
                 self.unset('redirectFrom');
@@ -56,7 +61,8 @@ export class SessionModel extends Backbone.Model implements ISession {
                 Backbone.history.navigate('', { trigger: true });
             }
         });
-        return login;
+        login.done(successCallback);
+        login.fail(errorCallback);
     }
 
     public logout() {
