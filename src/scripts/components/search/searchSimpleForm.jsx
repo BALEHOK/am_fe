@@ -1,38 +1,27 @@
 /**
  * @jsx React.DOM
  */
-/**
- * @jsx React.DOM
- */
 
 var React = require('react');
 var ReactSelectize = require('../common/react-selectize');
 
-var SearchSelectValues = {
-    getSelectList: function () {
-        return [
-            { name: "Active assets", id: 1},
-            { name: "History", id: 2}
-        ];
-    }
-};
-
 var SearchSimpleForm = React.createClass({
+    mixins: [Backbone.React.Component.mixin],
     getInitialState: function () {
         return {
             selectedItemId: 1,
-            selectItems: SearchSelectValues.getSelectList()
         }
     },
     handleSelectChanged: function (value) {
 
     },
     render: function() {
+        var model = this.getModel();
         return (
             <form className="form">
                 <div className="input-group">
                     <ReactSelectize
-                    items={this.state.selectItems}
+                    items={model.searchContext}
                     value={this.state.selectedItemId}
                     onChange={this.handleSelectChanged}
                     selectId="select-country"

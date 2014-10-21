@@ -24,8 +24,9 @@ export class SessionModel extends Backbone.Model implements ISession {
         this.set('user', value);
     }
     
+    public bearerToken: string;
+
     private supportStorage: boolean;
-    private bearerToken: string;
     private expirationDate: Date;
 
     constructor() {
