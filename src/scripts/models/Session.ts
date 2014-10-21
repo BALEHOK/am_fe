@@ -43,7 +43,11 @@ export class SessionModel extends Backbone.Model implements ISession {
         });
         login.done(function (response) {
             self.authenticated = true;
-            self.user = new user.UserModel(response.user);
+            self.user = new user.UserModel({
+                userName: response.UserName,
+                lastLogin: response.LastLogin,
+                email: response.Email
+            });
             if (self.get('redirectFrom')) {
                 var path = self.get('redirectFrom');
                 self.unset('redirectFrom');

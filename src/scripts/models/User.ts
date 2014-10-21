@@ -11,6 +11,14 @@ export class UserModel extends Backbone.Model {
         this.set('userName', value);
     }
 
+    get email(): string {
+        return this.get('email');
+    }
+
+    set email(value: string) {
+        this.set('email', value);
+    }
+
     get lastLogin(): any {
         return moment(this.get('lastLogin'));
     }
