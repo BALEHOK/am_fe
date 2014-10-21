@@ -32,7 +32,7 @@ export class SessionModel extends Backbone.Model implements ISession {
         this.url = '/api/auth';
     }
 
-    public login(credentials: any) {
+    public login(credentials: any) : JQueryXHR {
         var self = this;
         credentials['grant_type'] = 'password';
         var login = $.ajax({
@@ -52,9 +52,7 @@ export class SessionModel extends Backbone.Model implements ISession {
                 Backbone.history.navigate('', { trigger: true });
             }
         });
-        login.fail(function () {
-            Backbone.history.navigate('login', { trigger: true });
-        });
+        return login;
     }
 
     public logout() {
