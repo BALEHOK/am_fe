@@ -32,6 +32,15 @@ export class SessionModel extends Backbone.Model implements ISession {
     constructor() {
         super();
         this.url = '/api/auth';
+        var self = this;
+        $.ajaxPrefilter((options, originalOptions, jqXHR) => {
+            // TODO: inject via config
+            options.url = 'http://am.local' + options.url;
+            if (self.authenticated)
+                return jqXHR.setRequestHeader(
+                    'Authorization',
+                    'Bearer ' + self.bearerToken);
+        });
     }
 
     public login(credentials: any,
@@ -45,7 +54,7 @@ export class SessionModel extends Backbone.Model implements ISession {
             data: credentials,
             type: 'POST'
         });
-        login.done(function (response) {
+        login.done(response => {
             self.authenticated = true;
             self.user = new user.UserModel({
                 userName: response.UserName,
