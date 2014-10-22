@@ -9,7 +9,10 @@ export class Application extends Backbone.Model {
         super();
         this.session = session;
         $.ajaxPrefilter((options, originalOptions, jqXHR) => {
+            // TODO: inject via config
             options.url = 'http://am.local' + options.url;
+            if (session.authenticated)
+                return jqXHR.setRequestHeader('Authorization', 'Bearer ' + session.bearerToken);
         });
     }
 

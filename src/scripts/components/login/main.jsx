@@ -6,6 +6,9 @@ var React = require('react');
 
 var LoginPage = React.createClass({
     mixins: [Backbone.React.Component.mixin],
+    getInitialState: function() {
+        return {errorMessage: ''};
+    },
     events : {
         'click button' : 'submit'
     },
@@ -13,14 +16,20 @@ var LoginPage = React.createClass({
         e.preventDefault();
         var login = this.refs.login.getDOMNode().value.trim();
         var password = this.refs.password.getDOMNode().value.trim();
+        var self = this;
         this.props.session.login({
-            login: login,
+            username: login,
             password: password
+        }, 
+        null,
+        function(data){
+            self.setState({errorMessage: data.responseJSON.error_description});
         });
     },
     render: function() {
         return (
             <form className="form-horizontal">
+                {this.state.errorMessage}
                 <div className="control-group">
                     <label className="control-label" htmlFor="login">Login</label>
                     <div className="controls">

@@ -24,24 +24,36 @@ export class SessionModel extends Backbone.Model implements ISession {
         this.set('user', value);
     }
     
+    public bearerToken: string;
+
     private supportStorage: boolean;
+    private expirationDate: Date;
 
     constructor() {
         super();
-        var that = this;
         this.url = '/api/auth';
     }
 
-    public login(credentials: any) {
+    public login(credentials: any,
+                 successCallback: JQueryPromiseCallback<any>,
+                 errorCallback: JQueryPromiseCallback<any>) {
         var self = this;
+        credentials['grant_type'] = 'password';
         var login = $.ajax({
-            url: this.url + '/login',
+            url: '/token',
+            crossDomain: true,
             data: credentials,
             type: 'POST'
         });
         login.done(function (response) {
             self.authenticated = true;
-            self.user = new user.UserModel(response.user);
+            self.user = new user.UserModel({
+                userName: response.UserName,
+                lastLogin: response.LastLogin,
+                email: response.Email
+            });
+            self.bearerToken = response.access_token;
+            self.expirationDate = new Date(response['.expires']);
             if (self.get('redirectFrom')) {
                 var path = self.get('redirectFrom');
                 self.unset('redirectFrom');
@@ -50,9 +62,25 @@ export class SessionModel extends Backbone.Model implements ISession {
                 Backbone.history.navigate('', { trigger: true });
             }
         });
-        login.fail(function () {
-            Backbone.history.navigate('login', { trigger: true });
-        });
+        login.done(successCallback);
+        login.fail(errorCallback);
+    }
+
+    public logout() {
+        var self = this;
+        $.ajax({
+            url: this.url + '/logout',
+            type: 'DELETE'
+        }).done(function (response) {
+                //Clear all session data
+                self.clear();
+                //Set the new csrf token to csrf vaiable and
+                //call initialize to update the $.ajaxSetup
+                // with new csrf
+                //csrf = response.csrf;
+                self.initialize();
+                Backbone.history.navigate('login', { trigger: true });
+            });
     }
 
     public getAuth(callback) : JQueryXHR {
