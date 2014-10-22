@@ -1,15 +1,21 @@
 ﻿/// <reference path="../../../typings/jquery/jquery.d.ts" />
-export class SearchService {
+
+export interface ISearchService {
+    search(query: string): JQueryXHR;
+}
+
+export class SearchService implements ISearchService {
 
     constructor() {
 
     }
 
-    // method for test purposes
-    getList() : JQueryXHR {
+    search(query: string): JQueryXHR {
         return $.ajax({
             url: '/api/search',
             crossDomain: true,
+            contentType: 'application/json',
+            data: { query: query },
             type: 'GET'
         });
     }

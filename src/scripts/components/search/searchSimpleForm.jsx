@@ -10,10 +10,20 @@ var SearchSimpleForm = React.createClass({
     getInitialState: function () {
         return {
             selectedItemId: 1,
+            disabled: true
         }
     },
-    handleSelectChanged: function (value) {
+    handleSelectChange: function (value) {
 
+    },
+    handleQueryChange: function (e) {
+        this.setState({ 
+            query: e.target.value,
+            disabled: e.target.value.length == 0
+        });
+    },
+    doQuery: function() {
+        this.getModel().query = this.state.query;
     },
     render: function() {
         var model = this.getModel();
@@ -23,16 +33,16 @@ var SearchSimpleForm = React.createClass({
                     <ReactSelectize
                     items={model.searchContext}
                     value={this.state.selectedItemId}
-                    onChange={this.handleSelectChanged}
+                    onChange={this.handleSelectChange}
                     selectId="select-country"
                     placeholder=" "
                     label=" "
                     />
                    
                     <label className="input-txt input-txt_width_475">
-                        <input type="text" className="input-txt__field" placeholder="Search asset"/>
+                        <input type="text" className="input-txt__field" placeholder="Search asset" onChange={this.handleQueryChange} />
                     </label>
-                    <button type="button" className="btn btn_icon_search"></button>
+                    <button type="button" disabled={this.state.disabled} className="btn btn_icon_search" onClick={this.doQuery}></button>
                 </div>
             </form>
         );

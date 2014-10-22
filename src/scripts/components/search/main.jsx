@@ -8,7 +8,8 @@ var TabPane = require('react-bootstrap/TabPane');
 
 var SearchSimpleForm = require('./searchSimpleForm');
 var SimpleSearch = require('../../models/SimpleSearch').SimpleSearch;
-var model = new SimpleSearch();
+var SearchService = require('../../services/SearchService').SearchService;
+var model = new SimpleSearch(new SearchService());
 
 var SearchPage = React.createClass({
     render: function() {

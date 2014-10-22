@@ -1,12 +1,14 @@
 ﻿/// <reference path="../../../typings/jquery/jquery.d.ts" />
+
 var SearchService = (function () {
     function SearchService() {
     }
-    // method for test purposes
-    SearchService.prototype.getList = function () {
+    SearchService.prototype.search = function (query) {
         return $.ajax({
             url: '/api/search',
             crossDomain: true,
+            contentType: 'application/json',
+            data: { query: query },
             type: 'GET'
         });
     };
