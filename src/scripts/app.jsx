@@ -2,6 +2,11 @@
  * @jsx React.DOM
  * This is our composition root: place where all components get tied together
  */
+// Setup
+$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
+    // TODO: inject via config
+    options.url = 'http://am.local' + options.url ;
+});
 
 // Components
 var React = require('react');
@@ -16,17 +21,22 @@ var Layout = require('./components/common/layout.jsx');
 var SearchPage = require('./components/search/main.jsx');
 var LoginPage = require('./components/login/main.jsx');
 
-// Models
-var Session = require('./models/Session').SessionModel;
-var session = new Session();
+// Services and models
+var SearchService = require('./services/SearchService').SearchService;
+var searchService = new SearchService();
 
 var SimpleSearch = require('./models/SimpleSearch').SimpleSearch;
-var SearchService = require('./services/SearchService').SearchService;
-var simpleSearchModel = new SimpleSearch(new SearchService());
+var simpleSearchModel = new SimpleSearch(searchService);
+
+var AuthService = require('./services/AuthService').AuthService;
+var authService = new AuthService();
+
+var Application = require('./models/Application').Application;
+var app = new Application(authService);
 
 var routes = (
   <Routes>
-    <Route name="app" path="/" handler={Layout} model={session}>
+    <Route name="app" path="/" handler={Layout} model={app}>
       <Route name="login" handler={LoginPage}/>
       <Route name="search" handler={SearchPage} model={simpleSearchModel} />
       <DefaultRoute handler={SearchPage} model={simpleSearchModel} />

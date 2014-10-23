@@ -1,21 +1,18 @@
 ﻿var LoginPage = require('../components/login/main.jsx');
+var AuthService = require('../services/AuthService').AuthService;
 
+// https://github.com/rackt/react-router/blob/master/docs/api/components/RouteHandler.md#static-lifecycle-methods
 var AuthenticatedRouteMixin = {
-    componentWillMount: function () {
-        if (!this.props.session.authenticated) {
-            console.log('not authenticated!');
-        }
-    },
     statics: {
-        willTransitionTo: function (transition) {
-            //transition.wait(this.promise);
-            //console.log('willTransitionTo');
-            //console.log(this.props.session);
-            //transition.redirect('/login');
-            //if (!auth.loggedIn()) {
-            //    LoginPage.attemptedTransition = transition;
-            //    transition.redirect('/login');
-            //}
+        willTransitionTo: function (transition, params, query) {
+            var authService = new AuthService();
+            var promise = authService.getAuthStatus();
+            promise.then(function (loggedIn) {
+                if (!loggedIn) {
+                    transition.redirect('/login');
+                }
+            });
+            transition.wait(promise);
         }
     }
 };

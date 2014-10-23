@@ -1,25 +1,32 @@
-﻿import router = require('./Router');
-import session = require('./Session');
+﻿import session = require('./Session');
+import user = require('./User');
+import authServiceModule = require('../services/AuthService');
+import exceptionsModule = require('../exceptions');
 
 export class Application extends Backbone.Model {
 
-    session: session.SessionModel;
-
-    constructor(session: session.SessionModel) {
-        super();
-        this.session = session;
-        $.ajaxPrefilter((options, originalOptions, jqXHR) => {
-            // TODO: inject via config
-            options.url = 'http://am.local' + options.url;
-            if (session.authenticated)
-                return jqXHR.setRequestHeader('Authorization', 'Bearer ' + session.bearerToken);
-        });
+    public get Session() {
+        return this.session;
     }
 
-    start(callback: any) {
-        this.session.getAuth(response => {
-            Backbone.history.start();
-        })
-        .always(callback);
+    private session: session.SessionModel = new session.SessionModel();
+    private authService: authServiceModule.IAuthService;
+
+    constructor(authService: authServiceModule.IAuthService) {
+        super();
+        if (authService == null)
+            throw new exceptionsModule.ArgumentNullException();
+        var self = this;
+        this.authService = authService;
+        this.authService.LoggedIn.on(response => {
+            self.session.authenticated = true;
+            self.session.user = new user.UserModel({
+                userName: response.UserName,
+                lastLogin: response.LastLogin,
+                email: response.Email
+            });
+            localStorage.setItem('bearerToken', response.access_token);
+            //self.session.expirationDate = new Date(response['.expires']);
+        });
     }
 }
