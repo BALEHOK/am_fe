@@ -17,7 +17,7 @@ var SearchSimpleForm = React.createClass({
 
     },
     handleQueryChange: function (e) {
-        this.setState({ 
+        this.setState({
             query: e.target.value,
             disabled: e.target.value.length == 0
         });
@@ -38,7 +38,7 @@ var SearchSimpleForm = React.createClass({
                     placeholder=" "
                     label=" "
                     />
-                   
+
                     <label className="input-txt input-txt_width_475">
                         <input type="text" className="input-txt__field" placeholder="Search asset" onChange={this.handleQueryChange} />
                     </label>

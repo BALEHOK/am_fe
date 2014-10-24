@@ -34,14 +34,51 @@
   &:focus
     box-shadow inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(76, 159, 34, 0.6)
 
-  &_icon_search
-    &::before
-      content "\f002"
-      font-family $FontAwesome
+  &__icon
+    display inline-block
+    vertical-align middle
+    font-family $FontAwesome
+    font-style normal
+    font-weight normal
+    line-height 1
+    position relative
+    font-size inherit
+    margin 0 10px
+
+    &:first-child
+      margin-left 0
+
+    &:last-child
+      margin-right 0
+
+    &_search
+      top -1px
       font-size 18px
       line-height 23px
-      position relative
-      top -1px
+      &::before
+        content "\f002"
+
+    &_angle-right
+      &::before
+        content "\f105"
+
+  &_type_second
+    background $btnSecondaryBgColor
+    color $btnSecondaryColor
+    border-color $btnSecondaryBorderColor
+
+    &:hover
+      background-color $btnSecondaryBgColorHover
+      background-image linear-gradient(bottom, #e7e7e7 0%, #f4f4f4 100%)
+
+    &:active
+      outline 0
+      background-color $btnSecondaryBgColorActive
+      background-image none
+      box-shadow inset 0 3px 5px rgba(0, 0, 0, 0.125)
+
+    &:focus
+      box-shadow inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 0, 0, 0.2)
 
   &:disabled
     background-color $btnBgColorDisabled

@@ -1,0 +1,128 @@
+.table-search
+  display block
+  border 1px solid #c6c6c6
+  font-family $Tahoma
+  border-radius $br
+
+  &__row
+    display flex
+    flex-wrap wrap
+    position relative
+
+    &_header
+      background #4d4d4d
+      color #ffffff
+      font-weight bold
+      border-bottom 5px solid #d1d1d1
+      margin -1px -1px 0 -1px
+      border-radius $br $br 0 0
+
+      .table-search__row-item
+        padding 12px 15px
+        border-bottom none
+
+        &_type_actions
+          padding-left 25px
+
+    &-action
+      display inline-block
+      cursor pointer
+      font-family $FontAwesome
+      font-size 18px
+      color #515151
+      margin 0 5px
+
+      &:hover
+        color $colorBlack
+
+      &_delete
+        opacity 0.5
+        &:hover
+          color $colorRed
+          opacity 1
+        &::before
+          content "\f00d"
+
+      &_up
+        &::before
+          content "\f01b"
+
+      &_down
+        &::before
+          content "\f01a"
+
+    &-item
+      display inline-block
+      vertical-align top
+      padding 20px 15px
+      border-bottom 1px solid #c6c6c6
+
+      &_type_actions
+        width 13%
+        padding-left 20px
+
+      &_type_attr
+        width 22%
+
+      &_type_oper
+        width 15%
+
+      &_type_value
+        width 22%
+
+      &_type_sort
+        width 15%
+
+      &_type_additional
+        width 13%
+        border-bottom none
+
+      &_type_inner
+        width 100%
+        margin 0 13%
+        padding 20px 15px
+
+    &_state_complex
+      .table-search__row-item
+        border-bottom-color transparent
+      &::after
+        content ""
+        display block
+        position absolute
+        bottom 0
+        left 0
+        right 13%
+        border-top 1px solid #c6c6c6
+
+  &__content
+    display block
+
+  &__add-row
+    display inline-block
+    vertical-align middle
+    cursor pointer
+    color #515151
+    white-space nowrap
+    user-select none
+
+    &::before
+      vertical-align middle
+      content "\f055"
+      font-family $FontAwesome
+      margin 0 7px 0 0
+      font-size 17px
+      position relative
+      top -1px
+
+    &:hover
+      &::before
+        color $colorBlack
+
+  &__footer
+    padding 20px 20px 10px 20px
+
+    &-actions
+      background #f2f2f2
+      margin 20px -20px -10px -20px
+      padding 15px 20px
+      border-radius 0 0 $br $br
