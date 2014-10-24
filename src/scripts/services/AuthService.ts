@@ -16,18 +16,23 @@ export class AuthService implements IAuthService {
     private onLogin = new events.LiteEvent<any>();
 
     constructor() {
-        $.ajaxPrefilter((options, originalOptions, jqXHR) => {
+    }
+
+    public login(credentials: any): JQueryXHR {
+        credentials['grant_type'] = 'password';
+        var self = this;
+
+        $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+            // TODO: inject via config
+            options.url = 'http://am.local' + options.url;
+            //options.crossDomain = true;
             var bearerToken = localStorage.getItem('bearerToken');
             if (bearerToken)
                 return jqXHR.setRequestHeader(
                     'Authorization',
                     'Bearer ' + bearerToken);
         });
-    }
-
-    public login(credentials: any): JQueryXHR {
-        credentials['grant_type'] = 'password';
-        var self = this;
+        
         var login = $.ajax({
             url: '/token',
             data: credentials,

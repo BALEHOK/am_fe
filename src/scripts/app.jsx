@@ -2,11 +2,6 @@
  * @jsx React.DOM
  * This is our composition root: place where all components get tied together
  */
-// Setup
-$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
-    // TODO: inject via config
-    options.url = 'http://am.local' + options.url ;
-});
 
 // Components
 var React = require('react');

@@ -19,9 +19,9 @@ var LoginPage = React.createClass({
     handleSubmit : function(e){
         var login = this.refs.login.getDOMNode().value.trim();
         var password = this.refs.password.getDOMNode().value.trim();
-        var model = this.getModel();
+        var authService = this.props.app.authService;
         var self = this;
-        model.login({
+        authService.login({
                 username: login,
                 password: password
             })

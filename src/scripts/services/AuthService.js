@@ -4,11 +4,6 @@ var events = require('../util/LiteEvent');
 var AuthService = (function () {
     function AuthService() {
         this.onLogin = new events.LiteEvent();
-        $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-            var bearerToken = localStorage.getItem('bearerToken');
-            if (bearerToken)
-                return jqXHR.setRequestHeader('Authorization', 'Bearer ' + bearerToken);
-        });
     }
     Object.defineProperty(AuthService.prototype, "LoggedIn", {
         get: function () {
@@ -21,6 +16,17 @@ var AuthService = (function () {
     AuthService.prototype.login = function (credentials) {
         credentials['grant_type'] = 'password';
         var self = this;
+
+        $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+            // TODO: inject via config
+            options.url = 'http://am.local' + options.url;
+
+            //options.crossDomain = true;
+            var bearerToken = localStorage.getItem('bearerToken');
+            if (bearerToken)
+                return jqXHR.setRequestHeader('Authorization', 'Bearer ' + bearerToken);
+        });
+
         var login = $.ajax({
             url: '/token',
             data: credentials,
