@@ -9,7 +9,12 @@ var Breadcrumbs = require('./breadcrumbs');
 
 var Layout = React.createClass({
     mixins: [Backbone.React.Component.mixin],
+    componentWillMount: function() {
+        //auth.onChange = this.setStateOnAuth;
+        //auth.login();
+    },
     render: function() {
+        var app = this.getModel();
         return (
             <div className="page-wrapper">
                 <header className="page-header">
@@ -18,7 +23,7 @@ var Layout = React.createClass({
                             <a className="page-header__logo hide-text" href="/">ACV CSC METEA</a>
                             <span className="page-header__banner hide-text">Asset Management</span>
                             <div className="page-header__user-nav pull-right">
-                                {this.props.authenticated ? <UserNav model={this.props}/> : <div />}
+                                {this.props.authenticated ? <UserNav model={session}/> : <div />}
                             </div>
                         </div>
                     </div>
@@ -29,7 +34,7 @@ var Layout = React.createClass({
                 <div className="page-content">
                     <div className="container" id="content">
                         <Breadcrumbs/>
-                        {this.props.children}
+                        {this.props.activeRouteHandler({app: app })}
                     </div>
                 </div>
             </div>

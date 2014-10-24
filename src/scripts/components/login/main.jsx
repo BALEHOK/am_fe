@@ -3,28 +3,40 @@
  */
 
 var React = require('react');
+var Router = require('react-router');
 
 var LoginPage = React.createClass({
-    mixins: [Backbone.React.Component.mixin],
+    mixins: [Backbone.React.Component.mixin, Router.Navigation],
+    statics: {
+        attemptedTransition: null
+    },
     getInitialState: function() {
         return {errorMessage: ''};
     },
     events : {
         'click button' : 'submit'
     },
-    submit : function(e){
-        e.preventDefault();
+    handleSubmit : function(e){
         var login = this.refs.login.getDOMNode().value.trim();
         var password = this.refs.password.getDOMNode().value.trim();
+        var authService = this.props.app.authService;
         var self = this;
-        this.props.session.login({
-            username: login,
-            password: password
-        }, 
-        null,
-        function(data){
-            self.setState({errorMessage: data.responseJSON.error_description});
-        });
+        authService.login({
+                username: login,
+                password: password
+            })
+            .done(function() {
+                if (LoginPage.attemptedTransition) {
+                    var transition = LoginPage.attemptedTransition;
+                    LoginPage.attemptedTransition = null;
+                    transition.retry();
+                } else {
+                    self.replaceWith('/');
+                }
+            })
+            .error(function(data) {
+                self.setState({ errorMessage: data.responseJSON.error_description });
+            });
     },
     render: function() {
         return (
@@ -44,7 +56,7 @@ var LoginPage = React.createClass({
                 </div>
                 <div className="control-group">
                     <div className="controls">
-                        <button type="submit" className="btn" onClick={this.submit}>Sign in</button>
+                        <button type="submit" className="btn" onClick={this.handleSubmit}>Sign in</button>
                     </div>
                 </div>
             </form>

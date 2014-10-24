@@ -39,4 +39,4 @@ npm-debug.log
 
 # TypeScript compilation
 src/scripts/models/*.js
-
+src/scripts/services/*.js

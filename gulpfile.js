@@ -65,7 +65,7 @@ gulp.task('browser-sync', function() {
     browserSync({
         server: {
             baseDir: 'dist/',
-            directory: true,
+            //directory: true,
             proxy: 'local.dev'
         }
     });

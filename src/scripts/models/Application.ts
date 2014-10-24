@@ -1,25 +1,47 @@
-﻿import router = require('./Router');
+﻿/// <reference path="../../../typings/backbone/backbone.d.ts" />
 import session = require('./Session');
+import user = require('./User');
+import authServiceModule = require('../services/AuthService');
+import exceptionsModule = require('../exceptions');
 
 export class Application extends Backbone.Model {
 
-    session: session.SessionModel;
-
-    constructor(session: session.SessionModel) {
-        super();
-        this.session = session;
-        $.ajaxPrefilter((options, originalOptions, jqXHR) => {
-            // TODO: inject via config
-            options.url = 'http://facilitymanager.facilityflexware.com/' + options.url;
-            if (session.authenticated)
-                return jqXHR.setRequestHeader('Authorization', 'Bearer ' + session.bearerToken);
-        });
+    public get Session() {
+        return this.session;
     }
 
-    start(callback: any) {
-        this.session.getAuth(response => {
-            Backbone.history.start();
-        })
-        .always(callback);
+    authService: authServiceModule.IAuthService;
+    private session: session.SessionModel = new session.SessionModel();
+
+    constructor() {
+        super();
+        $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+            // TODO: inject via config
+            var apiUrl = 'http://facilitymanager.facilityflexware.com';
+            //var apiUrl = 'http://am.local';
+            options.url = apiUrl + options.url;
+            options.crossDomain = true;
+            if (!options.beforeSend) {
+                options.beforeSend = function (xhr) {
+                    var bearerToken = localStorage.getItem('bearerToken');
+                    if (bearerToken && options.url != apiUrl + '/token')
+                        xhr.setRequestHeader(
+                            'Authorization',
+                            'Bearer ' + bearerToken);
+                }
+            }
+        });
+        var self = this;
+        this.authService = new authServiceModule.AuthService();
+        this.authService.LoggedIn.on(response => {
+            self.session.authenticated = true;
+            self.session.user = new user.UserModel({
+                userName: response.UserName,
+                lastLogin: response.LastLogin,
+                email: response.Email
+            });
+            localStorage.setItem('bearerToken', response.access_token);
+            //self.session.expirationDate = new Date(response['.expires']);
+        });
     }
 }
