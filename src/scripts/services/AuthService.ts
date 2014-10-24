@@ -54,7 +54,6 @@ export class AuthService implements IAuthService {
         $.ajax({
             url: '/api/auth',
             type: 'GET',
-            crossDomain: true,
         })
         .done(() => {
             dfd.resolve(true);

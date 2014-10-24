@@ -23,14 +23,11 @@ var searchService = new SearchService();
 var SimpleSearch = require('./models/SimpleSearch.ts').SimpleSearch;
 var simpleSearchModel = new SimpleSearch(searchService);
 
-var AuthService = require('./services/AuthService.ts').AuthService;
-var authService = new AuthService();
-
 var Application = require('./models/Application.ts').Application;
-var app = new Application(authService);
+var app = new Application();
 
 var routes = (
-  <Routes>
+  <Routes location="history">
     <Route name="app" path="/" handler={Layout} model={app}>
       <Route name="login" handler={LoginPage}/>
       <Route name="search" handler={SearchPage} model={simpleSearchModel} />
