@@ -1,0 +1,49 @@
+.radio-btn
+  display inline-block
+  position relative
+  //padding 0 0 0 30px
+  cursor pointer
+  user-select none
+
+  img
+    vertical-align text-bottom
+
+  &__input
+    position absolute
+    left 0
+    top 0
+    opacity 0
+
+    &:checked + .radio-btn__icon
+      background #ffffff
+      background-size 100% 100%
+      border-color #949494
+
+      &::after
+        content ''
+        display block
+        width 12px
+        height 12px
+        position absolute
+        left 50%
+        top 50%
+        margin -6px 0 0 -6px
+        background #353535
+        border-radius 50%
+
+  &__icon
+    display inline-block
+    vertical-align middle
+    position relative
+    top -3px
+    margin 0 10px 0 0
+    width 18px
+    height 18px
+    background #ffffff
+    border 1px solid #bbbbbb
+    border-radius 50%
+    transition border-color 0.2s ease-in-out
+
+  &:hover
+    .checkbox__icon
+      border-color #949494

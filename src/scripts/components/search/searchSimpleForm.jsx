@@ -35,15 +35,13 @@ var SearchSimpleForm = React.createClass({
                     items={this.state.selectItems}
                     value={this.state.selectedItemId}
                     onChange={this.handleSelectChanged}
-                    selectId="select-country"
+                    selectId="select1"
                     placeholder=" "
-                    label=" "
-                    />
-                   
+                    label=" "/>
                     <label className="input-txt input-txt_width_475">
                         <input type="text" className="input-txt__field" placeholder="Search asset"/>
                     </label>
-                    <button type="button" className="btn btn_icon_search"></button>
+                    <button type="button" className="btn"><i className=" btn__icon btn__icon_search"></i></button>
                 </div>
             </form>
         );

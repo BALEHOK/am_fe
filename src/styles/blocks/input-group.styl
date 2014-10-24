@@ -1,5 +1,7 @@
 .input-group
-  display block
+  display inline-block
+  vertical-align middle
+  margin 0
 
   & > .input-txt
 
@@ -28,3 +30,32 @@
     &:first-child
       .selectize-input
         border-radius $br 0 0 $br
+
+.inputs-line
+  display inline-block
+  vertical-align middle
+  margin 0
+
+  .select
+  .input-txt
+  .btn
+    margin-left 20px
+
+    &:first-child
+      margin-left 0
+
+.radio-group
+  display inline-block
+  margin 0 15px
+
+  &:first-child
+    margin-left 0
+
+  &:last-child
+    margin-right 0
+
+  .radio-btn
+    margin 0 0 0 15px
+
+    &:first-child
+      margin-left 0
