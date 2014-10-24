@@ -1,47 +1,48 @@
 /**
  * @jsx React.DOM
  */
-/**
- * @jsx React.DOM
- */
 
 var React = require('react');
 var ReactSelectize = require('../common/react-selectize');
 
-var SearchSelectValues = {
-    getSelectList: function () {
-        return [
-            { name: "Active assets", id: 1},
-            { name: "History", id: 2}
-        ];
-    }
-};
-
 var SearchSimpleForm = React.createClass({
+    mixins: [Backbone.React.Component.mixin],
     getInitialState: function () {
         return {
             selectedItemId: 1,
-            selectItems: SearchSelectValues.getSelectList()
+            disabled: true
         }
     },
-    handleSelectChanged: function (value) {
+    handleSelectChange: function (value) {
 
     },
+    handleQueryChange: function (e) {
+        this.setState({
+            query: e.target.value,
+            disabled: e.target.value.length == 0
+        });
+    },
+    doQuery: function() {
+        this.getModel().query = this.state.query;
+    },
     render: function() {
+        var model = this.getModel();
         return (
             <form className="form">
                 <div className="input-group">
                     <ReactSelectize
-                    items={this.state.selectItems}
+                    items={model.searchContext}
                     value={this.state.selectedItemId}
-                    onChange={this.handleSelectChanged}
-                    selectId="select1"
+                    onChange={this.handleSelectChange}
+                    selectId="select-country"
                     placeholder=" "
-                    label=" "/>
+                    label=" "
+                    />
+
                     <label className="input-txt input-txt_width_475">
-                        <input type="text" className="input-txt__field" placeholder="Search asset"/>
+                        <input type="text" className="input-txt__field" placeholder="Search asset" onChange={this.handleQueryChange} />
                     </label>
-                    <button type="button" className="btn"><i className=" btn__icon btn__icon_search"></i></button>
+                    <button type="button" disabled={this.state.disabled} className="btn btn_icon_search" onClick={this.doQuery}></button>
                 </div>
             </form>
         );

@@ -17,6 +17,7 @@
   ],
   "dependencies": {
     "react.backbone": "*",
-    "selectize": "~0.11.2"
+    "selectize": "~0.11.2",
+    "routefilter": "~0.2.1"
   }
 }

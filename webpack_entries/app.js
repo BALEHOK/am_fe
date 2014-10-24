@@ -1,7 +1,11 @@
+/// libraries
 var $ = require('script!jquery');
 var _ = require('script!underscore');
 var Backbone = require('script!backbone');
 var selectize = require('script!../src/scripts/libs/selectize/dist/js/standalone/selectize.js');
-
+var routefilter = require('script!../src/scripts/libs/routefilter/dist/backbone.routefilter.js');
+var React = require('react');
 require('script!backbone-react-component');
-require('../src/scripts/search.jsx');
+
+/// application initialization
+require('../src/scripts/app.jsx');
