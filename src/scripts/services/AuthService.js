@@ -16,22 +16,10 @@ var AuthService = (function () {
     AuthService.prototype.login = function (credentials) {
         credentials['grant_type'] = 'password';
         var self = this;
-
-        $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-            // TODO: inject via config
-            options.url = 'http://am.local' + options.url;
-
-            //options.crossDomain = true;
-            var bearerToken = localStorage.getItem('bearerToken');
-            if (bearerToken)
-                return jqXHR.setRequestHeader('Authorization', 'Bearer ' + bearerToken);
-        });
-
         var login = $.ajax({
             url: '/token',
-            data: credentials,
-            crossDomain: true,
-            type: 'POST'
+            type: 'POST',
+            data: credentials
         });
         login.done(function (response) {
             self.onLogin.trigger(response);

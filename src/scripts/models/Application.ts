@@ -1,4 +1,5 @@
-﻿import session = require('./Session');
+﻿/// <reference path="../../../typings/backbone/backbone.d.ts" />
+import session = require('./Session');
 import user = require('./User');
 import authServiceModule = require('../services/AuthService');
 import exceptionsModule = require('../exceptions');
@@ -16,6 +17,20 @@ export class Application extends Backbone.Model {
         super();
         if (authService == null)
             throw new exceptionsModule.ArgumentNullException();
+
+        $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+            // TODO: inject via config
+            var apiUrl = 'http://facilitymanager.facilityflexware.com';
+            //var apiUrl = 'http://am.local';
+            options.url = apiUrl + options.url;
+            options.crossDomain = true;
+            var bearerToken = localStorage.getItem('bearerToken');
+            if (bearerToken)
+                return jqXHR.setRequestHeader(
+                    'Authorization',
+                    'Bearer ' + bearerToken);
+        });
+
         var self = this;
         this.authService = authService;
         this.authService.LoggedIn.on(response => {

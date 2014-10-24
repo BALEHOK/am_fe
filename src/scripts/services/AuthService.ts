@@ -21,23 +21,10 @@ export class AuthService implements IAuthService {
     public login(credentials: any): JQueryXHR {
         credentials['grant_type'] = 'password';
         var self = this;
-
-        $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-            // TODO: inject via config
-            options.url = 'http://am.local' + options.url;
-            //options.crossDomain = true;
-            var bearerToken = localStorage.getItem('bearerToken');
-            if (bearerToken)
-                return jqXHR.setRequestHeader(
-                    'Authorization',
-                    'Bearer ' + bearerToken);
-        });
-        
         var login = $.ajax({
             url: '/token',
+            type: 'POST',
             data: credentials,
-            crossDomain: true,
-            type: 'POST'
         });
         login.done((response) => {
             self.onLogin.trigger(response);

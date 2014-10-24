@@ -17,16 +17,16 @@ var SearchPage = require('./components/search/main.jsx');
 var LoginPage = require('./components/login/main.jsx');
 
 // Services and models
-var SearchService = require('./services/SearchService').SearchService;
+var SearchService = require('./services/SearchService.ts').SearchService;
 var searchService = new SearchService();
 
-var SimpleSearch = require('./models/SimpleSearch').SimpleSearch;
+var SimpleSearch = require('./models/SimpleSearch.ts').SimpleSearch;
 var simpleSearchModel = new SimpleSearch(searchService);
 
-var AuthService = require('./services/AuthService').AuthService;
+var AuthService = require('./services/AuthService.ts').AuthService;
 var authService = new AuthService();
 
-var Application = require('./models/Application').Application;
+var Application = require('./models/Application.ts').Application;
 var app = new Application(authService);
 
 var routes = (
