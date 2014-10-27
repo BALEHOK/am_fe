@@ -21,8 +21,11 @@ var LoginPage = require('./components/login/main.jsx');
 var SimpleSearch = require('./models/SimpleSearch.ts').SimpleSearch;
 var simpleSearchModel = new SimpleSearch();
 
+var Config = require('./models/Config.ts').Config;
+var config = new Config();
+
 var Application = require('./models/Application.ts').Application;
-var app = new Application();
+var app = new Application(config);
 
 var routes = (
   <Routes>

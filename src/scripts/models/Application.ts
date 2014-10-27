@@ -1,4 +1,5 @@
 ﻿/// <reference path="../../../typings/backbone/backbone.d.ts" />
+import config = require('./Config');
 import session = require('./Session');
 import user = require('./User');
 import authServiceModule = require('../services/AuthService');
@@ -15,19 +16,20 @@ export class Application extends Backbone.Model {
     searchService: searchServiceModule.ISearchService;
 
     private session: session.SessionModel = new session.SessionModel();
+    private config: config.Config;
 
-    constructor() {
+    constructor(config: config.Config) {
         super();
-        $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-            // TODO: inject via config
-            //var apiUrl = 'http://facilitymanager.facilityflexware.com';
-            var apiUrl = 'http://am.local';
-            options.url = apiUrl + options.url;
+        if (config == null)
+            throw new exceptionsModule.ArgumentNullException('config is null');
+        this.config = config;
+        $.ajaxPrefilter((options) => {
+            options.url = config.apiUrl + options.url;
             options.crossDomain = true;
             if (!options.beforeSend) {
-                options.beforeSend = function (xhr) {
+                options.beforeSend = xhr => {
                     var bearerToken = localStorage.getItem('bearerToken');
-                    if (bearerToken && options.url != apiUrl + '/token')
+                    if (bearerToken && options.url != config.apiUrl + '/token')
                         xhr.setRequestHeader(
                             'Authorization',
                             'Bearer ' + bearerToken);
