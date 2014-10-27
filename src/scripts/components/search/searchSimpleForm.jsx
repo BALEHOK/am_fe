@@ -3,10 +3,11 @@
  */
 
 var React = require('react');
+var Router = require('react-router');
 var ReactSelectize = require('../common/react-selectize');
 
 var SearchSimpleForm = React.createClass({
-    mixins: [Backbone.React.Component.mixin],
+    mixins: [Backbone.React.Component.mixin, Router.Navigation],
     getInitialState: function () {
         return {
             selectedItemId: 1,
@@ -24,6 +25,7 @@ var SearchSimpleForm = React.createClass({
     },
     doQuery: function() {
         this.getModel().query = this.state.query;
+        this.transitionTo('/search/result', {}, {'query' : this.state.query});
     },
     render: function() {
         var model = this.getModel();

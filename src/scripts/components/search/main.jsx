@@ -17,7 +17,7 @@ var SearchPage = React.createClass({
                 <h1 className="page-title">Search</h1>
                 <TabbedArea defaultActiveKey={1} animation={false}>
                     <TabPane key={1} tab="Simple">
-                        <SearchSimpleForm model={this.props.model} />        
+                        <SearchSimpleForm model={this.props.model} app={this.props.app} />        
                     </TabPane>
                     <TabPane key={2} tab="By type">
                         <SearchComplexForm/>

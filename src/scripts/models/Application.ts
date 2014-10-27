@@ -2,6 +2,7 @@
 import session = require('./Session');
 import user = require('./User');
 import authServiceModule = require('../services/AuthService');
+import searchServiceModule = require('../services/SearchService');
 import exceptionsModule = require('../exceptions');
 
 export class Application extends Backbone.Model {
@@ -11,14 +12,16 @@ export class Application extends Backbone.Model {
     }
 
     authService: authServiceModule.IAuthService;
+    searchService: searchServiceModule.ISearchService;
+
     private session: session.SessionModel = new session.SessionModel();
 
     constructor() {
         super();
         $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
             // TODO: inject via config
-            var apiUrl = 'http://facilitymanager.facilityflexware.com';
-            //var apiUrl = 'http://am.local';
+            //var apiUrl = 'http://facilitymanager.facilityflexware.com';
+            var apiUrl = 'http://am.local';
             options.url = apiUrl + options.url;
             options.crossDomain = true;
             if (!options.beforeSend) {
@@ -32,6 +35,7 @@ export class Application extends Backbone.Model {
             }
         });
         var self = this;
+        this.searchService = new searchServiceModule.SearchService();
         this.authService = new authServiceModule.AuthService();
         this.authService.LoggedIn.on(response => {
             self.session.authenticated = true;

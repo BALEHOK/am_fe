@@ -14,23 +14,22 @@ var Link = Router.Link;
 // Pages
 var Layout = require('./components/common/layout.jsx');
 var SearchPage = require('./components/search/main.jsx');
+var ResultPage = require('./components/search/result.jsx');
 var LoginPage = require('./components/login/main.jsx');
 
 // Services and models
-var SearchService = require('./services/SearchService.ts').SearchService;
-var searchService = new SearchService();
-
 var SimpleSearch = require('./models/SimpleSearch.ts').SimpleSearch;
-var simpleSearchModel = new SimpleSearch(searchService);
+var simpleSearchModel = new SimpleSearch();
 
 var Application = require('./models/Application.ts').Application;
 var app = new Application();
 
 var routes = (
-  <Routes location="history">
+  <Routes>
     <Route name="app" path="/" handler={Layout} model={app}>
       <Route name="login" handler={LoginPage}/>
       <Route name="search" handler={SearchPage} model={simpleSearchModel} />
+      <Route name="result" path="/search/result" handler={ResultPage} />
       <DefaultRoute handler={SearchPage} model={simpleSearchModel} />
     </Route>
   </Routes>
