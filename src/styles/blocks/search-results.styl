@@ -1,0 +1,86 @@
+.search-results
+  border 1px solid #c7c7c7
+  margin 0 0 20px 0
+  border-radius $br
+
+  &__header
+    background #4d4d4d
+    color #fff
+    font-weight bold
+    border-bottom 5px solid #d1d1d1
+    margin -1px -1px 0 -1px
+    border-radius 4px 4px 0 0
+    display flex
+    flex-wrap wrap
+    position relative
+
+    &-item
+      display inline-block
+      vertical-align top
+      padding 12px 15px
+
+      &_name
+        width 32%
+
+      &_category
+        width 25%
+
+      &_attr
+        width 32%
+
+      &_link
+        width 11%
+        text-align right
+        font-size 10px
+        font-weight normal
+        opacity 0.5
+
+  &__list
+    margin 0
+    padding 0
+    list-style none
+
+  &__item
+    border-bottom 1px solid #c7c7c7
+    display flex
+    flex-wrap wrap
+
+    &-param
+      display inline-block
+      vertical-align top
+      padding 20px 15px
+
+      &_name
+        width 32%
+        color $colorGreen
+
+      &_category
+        width 25%
+
+      &_attr
+        width 32%
+
+      &_link
+        width 11%
+        text-align right
+        font-size 30px
+    &-attr
+      display block
+      max-height 55px
+      overflow hidden
+      text-overflow ellipsis
+
+    &:last-child
+      border-bottom none
+
+  &__pagination
+    background #f2f2f2
+    border-top 1px solid #c7c7c7
+    border-radius 0 0 $br $br
+    padding 10px 20px
+    color #b0b0b0
+    font-size 12px
+    line-height 30px
+
+    &-title
+      display inline-block
