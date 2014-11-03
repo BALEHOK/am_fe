@@ -24,8 +24,12 @@ var simpleSearchModel = new SimpleSearch();
 var Config = require('./models/Config.ts').Config;
 var config = new Config();
 
+var AuthService = require('./services/AuthService.ts').AuthService;
+var authService = new AuthService();
+window.authService = authService;
+
 var Application = require('./models/Application.ts').Application;
-var app = new Application(config);
+var app = new Application(config, authService);
 
 var routes = (
   <Routes>

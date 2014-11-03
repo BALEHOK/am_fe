@@ -1,12 +1,11 @@
 ﻿var LoginPage = require('../components/login/main.jsx');
-var AuthService = require('../services/AuthService.ts').AuthService;
+var AuthService = require('../services/AuthService.ts');
 
 // https://github.com/rackt/react-router/blob/master/docs/api/components/RouteHandler.md#static-lifecycle-methods
 var AuthenticatedRouteMixin = {
     statics: {
-        willTransitionTo: function (transition, params, query) {
-            //console.log('AuthenticatedRouteMixin', transition);
-            var authService = new AuthService();
+        willTransitionTo: function (transition, params, query) {            
+            var authService = window.authService;
             var promise = authService.getAuthStatus();
             promise.then(function (loggedIn) {
                 if (!loggedIn) {

@@ -18,10 +18,12 @@ export class Application extends Backbone.Model {
     private session: session.SessionModel = new session.SessionModel();
     private config: config.Config;
 
-    constructor(config: config.Config) {
+    constructor(config: config.Config, authService: authServiceModule.IAuthService) {
         super();
         if (config == null)
             throw new exceptionsModule.ArgumentNullException('config is null');
+        if (authService == null)
+            throw new exceptionsModule.ArgumentNullException('authService is null');
         this.config = config;
         $.ajaxPrefilter((options) => {
             options.url = config.apiUrl + options.url;
@@ -38,7 +40,15 @@ export class Application extends Backbone.Model {
         });
         var self = this;
         this.searchService = new searchServiceModule.SearchService();
-        this.authService = new authServiceModule.AuthService();
+
+        this.session.on('change:authenticated', function(model, authenticated) {
+            if (!authenticated) {
+                // client-side logout
+                localStorage.setItem('bearerToken', null);
+            }
+        });
+
+        this.authService = authService;
         this.authService.LoggedIn.on(response => {
             self.session.authenticated = true;
             self.session.user = new user.UserModel({

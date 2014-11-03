@@ -6,15 +6,17 @@ var React = require('react');
 var UserNav = require('./userNav');
 var HeaderNav = require('./headerNav');
 var Breadcrumbs = require('./breadcrumbs');
+var Router = require('react-router');
 
 var Layout = React.createClass({
-    mixins: [Backbone.React.Component.mixin],
-    componentWillMount: function() {
-        //auth.onChange = this.setStateOnAuth;
-        //auth.login();
+    mixins: [Backbone.React.Component.mixin, Router.Navigation],
+    handleLogout: function(){
+        app = this.getModel();        
+        app.Session.authenticated = false;
+        this.transitionTo('login');
     },
     render: function() {
-        var app = this.getModel();
+        var app = this.getModel();        
         return (
             <div className="page-wrapper">
                 <header className="page-header">
@@ -23,7 +25,7 @@ var Layout = React.createClass({
                             <a className="page-header__logo hide-text" href="/">ACV CSC METEA</a>
                             <span className="page-header__banner hide-text">Asset Management</span>
                             <div className="page-header__user-nav pull-right">
-                                {this.props.authenticated ? <UserNav model={session}/> : <div />}
+                                {app.Session.authenticated ? <UserNav model={app.Session} onLogout={this.handleLogout} /> : <div />}
                             </div>
                         </div>
                     </div>
@@ -34,7 +36,7 @@ var Layout = React.createClass({
                 <div className="page-content">
                     <div className="container" id="content">
                         <Breadcrumbs/>
-                        {this.props.activeRouteHandler({app: app })}
+                        {this.props.activeRouteHandler({app: app})}
                     </div>
                 </div>
             </div>

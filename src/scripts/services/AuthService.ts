@@ -51,11 +51,13 @@ export class AuthService implements IAuthService {
 
     public getAuthStatus() : JQueryDeferred<boolean> {
         var dfd = $.Deferred<boolean>();
+        var self = this;
         $.ajax({
             url: '/api/auth',
             type: 'GET',
         })
-        .done(() => {
+        .done((response) => {            
+            self.onLogin.trigger(response);
             dfd.resolve(true);
         })
         .fail(response => {

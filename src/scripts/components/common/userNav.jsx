@@ -6,11 +6,7 @@ var React = require('react');
 
 var UserNav = React.createClass({
     mixins: [Backbone.React.Component.mixin],
-    onLogoutClick: function(){       
-        var model = this.getModel();
-        model.logout();
-    },
-    render: function() {        
+    render: function() {              
         return (
             <div className="user-nav">
                 <a href="#" className="user-nav__pic">
@@ -19,7 +15,7 @@ var UserNav = React.createClass({
                 <a className="user-nav__profile-link" href="#">{this.props.user.userName}</a>
                 <span className="user-nav__actions">
                     <a className="user-nav__actions-item user-nav__actions-item_icon_settings" href="#" title="Settings"></a>                    
-                    <a className="user-nav__actions-item user-nav__actions-item_icon_logout" href="#" onClick={this.onLogoutClick} title="Logout"></a>
+                    <a className="user-nav__actions-item user-nav__actions-item_icon_logout" href="#" onClick={this.props.onLogout} title="Logout"></a>
                 </span>
                 <span className="user-nav__login-date">Last login: {this.props.user.lastLogin.format('HH:mm DD.MM.YYYY')}</span>
             </div>
