@@ -1,21 +1,16 @@
 ﻿/// <reference path="../../../typings/jquery/jquery.d.ts" />
 
 export interface ISearchService {
-    search(query: string): JQueryXHR;
+    search(query: string, page: number): JQueryXHR;
 }
 
 export class SearchService implements ISearchService {
-
-    constructor() {
-
-    }
-
-    search(query: string): JQueryXHR {
+    search(query: string, page: number): JQueryXHR {
         return $.ajax({
             url: '/api/search',
             crossDomain: true,
             contentType: 'application/json',
-            data: { query: query },
+            data: { query: query, page: page },
             type: 'GET'
         });
     }

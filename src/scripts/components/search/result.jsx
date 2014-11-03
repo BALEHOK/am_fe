@@ -4,6 +4,7 @@
 
 var React = require('react');
 var Router = require('react-router');
+var Pagination = require('./pagination');
 
 var ResultItem = React.createClass({
     render: function() {
@@ -26,16 +27,11 @@ var ResultItem = React.createClass({
 
 var ResultPage = React.createClass({
     mixins: [Backbone.React.Component.mixin, Router.Navigation],
-    getInitialState: function() {
-        return {
-            results: []
-        };
-    },
-    componentDidMount: function() {
+    loadResultFromServer: function(query, page) {
         var self = this;
         var app = this.props.app;
         app.searchService
-           .search(this.props.query.query)
+           .search(query, page)
            .done(function(data) {
                self.setState({ results: data });
                console.log(data);
@@ -43,6 +39,23 @@ var ResultPage = React.createClass({
            .error(function(data) {
                console.log('TODO: handle error', data);
            });
+    },
+    getInitialState: function() {
+        return {
+            page: 1,
+            results: []
+        };
+    },
+    componentDidMount: function() {
+        this.loadResultFromServer(this.props.query.query, this.props.query.page);
+    },
+    handlePageChange: function(page) {
+        this.setState({page: page, results: []});
+        this.loadResultFromServer(this.props.query.query, page);
+        this.transitionTo('result', {}, {
+            query: this.props.query.query, 
+            page: page
+        });        
     },
     render: function() {
         return (
@@ -117,33 +130,7 @@ var ResultPage = React.createClass({
                                         return <ResultItem key={result.indexUid} data={result}/>;
                                     })}
                                 </ul>
-                                <div className="search-results__pagination clearfix">
-                                    <span className="search-results__pagination-title">Showing 1 - 10 from 342</span>
-                                    <div className="pagination pull-right">
-                                        <ul className="pagination__list">
-                                            <li className="pagination__item">
-                                                <a href="#" className="pagination__link pagination__link_active">1</a>
-                                            </li>
-                                            <li className="pagination__item">
-                                                <a href="#" className="pagination__link">2</a>
-                                            </li>
-                                            <li className="pagination__item">
-                                                <a href="#" className="pagination__link">3</a>
-                                            </li>
-                                            <li className="pagination__item">
-                                                <a href="#" className="pagination__link">4</a>
-                                            </li>
-                                            <li className="pagination__item">
-                                                ...
-                                            </li>
-                                            <li className="pagination__item">
-                                                <a href="#" className="pagination__link">98</a>
-                                            </li>
-                                        </ul>
-                                        <a href="#" className="pagination__link"><span className="icon icon_angle-right"></span></a>
-                                        <a href="#" className="pagination__link"><span className="icon icon_angle-d-right"></span></a>
-                                    </div>
-                                </div>
+                                <Pagination onPageChanged={this.handlePageChange} />
                             </div>
                         </div>
                     </div>
