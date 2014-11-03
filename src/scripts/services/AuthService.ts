@@ -32,6 +32,26 @@ export class AuthService implements IAuthService {
         return login;
     }
 
+    public getAuthStatus() : JQueryDeferred<boolean> {
+        var dfd = $.Deferred<boolean>();
+        var self = this;
+        $.ajax({
+            url: '/api/auth',
+            type: 'GET',
+        })
+        .done((response) => {            
+            dfd.resolve(true);
+        })
+        .fail(response => {
+            if (response.status === 401) {
+                dfd.resolve(false);
+            } else {
+                dfd.reject();
+            }
+        });
+        return dfd;
+    }
+    
     //public logout() {
     //    var self = this;
     //    $.ajax({
@@ -48,25 +68,4 @@ export class AuthService implements IAuthService {
     //        Backbone.history.navigate('login', { trigger: true });
     //    });
     //}
-
-    public getAuthStatus() : JQueryDeferred<boolean> {
-        var dfd = $.Deferred<boolean>();
-        var self = this;
-        $.ajax({
-            url: '/api/auth',
-            type: 'GET',
-        })
-        .done((response) => {            
-            self.onLogin.trigger(response);
-            dfd.resolve(true);
-        })
-        .fail(response => {
-            if (response.status === 401) {
-                dfd.resolve(false);
-            } else {
-                dfd.reject();
-            }
-        });
-        return dfd;
-    }
 }

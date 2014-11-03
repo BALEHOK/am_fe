@@ -50,14 +50,13 @@ export class Application extends Backbone.Model {
 
         this.authService = authService;
         this.authService.LoggedIn.on(response => {
+            localStorage.setItem('bearerToken', response.access_token);
             self.session.authenticated = true;
             self.session.user = new user.UserModel({
                 userName: response.UserName,
                 lastLogin: response.LastLogin,
                 email: response.Email
             });
-            localStorage.setItem('bearerToken', response.access_token);
-            //self.session.expirationDate = new Date(response['.expires']);
         });
     }
 }
