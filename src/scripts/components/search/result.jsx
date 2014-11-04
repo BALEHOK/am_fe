@@ -40,7 +40,7 @@ var ResultPage = React.createClass({
     mixins: [Backbone.React.Component.mixin, Router.Navigation],
     getInitialState: function() {
         return {
-            page: 1,
+            page: 1,            
             searchId: null,
             results: [],
             counters: {
@@ -48,6 +48,8 @@ var ResultPage = React.createClass({
                 assetTypes: [],
                 taxonomies: []
             },
+            assetType: null,
+            taxonomy: null,
         };
     },
     loadCountersFromServer: function(searchId, query) {
@@ -63,11 +65,11 @@ var ResultPage = React.createClass({
                 console.log('TODO: handle error', data);
             });
     },
-    loadResultFromServer: function(query, page) {
+    loadResultFromServer: function(query, page, assetType, taxonomy) {
         var self = this;
         var app = this.props.app;
         app.searchService
-           .search(query, page)
+           .search(query, page, assetType, taxonomy)
            .done(function(data) {
                 self.loadCountersFromServer(data.searchId, query);
                 self.setState({ results: data.entities, searchId: data.searchId });
@@ -78,18 +80,48 @@ var ResultPage = React.createClass({
            });
     },    
     componentWillMount: function() {
-        this.loadResultFromServer(this.props.query.query, this.props.query.page);
+        this.loadResultFromServer(
+            this.props.query.query, 
+            this.props.query.page,
+            this.props.query.assetType,
+            this.props.query.taxonomy);
     },    
+    componentWillUpdate: function(nextProps, nextState) {
+        var params = this.props.query;
+        if (nextState.page) {
+            params.page = nextState.page;
+        }
+        if (nextState.assetType) {
+            params.assetType = nextState.assetType;
+        }
+        if (nextState.taxonomy) {
+            params.taxonomy = nextState.taxonomy;
+        }
+        this.transitionTo('result', {}, params);
+    },
     handlePageChange: function(page) {
         this.setState({page: page, results: []});
         this.loadResultFromServer(this.props.query.query, page);
-        this.transitionTo('result', {}, {
-            query: this.props.query.query, 
-            page: page
-        });        
     },
     handleRefinementChange: function(refinement, id) {
-        console.log(refinement, id);
+        // TODO add optimistic refinements update.
+        // i.e. on click hide all others and left only selected one 
+        this.setState({results:[]});
+        if (refinement == 'assetType') {
+            this.setState({ assetType: id });
+            this.loadResultFromServer(
+                this.props.query.query, 
+                this.state.page,
+                id,
+                this.state.taxonomy);
+        } else {
+            this.setState({ taxonomy: id });
+            this.loadResultFromServer(
+                this.props.query.query, 
+                this.state.page,
+                this.state.assetType,
+                id);
+        }        
     },
     render: function() {
         var self = this;
