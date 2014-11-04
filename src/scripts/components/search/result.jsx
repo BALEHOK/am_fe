@@ -6,6 +6,17 @@ var React = require('react');
 var Router = require('react-router');
 var Pagination = require('./pagination');
 
+var RefinementItem = React.createClass({
+    render: function() {
+        return (
+            <li className="nav-block__item">
+                <a className="link link_second">{this.props.data.name}&nbsp; 
+                <span className="light-grey">({this.props.data.count})</span></a>
+            </li>
+        );
+    }
+});
+
 var ResultItem = React.createClass({
     render: function() {
         return (
@@ -27,28 +38,48 @@ var ResultItem = React.createClass({
 
 var ResultPage = React.createClass({
     mixins: [Backbone.React.Component.mixin, Router.Navigation],
+    getInitialState: function() {
+        return {
+            page: 1,
+            searchId: null,
+            results: [],
+            counters: {
+                totalCount: null,
+                assetTypes: [],
+                taxonomies: []
+            },
+        };
+    },
+    loadCountersFromServer: function(searchId, query) {
+        var self = this;
+        var app = this.props.app;
+        app.searchService
+           .counters(searchId, query)
+           .done(function(data) {
+                self.setState({ counters: data });
+            })
+           .error(function(data) {
+                // TODO
+                console.log('TODO: handle error', data);
+            });
+    },
     loadResultFromServer: function(query, page) {
         var self = this;
         var app = this.props.app;
         app.searchService
            .search(query, page)
            .done(function(data) {
-               self.setState({ results: data });
-               console.log(data);
+                self.loadCountersFromServer(data.searchId, query);
+                self.setState({ results: data.entities, searchId: data.searchId });
            })
            .error(function(data) {
-               console.log('TODO: handle error', data);
+                // TODO
+                console.log('TODO: handle error', data);
            });
-    },
-    getInitialState: function() {
-        return {
-            page: 1,
-            results: []
-        };
-    },
-    componentDidMount: function() {
+    },    
+    componentWillMount: function() {
         this.loadResultFromServer(this.props.query.query, this.props.query.page);
-    },
+    },    
     handlePageChange: function(page) {
         this.setState({page: page, results: []});
         this.loadResultFromServer(this.props.query.query, page);
@@ -101,12 +132,17 @@ var ResultPage = React.createClass({
                             <nav className="nav-block">
                                 <span className="nav-block__title">Refine by assets</span>
                                 <ul className="nav-block__list">
-                                    <li className="nav-block__item"><span className="link link_second">Address <span className="light-grey">(308)</span></span></li>
-                                    <li className="nav-block__item"><span className="link link_second">AssetTest <span className="light-grey">(2)</span></span></li>
-                                    <li className="nav-block__item"><span className="link link_second">Bank account <span className="light-grey">(1)</span></span></li>
-                                    <li className="nav-block__item"><span className="link link_second">Beamer <span className="light-grey">(1)</span></span></li>
-                                    <li className="nav-block__item"><span className="link link_second">Building <span className="light-grey">(3)</span></span></li>
-                                    <li className="nav-block__item"><span className="link link_second">Expense note details <span className="light-grey">(1)</span></span></li>
+                                    {this.state.counters.assetTypes.map(function(counter) {
+                                        return <RefinementItem key={counter.id} data={counter} />;
+                                    })}                                                                        
+                                </ul>
+                            </nav>
+                            <nav className="nav-block">
+                                <span className="nav-block__title">Refine by taxonomies</span>
+                                <ul className="nav-block__list">
+                                    {this.state.counters.taxonomies.map(function(counter) {
+                                        return <RefinementItem key={counter.id} data={counter} />;
+                                    })}                                                                        
                                 </ul>
                             </nav>
                             <nav className="nav-block">
@@ -130,7 +166,8 @@ var ResultPage = React.createClass({
                                         return <ResultItem key={result.indexUid} data={result}/>;
                                     })}
                                 </ul>
-                                <Pagination onPageChanged={this.handlePageChange} />
+                                <Pagination totalCount={this.state.counters.totalCount} 
+                                            onPageChanged={this.handlePageChange} />
                             </div>
                         </div>
                     </div>

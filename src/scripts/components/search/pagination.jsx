@@ -11,7 +11,7 @@ var Pagination = React.createClass({
     render: function() {
         return (
                 <div className="search-results__pagination clearfix">
-                    <span className="search-results__pagination-title">Showing 1 - 10 from 342</span>
+                    <span className="search-results__pagination-title">Showing 1 - 10 from {this.props.totalCount}</span>
                     <div className="pagination pull-right">
                         <ul className="pagination__list">
                             <li className="pagination__item">
