@@ -6,11 +6,11 @@ var React = require('react');
 var Router = require('react-router');
 var Pagination = require('./pagination');
 
-var RefinementItem = React.createClass({
+var RefinementLink = React.createClass({
     render: function() {
         return (
             <li className="nav-block__item">
-                <a className="link link_second">{this.props.data.name}&nbsp; 
+                <a onClick={this.props.onRefinementChanged.bind(this, this.props.key)} className="link link_second">{this.props.data.name}&nbsp; 
                 <span className="light-grey">({this.props.data.count})</span></a>
             </li>
         );
@@ -88,7 +88,11 @@ var ResultPage = React.createClass({
             page: page
         });        
     },
+    handleRefinementChange: function(refinement, id) {
+        console.log(refinement, id);
+    },
     render: function() {
+        var self = this;
         return (
             <div>
                 <h1 className="page-title">Results page</h1>
@@ -133,7 +137,10 @@ var ResultPage = React.createClass({
                                 <span className="nav-block__title">Refine by assets</span>
                                 <ul className="nav-block__list">
                                     {this.state.counters.assetTypes.map(function(counter) {
-                                        return <RefinementItem key={counter.id} data={counter} />;
+                                        return <RefinementLink 
+                                            onRefinementChanged={self.handleRefinementChange.bind(self, 'assetType')} 
+                                            key={counter.id} 
+                                            data={counter} />;
                                     })}                                                                        
                                 </ul>
                             </nav>
@@ -141,7 +148,10 @@ var ResultPage = React.createClass({
                                 <span className="nav-block__title">Refine by taxonomies</span>
                                 <ul className="nav-block__list">
                                     {this.state.counters.taxonomies.map(function(counter) {
-                                        return <RefinementItem key={counter.id} data={counter} />;
+                                        return <RefinementLink 
+                                            onRefinementChanged={self.handleRefinementChange.bind(self, 'taxonomy')} 
+                                            key={counter.id} 
+                                            data={counter} />;
                                     })}                                                                        
                                 </ul>
                             </nav>
@@ -166,8 +176,11 @@ var ResultPage = React.createClass({
                                         return <ResultItem key={result.indexUid} data={result}/>;
                                     })}
                                 </ul>
-                                <Pagination totalCount={this.state.counters.totalCount} 
-                                            onPageChanged={this.handlePageChange} />
+                                {this.state.counters.totalCount
+                                    ? <Pagination totalCount={this.state.counters.totalCount} 
+                                                onPageChanged={this.handlePageChange} />
+                                    : <div/>
+                                }
                             </div>
                         </div>
                     </div>
