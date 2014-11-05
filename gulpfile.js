@@ -14,6 +14,7 @@ var filter = require('gulp-filter');
 var gulpif = require('gulp-if');
 //var uglify = require('gulp-uglify');
 var browserSync = require('browser-sync');
+var replace = require('gulp-replace');
 
 var buildDest = 'dist';
 var jsSrc = 'src/scripts/**/*.*',
@@ -79,8 +80,6 @@ gulp.task('images', function() {
     return gulp.src('src/images/**/*')
         .pipe(gulp.dest(path.join(buildDest, 'assets/images')));
 });
-
-
 gulp.task('watch', function() {
     gulp.watch('src/**/*.html', ['views', browserSync.reload]);
     gulp.watch(['src/**/*.{js,ts,jsx}', 'webpack_entries/*.js'], ['webpack:build', browserSync.reload]);
@@ -88,8 +87,14 @@ gulp.task('watch', function() {
     gulp.watch('src/fonts/*.*', ['fonts', browserSync.reload]);
     gulp.watch('src/images/*.*', ['images', browserSync.reload]);
 });
+gulp.task('replace', ['build'], function() {
+    return gulp.src(path.join(buildDest, 'index.html'))
+        .pipe(replace(/(assets)/g, 'Content/assets'))
+        .pipe(gulp.dest(buildDest));
+});
 
 // Production build
 gulp.task('build', ['views', 'images', 'fonts', 'css', 'webpack:build']);
 gulp.task('server', ['build', 'watch', 'browser-sync']);
 gulp.task('default', ['build']);
+gulp.task('deploy', ['replace']);
