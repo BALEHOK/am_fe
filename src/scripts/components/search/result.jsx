@@ -40,16 +40,17 @@ var ResultPage = React.createClass({
     mixins: [Backbone.React.Component.mixin, Router.Navigation],
     getInitialState: function() {
         return {
-            page: 1,            
+            page: this.props.query.page,            
+            assetType: this.props.query.assetType,
+            taxonomy: this.props.query.taxonomy,
+            sortBy: this.props.query.sortBy,
             searchId: null,
             results: [],
             counters: {
                 totalCount: null,
                 assetTypes: [],
                 taxonomies: []
-            },
-            assetType: null,
-            taxonomy: null,
+            },            
         };
     },
     loadCountersFromServer: function(searchId, query) {
@@ -65,11 +66,11 @@ var ResultPage = React.createClass({
                 console.log('TODO: handle error', data);
             });
     },
-    loadResultFromServer: function(query, page, assetType, taxonomy) {
+    loadResultFromServer: function(query, page, assetType, taxonomy, sortBy) {
         var self = this;
         var app = this.props.app;
         app.searchService
-           .search(query, page, assetType, taxonomy)
+           .search(query, page, assetType, taxonomy, sortBy)
            .done(function(data) {
                 self.loadCountersFromServer(data.searchId, query);
                 self.setState({ results: data.entities, searchId: data.searchId });
@@ -84,19 +85,19 @@ var ResultPage = React.createClass({
             this.props.query.query, 
             this.props.query.page,
             this.props.query.assetType,
-            this.props.query.taxonomy);
+            this.props.query.taxonomy,
+            this.props.query.sortBy);
     },    
     componentWillUpdate: function(nextProps, nextState) {
         var params = this.props.query;
-        if (nextState.page) {
+        if (nextState.page)
             params.page = nextState.page;
-        }
-        if (nextState.assetType) {
+        if (nextState.assetType) 
             params.assetType = nextState.assetType;
-        }
-        if (nextState.taxonomy) {
+        if (nextState.taxonomy) 
             params.taxonomy = nextState.taxonomy;
-        }
+        if (nextState.sortBy)
+            params.sortBy = nextState.sortBy;
         this.transitionTo('result', {}, params);
     },
     handlePageChange: function(page) {
@@ -113,18 +114,31 @@ var ResultPage = React.createClass({
                 this.props.query.query, 
                 this.state.page,
                 id,
-                this.state.taxonomy);
+                this.state.taxonomy,
+                this.state.sortBy);
         } else {
             this.setState({ taxonomy: id });
             this.loadResultFromServer(
                 this.props.query.query, 
                 this.state.page,
                 this.state.assetType,
-                id);
+                id,
+                this.state.sortBy);
         }        
+    },
+    handleSortChange: function(event) {
+        var newSort = event.target.value;
+        this.setState({sortBy: newSort, results: []});
+        this.loadResultFromServer(
+            this.props.query.query, 
+            this.state.page,
+            this.state.assetType,
+            this.state.taxonomy,
+            newSort);
     },
     render: function() {
         var self = this;
+        var model = this.getModel();
         return (
             <div>
                 <h1 className="page-title">Results page</h1>
@@ -145,19 +159,18 @@ var ResultPage = React.createClass({
                                 </div>
                                 <label>
                                     Sort by
-                                    <select>
-                                        <option value="rank">Rank</option>
-                                        <option value="rank">Rank</option>
-                                        <option value="rank">Rank</option>
-                                        <option value="rank">Rank</option>
+                                    <select onChange={this.handleSortChange}>
+                                        {model.SortByItems.map(function(item) {
+                                          return <option key={item.id} value={item.id}>{item.name}</option>;
+                                        })}
                                     </select>
                                 </label>
                                 <label>
                                     Export to
                                     <select>
-                                        <option value="rank">txt</option>
-                                        <option value="rank">xml</option>
-                                        <option value="rank">html</option>
+                                        <option value="txt">txt</option>
+                                        <option value="xml">xml</option>
+                                        <option value="html">html</option>
                                     </select>
                                 </label>
                             </div>

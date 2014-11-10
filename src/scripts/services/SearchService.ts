@@ -1,12 +1,12 @@
 ﻿/// <reference path="../../../typings/jquery/jquery.d.ts" />
 
 export interface ISearchService {
-    search(query: string, page: number, assetType: number, taxonomy: number): JQueryXHR;
+    search(query: string, page: number, assetType: number, taxonomy: number, sortBy: number): JQueryXHR;
     counters(searchId: number, query: string): JQueryXHR;
 }
 
 export class SearchService implements ISearchService {
-    search(query: string, page: number, assetType: number, taxonomy: number): JQueryXHR {
+    search(query: string, page: number, assetType: number, taxonomy: number, sortBy: number): JQueryXHR {
         return $.ajax({
             url: '/api/search',
             crossDomain: true,
@@ -15,7 +15,8 @@ export class SearchService implements ISearchService {
                 query: query, 
                 page: page, 
                 assetType: assetType, 
-                taxonomy: taxonomy 
+                taxonomy: taxonomy,
+                sortBy: sortBy 
             },
             type: 'GET'
         });
