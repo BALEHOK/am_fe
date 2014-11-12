@@ -12,7 +12,7 @@ var Layout = React.createClass({
     mixins: [Backbone.React.Component.mixin, Router.Navigation],
     handleLogout: function(){
         app = this.getModel();        
-        app.Session.authenticated = false;
+        app.logout();
         this.transitionTo('login');
     },
     render: function() {
@@ -25,7 +25,7 @@ var Layout = React.createClass({
                             <a className="page-header__logo hide-text" href="/">ACV CSC METEA</a>
                             <span className="page-header__banner hide-text">Asset Management</span>
                             <div className="page-header__user-nav pull-right">
-                                {app.Session.authenticated ? <UserNav model={app.Session} onLogout={this.handleLogout} /> : <div />}
+                                {app.Session.user ? <UserNav model={app.Session} onLogout={this.handleLogout} /> : <div />}
                             </div>
                         </div>
                     </div>

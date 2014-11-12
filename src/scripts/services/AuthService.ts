@@ -2,21 +2,18 @@
 import events = require('../util/LiteEvent');
 
 export interface IAuthService {
-    LoggedIn: events.ILiteEvent<any>;
-    login(credentials: any): JQueryXHR;
+    OnAuthInfo: events.ILiteEvent<any>;
     getAuthStatus(): JQueryDeferred<boolean>;
+    login(credentials: any): JQueryXHR;    
 }
 
 export class AuthService implements IAuthService {
 
-    public get LoggedIn(): events.ILiteEvent<any> {
-        return this.onLogin;
+    public get OnAuthInfo(): events.ILiteEvent<any> {
+        return this.onAuth;
     }
 
-    private onLogin = new events.LiteEvent<any>();
-
-    constructor() {
-    }
+    private onAuth = new events.LiteEvent<any>();
 
     public login(credentials: any): JQueryXHR {
         credentials['grant_type'] = 'password';
@@ -27,7 +24,7 @@ export class AuthService implements IAuthService {
             data: credentials,
         });
         login.done((response) => {
-            self.onLogin.trigger(response);
+            self.onAuth.trigger(response);
         });
         return login;
     }
@@ -39,7 +36,8 @@ export class AuthService implements IAuthService {
             url: '/api/auth',
             type: 'GET',
         })
-        .done((response) => {            
+        .done((response) => { 
+            self.onAuth.trigger(response);           
             dfd.resolve(true);
         })
         .fail(response => {
@@ -51,21 +49,4 @@ export class AuthService implements IAuthService {
         });
         return dfd;
     }
-    
-    //public logout() {
-    //    var self = this;
-    //    $.ajax({
-    //        url: this.url + '/logout',
-    //        type: 'DELETE'
-    //    }).done(function (response) {
-    //        //Clear all session data
-    //        self.clear();
-    //        //Set the new csrf token to csrf vaiable and
-    //        //call initialize to update the $.ajaxSetup
-    //        // with new csrf
-    //        //csrf = response.csrf;
-    //        self.initialize();
-    //        Backbone.history.navigate('login', { trigger: true });
-    //    });
-    //}
 }

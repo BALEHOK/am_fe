@@ -3,14 +3,6 @@ import user = require('./User');
 
 export class SessionModel extends Backbone.Model {
 
-    get authenticated() : boolean {
-        return this.get('authenticated');
-    }
-
-    set authenticated(value: boolean) {
-        this.set('authenticated', value);
-    }
-
     get user(): user.UserModel {
         return this.get('user');
     }
