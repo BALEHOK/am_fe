@@ -13,7 +13,7 @@ var Layout = React.createClass({
     handleLogout: function(){
         app = this.getModel();        
         app.logout();
-        this.transitionTo('login');
+        location.href = '/logout';
     },
     render: function() {
         var app = this.getModel();        
