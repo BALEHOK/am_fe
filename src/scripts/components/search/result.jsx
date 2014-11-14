@@ -21,9 +21,9 @@ var ResultItem = React.createClass({
     render: function() {
         console.log(this.props.data)
         var assetLink = '/Asset/View.aspx?assetTypeUID=' 
-            + this.props.data.dynEntityUid 
+            + this.props.data.dynEntityConfigUid
             + '&assetUID='
-            + this.props.data.dynEntityConfigUid 
+            + this.props.data.dynEntityUid  
             +'&SearchId='
             + this.props.searchId;
         return (
