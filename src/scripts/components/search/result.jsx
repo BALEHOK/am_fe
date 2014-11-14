@@ -19,9 +19,16 @@ var RefinementLink = React.createClass({
 
 var ResultItem = React.createClass({
     render: function() {
+        console.log(this.props.data)
+        var assetLink = '/Asset/View.aspx?assetTypeUID=' 
+            + this.props.data.dynEntityUid 
+            + '&assetUID='
+            + this.props.data.dynEntityConfigUid 
+            +'&SearchId='
+            + this.props.searchId;
         return (
             <li className="search-results__item">
-                <span className="search-results__item-param search-results__item-param_name"><a>{this.props.data.name}</a></span>
+                <span className="search-results__item-param search-results__item-param_name"><a href={assetLink}>{this.props.data.name}</a></span>
                 <span className="search-results__item-param search-results__item-param_category"></span>
                 <span className="search-results__item-param search-results__item-param_attr">
                     <span className="search-results__item-attr">
@@ -29,7 +36,7 @@ var ResultItem = React.createClass({
                     </span>
                 </span>
                 <span className="search-results__item-param search-results__item-param_link">
-                    <a className="#"><span className="icon icon_angle-right"></span></a>
+                    <a href={assetLink}><span className="icon icon_angle-right"></span></a>
                 </span>
             </li>
         );
@@ -218,7 +225,7 @@ var ResultPage = React.createClass({
                                 </header>
                                 <ul className="search-results__list">
                                     {this.state.results.map(function(result) {
-                                        return <ResultItem key={result.indexUid} data={result}/>;
+                                        return <ResultItem key={result.indexUid} data={result} searchId={self.state.searchId} />;
                                     })}
                                 </ul>
                                 {this.state.counters.totalCount
