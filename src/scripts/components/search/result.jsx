@@ -5,6 +5,7 @@
 var React = require('react');
 var Router = require('react-router');
 var Pagination = require('./pagination');
+var Link = Router.Link;
 
 var RefinementLink = React.createClass({
     render: function() {
@@ -18,17 +19,17 @@ var RefinementLink = React.createClass({
 });
 
 var ResultItem = React.createClass({
-    render: function() {
-        console.log(this.props.data)
-        var assetLink = '/Asset/View.aspx?assetTypeUID=' 
-            + this.props.data.dynEntityConfigUid
-            + '&assetUID='
-            + this.props.data.dynEntityUid  
-            +'&SearchId='
-            + this.props.searchId;
+    mixins: [Router.Navigation],
+    render: function() { 
+        var assetLink = this.makeHref('asset-view', {
+                assetTypeUid: this.props.data.dynEntityConfigUid, 
+                assetUid: this.props.data.dynEntityUid
+            }, {SearchId: this.props.searchId});      
         return (
             <li className="search-results__item">
-                <span className="search-results__item-param search-results__item-param_name"><a href={assetLink}>{this.props.data.name}</a></span>
+                <span className="search-results__item-param search-results__item-param_name">
+                    <a href={assetLink}>{this.props.data.name}</a>
+                </span>
                 <span className="search-results__item-param search-results__item-param_category"></span>
                 <span className="search-results__item-param search-results__item-param_attr">
                     <span className="search-results__item-attr">
