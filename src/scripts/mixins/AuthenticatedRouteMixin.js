@@ -9,9 +9,7 @@ var AuthenticatedRouteMixin = {
             var promise = authService.getAuthStatus();
             promise.then(function (loggedIn) {
                 if (!loggedIn) {
-                    // TODO : save target page and redirect back after login
-                    // use transition.retry()
-                    transition.redirect('/login');
+                    location.href = '/login';
                 }
             });
             transition.wait(promise);
