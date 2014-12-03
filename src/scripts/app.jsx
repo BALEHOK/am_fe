@@ -18,9 +18,6 @@ var ResultPage = require('./components/search/result.jsx');
 var LoginPage = require('./components/login/main.jsx');
 
 // Services and models
-var SimpleSearch = require('./models/SimpleSearch.ts').SimpleSearch;
-var simpleSearchModel = new SimpleSearch();
-
 var SearchStore = require('./stores/SearchStore.ts').SearchStore;
 var searchStore = SearchStore.getInstance();
 var SearchCounterStore = require('./stores/SearchCounterStore.ts').SearchCounterStore;
@@ -45,12 +42,12 @@ var routes = (
   <Routes>
     <Route name="app" path="/" handler={Layout} model={app}>
       <Route name="login" handler={LoginPage}/>
-      <Route name="search" handler={SearchPage} model={simpleSearchModel} />
+      <Route name="search" handler={SearchPage} />
       <Route name="result" path="/search/result" 
       		handler={ResultPage} 
       		SearchStore={searchStore} 
       		SearchCounterStore={searchCounterStore} />
-      <DefaultRoute handler={SearchPage} model={simpleSearchModel} />
+      <DefaultRoute handler={SearchPage} />
     </Route>
   </Routes>
 );
