@@ -21,12 +21,10 @@ var RefinementLink = React.createClass({
 var ResultItem = React.createClass({
     mixins: [Router.Navigation],
     render: function() {        
-        var assetLink = '/Asset/View.aspx?assetTypeUID=' 
-            + this.props.model.get('dynEntityConfigUid')
-            + '&assetUID='
-            + this.props.model.get('dynEntityUid')
-            + '&SearchId='
-            + this.props.searchId;
+        var assetLink = this.makeHref('asset-view', {
+                assetTypeUid: this.props.model.get('dynEntityConfigUid'),
+                assetUid: this.props.model.get('dynEntityUid')
+            }, {searchId: this.props.searchId});
         return (
             <li className="search-results__item">
                 <span className="search-results__item-param search-results__item-param_name">
