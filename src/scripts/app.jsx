@@ -24,6 +24,8 @@ var SearchStore = require('./stores/SearchStore.ts').SearchStore;
 var searchStore = SearchStore.getInstance();
 var SearchCounterStore = require('./stores/SearchCounterStore.ts').SearchCounterStore;
 var searchCounterStore = SearchCounterStore.getInstance();
+var AssetStore = require('./stores/AssetStore.ts').AssetStore;
+var assetStore = AssetStore.getInstance();
 
 var Config = require('./models/Config.ts').Config;
 var config = new Config();
@@ -51,7 +53,8 @@ var routes = (
       	SearchCounterStore={searchCounterStore} />     
       <Route name="asset-view" 
         path="/assettype/:assetTypeUid/asset/:assetUid"
-        handler={AssetViewPage} /> 
+        handler={AssetViewPage}
+        AssetStore={assetStore} /> 
       <DefaultRoute handler={SearchPage} />
     </Route>
   </Routes>
