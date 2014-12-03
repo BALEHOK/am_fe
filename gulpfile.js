@@ -17,10 +17,11 @@ var browserSync = require('browser-sync');
 var replace = require('gulp-replace');
 
 var buildDest = 'dist';
+var assetsDest = 'Content/assets';
 var jsSrc = 'src/scripts/**/*.*',
-    jsDest = path.join(buildDest, 'assets/js');
+    jsDest = path.join(buildDest, assetsDest, 'js');
 var cssSrc = 'src/styles/*',
-    cssDest = path.join(buildDest, 'assets/css');
+    cssDest = path.join(buildDest, assetsDest, 'css');
 
 /*gulp.task('clean', function () {
     return gulp.src(buildDest)
@@ -74,11 +75,11 @@ gulp.task('browser-sync', function() {
 
 gulp.task('fonts', function() {
     return gulp.src('src/fonts/**/*')
-        .pipe(gulp.dest(path.join(buildDest, 'assets/fonts')));
+        .pipe(gulp.dest(path.join(buildDest, assetsDest, 'fonts')));
 });
 gulp.task('images', function() {
     return gulp.src('src/images/**/*')
-        .pipe(gulp.dest(path.join(buildDest, 'assets/images')));
+        .pipe(gulp.dest(path.join(buildDest, assetsDest, 'images')));
 });
 gulp.task('watch', function() {
     gulp.watch('src/**/*.html', ['views', browserSync.reload]);

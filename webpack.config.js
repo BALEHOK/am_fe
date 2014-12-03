@@ -1,5 +1,4 @@
 var webpack = require('webpack');
-var webpackEntries = require('./webpack.entries.js');
 
 module.exports = {
     target: 'web',
@@ -11,7 +10,7 @@ module.exports = {
     },
     //entry: webpackEntries,
     output: {
-        publicPath: '/assets/js',
+        publicPath: '/Content/assets/js',
         filename: './bundle-[name].js'
     },
     plugins: [
