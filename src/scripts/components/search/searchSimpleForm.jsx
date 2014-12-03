@@ -8,6 +8,10 @@ var ReactSelectize = require('../common/react-selectize');
 
 var SearchSimpleForm = React.createClass({
     mixins: [Backbone.React.Component.mixin, Router.Navigation],
+    searchContext: [
+        { name: "Active assets", id: 1 },
+        { name: "History", id: 2 }
+    ],
     getInitialState: function () {
         return {
             selectedItemId: 1,
@@ -23,17 +27,15 @@ var SearchSimpleForm = React.createClass({
             disabled: e.target.value.length == 0
         });
     },
-    doQuery: function() {
-        this.getModel().query = this.state.query;
+    doQuery: function() {        
         this.transitionTo('/search/result', {}, {'query' : this.state.query});
     },
-    render: function() {
-        var model = this.getModel();
+    render: function() {        
         return (
             <form className="form">
                 <div className="input-group">
                     <ReactSelectize
-                    items={model.searchContext}
+                    items={this.searchContext}
                     value={this.state.selectedItemId}
                     onChange={this.handleSelectChange}
                     selectId="select-country"

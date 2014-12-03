@@ -20,20 +20,22 @@ var RefinementLink = React.createClass({
 
 var ResultItem = React.createClass({
     mixins: [Router.Navigation],
-    render: function() { 
-        var assetLink = this.makeHref('asset-view', {
-                assetTypeUid: this.props.data.dynEntityConfigUid, 
-                assetUid: this.props.data.dynEntityUid
-            }, {SearchId: this.props.searchId});      
+    render: function() {        
+        var assetLink = '/Asset/View.aspx?assetTypeUID=' 
+            + this.props.model.get('dynEntityConfigUid')
+            + '&assetUID='
+            + this.props.model.get('dynEntityUid')
+            + '&SearchId='
+            + this.props.searchId;
         return (
             <li className="search-results__item">
                 <span className="search-results__item-param search-results__item-param_name">
-                    <a href={assetLink}>{this.props.data.name}</a>
+                    <a href={assetLink}>{this.props.model.get('name')}</a>
                 </span>
                 <span className="search-results__item-param search-results__item-param_category"></span>
                 <span className="search-results__item-param search-results__item-param_attr">
                     <span className="search-results__item-attr">
-                    {this.props.data.allAttribValues}
+                    {this.props.model.get('allAttribValues')}
                     </span>
                 </span>
                 <span className="search-results__item-param search-results__item-param_link">
@@ -45,7 +47,13 @@ var ResultItem = React.createClass({
 });
 
 var ResultPage = React.createClass({
-    mixins: [Backbone.React.Component.mixin, Router.Navigation],
+    mixins: [Router.Navigation],
+    sortItems: [
+        { name: "Rank", id: 0 },
+        { name: "Date", id: 1 },
+        { name: "Location", id: 2 },
+        { name: "User", id: 3 },
+    ],
     getInitialState: function() {
         return {
             page: this.props.query.page,            
@@ -53,7 +61,6 @@ var ResultPage = React.createClass({
             taxonomy: this.props.query.taxonomy,
             sortBy: this.props.query.sortBy,
             searchId: null,
-            results: [],
             counters: {
                 totalCount: null,
                 assetTypes: [],
@@ -61,33 +68,37 @@ var ResultPage = React.createClass({
             },            
         };
     },
-    loadCountersFromServer: function(searchId, query) {
-        var self = this;
-        var app = this.props.app;
-        app.searchService
-           .counters(searchId, query)
-           .done(function(data) {
-                self.setState({ counters: data });
-            })
-           .error(function(data) {
-                // TODO
-                console.log('TODO: handle error', data);
-            });
-    },
     loadResultFromServer: function(query, page, assetType, taxonomy, sortBy) {
+        AppDispatcher.dispatch({
+            action: 'search', 
+            data: {
+                query:query, 
+                page:page, 
+                assetType:assetType, 
+                taxonomy:taxonomy, 
+                sortBy:sortBy
+            }});        
+    }, 
+    componentDidMount: function() {
         var self = this;
-        var app = this.props.app;
-        app.searchService
-           .search(query, page, assetType, taxonomy, sortBy)
-           .done(function(data) {
-                self.loadCountersFromServer(data.searchId, query);
-                self.setState({ results: data.entities, searchId: data.searchId });
-           })
-           .error(function(data) {
-                // TODO
-                console.log('TODO: handle error', data);
-           });
-    },    
+        this.props.SearchStore.on("all", function(){
+            self.forceUpdate();        
+        });
+        this.props.SearchCounterStore.on("all", function(){
+            self.forceUpdate();        
+        });
+        this.props.SearchStore.OnSearchDone.on(function(searchId){
+            AppDispatcher.dispatch({
+                action: 'search-counters', 
+                data: {
+                    query: self.props.query.query, 
+                    searchId: searchId, 
+                }});
+        });
+    },  
+    componentWillUnmount: function() {         
+        this.props.SearchStore.off(null, null, this);
+    },
     componentWillMount: function() {
         this.loadResultFromServer(
             this.props.query.query, 
@@ -109,13 +120,12 @@ var ResultPage = React.createClass({
         this.transitionTo('result', {}, params);
     },
     handlePageChange: function(page) {
-        this.setState({page: page, results: []});
+        this.setState({page: page});
         this.loadResultFromServer(this.props.query.query, page);
     },
     handleRefinementChange: function(refinement, id) {
         // TODO add optimistic refinements update.
         // i.e. on click hide all others and left only selected one 
-        this.setState({results:[]});
         if (refinement == 'assetType') {
             this.setState({ assetType: id });
             this.loadResultFromServer(
@@ -136,7 +146,7 @@ var ResultPage = React.createClass({
     },
     handleSortChange: function(event) {
         var newSort = event.target.value;
-        this.setState({sortBy: newSort, results: []});
+        this.setState({sortBy: newSort});
         this.loadResultFromServer(
             this.props.query.query, 
             this.state.page,
@@ -146,7 +156,6 @@ var ResultPage = React.createClass({
     },
     render: function() {
         var self = this;
-        var model = this.getModel();
         return (
             <div>
                 <h1 className="page-title">Results page</h1>
@@ -168,7 +177,7 @@ var ResultPage = React.createClass({
                                 <label>
                                     Sort by
                                     <select onChange={this.handleSortChange}>
-                                        {model.SortByItems.map(function(item) {
+                                        {this.sortItems.map(function(item) {
                                           return <option key={item.id} value={item.id}>{item.name}</option>;
                                         })}
                                     </select>
@@ -189,22 +198,22 @@ var ResultPage = React.createClass({
                             <nav className="nav-block">
                                 <span className="nav-block__title">Refine by assets</span>
                                 <ul className="nav-block__list">
-                                    {this.state.counters.assetTypes.map(function(counter) {
+                                    {this.props.SearchCounterStore.assetTypes.map(function(counter) {
                                         return <RefinementLink 
-                                            onRefinementChanged={self.handleRefinementChange.bind(self, 'assetType')} 
-                                            key={counter.id} 
-                                            data={counter} />;
+                                                    onRefinementChanged={self.handleRefinementChange.bind(self, 'assetType')} 
+                                                    key={counter.id} 
+                                                    data={counter} />;
                                     })}                                                                        
                                 </ul>
                             </nav>
                             <nav className="nav-block">
                                 <span className="nav-block__title">Refine by taxonomies</span>
                                 <ul className="nav-block__list">
-                                    {this.state.counters.taxonomies.map(function(counter) {
+                                    {this.props.SearchCounterStore.taxonomies.map(function(counter) {
                                         return <RefinementLink 
-                                            onRefinementChanged={self.handleRefinementChange.bind(self, 'taxonomy')} 
-                                            key={counter.id} 
-                                            data={counter} />;
+                                                    onRefinementChanged={self.handleRefinementChange.bind(self, 'taxonomy')} 
+                                                    key={counter.id} 
+                                                    data={counter} />;
                                     })}                                                                        
                                 </ul>
                             </nav>
@@ -225,8 +234,11 @@ var ResultPage = React.createClass({
                                     <span className="search-results__header-item search-results__header-item_link">Go to result</span>
                                 </header>
                                 <ul className="search-results__list">
-                                    {this.state.results.map(function(result) {
-                                        return <ResultItem key={result.indexUid} data={result} searchId={self.state.searchId} />;
+                                    {this.props.SearchStore.models.map(function(result) {
+                                        return <ResultItem 
+                                                    key={result.get('indexUid')} 
+                                                    model={result} 
+                                                    searchId={self.props.SearchStore.currentSearchId} />;
                                     })}
                                 </ul>
                                 {this.state.counters.totalCount
