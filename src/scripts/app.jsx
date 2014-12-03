@@ -16,17 +16,16 @@ var Layout = require('./components/common/layout.jsx');
 var SearchPage = require('./components/search/main.jsx');
 var ResultPage = require('./components/search/result.jsx');
 var LoginPage = require('./components/login/main.jsx');
+var AssetsListPage = require('./components/asset/list.jsx');
+var AssetViewPage = require('./components/asset/view.jsx');
 
 // Services and models
-var SimpleSearch = require('./models/SimpleSearch.ts').SimpleSearch;
-var simpleSearchModel = new SimpleSearch();
-
-//var SearchResult = require('./models/SearchResult.ts').SearchResult;
-//var searchResultModel = new SearchResult();
 var SearchStore = require('./stores/SearchStore.ts').SearchStore;
 var searchStore = SearchStore.getInstance();
 var SearchCounterStore = require('./stores/SearchCounterStore.ts').SearchCounterStore;
 var searchCounterStore = SearchCounterStore.getInstance();
+var AssetStore = require('./stores/AssetStore.ts').AssetStore;
+var assetStore = AssetStore.getInstance();
 
 var Config = require('./models/Config.ts').Config;
 var config = new Config();
@@ -47,12 +46,16 @@ var routes = (
   <Routes>
     <Route name="app" path="/" handler={Layout} model={app}>
       <Route name="login" handler={LoginPage}/>
-      <Route name="search" handler={SearchPage} model={simpleSearchModel} />
+      <Route name="search" handler={SearchPage} />
       <Route name="result" path="/search/result" 
-      		handler={ResultPage} 
-      		SearchStore={searchStore} 
-      		SearchCounterStore={searchCounterStore} />
-      <DefaultRoute handler={SearchPage} model={simpleSearchModel} />
+      	handler={ResultPage} 
+      	SearchStore={searchStore} 
+      	SearchCounterStore={searchCounterStore} />     
+      <Route name="asset-view" 
+        path="/assettype/:assetTypeUid/asset/:assetUid"
+        handler={AssetViewPage}
+        AssetStore={assetStore} /> 
+      <DefaultRoute handler={SearchPage} />
     </Route>
   </Routes>
 );

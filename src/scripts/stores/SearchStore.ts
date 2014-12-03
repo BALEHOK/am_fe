@@ -1,14 +1,17 @@
 /// <reference path="../../../typings/backbone/backbone.d.ts" />
 /// <reference path="../../../typings/AppDispatcher.d.ts" />
+import events = require('../util/LiteEvent');
 
-export class SearchResult extends Backbone.Model {
-}
-
-export class SearchStore extends Backbone.Collection<SearchResult> {
+export class SearchStore extends Backbone.Collection<any> {
   
     public currentSearchId: number;
     
     public dispatchToken: any;
+
+    public get OnSearchDone(): events.ILiteEvent<number> {
+        return this.onSearchDone;
+    }
+    private onSearchDone = new events.LiteEvent<number>();
 
     private static instance: SearchStore;
     public static getInstance() : SearchStore {
@@ -30,7 +33,6 @@ export class SearchStore extends Backbone.Collection<SearchResult> {
     dispatchCallback(payload: any){
         if (payload.action == 'search') {
             this.search(payload.data);
-            console.log('search begin');
         }        
     }
 
@@ -38,7 +40,6 @@ export class SearchStore extends Backbone.Collection<SearchResult> {
         var self = this;
         $.ajax({
             url: '/api/search',
-            crossDomain: true,
             contentType: 'application/json',
             data: { 
                 query: params.query, 
@@ -51,10 +52,8 @@ export class SearchStore extends Backbone.Collection<SearchResult> {
         })
         .done(function(data) {
             self.currentSearchId = data.searchId;
+            self.onSearchDone.trigger(data.searchId);
             self.set(data.entities);  
-            console.log('search end');  
-            //self.loadCountersFromServer(data.searchId, query);
-            //self.setState({ results: data.entities, searchId: data.searchId });
         })
         .fail(function(data) {
             // TODO
