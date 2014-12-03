@@ -4,7 +4,6 @@ import session = require('./Session');
 import user = require('./User');
 import tokenStore = require('./TokenStore');
 import authServiceModule = require('../services/AuthService');
-import searchServiceModule = require('../services/SearchService');
 import exceptionsModule = require('../exceptions');
 
 export class Application extends Backbone.Model {
@@ -14,8 +13,6 @@ export class Application extends Backbone.Model {
     }
 
     authService: authServiceModule.IAuthService;
-    searchService: searchServiceModule.ISearchService;
-
     private session: session.SessionModel = new session.SessionModel();
     private config: config.Config;
     private tokenStore: tokenStore.ITokenStore;
@@ -33,7 +30,6 @@ export class Application extends Backbone.Model {
         if (tokenStore == null)
             throw new exceptionsModule.ArgumentNullException('tokenStore is null');
 
-        this.searchService = new searchServiceModule.SearchService();
         this.authService = authService;  
         this.config = config;
         this.tokenStore = tokenStore;
