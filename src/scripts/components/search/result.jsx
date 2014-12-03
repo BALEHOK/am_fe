@@ -83,6 +83,17 @@ var ResultPage = React.createClass({
         this.props.SearchStore.on("all", function(){
             self.forceUpdate();        
         });
+        this.props.SearchCounterStore.on("all", function(){
+            self.forceUpdate();        
+        });
+        this.props.SearchStore.OnSearchDone.on(function(searchId){
+            AppDispatcher.dispatch({
+                action: 'search-counters', 
+                data: {
+                    query: self.props.query.query, 
+                    searchId: searchId, 
+                }});
+        });
     },  
     componentWillUnmount: function() {         
         this.props.SearchStore.off(null, null, this);
@@ -186,7 +197,7 @@ var ResultPage = React.createClass({
                             <nav className="nav-block">
                                 <span className="nav-block__title">Refine by assets</span>
                                 <ul className="nav-block__list">
-                                    {this.state.counters.assetTypes.map(function(counter) {
+                                    {this.props.SearchCounterStore.assetTypes.map(function(counter) {
                                         return <RefinementLink 
                                                     onRefinementChanged={self.handleRefinementChange.bind(self, 'assetType')} 
                                                     key={counter.id} 
@@ -197,7 +208,7 @@ var ResultPage = React.createClass({
                             <nav className="nav-block">
                                 <span className="nav-block__title">Refine by taxonomies</span>
                                 <ul className="nav-block__list">
-                                    {this.state.counters.taxonomies.map(function(counter) {
+                                    {this.props.SearchCounterStore.taxonomies.map(function(counter) {
                                         return <RefinementLink 
                                                     onRefinementChanged={self.handleRefinementChange.bind(self, 'taxonomy')} 
                                                     key={counter.id} 

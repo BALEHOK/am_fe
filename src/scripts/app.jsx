@@ -21,8 +21,6 @@ var LoginPage = require('./components/login/main.jsx');
 var SimpleSearch = require('./models/SimpleSearch.ts').SimpleSearch;
 var simpleSearchModel = new SimpleSearch();
 
-//var SearchResult = require('./models/SearchResult.ts').SearchResult;
-//var searchResultModel = new SearchResult();
 var SearchStore = require('./stores/SearchStore.ts').SearchStore;
 var searchStore = SearchStore.getInstance();
 var SearchCounterStore = require('./stores/SearchCounterStore.ts').SearchCounterStore;
