@@ -2,9 +2,9 @@
  * @jsx React.DOM
  */
 
-var React = require('react');
+var React = require('react/addons');
 var Router = require('react-router');
-var Pagination = require('./pagination');
+var Pagination = require('../common/pagination');
 var Link = Router.Link;
 var ReactSelectize = require('../common/react-selectize');
 
@@ -28,20 +28,22 @@ var ResultItem = React.createClass({
             }, {searchId: this.props.searchId});
         return (
             <li className="search-results__item">
-                <span className="search-results__item-param search-results__item-param_name">
-                    <a href={assetLink}>{this.props.model.get('name')}</a>
-                </span>
-                <span className="search-results__item-param search-results__item-param_category">
-                    <span className="label">{this.props.model.get('categoryKeywords')}</span>
-                </span>
-                <span className="search-results__item-param search-results__item-param_attr">
-                    <span className="search-results__item-attr">
-                    {this.props.model.get('allAttribValues')}
+                <a className="search-results__item-link" href={assetLink}>
+                    <span className="search-results__item-param search-results__item-param_name">
+                        <span className="link">{this.props.model.get('name')}</span>
                     </span>
-                </span>
-                <span className="search-results__item-param search-results__item-param_link">
-                    <a href={assetLink}><span className="icon icon_angle-right"></span></a>
-                </span>
+                    <span className="search-results__item-param search-results__item-param_category">
+                        <span className="label">{this.props.model.get('categoryKeywords')}</span>
+                    </span>
+                    <span className="search-results__item-param search-results__item-param_attr">
+                        <span className="search-results__item-attr">
+                            {this.props.model.get('allAttribValues')}
+                        </span>
+                    </span>
+                    <span className="search-results__item-param search-results__item-param_link">
+                        <span className="link"><span className="icon icon_angle-right"></span></span>
+                    </span>
+                </a>
             </li>
         );
     }
@@ -67,6 +69,7 @@ var ResultPage = React.createClass({
                 assetTypes: [],
                 taxonomies: []
             },
+            isTilesView: false
         };
     },
     loadResultFromServer: function(query, page, assetType, taxonomy, sortBy) {
@@ -145,7 +148,7 @@ var ResultPage = React.createClass({
                 this.state.sortBy);
         }
     },
-    handleSortChange: function(event) {
+    handleSortChange: function(value) {
         var newSort = value;
         this.setState({sortBy: newSort});
         this.loadResultFromServer(
@@ -158,8 +161,19 @@ var ResultPage = React.createClass({
     handleExportChange: function(value) {
 
     },
+    setTilesView: function() {
+        this.setState({isTilesView: true});
+    },
+    unsetTilesView: function() {
+        this.setState({isTilesView: false});
+    },
     render: function() {
         var self = this;
+        var cx = React.addons.classSet;
+        var searchResultsClasses = cx({
+            'search-results': true,
+            'search-results_type_tiles': this.state.isTilesView
+        });
         return (
             <div>
                 <h1 className="page-title">Results page</h1>
@@ -172,10 +186,21 @@ var ResultPage = React.createClass({
                             <div className="grid__item ten-twelfths">
                                 <div className="input-group">
                                     <div className="input-group">
-                                        <button type="button" className="btn btn_type_second">
+                                        <button type="button"
+                                            className={
+                                                this.state.isTilesView
+                                                    ? 'btn btn_type_second'
+                                                    : 'btn btn_type_second btn_state_active'
+                                                }
+                                            onClick={this.unsetTilesView}>
                                             <i className="btn__icon btn__icon_list"></i>
                                         </button>
-                                        <button type="button" className="btn btn_type_second">
+                                        <button type="button"
+                                            className={
+                                                this.state.isTilesView
+                                                    ? 'btn btn_type_second btn_state_active'
+                                                    : 'btn btn_type_second'}
+                                            onClick={this.setTilesView}>
                                             <i className="btn__icon btn__icon_tiles"></i>
                                         </button>
                                     </div>
@@ -242,7 +267,7 @@ var ResultPage = React.createClass({
                             </nav>
                         </div>
                         <div className="grid__item ten-twelfths">
-                            <div className="search-results">
+                            <div className={searchResultsClasses}>
                                 <header className="search-results__header">
                                     <span className="search-results__header-item search-results__header-item_name">Assets path</span>
                                     <span className="search-results__header-item search-results__header-item_category">Category</span>
@@ -257,8 +282,8 @@ var ResultPage = React.createClass({
                                                     searchId={self.props.SearchStore.currentSearchId} />;
                                     })}
                                 </ul>
-                                {this.state.counters.totalCount
-                                    ? <Pagination totalCount={this.state.counters.totalCount}
+                                {this.props.SearchCounterStore.totalCount
+                                    ? <Pagination totalCount={this.props.SearchCounterStore.totalCount}
                                                 onPageChanged={this.handlePageChange} />
                                     : <div/>
                                 }
