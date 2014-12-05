@@ -44,9 +44,9 @@ var SearchSimpleForm = React.createClass({
                     />
 
                     <label className="input-txt input-txt_width_475">
-                        <input type="text" className="input-txt__field" placeholder="Search asset" onChange={this.handleQueryChange} />
+                        <input type="text" value={this.props.value} className="input-txt__field" placeholder="Search asset" onChange={this.handleQueryChange} />
                     </label>
-                    <button type="button" disabled={this.state.disabled} className="btn" onClick={this.doQuery}>
+                    <button type="button" disabled={!this.props.value ? this.state.disabled : false} className="btn" onClick={this.doQuery}>
                         <i className="btn__icon btn__icon_search"></i>
                     </button>
                 </div>

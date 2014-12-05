@@ -7,6 +7,7 @@ var Router = require('react-router');
 var Pagination = require('../common/pagination');
 var Link = Router.Link;
 var ReactSelectize = require('../common/react-selectize');
+var SearchSimpleForm = require('./searchSimpleForm');
 
 var RefinementLink = React.createClass({
     render: function() {
@@ -176,7 +177,14 @@ var ResultPage = React.createClass({
         });
         return (
             <div>
-                <h1 className="page-title">Results page</h1>
+                <div className="grid">
+                    <div className="grid__item two-twelfths">
+                        <h1 className="page-title page-title_small">Search results</h1>
+                    </div>
+                    <div className="grid__item ten-twelfths">
+                        <SearchSimpleForm  value={this.props.query.query} />
+                    </div>
+                </div>
                 <div className="results-form">
                     <header className="results-form__header">
                         <div className="grid">
