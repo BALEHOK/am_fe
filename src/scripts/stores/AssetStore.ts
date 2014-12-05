@@ -54,7 +54,10 @@ export class AssetStore extends Backbone.Model {
         	this.assetTypeUid = payload.data.assetTypeUid;
         	this.assetUid = payload.data.assetUid;
             this.fetch();
-        }        
+        }      
+        if (payload.action == 'asset-edit') {
+            this.save();
+        }  
     }
 
 }
