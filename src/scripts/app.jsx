@@ -16,8 +16,8 @@ var Layout = require('./components/common/layout.jsx');
 var SearchPage = require('./components/search/main.jsx');
 var ResultPage = require('./components/search/result.jsx');
 var LoginPage = require('./components/login/main.jsx');
-var AssetsListPage = require('./components/asset/list.jsx');
 var AssetViewPage = require('./components/asset/view.jsx');
+var AssetEditPage = require('./components/asset/edit.jsx');
 
 // Services and models
 var SearchStore = require('./stores/SearchStore.ts').SearchStore;
@@ -54,6 +54,10 @@ var routes = (
       <Route name="asset-view" 
         path="/assettype/:assetTypeUid/asset/:assetUid"
         handler={AssetViewPage}
+        AssetStore={assetStore} /> 
+      <Route name="asset-edit" 
+        path="/assettype/:assetTypeUid/asset/:assetUid/edit"
+        handler={AssetEditPage}
         AssetStore={assetStore} /> 
       <DefaultRoute handler={SearchPage} />
     </Route>
