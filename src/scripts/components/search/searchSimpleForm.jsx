@@ -27,10 +27,10 @@ var SearchSimpleForm = React.createClass({
             disabled: e.target.value.length == 0
         });
     },
-    doQuery: function() {        
+    doQuery: function() {
         this.transitionTo('/search/result', {}, {'query' : this.state.query});
     },
-    render: function() {        
+    render: function() {
         return (
             <form className="form">
                 <div className="input-group">
@@ -38,7 +38,7 @@ var SearchSimpleForm = React.createClass({
                     items={this.searchContext}
                     value={this.state.selectedItemId}
                     onChange={this.handleSelectChange}
-                    selectId="select-country"
+                    selectId="search-type"
                     placeholder=" "
                     label=" "
                     />

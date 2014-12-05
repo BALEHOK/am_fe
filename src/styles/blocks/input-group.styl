@@ -4,6 +4,7 @@
   margin 0
 
   & > .input-txt
+    margin-left -1px
 
     .input-txt__field
       border-radius 0
@@ -11,6 +12,7 @@
     &:first-child
       .input-txt__field
         border-radius $br 0 0 $br
+        margin-left 0
 
     &:last-child
       .input-txt__field
@@ -30,6 +32,24 @@
     &:first-child
       .selectize-input
         border-radius $br 0 0 $br
+
+  & >
+    .select
+    .btn
+    .input-txt
+      margin-left -1px
+
+      &:first-child
+        margin-left 0
+
+  &__item
+    margin-left 30px
+
+    &-title
+      margin-right 10px
+
+    &:first-child
+      margin-left 0
 
 .inputs-line
   display inline-block
