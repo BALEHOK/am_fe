@@ -39,8 +39,10 @@ var AssetView = React.createClass({
 	mixins:[AuthenticatedRouteMixin, Router.Navigation],
 	componentDidMount: function() {
         var self = this;
-        this.props.AssetStore.on("all", function(){        	
-            self.forceUpdate();        
+        this.props.AssetStore.on("all", function(){   
+            // workaround
+            if (self._lifeCycleState == "MOUNTED")    	
+                self.forceUpdate();        
         });
     },
     componentWillMount: function() {    	
@@ -52,7 +54,7 @@ var AssetView = React.createClass({
             }
         });
     },
-    componentWillUnmount: function() {         
+    componentWillUnmount: function() {   
         this.props.AssetStore.off(null, null, this);
     },
     render: function() {    	
