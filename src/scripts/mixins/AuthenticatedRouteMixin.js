@@ -10,7 +10,7 @@ var AuthenticatedRouteMixin = {
             promise.then(function (loggedIn) {
                 if (!loggedIn) {
                     if (location.href.indexOf('localhost') > 0)
-                        location.href = '/#/login';
+                        transition.redirect('login');
                     else
                         location.href = '/login';
                 }
