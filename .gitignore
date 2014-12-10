@@ -34,6 +34,7 @@ dist/
 src/scripts/libs
 webpack-loaders/ts-loader/node_modules/
 typings
+!typings/AppDispatcher.d.ts
 
 npm-debug.log
 
