@@ -73,7 +73,7 @@ var ResultPage = React.createClass({
             isTilesView: false
         };
     },
-    loadResultFromServer: function(query, page, assetType, taxonomy, sortBy) {
+    loadResultFromServer: function(query, page, assetType, taxonomy, sortBy) {        
         AppDispatcher.dispatch({
             action: 'search',
             data: {
@@ -82,7 +82,7 @@ var ResultPage = React.createClass({
                 assetType:assetType,
                 taxonomy:taxonomy,
                 sortBy:sortBy
-            }});
+        }});
     },
     componentDidMount: function() {
         var self = this;
@@ -123,6 +123,14 @@ var ResultPage = React.createClass({
         if (nextState.sortBy)
             params.sortBy = nextState.sortBy;
         this.transitionTo('result', {}, params);
+    },
+    handleSimpleSearch: function(query) {
+        this.loadResultFromServer(
+            query,
+            this.state.page,
+            this.state.assetType,
+            this.state.taxonomy,
+            this.state.sortBy);
     },
     handlePageChange: function(page) {
         this.setState({page: page});
@@ -182,7 +190,7 @@ var ResultPage = React.createClass({
                         <h1 className="page-title page-title_small">Search results</h1>
                     </div>
                     <div className="grid__item ten-twelfths">
-                        <SearchSimpleForm  value={this.props.query.query} />
+                        <SearchSimpleForm  value={this.props.query.query} onQuerySubmit={this.handleSimpleSearch} />
                     </div>
                 </div>
                 <div className="results-form">
