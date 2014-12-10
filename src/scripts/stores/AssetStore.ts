@@ -2,11 +2,11 @@
 
 export class AssetStore extends Backbone.Model {
 
-    public get panels(): any {
-        return this.get('panels');
+    public get screens(): any {
+        return this.get('screens');
     }
-    public set panels(value: any) {
-        this.set('panels', value);
+    public set screens(value: any) {
+        this.set('screens', value);
     }
 	public get assetTypeUid(): number {
 		return this.get('assetTypeUid');
@@ -46,7 +46,7 @@ export class AssetStore extends Backbone.Model {
         		+ self.assetUid;
         };
         super(options);
-        this.panels = [];
+        this.screens = [];
     }
 
     dispatchCallback(payload: any){

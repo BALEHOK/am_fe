@@ -4,6 +4,7 @@
 
 var React = require('react');
 var Router = require('react-router');
+var Screen = require('./screen.jsx');
 var AuthenticatedRouteMixin = require('../../mixins/AuthenticatedRouteMixin');
 
 var EditableAttribute = React.createClass({
@@ -64,9 +65,13 @@ var AssetEdit = React.createClass({
         	<div>
         		<h1>Asset Edit Page</h1>
         		<form onSubmit={this.handleSubmit}>
-	        		{this.props.AssetStore.panels.map(function(panel){          		     			
-	        			return <Panel key={panel.id} name={panel.name} attributes={panel.attributes} edit={true} />
-	        		})}
+	        		{this.props.AssetStore.screens.map(function(screen){                                                     
+                        return  <Screen key={screen.Id} name={screen.name}>
+                                    {screen.panels.map(function(panel){
+                                        return <Panel key={panel.id} name={panel.name} attributes={panel.attributes} />
+                                    })}  
+                                </Screen>
+                    })}
 	        		<input type="submit" value="Save" />
         		</form>
         	</div>
