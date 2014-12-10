@@ -20,9 +20,10 @@ var SearchPage = React.createClass({
                         <SearchSimpleForm/>        
                     </TabPane>
                     <TabPane key={2} tab="By type">
-                        <SearchComplexForm/>
+                        New version of Type Search is under development. 
+                        Please use the <a href="/Search/SimpleSearchKeywords.aspx">old version</a>.
                     </TabPane>
-                </TabbedArea>
+                </TabbedArea>                
             </div>
       );
     }
