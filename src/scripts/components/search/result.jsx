@@ -13,8 +13,14 @@ var RefinementLink = React.createClass({
     render: function() {
         return (
             <li className="nav-block__item">
-                <a onClick={this.props.onRefinementChanged.bind(this, this.props.key)} className="link link_second">{this.props.data.name}&nbsp;
-                <span className="light-grey">({this.props.data.count})</span></a>
+                <span onClick={this.props.onRefinementChanged.bind(this, this.props.key)} className="link link_second">{this.props.data.name}&nbsp;
+                    <span className="light-grey">({this.props.data.count})</span>
+                </span>
+                &nbsp;
+                {this.props.taxonomy || this.props.assetType
+                    ? <span onClick={this.props.onRefinementClear.bind(this, this.props.key)} className="nav-block__item-clear"><span className="icon icon_cross"></span></span>
+                    : <span/>
+                }
             </li>
         );
     }
@@ -73,7 +79,7 @@ var ResultPage = React.createClass({
             isTilesView: false
         };
     },
-    loadResultFromServer: function(query, page, assetType, taxonomy, sortBy) {        
+    loadResultFromServer: function(query, page, assetType, taxonomy, sortBy) {
         AppDispatcher.dispatch({
             action: 'search',
             data: {
@@ -156,6 +162,18 @@ var ResultPage = React.createClass({
                 id,
                 this.state.sortBy);
         }
+    },
+    handleRefinementClear: function() {
+        this.setState({
+            assetType: null,
+            taxonomy: null
+        });
+        this.loadResultFromServer(
+            this.props.query.query,
+            this.state.page,
+            this.state.assetType,
+            this.state.taxonomy,
+            this.state.sortBy);
     },
     handleSortChange: function(value) {
         var newSort = value;
@@ -258,8 +276,10 @@ var ResultPage = React.createClass({
                                     {this.props.SearchCounterStore.assetTypes.map(function(counter) {
                                         return <RefinementLink
                                                     onRefinementChanged={self.handleRefinementChange.bind(self, 'assetType')}
+                                                    onRefinementClear={self.handleRefinementClear.bind(self, '')}
                                                     key={counter.id}
-                                                    data={counter} />;
+                                                    data={counter}
+                                                    assetType={self.state.assetType}/>;
                                     })}
                                 </ul>
                             </nav>
@@ -269,8 +289,10 @@ var ResultPage = React.createClass({
                                     {this.props.SearchCounterStore.taxonomies.map(function(counter) {
                                         return <RefinementLink
                                                     onRefinementChanged={self.handleRefinementChange.bind(self, 'taxonomy')}
+                                                    onRefinementClear={self.handleRefinementClear.bind(self, '')}
                                                     key={counter.id}
-                                                    data={counter} />;
+                                                    data={counter}
+                                                    taxonomy={self.state.taxonomy}/>;
                                     })}
                                 </ul>
                             </nav>
