@@ -21,13 +21,13 @@ var SearchPage = React.createClass({
                 <h1 className="page-title">Search</h1>
                 <TabbedArea defaultActiveKey={1} animation={false}>
                     <TabPane key={1} tab="Simple">
-                        <SearchSimpleForm onQuerySubmit={this.handleSimpleSearch} />        
+                        <SearchSimpleForm onQuerySubmit={this.handleSimpleSearch} />
                     </TabPane>
                     <TabPane key={2} tab="By type">
-                        New version of Type Search is under development. 
-                        Please use the <a href="/Search/SimpleSearchKeywords.aspx">old version</a>.
+                        New version of Type Search is under development.
+                        Please use the <a href="/Search/SearchByType.aspx">old version</a>.
                     </TabPane>
-                </TabbedArea>                
+                </TabbedArea>
             </div>
       );
     }
