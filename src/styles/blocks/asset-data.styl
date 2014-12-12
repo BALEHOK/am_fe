@@ -6,6 +6,22 @@
   margin 0 0 10px 0
   padding 45px 30px 30px 30px
 
+  &_empty
+    min-height 345px
+
+    &::after
+      content "No data"
+      font-family $Bold
+      font-size 18px
+      line-height 30px
+      text-align center
+      color #c6c6c6
+      position absolute
+      left 0
+      right 0
+      top 50%
+      margin -15px 0 0 0
+
   &__header
     position absolute
     left 15px
@@ -21,6 +37,9 @@
     font-family $Bold
     line-height 30px
     border-radius 3px
+
+    .icon
+      margin 0 10px 0 0
 
   &__param
     display block
