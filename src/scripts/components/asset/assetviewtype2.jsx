@@ -13,6 +13,9 @@ var AssetViewType2 = React.createClass({
         return (
             <div>
                 <h1 className="page-title">Search results: <span className="page-title__param">test</span></h1>
+                <nav className="back-nav">
+                    <a href="" className="link link_second"><span className="icon icon_arrow-c_right"></span>Back to search</a>
+                </nav>
                 <div className="grid">
                     <div className="grid__item two-twelfths">
                         <ReactSelectize
