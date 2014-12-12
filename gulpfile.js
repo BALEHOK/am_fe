@@ -15,6 +15,7 @@ var gulpif = require('gulp-if');
 //var uglify = require('gulp-uglify');
 var browserSync = require('browser-sync');
 var replace = require('gulp-replace');
+var through = require('through2');
 
 var buildDest = 'dist';
 var assetsDest = 'Content/assets';
@@ -28,16 +29,29 @@ var cssSrc = 'src/styles/*',
         .pipe(clean());
 });*/
 
-
 function handleError(err) {
     console.log(err.toString());
     this.emit('end');
+}
+
+function replaceConstants() {
+    var env = process.env.NODE_ENV || 'development';
+    var constants = require('./envs/' + env);
+    return through.obj(function(file, type, done) {
+        var contents = file.contents.toString();
+        Object.keys(constants).forEach(function(key) {
+            contents = contents.replace(key, constants[key]);
+        });
+        file.contents = new Buffer(contents, 'utf-8');
+        done(null, file);
+    });
 }
 
 gulp.task('webpack:build', function (callback) {
     var myConfig = Object.create(webpackConfig);
     return gulp.src('webpack_entries/*.js')
         .pipe(webpack(myConfig))
+        .pipe(replaceConstants())
         .pipe(gulp.dest(jsDest))
         .pipe(notify({ message: 'Webpack build task complete' }));
 });
