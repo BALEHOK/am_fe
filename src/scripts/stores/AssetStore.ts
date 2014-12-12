@@ -1,11 +1,12 @@
 /// <reference path="../../../typings/backbone/backbone.d.ts" />
+import models = require('../models/Asset');
 
 export class AssetStore extends Backbone.Model {
 
-    public get screens(): any {
+    public get screens(): Backbone.Collection<models.AssetScreen> {
         return this.get('screens');
     }
-    public set screens(value: any) {
+    public set screens(value: Backbone.Collection<models.AssetScreen>) {
         this.set('screens', value);
     }
 	public get assetTypeUid(): number {
@@ -39,14 +40,19 @@ export class AssetStore extends Backbone.Model {
         this.dispatchToken = AppDispatcher.register(boundFunction);    
 
         var self = this;
-        this.url = function() {
+        this.url = () => {
         	return '/api/assettype/' 
         		+ self.assetTypeUid 
         		+ '/asset/'
         		+ self.assetUid;
         };
+        this.parse = (response) => {
+            this.screens = new Backbone.Collection<models.AssetScreen>(
+                response.screens, {model: models.AssetScreen});
+            return response;
+        };
         super(options);
-        this.screens = [];
+        this.screens = new Backbone.Collection<models.AssetScreen>();
     }
 
     dispatchCallback(payload: any){
