@@ -1,9 +1,5 @@
 /// <reference path="../../../typings/backbone/backbone.d.ts" />
 
-export class Asset extends Backbone.Model {
-
-}
-
 export class AssetScreen extends Backbone.Model {
 	public get panels(): Backbone.Collection<AssetPanel> {
 		return this.get('panels');

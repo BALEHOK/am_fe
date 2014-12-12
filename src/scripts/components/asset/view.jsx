@@ -27,7 +27,7 @@ var Panel = React.createClass({
             <div>
                <h3>Panel name: {this.props.name}</h3>
                <ul>
-                    {this.props.attributes.map(function(attribute){
+                    {this.props.panelAttributes.map(function(attribute){
                         return <Attribute key={attribute.uid} attribute={attribute} />
                     })}                 
                </ul>
@@ -70,7 +70,7 @@ var AssetView = React.createClass({
         		{this.props.AssetStore.screens.map(function(screen){                              		     			
         			return  <Screen key={screen.Id} name={screen.name}>
                                 {screen.panels.map(function(panel){
-                                    return <Panel key={panel.id} name={panel.name} attributes={panel.attributes} />
+                                    return <Panel key={panel.id} name={panel.name} panelAttributes={panel.panelAttributes} />
                                 })}  
                             </Screen>
         		})}

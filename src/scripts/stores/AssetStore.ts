@@ -49,7 +49,6 @@ export class AssetStore extends Backbone.Model {
         this.parse = (response) => {
             this.screens = new Backbone.Collection<models.AssetScreen>(
                 response.screens, {model: models.AssetScreen});
-            return response;
         };
         super(options);
         this.screens = new Backbone.Collection<models.AssetScreen>();
