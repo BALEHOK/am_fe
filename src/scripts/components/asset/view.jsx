@@ -7,6 +7,7 @@ var Router = require('react-router');
 var Screen = require('./screen.jsx');
 var AssetViewType1 = require('./assetviewtype1.jsx');
 var AssetViewType2 = require('./assetviewtype2.jsx');
+var AssetViewType3 = require('./assetviewtype3.jsx');
 var AuthenticatedRouteMixin = require('../../mixins/AuthenticatedRouteMixin');
 var Link = Router.Link;
 
@@ -79,7 +80,8 @@ var AssetView = React.createClass({
                 })}
             </div>*/
             //<AssetViewType1/>
-            <AssetViewType2/>
+            //<AssetViewType2/>
+            <AssetViewType3/>
        	);
     }
 });
