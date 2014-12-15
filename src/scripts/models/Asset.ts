@@ -31,18 +31,21 @@ export class AssetPanel extends Backbone.Model {
 }
 
 export class AssetAttribute extends Backbone.Model {
+	public get uid(): string {
+		return this.get('uid');
+	} 
 	public get name(): string {
 		return this.get('name');
 	} 
-	public set name(value: string) {
-		this.set('name', value);
-	}
 	public get value(): string {
 		return this.get('value');
 	} 
 	public set value(value: string) {
 		this.set('value', value);
 	}
+	public get datatype(): string {
+		return this.get('datatype');
+	} 
 
 	constructor(options?: any) {
 		super(options);	

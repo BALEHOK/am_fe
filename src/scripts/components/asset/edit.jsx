@@ -6,6 +6,7 @@ var React = require('react');
 var Router = require('react-router');
 var Screen = require('./screen.jsx');
 var AuthenticatedRouteMixin = require('../../mixins/AuthenticatedRouteMixin');
+var ReactSelectize = require('../common/react-selectize');
 
 var EditableAttribute = React.createClass({
     valueChanged: function(event) {
@@ -22,6 +23,22 @@ var EditableAttribute = React.createClass({
     }
 });
 
+var EditableAssetAttribute = React.createClass({
+    render: function() {
+        var selectId = "attribute-" + this.props.attribute.uid;
+        return (
+            <li>
+                <span>{this.props.attribute.name}</span>:
+                &nbsp;
+                <ReactSelectize    
+                    selectId={selectId}                                   
+                    placeholder=" "
+                    label=" " />
+            </li>
+        );
+    }
+});
+
 var Panel = React.createClass({		
     render: function() {    	
     	var self = this;
@@ -30,7 +47,12 @@ var Panel = React.createClass({
         	   <h3>Panel name: {this.props.name}</h3>
 	           <ul>
 	           		{this.props.panelAttributes.map(function(attribute){
-	           			return <EditableAttribute key={attribute.uid} attribute={attribute} />
+                        console.log(attribute.datatype)
+                        if (attribute.datatype == 'asset') {                            
+                            return <EditableAssetAttribute key={attribute.uid} attribute={attribute} />    
+                        } else {
+                            return <EditableAttribute key={attribute.uid} attribute={attribute} />    
+                        }	           			
 	           		})}	           		
 	           </ul>
 	        </div>
