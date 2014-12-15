@@ -7,16 +7,17 @@ var UserNav = require('./userNav');
 var HeaderNav = require('./headerNav');
 var Breadcrumbs = require('./breadcrumbs');
 var Router = require('react-router');
+var RouteHandler = Router.RouteHandler;
 
 var Layout = React.createClass({
     mixins: [Backbone.React.Component.mixin, Router.Navigation],
     handleLogout: function(){
-        app = this.getModel();        
+        app = this.getModel();
         app.logout();
         location.href = '/logout';
     },
     render: function() {
-        var app = this.getModel();        
+        var app = this.getModel();
         return (
             <div className="page-wrapper">
                 <header className="page-header">
@@ -36,7 +37,7 @@ var Layout = React.createClass({
                 <div className="page-content">
                     <div className="container" id="content">
                         <Breadcrumbs/>
-                        {this.props.activeRouteHandler({app: app})}
+                        <RouteHandler app={app} />
                     </div>
                 </div>
             </div>

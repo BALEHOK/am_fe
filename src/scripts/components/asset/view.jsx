@@ -7,6 +7,7 @@ var Router = require('react-router');
 var Screen = require('./screen.jsx');
 var AuthenticatedRouteMixin = require('../../mixins/AuthenticatedRouteMixin');
 var Link = Router.Link;
+var assetStore = require('../../stores/AssetStore.ts').AssetStore.getInstance();
 
 var Attribute = React.createClass({
     render: function() {
@@ -20,8 +21,8 @@ var Attribute = React.createClass({
     }
 });
 
-var Panel = React.createClass({     
-    render: function() {        
+var Panel = React.createClass({
+    render: function() {
         var self = this;
         return (
             <div>
@@ -29,7 +30,7 @@ var Panel = React.createClass({
                <ul>
                     {this.props.attributes.map(function(attribute){
                         return <Attribute key={attribute.uid} attribute={attribute} />
-                    })}                 
+                    })}
                </ul>
             </div>
         );
@@ -37,41 +38,43 @@ var Panel = React.createClass({
 });
 
 var AssetView = React.createClass({
-	mixins:[AuthenticatedRouteMixin, Router.Navigation],
+	mixins:[AuthenticatedRouteMixin, Router.Navigation, Router.State],
 	componentDidMount: function() {
         var self = this;
-        this.props.AssetStore.on("all", function(){   
+        assetStore.on("all", function(){
             // workaround
-            if (self._lifeCycleState == "MOUNTED")    	
-                self.forceUpdate();        
+            if (self._lifeCycleState == "MOUNTED")
+                self.forceUpdate();
         });
     },
-    componentWillMount: function() {    	
+    componentWillMount: function() {
+        var params = this.getParams();
     	AppDispatcher.dispatch({
-            action: 'asset-view', 
+            action: 'asset-view',
             data: {
-            	assetTypeUid: this.props.params.assetTypeUid,
-            	assetUid: this.props.params.assetUid
+            	assetTypeUid: params.assetTypeUid,
+            	assetUid: params.assetUid
             }
         });
     },
-    componentWillUnmount: function() {   
-        this.props.AssetStore.off(null, null, this);
+    componentWillUnmount: function() {
+        assetStore.off(null, null, this);
     },
-    render: function() {    	
+    render: function() {
+        var params = this.getParams();
         return (
         	<div>
         		<h1>Asset View Page</h1>
-                <Link to="asset-edit" 
+                <Link to="asset-edit"
                     params={{
-                        assetTypeUid: this.props.params.assetTypeUid, 
-                        assetUid: this.props.params.assetUid}}>Edit</Link>
+                        assetTypeUid: params.assetTypeUid,
+                        assetUid: params.assetUid}}>Edit</Link>
 
-        		{this.props.AssetStore.screens.map(function(screen){                              		     			
+        		{assetStore.screens.map(function(screen){
         			return  <Screen key={screen.Id} name={screen.name}>
                                 {screen.panels.map(function(panel){
                                     return <Panel key={panel.id} name={panel.name} attributes={panel.attributes} />
-                                })}  
+                                })}
                             </Screen>
         		})}
         	</div>

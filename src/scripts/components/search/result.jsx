@@ -10,9 +10,11 @@ var ReactSelectize = require('../common/react-selectize');
 var SearchSimpleForm = require('./searchSimpleForm');
 var RefinementLink = require('./refinement_link');
 var ResultItem = require('./result_item');
+var searchStore = require('../../stores/SearchStore.ts').SearchStore.getInstance();
+var searchCounterStore = require('../../stores/SearchCounterStore.ts').SearchCounterStore.getInstance();
 
 var ResultPage = React.createClass({
-    mixins: [Router.Navigation],
+    mixins: [Router.Navigation, Router.State],
     sortItems: [
         { name: "Rank", id: 0 },
         { name: "Date", id: 1 },
@@ -20,11 +22,12 @@ var ResultPage = React.createClass({
         { name: "User", id: 3 },
     ],
     getInitialState: function() {
+        var query = this.getQuery();
         return {
-            page: this.props.query.page,
-            assetType: this.props.query.assetType,
-            taxonomy: this.props.query.taxonomy,
-            sortBy: this.props.query.sortBy,
+            page: query.page,
+            assetType: query.assetType,
+            taxonomy: query.taxonomy,
+            sortBy: query.sortBy,
             searchId: null,
             counters: {
                 totalCount: null,
@@ -47,42 +50,39 @@ var ResultPage = React.createClass({
     },
     componentDidMount: function() {
         var self = this;
-        this.props.SearchStore.on("all", function(){
+        searchStore.on("all", function(){
             self.forceUpdate();
         });
-        this.props.SearchCounterStore.on("all", function(){
+        searchCounterStore.on("all", function(){
             self.forceUpdate();
         });
-        this.props.SearchStore.OnSearchDone.on(function(searchId){
+        searchStore.OnSearchDone.on(function(searchId){
             AppDispatcher.dispatch({
                 action: 'search-counters',
                 data: {
-                    query: self.props.query.query,
+                    query: self.getQuery().query,
                     searchId: searchId,
                 }});
         });
     },
     componentWillUnmount: function() {
-        this.props.SearchStore.off(null, null, this);
+        searchStore.off(null, null, this);
     },
     componentWillMount: function() {
+        var query = this.getQuery();
         this.loadResultFromServer(
-            this.props.query.query,
-            this.props.query.page,
-            this.props.query.assetType,
-            this.props.query.taxonomy,
-            this.props.query.sortBy);
+            query.query,
+            query.page,
+            query.assetType,
+            query.taxonomy,
+            query.sortBy);
     },
     componentWillUpdate: function(nextProps, nextState) {
-        var params = this.props.query;
-        if (nextState.page)
-            params.page = nextState.page;
-        if (nextState.assetType)
-            params.assetType = nextState.assetType;
-        if (nextState.taxonomy)
-            params.taxonomy = nextState.taxonomy;
-        if (nextState.sortBy)
-            params.sortBy = nextState.sortBy;
+        var params = this.getQuery();
+        params.page = nextState.page;
+        params.assetType = nextState.assetType;
+        params.taxonomy = nextState.taxonomy;
+        params.sortBy = nextState.sortBy;
         this.transitionTo('result', {}, params);
     },
     handleSimpleSearch: function(query) {
@@ -95,7 +95,7 @@ var ResultPage = React.createClass({
     },
     handlePageChange: function(page) {
         this.setState({page: page});
-        this.loadResultFromServer(this.props.query.query, page);
+        this.loadResultFromServer(this.getQuery().query, page);
     },
     handleRefinementChange: function(refinement, id) {
         // TODO add optimistic refinements update.
@@ -103,7 +103,7 @@ var ResultPage = React.createClass({
         if (refinement == 'assetType') {
             this.setState({ assetType: id });
             this.loadResultFromServer(
-                this.props.query.query,
+                this.getQuery().query,
                 this.state.page,
                 id,
                 this.state.taxonomy,
@@ -111,7 +111,7 @@ var ResultPage = React.createClass({
         } else {
             this.setState({ taxonomy: id });
             this.loadResultFromServer(
-                this.props.query.query,
+                this.getQuery().query,
                 this.state.page,
                 this.state.assetType,
                 id,
@@ -120,22 +120,22 @@ var ResultPage = React.createClass({
     },
     handleRefinementClear: function() {
         this.loadResultFromServer(
-            this.props.query.query,
+            this.getQuery().query,
             this.state.page,
-            null,
-            this.state.taxonomy,
+            undefined,
+            undefined,
             this.state.sortBy);
 
         this.setState({
-            assetType: null,
-            taxonomy: null
+            assetType: undefined,
+            taxonomy: undefined
         });
     },
     handleSortChange: function(value) {
         var newSort = value;
         this.setState({sortBy: newSort});
         this.loadResultFromServer(
-            this.props.query.query,
+            this.getQuery().query,
             this.state.page,
             this.state.assetType,
             this.state.taxonomy,
@@ -164,7 +164,7 @@ var ResultPage = React.createClass({
                         <h1 className="page-title page-title_small">Search results</h1>
                     </div>
                     <div className="grid__item ten-twelfths">
-                        <SearchSimpleForm  value={this.props.query.query} onQuerySubmit={this.handleSimpleSearch} />
+                        <SearchSimpleForm  value={this.getQuery().query} onQuerySubmit={this.handleSimpleSearch} />
                     </div>
                 </div>
                 <div className="results-form">
@@ -229,7 +229,7 @@ var ResultPage = React.createClass({
                             <nav className="nav-block">
                                 <span className="nav-block__title">Refine by assets</span>
                                 <ul className="nav-block__list">
-                                    {this.props.SearchCounterStore.assetTypes.map(function(counter) {
+                                    {searchCounterStore.assetTypes.map(function(counter) {
                                         return <RefinementLink
                                                     onRefinementChanged={self.handleRefinementChange.bind(self, 'assetType')}
                                                     onRefinementClear={self.handleRefinementClear.bind(self, '')}
@@ -242,7 +242,7 @@ var ResultPage = React.createClass({
                             <nav className="nav-block">
                                 <span className="nav-block__title">Refine by taxonomies</span>
                                 <ul className="nav-block__list">
-                                    {this.props.SearchCounterStore.taxonomies.map(function(counter) {
+                                    {searchCounterStore.taxonomies.map(function(counter) {
                                         return <RefinementLink
                                                     onRefinementChanged={self.handleRefinementChange.bind(self, 'taxonomy')}
                                                     onRefinementClear={self.handleRefinementClear.bind(self, '')}
@@ -269,15 +269,15 @@ var ResultPage = React.createClass({
                                     <span className="search-results__header-item search-results__header-item_link">Go to result</span>
                                 </header>
                                 <ul className="search-results__list">
-                                    {this.props.SearchStore.models.map(function(result) {
+                                    {searchStore.models.map(function(result) {
                                         return <ResultItem
                                                     key={result.get('indexUid')}
                                                     model={result}
-                                                    searchId={self.props.SearchStore.currentSearchId} />;
+                                                    searchId={searchStore.currentSearchId} />;
                                     })}
                                 </ul>
-                                {this.props.SearchCounterStore.totalCount
-                                    ? <Pagination totalCount={this.props.SearchCounterStore.totalCount}
+                                {searchCounterStore.totalCount
+                                    ? <Pagination totalCount={searchCounterStore.totalCount}
                                                 onPageChanged={this.handlePageChange} />
                                     : <div/>
                                 }
