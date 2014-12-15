@@ -83,9 +83,11 @@ var ResultPage = React.createClass({
         params.assetType = nextState.assetType;
         params.taxonomy = nextState.taxonomy;
         params.sortBy = nextState.sortBy;
+        params.query = nextState.query;
         this.transitionTo('result', {}, params);
     },
     handleSimpleSearch: function(query) {
+        this.setState({query: query});
         this.loadResultFromServer(
             query,
             this.state.page,
@@ -95,7 +97,11 @@ var ResultPage = React.createClass({
     },
     handlePageChange: function(page) {
         this.setState({page: page});
-        this.loadResultFromServer(this.getQuery().query, page);
+        this.loadResultFromServer(this.getQuery().query,
+            page,
+            this.state.assetType,
+            this.state.taxonomy,
+            this.state.sortBy);
     },
     handleRefinementChange: function(refinement, id) {
         // TODO add optimistic refinements update.
