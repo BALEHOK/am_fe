@@ -24,6 +24,27 @@ var EditableAttribute = React.createClass({
 });
 
 var EditableAssetAttribute = React.createClass({
+    getInitialState: function() {
+        return {
+            assetTypeUid: this.props.attribute.relatedAsset.assetTypeUid
+        };
+    },
+    onChange: function(e) {
+        //console.log(e);
+    },
+    onItemsRequest: function(doneCallback) { 
+        var items = [
+            { name: "admin", id: 612 },
+            { name: "foo", id: 2 },
+            { name: "bar", id: 3 }
+        ];
+        doneCallback(items);    
+
+        // TODO
+        //this.props.loadAssetsByAssetTypeUid(this.state.assetTypeUid, function(data){
+        //    doneCallback(data);    
+        //});
+    },
     render: function() {
         var selectId = "attribute-" + this.props.attribute.uid;
         return (
@@ -31,9 +52,12 @@ var EditableAssetAttribute = React.createClass({
                 <span>{this.props.attribute.name}</span>:
                 &nbsp;
                 <ReactSelectize    
-                    selectId={selectId}                                   
+                    selectId={selectId}                      
+                    onItemsRequest={this.onItemsRequest}
+                    onChange={this.onChange}    
+                    value={this.props.attribute.relatedAsset.uid}                             
                     placeholder=" "
-                    label=" " />
+                    label=" " />                
             </li>
         );
     }
@@ -47,7 +71,6 @@ var Panel = React.createClass({
         	   <h3>Panel name: {this.props.name}</h3>
 	           <ul>
 	           		{this.props.panelAttributes.map(function(attribute){
-                        console.log(attribute.datatype)
                         if (attribute.datatype == 'asset') {                            
                             return <EditableAssetAttribute key={attribute.uid} attribute={attribute} />    
                         } else {
@@ -85,7 +108,7 @@ var AssetEdit = React.createClass({
             action: 'asset-edit'
         });
     },
-    render: function() {
+    render: function() {        
         return (
         	<div>
         		<h1>Asset Edit Page</h1>

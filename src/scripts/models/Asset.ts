@@ -46,7 +46,10 @@ export class AssetAttribute extends Backbone.Model {
 	public get datatype(): string {
 		return this.get('datatype');
 	} 
-
+	public get relatedAsset(): string {
+		return this.get('relatedAsset');
+	} 
+	
 	constructor(options?: any) {
 		super(options);	
 	}
