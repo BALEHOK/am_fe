@@ -119,16 +119,17 @@ var ResultPage = React.createClass({
         }
     },
     handleRefinementClear: function() {
+        this.loadResultFromServer(
+            this.props.query.query,
+            this.state.page,
+            null,
+            this.state.taxonomy,
+            this.state.sortBy);
+
         this.setState({
             assetType: null,
             taxonomy: null
         });
-        this.loadResultFromServer(
-            this.props.query.query,
-            this.state.page,
-            this.state.assetType,
-            this.state.taxonomy,
-            this.state.sortBy);
     },
     handleSortChange: function(value) {
         var newSort = value;
