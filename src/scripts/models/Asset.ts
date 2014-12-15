@@ -17,10 +17,10 @@ export class AssetScreen extends Backbone.Model {
 
 export class AssetPanel extends Backbone.Model {
 	public get panelAttributes(): Backbone.Collection<AssetAttribute> {
-		return this.get('panelAttributes');
+		return this.get('attributes');
 	}
 	public set panelAttributes(value: Backbone.Collection<AssetAttribute>) {
-		this.set('panelAttributes', value);
+		this.set('attributes', value);
 	}
 
 	constructor(options?: any) {
