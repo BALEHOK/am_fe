@@ -65,3 +65,6 @@ var routes = (
 );
 
 React.renderComponent(routes, document.querySelector('.page-container'));
+
+// enable react devtools
+typeof window !== "undefined" && (window.React = React)
