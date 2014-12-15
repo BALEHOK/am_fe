@@ -8,53 +8,8 @@ var Pagination = require('../common/pagination');
 var Link = Router.Link;
 var ReactSelectize = require('../common/react-selectize');
 var SearchSimpleForm = require('./searchSimpleForm');
-
-var RefinementLink = React.createClass({
-    render: function() {
-        return (
-            <li className="nav-block__item">
-                <span onClick={this.props.onRefinementChanged.bind(this, this.props.key)} className="link link_second">{this.props.data.name}&nbsp;
-                    <span className="light-grey">({this.props.data.count})</span>
-                </span>
-                &nbsp;
-                {this.props.taxonomy || this.props.assetType
-                    ? <span onClick={this.props.onRefinementClear.bind(this, this.props.key)} className="nav-block__item-clear"><span className="icon icon_cross"></span></span>
-                    : <span/>
-                }
-            </li>
-        );
-    }
-});
-
-var ResultItem = React.createClass({
-    mixins: [Router.Navigation],
-    render: function() {
-        var assetLink = this.makeHref('asset-view', {
-                assetTypeUid: this.props.model.get('dynEntityConfigUid'),
-                assetUid: this.props.model.get('dynEntityUid')
-            }, {searchId: this.props.searchId});
-        return (
-            <li className="search-results__item">
-                <a className="search-results__item-link" href={assetLink}>
-                    <span className="search-results__item-param search-results__item-param_name">
-                        <span className="link">{this.props.model.get('name')}</span>
-                    </span>
-                    <span className="search-results__item-param search-results__item-param_category">
-                        <span className="label">{this.props.model.get('categoryKeywords')}</span>
-                    </span>
-                    <span className="search-results__item-param search-results__item-param_attr">
-                        <span className="search-results__item-attr">
-                            {this.props.model.get('allAttribValues')}
-                        </span>
-                    </span>
-                    <span className="search-results__item-param search-results__item-param_link">
-                        <span className="link"><span className="icon icon_angle-right"></span></span>
-                    </span>
-                </a>
-            </li>
-        );
-    }
-});
+var RefinementLink = require('./refinement_link');
+var ResultItem = require('./result_item');
 
 var ResultPage = React.createClass({
     mixins: [Router.Navigation],
