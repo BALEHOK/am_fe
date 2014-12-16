@@ -52,107 +52,138 @@ var resultViewEdit = React.createClass({
                                     </div>
                                     <div className="asset-data__param">
                                         <span className="asset-data__param-title">Location:</span>
-                                        <ReactSelectize
-                                            items={[
-                                                { name: "Arlon", id: "1" },
-                                                { name: "Antwerp", id: "2" },
-                                                { name: "Bruges", id: "3" },
-                                                { name: "Brussels", id: "4" }
-                                            ]}
-                                            value={0}
-                                            onChange={this.handleScreenChange}
-                                            selectId="select-locationn"
-                                            placeholder=" "
-                                            label=" "
-                                            className="select_size_small"
-                                        />
+                                        <div className="input-group">
+                                            <ReactSelectize
+                                                items={[
+                                                    { name: "Arlon", id: "1" },
+                                                    { name: "Antwerp", id: "2" },
+                                                    { name: "Bruges", id: "3" },
+                                                    { name: "Brussels", id: "4" }
+                                                ]}
+                                                value={0}
+                                                onChange={this.handleScreenChange}
+                                                selectId="select-locationn"
+                                                placeholder=" "
+                                                label=" "
+                                                className="select_size_small"
+                                            />
+                                            <button className="btn btn_size_small btn_type_second">
+                                                <i className="btn__icon btn__icon_plus_circle"></i>
+                                            </button>
+                                        </div>
+
                                         &nbsp;&nbsp;&nbsp;Related items
                                     </div>
                                     <div className="asset-data__param">
                                         <span className="asset-data__param-title">Base Location:</span>
-                                        <ReactSelectize
-                                            items={[
-                                                { name: "Arlon", id: "1" },
-                                                { name: "Antwerp", id: "2" },
-                                                { name: "Bruges", id: "3" },
-                                                { name: "Brussels", id: "4" }
-                                            ]}
-                                            value={0}
-                                            onChange={this.handleScreenChange}
-                                            selectId="select-base-location"
-                                            placeholder=" "
-                                            label=" "
-                                            className="select_size_small"
-                                        />
-                                    &nbsp;&nbsp;&nbsp;Related items
+                                        <div className="input-group">
+                                            <ReactSelectize
+                                                items={[
+                                                    { name: "Arlon", id: "1" },
+                                                    { name: "Antwerp", id: "2" },
+                                                    { name: "Bruges", id: "3" },
+                                                    { name: "Brussels", id: "4" }
+                                                ]}
+                                                value={0}
+                                                onChange={this.handleScreenChange}
+                                                selectId="select-base-location"
+                                                placeholder=" "
+                                                label=" "
+                                                className="select_size_small"
+                                            />
+                                            <button className="btn btn_size_small btn_type_second">
+                                                <i className="btn__icon btn__icon_plus_circle"></i>
+                                            </button>
+                                        </div>
+                                        &nbsp;&nbsp;&nbsp;Related items
                                     </div>
                                     <div className="asset-data__param">
                                         <span className="asset-data__param-title">Next Location:</span>
-                                        <ReactSelectize
-                                            items={[
-                                                { name: "Arlon", id: "1" },
-                                                { name: "Antwerp", id: "2" },
-                                                { name: "Bruges", id: "3" },
-                                                { name: "Brussels", id: "4" }
-                                            ]}
-                                            value={0}
-                                            onChange={this.handleScreenChange}
-                                            selectId="select-next-location"
-                                            placeholder=" "
-                                            label=" "
-                                            className="select_size_small"
-                                        />
-                                    &nbsp;&nbsp;&nbsp;Related items
+                                        <div className="input-group">
+                                            <ReactSelectize
+                                                items={[
+                                                    { name: "Arlon", id: "1" },
+                                                    { name: "Antwerp", id: "2" },
+                                                    { name: "Bruges", id: "3" },
+                                                    { name: "Brussels", id: "4" }
+                                                ]}
+                                                value={0}
+                                                onChange={this.handleScreenChange}
+                                                selectId="select-next-location"
+                                                placeholder=" "
+                                                label=" "
+                                                className="select_size_small"
+                                            />
+                                            <button className="btn btn_size_small btn_type_second">
+                                                <i className="btn__icon btn__icon_plus_circle"></i>
+                                            </button>
+                                        </div>
+                                        &nbsp;&nbsp;&nbsp;Related items
                                     </div>
                                     <div className="asset-data__param">
                                         <span className="asset-data__param-title">Department:</span>
-                                        <ReactSelectize
-                                            items={[
-                                                { name: "Arlon", id: "1" },
-                                                { name: "Antwerp", id: "2" },
-                                                { name: "Bruges", id: "3" },
-                                                { name: "Brussels", id: "4" }
-                                            ]}
-                                            value={0}
-                                            onChange={this.handleScreenChange}
-                                            selectId="select-department"
-                                            placeholder=" "
-                                            label=" "
-                                            className="select_size_small"
-                                        />
-                                    &nbsp;&nbsp;&nbsp;Related items
+                                        <div className="input-group">
+                                            <ReactSelectize
+                                                items={[
+                                                    { name: "Arlon", id: "1" },
+                                                    { name: "Antwerp", id: "2" },
+                                                    { name: "Bruges", id: "3" },
+                                                    { name: "Brussels", id: "4" }
+                                                ]}
+                                                value={0}
+                                                onChange={this.handleScreenChange}
+                                                selectId="select-department"
+                                                placeholder=" "
+                                                label=" "
+                                                className="select_size_small"
+                                            />
+                                            <button className="btn btn_size_small btn_type_second">
+                                                <i className="btn__icon btn__icon_plus_circle"></i>
+                                            </button>
+                                        </div>
+                                        &nbsp;&nbsp;&nbsp;Related items
                                     </div>
                                     <div className="asset-data__param">
                                         <span className="asset-data__param-title">User:</span>
-                                        <ReactSelectize
-                                            items={[
-                                                { name: "Admin", id: "1" },
-                                                { name: "user", id: "2" }
-                                            ]}
-                                            value={1}
-                                            onChange={this.handleScreenChange}
-                                            selectId="select-user"
-                                            placeholder=" "
-                                            label=" "
-                                            className="select_size_small"
-                                        />
-                                    &nbsp;&nbsp;&nbsp;Related items
+                                        <div className="input-group">
+                                            <ReactSelectize
+                                                items={[
+                                                    { name: "Admin", id: "1" },
+                                                    { name: "user", id: "2" }
+                                                ]}
+                                                value={1}
+                                                onChange={this.handleScreenChange}
+                                                selectId="select-user"
+                                                placeholder=" "
+                                                label=" "
+                                                className="select_size_small"
+                                            />
+                                            <button className="btn btn_size_small btn_type_second">
+                                                <i className="btn__icon btn__icon_plus_circle"></i>
+                                            </button>
+                                        </div>
+                                        &nbsp;&nbsp;&nbsp;Related items
                                     </div>
                                     <div className="asset-data__param">
                                         <span className="asset-data__param-title">Owner:</span>
-                                        <ReactSelectize
-                                            items={[
-                                                { name: "Admin", id: "1" },
-                                                { name: "user", id: "2" }
-                                            ]}
-                                            value={1}
-                                            onChange={this.handleScreenChange}
-                                            selectId="select-owner"
-                                            placeholder=" "
-                                            label=" "
-                                            className="select_size_small"
-                                        />
-                                    &nbsp;&nbsp;&nbsp;Related items
+                                        <div className="input-group">
+                                            <ReactSelectize
+                                                items={[
+                                                    { name: "Admin", id: "1" },
+                                                    { name: "user", id: "2" }
+                                                ]}
+                                                value={1}
+                                                onChange={this.handleScreenChange}
+                                                selectId="select-owner"
+                                                placeholder=" "
+                                                label=" "
+                                                className="select_size_small"
+                                            />
+                                            <button className="btn btn_size_small btn_type_second">
+                                                <i className="btn__icon btn__icon_plus_circle"></i>
+                                            </button>
+                                        </div>
+                                        &nbsp;&nbsp;&nbsp;Related items
                                     </div>
                                     <div className="asset-data__param">
                                         <span className="asset-data__param-title">Update user:</span>
