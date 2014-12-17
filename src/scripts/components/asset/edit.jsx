@@ -32,13 +32,15 @@ var EditableAssetAttribute = React.createClass({
     onChange: function(e) {
         //console.log(e);
     },
-    onItemsRequest: function(doneCallback) { 
+    onItemsRequest: function(query, callback) { 
+        console.log('query', query);
         var items = [
             { name: "admin", id: 612 },
             { name: "foo", id: 2 },
             { name: "bar", id: 3 }
         ];
-        doneCallback(items);    
+        if (!query.length) return callback(items);
+        callback(items);    
 
         // TODO
         //this.props.loadAssetsByAssetTypeUid(this.state.assetTypeUid, function(data){
