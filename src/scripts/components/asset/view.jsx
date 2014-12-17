@@ -20,8 +20,8 @@ var Attribute = React.createClass({
     }
 });
 
-var Panel = React.createClass({     
-    render: function() {        
+var Panel = React.createClass({
+    render: function() {
         var self = this;
         return (
             <div>
@@ -29,7 +29,7 @@ var Panel = React.createClass({
                <ul>
                     {this.props.panelAttributes.map(function(attribute){
                         return <Attribute key={attribute.uid} attribute={attribute} />
-                    })}                 
+                    })}
                </ul>
             </div>
         );
@@ -40,42 +40,42 @@ var AssetView = React.createClass({
 	mixins:[AuthenticatedRouteMixin, Router.Navigation],
 	componentDidMount: function() {
         var self = this;
-        this.props.AssetStore.on("all", function(){   
+        this.props.AssetStore.on("all", function(){
             // workaround
-            if (self._lifeCycleState == "MOUNTED")    	
-                self.forceUpdate();        
+            if (self._lifeCycleState == "MOUNTED")
+                self.forceUpdate();
         });
     },
-    componentWillMount: function() {    	
+    componentWillMount: function() {
     	AppDispatcher.dispatch({
-            action: 'asset-view', 
+            action: 'asset-view',
             data: {
             	assetTypeUid: this.props.params.assetTypeUid,
             	assetUid: this.props.params.assetUid
             }
         });
     },
-    componentWillUnmount: function() {   
+    componentWillUnmount: function() {
         this.props.AssetStore.off(null, null, this);
     },
-    render: function() {    	
+    render: function() {
         return (
-        	<div>
-        		<h1>Asset View Page</h1>
-                <Link to="asset-edit" 
+            <div>
+                <h1>Asset View Page</h1>
+                <Link to="asset-edit"
                     params={{
-                        assetTypeUid: this.props.params.assetTypeUid, 
+                        assetTypeUid: this.props.params.assetTypeUid,
                         assetUid: this.props.params.assetUid}}>Edit</Link>
 
-        		{this.props.AssetStore.screens.map(function(screen){                              		     			
-        			return  <Screen key={screen.Id} name={screen.name}>
+                {this.props.AssetStore.screens.map(function(screen){
+                    return  <Screen key={screen.Id} name={screen.name}>
                                 {screen.panels.map(function(panel){
                                     return <Panel key={panel.id} name={panel.name} panelAttributes={panel.panelAttributes} />
-                                })}  
+                                })}
                             </Screen>
-        		})}
-        	</div>
-       	);
+                })}
+            </div>
+        );
     }
 });
 module.exports = AssetView;
