@@ -82,6 +82,9 @@ gulp.task('browser-sync', function() {
         server: {
             baseDir: 'dist/',
             //directory: true,
+            routes: {
+                "/assets": "../"
+            },
             proxy: 'local.dev'
         }
     });

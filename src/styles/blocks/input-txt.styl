@@ -5,7 +5,10 @@
   text-align left
 
   &_width_full
-    width 100%
+    width 100% !important
+
+  &_width_wide
+    width 425px
 
   &__field
     display block
@@ -25,6 +28,7 @@
 
     &_area
       height 200px
+      min-height 135px
       resize vertical
       font-size 15px
       line-height 22px
@@ -40,6 +44,12 @@
     &:disabled
       opacity 0.25
       cursor default
+
+  &_size_small
+
+    .input-txt__field
+      height 36px
+      padding 8px 15px
 
   &_width_475
     width 475px
