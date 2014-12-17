@@ -54,6 +54,12 @@ h6
   &_small
     font-size 25px
 
+  &__param
+    color $colorGreen
+
+  & + .back-nav
+    margin-top -25px
+
 .arrow-separator
   display inline-block
   vertical-align middle
@@ -77,3 +83,27 @@ h6
   padding 0 6px
   font-family Tahoma, Arial, sans-serif
   border-radius 2px
+
+.no-data
+  color #b2b2b2
+  font-family Tahoma, Arial, sans-serif
+  font-style italic
+
+.back-nav
+  margin 0 0 35px 0
+  font-size 13px
+
+  .icon
+    font-size 16px
+    margin 0 10px 0 0
+    vertical-align text-bottom
+
+.input-file
+  position absolute
+  top 0
+  right 0
+  margin 0
+  font-size 300px
+  cursor pointer
+  opacity 0
+  z-index 1

@@ -65,3 +65,45 @@
         a
           background #ffffff
           color $colorBlack
+
+.asset-data__tabs
+  .nav-tabs
+    position absolute
+    left 15px
+    top -16px
+
+    &__item
+    li
+      display inline-block
+      vertical-align top
+      margin 0 15px 0 0
+
+      &-link
+      a
+        display inline-block
+        vertical-align top
+        padding 0 20px
+        font-size 14px
+        font-family $Bold
+        line-height 30px
+        border-radius 3px
+        background $btnSecondaryBgColor
+        background-image  linear-gradient(bottom, #f9f9f9 0%, #ffffff 100%)
+        color $btnSecondaryColor
+        border-color $btnSecondaryBorderColor
+
+        &:hover
+          background-color $btnSecondaryBgColorHover
+          background-image linear-gradient(bottom, #efefef 0%, #fcfcfc 100%)
+
+        &::after
+        &::before
+          display none !important
+
+      &_active
+      &.active
+        .nav-tabs__item-link
+        a
+          color #ffffff
+          background $colorGreen
+          border-color $colorGreen
