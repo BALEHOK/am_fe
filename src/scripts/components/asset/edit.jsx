@@ -7,6 +7,7 @@ var Router = require('react-router');
 var Screen = require('./screen.jsx');
 var AuthenticatedRouteMixin = require('../../mixins/AuthenticatedRouteMixin');
 var resultViewEdit = require('./resultViewEdit.jsx');
+var itemEdit = require('./itemEdit.jsx');
 
 var EditableAttribute = React.createClass({
     render: function() {
@@ -76,7 +77,8 @@ var AssetEdit = React.createClass({
 	        		<input type="submit" value="Save" />
         		</form>
         	</div>*/
-            <resultViewEdit/>
+            //<resultViewEdit/>
+            <itemEdit/>
        	);
     }
 });
