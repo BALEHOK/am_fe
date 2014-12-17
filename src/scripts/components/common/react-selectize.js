@@ -26,7 +26,7 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
     var items = this.props.items;
     if (this.props.onItemsRequest) {
       o.load = this.props.onItemsRequest;
-    } 
+    }
     return o;
   },
 
@@ -52,8 +52,7 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
 
   rebuildSelectize: function () {
     var $select = null,
-      selectControl = this.getSelectizeControl(),
-      items = this.props.items;
+      selectControl = this.getSelectizeControl();
 
     if(selectControl) {
       // rebuild
@@ -67,6 +66,7 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
 
     var initValue = this.props.value;
     if (initValue) {
+      selectControl.setValue(initValue);  
       selectControl.on('load', function(e){
           selectControl.setValue(initValue);  
       });
