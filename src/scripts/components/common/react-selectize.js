@@ -42,8 +42,7 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
     return selectControl;
   },
 
-  handleChange: function (e) {
-
+  handleChange: function (e) {    
     // IF Selectize is not multiple
     if(!this.isMultiple(this.props)){
       // THEN blur it before calling onChange to prevent dropdown reopening
@@ -63,12 +62,17 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
     if(selectControl) {
       // rebuild
       selectControl.off();
-      selectControl.clearOptions();
-      selectControl.load(function (cb) { cb(items) });
+      selectControl.clearOptions();      
     } else {
       // build new
       $select = $("#" + this.props.selectId).selectize(this.buildOptions());
       selectControl = $select[0].selectize;
+    }
+
+    if (this.props.onItemsRequest) {
+      selectControl.load(this.props.onItemsRequest);
+    } else if (items) {
+      selectControl.load(function (cb) { cb(items) });
     }
 
     selectControl.setValue(this.props.value);
@@ -76,6 +80,7 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
     if(this.props.onChange){
       selectControl.on('change', this.handleChange);
     }
+
   },
 
   componentDidMount: function () {
