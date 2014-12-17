@@ -23,7 +23,6 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
       o.maxItems = this.props.maxItems || null;
     }
 
-    var items = this.props.items;
     if (this.props.onItemsRequest) {
       o.load = this.props.onItemsRequest;
     }
@@ -57,7 +56,9 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
     if(selectControl) {
       // rebuild
       selectControl.off();
-      selectControl.clearOptions();      
+      this.props.items.map(function(item){
+        selectControl.addOption(item);
+      });
     } else {
       // build new
       $select = $("#" + this.props.selectId).selectize(this.buildOptions());
@@ -82,7 +83,7 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
     this.rebuildSelectize();
   },
 
-  componentDidUpdate: function () {
+  componentDidUpdate: function () {    
     this.rebuildSelectize();
   },
 

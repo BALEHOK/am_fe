@@ -1,26 +1,7 @@
 /// <reference path="../../../typings/backbone/backbone.d.ts" />
 import models = require('../models/Asset');
 
-export class AssetStore extends Backbone.Model {
-
-    public get screens(): Backbone.Collection<models.AssetScreen> {
-        return this.get('screens');
-    }
-    public set screens(value: Backbone.Collection<models.AssetScreen>) {
-        this.set('screens', value);
-    }
-	public get assetTypeUid(): number {
-		return this.get('assetTypeUid');
-	}
-	public set assetTypeUid(value: number) {
-		this.set('assetTypeUid', value);
-	}
-	public get assetUid(): number {
-		return this.get('assetUid');
-	}
-	public set assetUid(value: number) {
-		this.set('assetUid', value);
-	}
+export class AssetStore extends models.Asset {
 
 	public dispatchToken: any;
 
@@ -44,7 +25,7 @@ export class AssetStore extends Backbone.Model {
         	return '/api/assettype/' 
         		+ self.assetTypeUid 
         		+ '/asset/'
-        		+ self.assetUid;
+        		+ self.uid;
         };
         this.parse = (response) => {
             this.screens = new Backbone.Collection<models.AssetScreen>(
@@ -57,12 +38,11 @@ export class AssetStore extends Backbone.Model {
     dispatchCallback(payload: any){
         if (payload.action == 'asset-view') {
         	this.assetTypeUid = payload.data.assetTypeUid;
-        	this.assetUid = payload.data.assetUid;
+        	this.uid = payload.data.assetUid;
             this.fetch();
         }      
         if (payload.action == 'asset-edit') {
             this.save();
         }  
     }
-
 }
