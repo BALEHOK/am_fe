@@ -6,6 +6,7 @@ var React = require('react');
 var Router = require('react-router');
 var Screen = require('./screen.jsx');
 var AuthenticatedRouteMixin = require('../../mixins/AuthenticatedRouteMixin');
+var assetStore = require('../../stores/AssetStore.ts').AssetStore.getInstance();
 
 var EditableAttribute = React.createClass({
     valueChanged: function(event) {
@@ -31,7 +32,7 @@ var Panel = React.createClass({
                <ul>
                     {this.props.panelAttributes.map(function(attribute){
                         return <EditableAttribute key={attribute.uid} attribute={attribute} />
-                    })}
+	           		})}
                </ul>
             </div>
         );
@@ -39,24 +40,25 @@ var Panel = React.createClass({
 });
 
 var AssetEdit = React.createClass({
-    mixins:[AuthenticatedRouteMixin, Router.Navigation],
+	mixins:[AuthenticatedRouteMixin, Router.Navigation, Router.State],
     componentDidMount: function() {
         var self = this;
-        this.props.AssetStore.on("all", function(){
+        assetStore.on("all", function(){
             // workaround
-            if (self._lifeCycleState == "MOUNTED")
-                self.forceUpdate();
+        	if (self._lifeCycleState == "MOUNTED")
+            	self.forceUpdate();
         });
+        var params = this.getParams();
         AppDispatcher.dispatch({
             action: 'asset-view',
             data: {
-                assetTypeUid: this.props.params.assetTypeUid,
-                assetUid: this.props.params.assetUid
+            	assetTypeUid: params.assetTypeUid,
+            	assetUid: params.assetUid
             }
         });
     },
     componentWillUnmount: function() {
-        this.props.AssetStore.off(null, null, this);
+        assetStore.off(null, null, this);
     },
     handleSubmit: function() {
         AppDispatcher.dispatch({
@@ -68,7 +70,7 @@ var AssetEdit = React.createClass({
             <div>
                 <h1>Asset Edit Page</h1>
                 <form onSubmit={this.handleSubmit}>
-                    {this.props.AssetStore.screens.map(function(screen){
+	        		{assetStore.screens.map(function(screen){
                         return  <Screen key={screen.Id} name={screen.name}>
                                     {screen.panels.map(function(panel){
                                         return <Panel key={panel.id} name={panel.name} panelAttributes={panel.panelAttributes} />
