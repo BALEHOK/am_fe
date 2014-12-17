@@ -65,7 +65,7 @@ var AssetView = React.createClass({
     },
     render: function() {
         return (
-            /*<div>
+            <div>
                 <h1>Asset View Page</h1>
                 <Link to="asset-edit"
                     params={{
@@ -79,11 +79,11 @@ var AssetView = React.createClass({
                                 })}
                             </Screen>
                 })}
-            </div>*/
+            </div>
             //<AssetViewType1/>
             //<AssetViewType2/>
             //<AssetViewType3/>
-            <AssetViewType4/>
+            //<AssetViewType4/>
        	);
     }
 });
