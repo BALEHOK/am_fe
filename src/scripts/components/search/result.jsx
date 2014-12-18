@@ -37,17 +37,17 @@ var ResultPage = React.createClass({
             isTilesView: false
         };
     },
-    loadResultFromServer: function(query, page, assetType, taxonomy, sortBy) {
-        AppDispatcher.dispatch({
-            action: 'search',
-            data: {
-                query:query,
-                page:page,
-                assetType:assetType,
-                taxonomy:taxonomy,
-                sortBy:sortBy
-        }});
-    },
+    // loadResultFromServer: function(query, page, assetType, taxonomy, sortBy) {
+    //     AppDispatcher.dispatch({
+    //         action: 'search',
+    //         data: {
+    //             query:query,
+    //             page:page,
+    //             assetType:assetType,
+    //             taxonomy:taxonomy,
+    //             sortBy:sortBy
+    //     }});
+    // },
     componentDidMount: function() {
         var self = this;
         searchStore.on("all", function(){
@@ -66,7 +66,7 @@ var ResultPage = React.createClass({
         });
     },
     componentWillUnmount: function() {
-        searchStore.off(null, null, this);
+        // searchStore.off(null, null, this);
     },
     componentWillMount: function() {
         var query = this.getQuery();
@@ -78,78 +78,78 @@ var ResultPage = React.createClass({
             query.sortBy);
     },
     componentWillUpdate: function(nextProps, nextState) {
-        var params = this.getQuery();
-        params.page = nextState.page;
-        params.assetType = nextState.assetType;
-        params.taxonomy = nextState.taxonomy;
-        params.sortBy = nextState.sortBy;
-        params.query = nextState.query;
-        this.transitionTo('result', {}, params);
+        // var params = this.getQuery();
+        // params.page = nextState.page;
+        // params.assetType = nextState.assetType;
+        // params.taxonomy = nextState.taxonomy;
+        // params.sortBy = nextState.sortBy;
+        // params.query = nextState.query;
+        // this.transitionTo('result', {}, params);
     },
-    handleSimpleSearch: function(query) {
-        this.setState({query: query});
-        this.loadResultFromServer(
-            query,
-            this.state.page,
-            this.state.assetType,
-            this.state.taxonomy,
-            this.state.sortBy);
-    },
-    handlePageChange: function(page) {
-        this.setState({page: page});
-        this.loadResultFromServer(this.getQuery().query,
-            page,
-            this.state.assetType,
-            this.state.taxonomy,
-            this.state.sortBy);
-    },
-    handleRefinementChange: function(refinement, id) {
-        // TODO add optimistic refinements update.
-        // i.e. on click hide all others and left only selected one
-        if (refinement == 'assetType') {
-            this.setState({ assetType: id });
-            this.loadResultFromServer(
-                this.getQuery().query,
-                this.state.page,
-                id,
-                this.state.taxonomy,
-                this.state.sortBy);
-        } else {
-            this.setState({ taxonomy: id });
-            this.loadResultFromServer(
-                this.getQuery().query,
-                this.state.page,
-                this.state.assetType,
-                id,
-                this.state.sortBy);
-        }
-    },
-    handleRefinementClear: function() {
-        this.loadResultFromServer(
-            this.getQuery().query,
-            this.state.page,
-            undefined,
-            undefined,
-            this.state.sortBy);
+    // handleSimpleSearch: function(query) {
+    //     this.setState({query: query});
+    //     this.loadResultFromServer(
+    //         query,
+    //         this.state.page,
+    //         this.state.assetType,
+    //         this.state.taxonomy,
+    //         this.state.sortBy);
+    // },
+    // handlePageChange: function(page) {
+    //     this.setState({page: page});
+    //     this.loadResultFromServer(this.getQuery().query,
+    //         page,
+    //         this.state.assetType,
+    //         this.state.taxonomy,
+    //         this.state.sortBy);
+    // },
+    // handleRefinementChange: function(refinement, id) {
+    //     // TODO add optimistic refinements update.
+    //     // i.e. on click hide all others and left only selected one
+    //     if (refinement == 'assetType') {
+    //         this.setState({ assetType: id });
+    //         this.loadResultFromServer(
+    //             this.getQuery().query,
+    //             this.state.page,
+    //             id,
+    //             this.state.taxonomy,
+    //             this.state.sortBy);
+    //     } else {
+    //         this.setState({ taxonomy: id });
+    //         this.loadResultFromServer(
+    //             this.getQuery().query,
+    //             this.state.page,
+    //             this.state.assetType,
+    //             id,
+    //             this.state.sortBy);
+    //     }
+    // },
+    // handleRefinementClear: function() {
+    //     this.loadResultFromServer(
+    //         this.getQuery().query,
+    //         this.state.page,
+    //         undefined,
+    //         undefined,
+    //         this.state.sortBy);
 
-        this.setState({
-            assetType: undefined,
-            taxonomy: undefined
-        });
-    },
-    handleSortChange: function(value) {
-        var newSort = value;
-        this.setState({sortBy: newSort});
-        this.loadResultFromServer(
-            this.getQuery().query,
-            this.state.page,
-            this.state.assetType,
-            this.state.taxonomy,
-            newSort);
-    },
-    handleExportChange: function(value) {
+    //     this.setState({
+    //         assetType: undefined,
+    //         taxonomy: undefined
+    //     });
+    // },
+    // handleSortChange: function(value) {
+    //     var newSort = value;
+    //     this.setState({sortBy: newSort});
+    //     this.loadResultFromServer(
+    //         this.getQuery().query,
+    //         this.state.page,
+    //         this.state.assetType,
+    //         this.state.taxonomy,
+    //         newSort);
+    // },
+    // handleExportChange: function(value) {
 
-    },
+    // },
     setTilesView: function() {
         this.setState({isTilesView: true});
     },

@@ -21,7 +21,8 @@
     "react": "0.12.x",
     "react-bootstrap": "^0.13.0",
     "react-router": "^0.11.4",
-    "underscore": "^1.7.0"
+    "underscore": "^1.7.0",
+    "delorean": "^0.8.7"
   },
   "devDependencies": {
     "autoprefixer-loader": "^1.0.0",
@@ -48,7 +49,9 @@
     "stylus-loader": "^0.4.0",
     "url-loader": "~0.5.4",
     "webpack": "^1.4.13",
-    "through2": "^0.6.3"
+    "through2": "^0.6.3",
+    "6to5": "^1.15.0",
+    "6to5-loader": "^0.2.4"
   },
   "scripts": {
     "postinstall": "bower install && tsd update --save --overwrite && cd ./webpack-loaders/ts-loader/ && npm install"

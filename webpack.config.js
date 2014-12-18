@@ -28,6 +28,7 @@ module.exports = {
     },
     module: {
         loaders: [
+            { test: /\.js$/, loader: '6to5-loader'},
             { test: /\.ts$/, loader: 'ts-loader' },
             { test: /\.jsx$/, loader: 'jsx-loader'}
         ],
