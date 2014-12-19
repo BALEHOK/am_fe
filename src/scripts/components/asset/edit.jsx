@@ -6,6 +6,8 @@ var React = require('react');
 var Router = require('react-router');
 var Screen = require('./screen.jsx');
 var AssetPicker = require('./assetPicker.jsx');
+var BooleanAttribute = require('./booleanAttribute.jsx');
+
 var AuthenticatedRouteMixin = require('../../mixins/AuthenticatedRouteMixin');
 var assetStore = require('../../stores/AssetStore.ts').AssetStore.getInstance();
 
@@ -32,8 +34,11 @@ var Panel = React.createClass({
                <h3>Panel name: {this.props.name}</h3>
                <ul>
                     {this.props.panelAttributes.map(function(attribute){
+                        console.log(attribute.datatype);
                         if (attribute.datatype == 'asset') {                            
                             return <AssetPicker key={attribute.uid} attribute={attribute} />    
+                        } else if (attribute.datatype == 'bool') {
+                            return <BooleanAttribute key={attribute.uid} attribute={attribute} />                        
                         } else {
                             return <EditableAttribute key={attribute.uid} attribute={attribute} />    
                         }	           			
