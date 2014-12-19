@@ -13,13 +13,13 @@ var SearchSimpleForm = React.createClass({
     ],
     getInitialState: function () {
         return {
-            selectedItemId: 1,
+            searchContextId: 1,
             disabled: true,
             query: this.props.value
         }
     },
-    handleSelectChange: function (value) {
-
+    handleSelectChange: function (e) {
+        this.setState({ searchContextId : e });
     },
     handleQueryChange: function (e) {
         this.setState({
@@ -40,7 +40,7 @@ var SearchSimpleForm = React.createClass({
                 <div className="input-group">
                     <ReactSelectize
                         items={this.searchContext}
-                        value={this.state.selectedItemId}
+                        value={this.state.searchContextId}
                         onChange={this.handleSelectChange}
                         selectId="search-type"
                         placeholder=" "

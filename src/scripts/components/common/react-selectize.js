@@ -4,33 +4,28 @@
 var React = require('react');
 var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
 
-  getDefaultProps: function () {
-    return {
-      valueField: "id",
-      labelField: "name",
-      searchField: "name",
-      create: false,
-      items: []
-    };
-  },
-
   isMultiple: function (props) {
     // Selectize becomes 'multiple' when 'maxItems' is passed via settings
     return props.multiple || props.maxItems != undefined;
   },
 
   buildOptions: function () {
-    var o = {};
+    var o = {
+      preload: true,
+      valueField : this.props.valueField || "id",
+      labelField : this.props.labelField || "name",
+      searchField : this.props.searchField || "name",
+      create : this.props.create || false,
+      options : this.props.items || []
+    };
 
-    o.valueField = this.props.valueField;
-    o.labelField = this.props.labelField;
-    o.searchField = this.props.searchField;
     if(this.isMultiple(this.props)){
       o.maxItems = this.props.maxItems || null;
     }
-    o.options = this.props.items;
-    o.create = this.props.create;
 
+    if (this.props.onItemsRequest) {
+      o.load = this.props.onItemsRequest;
+    }
     return o;
   },
 
@@ -56,27 +51,28 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
 
   rebuildSelectize: function () {
     var $select = null,
-      selectControl = this.getSelectizeControl(),
-      items = this.props.items;
+      selectControl = this.getSelectizeControl();
 
     if(selectControl) {
       // rebuild
       selectControl.off();
-      selectControl.clearOptions();      
+      this.props.items.map(function(item){
+        selectControl.addOption(item);
+      });
     } else {
       // build new
       $select = $("#" + this.props.selectId).selectize(this.buildOptions());
       selectControl = $select[0].selectize;
     }
 
-    if (this.props.onItemsRequest) {
-      selectControl.load(this.props.onItemsRequest);
-    } else if (items) {
-      selectControl.load(function (cb) { cb(items) });
+    var initValue = this.props.value;
+    if (initValue) {
+      selectControl.setValue(initValue);  
+      selectControl.on('load', function(e){
+          selectControl.setValue(initValue);  
+      });
     }
-
-    selectControl.setValue(this.props.value);
-
+    
     if(this.props.onChange){
       selectControl.on('change', this.handleChange);
     }
@@ -87,7 +83,7 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
     this.rebuildSelectize();
   },
 
-  componentDidUpdate: function () {
+  componentDidUpdate: function () {    
     this.rebuildSelectize();
   },
 
