@@ -5,27 +5,14 @@
 var React = require('react');
 var Router = require('react-router');
 var Screen = require('./screen.jsx');
+
+var EditableAttribute = require('./editableAttribute.jsx');
 var AssetPicker = require('./assetPicker.jsx');
 var BooleanAttribute = require('./booleanAttribute.jsx');
 var TextAttribute = require('./textAttribute.jsx');
 
 var AuthenticatedRouteMixin = require('../../mixins/AuthenticatedRouteMixin');
 var assetStore = require('../../stores/AssetStore.ts').AssetStore.getInstance();
-
-var EditableAttribute = React.createClass({
-    valueChanged: function(event) {
-        this.props.attribute.value = event.target.value;
-    },
-    render: function() {
-        return (
-            <li>
-                <span>{this.props.attribute.name}</span>:
-                &nbsp;
-                <input type="text" onChange={this.valueChanged} defaultValue={this.props.attribute.value} />
-            </li>
-        );
-    }
-});
 
 var Panel = React.createClass({
     render: function() {
