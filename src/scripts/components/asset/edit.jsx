@@ -6,10 +6,12 @@ var React = require('react');
 var Router = require('react-router');
 var Screen = require('./screen.jsx');
 
+var Attribute = require('./attribute.jsx');
 var EditableAttribute = require('./editableAttribute.jsx');
 var AssetPicker = require('./assetPicker.jsx');
 var BooleanAttribute = require('./booleanAttribute.jsx');
 var TextAttribute = require('./textAttribute.jsx');
+var ListAttribute = require('./listAttribute.jsx');
 
 var AuthenticatedRouteMixin = require('../../mixins/AuthenticatedRouteMixin');
 var assetStore = require('../../stores/AssetStore.ts').AssetStore.getInstance();
@@ -21,15 +23,19 @@ var Panel = React.createClass({
             <div>
                <h3>Panel name: {this.props.name}</h3>
                <ul>
-                    {this.props.panelAttributes.map(function(attribute){
-                        console.log(attribute.datatype);
+                    {this.props.panelAttributes.map(function(attribute){                        
                         if (attribute.datatype == 'asset') {                            
                             return <AssetPicker key={attribute.uid} attribute={attribute} />    
                         } else if (attribute.datatype == 'bool') {
                             return <BooleanAttribute key={attribute.uid} attribute={attribute} />                        
                         } else if (attribute.datatype == 'text') {
                             return <TextAttribute key={attribute.uid} attribute={attribute} />
+                        } else if (attribute.datatype == 'revision') {
+                            return <Attribute key={attribute.uid} attribute={attribute} />
+                        } else if (attribute.datatype == 'dynlist') {
+                            return <ListAttribute key={attribute.uid} attribute={attribute} />
                         } else {
+                            console.log(attribute.datatype);
                             return <EditableAttribute key={attribute.uid} attribute={attribute} />    
                         }	           			
 	           		})}
