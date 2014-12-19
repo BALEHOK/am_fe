@@ -21,12 +21,11 @@ var AssetPicker = React.createClass({
         this.collection.off(null, null, this);
     },   
     onChange: function(e) {
-        console.log(e);
+        this.props.attribute.value = e;        
     },
     onItemsRequest: function(query, callback) { 
         this.collection.query = query;
         this.collection.fetch();
-        console.log('fetch');
     },
     render: function() {
         var selectId = "attribute-" + this.props.attribute.uid;
