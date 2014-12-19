@@ -3,7 +3,7 @@
  */
 
 var React = require('react');
-var BooleanAttribute = React.createClass({
+var TextAttribute = React.createClass({
 	getInitialState: function() { 
 		return { isChecked: this.props.attribute.value ? true : false }; 
 	},
@@ -21,4 +21,4 @@ var BooleanAttribute = React.createClass({
     }
 });
 
-module.exports = BooleanAttribute;
+module.exports = TextAttribute;
