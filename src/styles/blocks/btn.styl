@@ -26,10 +26,12 @@
   overflow hidden
 
   &:hover
+    color $btnColor
     background-image linear-gradient(bottom, rgba(0, 0, 0, 0.06) 0%, rgba(0, 0, 0, 0) 100%)
 
   &:active
   &.btn_state_active
+    color $btnColor
     outline 0
     box-shadow inset 0 3px 5px rgba(0, 0, 0, 0.125)
 
@@ -102,6 +104,11 @@
       vertical-align baseline
       &::before
         content "\f055"
+
+    &_plus_square
+      &::before
+        content "\f0fe"
+
 
   &_type_second
     background $btnSecondaryBgColor
