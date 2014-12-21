@@ -24,10 +24,6 @@ var ResultPage = React.createClass({
     getInitialState: function() {
         var query = this.getQuery();
         return {
-            page: query.page,
-            assetType: query.assetType,
-            taxonomy: query.taxonomy,
-            sortBy: query.sortBy,
             searchId: null,
             counters: {
                 totalCount: null,
@@ -49,33 +45,34 @@ var ResultPage = React.createClass({
     //     }});
     // },
     componentDidMount: function() {
-        var self = this;
-        searchStore.on("all", function(){
-            self.forceUpdate();
-        });
-        searchCounterStore.on("all", function(){
-            self.forceUpdate();
-        });
-        searchStore.OnSearchDone.on(function(searchId){
-            AppDispatcher.dispatch({
-                action: 'search-counters',
-                data: {
-                    query: self.getQuery().query,
-                    searchId: searchId,
-                }});
-        });
+        console.log('mounted');
+        // var self = this;
+        // searchStore.on("all", function(){
+        //     self.forceUpdate();
+        // });
+        // searchCounterStore.on("all", function(){
+        //     self.forceUpdate();
+        // });
+        // searchStore.OnSearchDone.on(function(searchId){
+        //     AppDispatcher.dispatch({
+        //         action: 'search-counters',
+        //         data: {
+        //             query: self.getQuery().query,
+        //             searchId: searchId,
+        //         }});
+        // });
     },
     componentWillUnmount: function() {
         // searchStore.off(null, null, this);
     },
     componentWillMount: function() {
-        var query = this.getQuery();
-        this.loadResultFromServer(
-            query.query,
-            query.page,
-            query.assetType,
-            query.taxonomy,
-            query.sortBy);
+        // var query = this.getQuery();
+        // this.loadResultFromServer(
+        //     query.query,
+        //     query.page,
+        //     query.assetType,
+        //     query.taxonomy,
+        //     query.sortBy);
     },
     componentWillUpdate: function(nextProps, nextState) {
         // var params = this.getQuery();
@@ -150,11 +147,8 @@ var ResultPage = React.createClass({
     // handleExportChange: function(value) {
 
     // },
-    setTilesView: function() {
-        this.setState({isTilesView: true});
-    },
-    unsetTilesView: function() {
-        this.setState({isTilesView: false});
+    toggleTilesView: function(state) {
+        this.setState({isTilesView: state});
     },
     render: function() {
         var self = this;
@@ -163,6 +157,17 @@ var ResultPage = React.createClass({
             'search-results': true,
             'search-results_type_tiles': this.state.isTilesView
         });
+
+        var activeTileClasses = cx({
+            'btn btn_type_second': this.state.isTilesView,
+            'btn btn_type_second btn_state_active': !this.state.isTilesView
+        });
+
+        var deactiveTileClasses = cx({
+            'btn btn_type_second': !this.state.isTilesView,
+            'btn btn_type_second btn_state_active': this.state.isTilesView
+        });
+
         return (
             <div>
                 <div className="grid">
@@ -183,20 +188,13 @@ var ResultPage = React.createClass({
                                 <div className="input-group">
                                     <div className="input-group">
                                         <button type="button"
-                                            className={
-                                                this.state.isTilesView
-                                                    ? 'btn btn_type_second'
-                                                    : 'btn btn_type_second btn_state_active'
-                                                }
-                                            onClick={this.unsetTilesView}>
+                                            className={activeTileClasses}
+                                            onClick={this.toggleTilesView.bind(this, false)}>
                                             <i className="btn__icon btn__icon_list"></i>
                                         </button>
                                         <button type="button"
-                                            className={
-                                                this.state.isTilesView
-                                                    ? 'btn btn_type_second btn_state_active'
-                                                    : 'btn btn_type_second'}
-                                            onClick={this.setTilesView}>
+                                            className={deactiveTileClasses}
+                                            onClick={this.toggleTilesView.bind(this, true)}>
                                             <i className="btn__icon btn__icon_tiles"></i>
                                         </button>
                                     </div>
@@ -237,8 +235,6 @@ var ResultPage = React.createClass({
                                 <ul className="nav-block__list">
                                     {searchCounterStore.assetTypes.map(function(counter) {
                                         return <RefinementLink
-                                                    onRefinementChanged={self.handleRefinementChange.bind(self, 'assetType')}
-                                                    onRefinementClear={self.handleRefinementClear.bind(self, '')}
                                                     key={counter.id}
                                                     data={counter}
                                                     assetType={self.state.assetType}/>;
@@ -250,8 +246,6 @@ var ResultPage = React.createClass({
                                 <ul className="nav-block__list">
                                     {searchCounterStore.taxonomies.map(function(counter) {
                                         return <RefinementLink
-                                                    onRefinementChanged={self.handleRefinementChange.bind(self, 'taxonomy')}
-                                                    onRefinementClear={self.handleRefinementClear.bind(self, '')}
                                                     key={counter.id}
                                                     data={counter}
                                                     taxonomy={self.state.taxonomy}/>;
@@ -283,8 +277,7 @@ var ResultPage = React.createClass({
                                     })}
                                 </ul>
                                 {searchCounterStore.totalCount
-                                    ? <Pagination totalCount={searchCounterStore.totalCount}
-                                                onPageChanged={this.handlePageChange} />
+                                    ? <Pagination totalCount={searchCounterStore.totalCount}/>
                                     : <div/>
                                 }
                             </div>
