@@ -7,7 +7,7 @@ var Router = require('react-router');
 var Screen = require('./screen.jsx');
 var AuthenticatedRouteMixin = require('../../mixins/AuthenticatedRouteMixin');
 var Link = Router.Link;
-var assetStore = require('../../stores/AssetStore.ts').AssetStore.getInstance();
+var assetStore = null;//require('../../stores/AssetStore.ts').AssetStore.getInstance();
 
 var Attribute = React.createClass({
     render: function() {

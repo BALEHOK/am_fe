@@ -10,8 +10,18 @@ var ReactSelectize = require('../common/react-selectize');
 var SearchSimpleForm = require('./searchSimpleForm');
 var RefinementLink = require('./refinement_link');
 var ResultItem = require('./result_item');
-var searchStore = require('../../stores/SearchStore.ts').SearchStore.getInstance();
-var searchCounterStore = require('../../stores/SearchCounterStore.ts').SearchCounterStore.getInstance();
+var searchCounterStore = {
+    assetTypes: [],
+    taxonomies: [],
+    totalCount: 0
+};
+
+var SearchDispatcher = require('../../dispatchers/SearchDispatcher');
+var SearchActions = require('../../actions/SearchActions');
+
+var searchStore = {
+    models: []
+};
 
 var ResultPage = React.createClass({
     mixins: [Router.Navigation, Router.State],
@@ -66,6 +76,9 @@ var ResultPage = React.createClass({
         // searchStore.off(null, null, this);
     },
     componentWillMount: function() {
+        console.log('will mount');
+        this.props.dispatcher = SearchDispatcher;
+        this.actions = new SearchActions(this.props.dispatcher);
         // var query = this.getQuery();
         // this.loadResultFromServer(
         //     query.query,
@@ -83,15 +96,16 @@ var ResultPage = React.createClass({
         // params.query = nextState.query;
         // this.transitionTo('result', {}, params);
     },
-    // handleSimpleSearch: function(query) {
-    //     this.setState({query: query});
-    //     this.loadResultFromServer(
-    //         query,
-    //         this.state.page,
-    //         this.state.assetType,
-    //         this.state.taxonomy,
-    //         this.state.sortBy);
-    // },
+    handleSimpleSearch: function(query) {
+        this.setState({query: query});
+        this.transitionTo('/search/result?query=' + query);
+        // this.loadResultFromServer(
+        //     query,
+        //     this.state.page,
+        //     this.state.assetType,
+        //     this.state.taxonomy,
+        //     this.state.sortBy);
+    },
     // handlePageChange: function(page) {
     //     this.setState({page: page});
     //     this.loadResultFromServer(this.getQuery().query,
@@ -151,6 +165,7 @@ var ResultPage = React.createClass({
         this.setState({isTilesView: state});
     },
     render: function() {
+        console.log('rendered');
         var self = this;
         var cx = React.addons.classSet;
         var searchResultsClasses = cx({
@@ -175,7 +190,7 @@ var ResultPage = React.createClass({
                         <h1 className="page-title page-title_small">Search results</h1>
                     </div>
                     <div className="grid__item ten-twelfths">
-                        <SearchSimpleForm  value={this.getQuery().query} onQuerySubmit={this.handleSimpleSearch} />
+                        <SearchSimpleForm actions={this.actions} value={this.getQuery().query} />
                     </div>
                 </div>
                 <div className="results-form">

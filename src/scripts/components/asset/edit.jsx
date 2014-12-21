@@ -6,7 +6,7 @@ var React = require('react');
 var Router = require('react-router');
 var Screen = require('./screen.jsx');
 var AuthenticatedRouteMixin = require('../../mixins/AuthenticatedRouteMixin');
-var assetStore = require('../../stores/AssetStore.ts').AssetStore.getInstance();
+var assetStore = null;//require('../../stores/AssetStore.ts').AssetStore.getInstance();
 var ReactSelectize = require('../common/react-selectize');
 
 var EditableAttribute = React.createClass({
@@ -33,17 +33,17 @@ var EditableAssetAttribute = React.createClass({
     onChange: function(e) {
         //console.log(e);
     },
-    onItemsRequest: function(doneCallback) { 
+    onItemsRequest: function(doneCallback) {
         var items = [
             { name: "admin", id: 612 },
             { name: "foo", id: 2 },
             { name: "bar", id: 3 }
         ];
-        doneCallback(items);    
+        doneCallback(items);
 
         // TODO
         //this.props.loadAssetsByAssetTypeUid(this.state.assetTypeUid, function(data){
-        //    doneCallback(data);    
+        //    doneCallback(data);
         //});
     },
     render: function() {
@@ -52,13 +52,13 @@ var EditableAssetAttribute = React.createClass({
             <li>
                 <span>{this.props.attribute.name}</span>:
                 &nbsp;
-                <ReactSelectize    
-                    selectId={selectId}                      
+                <ReactSelectize
+                    selectId={selectId}
                     onItemsRequest={this.onItemsRequest}
-                    onChange={this.onChange}    
-                    value={this.props.attribute.relatedAsset.uid}                             
+                    onChange={this.onChange}
+                    value={this.props.attribute.relatedAsset.uid}
                     placeholder=" "
-                    label=" " />                
+                    label=" " />
             </li>
         );
     }
@@ -72,11 +72,11 @@ var Panel = React.createClass({
                <h3>Panel name: {this.props.name}</h3>
                <ul>
                     {this.props.panelAttributes.map(function(attribute){
-                        if (attribute.datatype == 'asset') {                            
-                            return <EditableAssetAttribute key={attribute.uid} attribute={attribute} />    
+                        if (attribute.datatype == 'asset') {
+                            return <EditableAssetAttribute key={attribute.uid} attribute={attribute} />
                         } else {
-                            return <EditableAttribute key={attribute.uid} attribute={attribute} />    
-                        }	           			
+                            return <EditableAttribute key={attribute.uid} attribute={attribute} />
+                        }
 	           		})}
                </ul>
             </div>
@@ -110,7 +110,7 @@ var AssetEdit = React.createClass({
             action: 'asset-edit'
         });
     },
-    render: function() {        
+    render: function() {
         return (
             <div>
                 <h1>Asset Edit Page</h1>

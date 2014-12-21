@@ -1,4 +1,6 @@
 /// <reference path="../../../typings/backbone/backbone.d.ts" />
+/// <reference path="../../../typings/AppDispatcher.d.ts" />
+
 import models = require('../models/Asset');
 
 export class AssetStore extends Backbone.Model {
@@ -37,12 +39,12 @@ export class AssetStore extends Backbone.Model {
             throw new Error("Error: Instantiation failed: Use AssetStore.getInstance() instead of new.");
         }
         var boundFunction = (this.dispatchCallback).bind(this);
-        this.dispatchToken = AppDispatcher.register(boundFunction);    
+        this.dispatchToken = AppDispatcher.register(boundFunction);
 
         var self = this;
         this.url = () => {
-        	return '/api/assettype/' 
-        		+ self.assetTypeUid 
+        	return '/api/assettype/'
+        		+ self.assetTypeUid
         		+ '/asset/'
         		+ self.assetUid;
         };
@@ -59,10 +61,10 @@ export class AssetStore extends Backbone.Model {
         	this.assetTypeUid = payload.data.assetTypeUid;
         	this.assetUid = payload.data.assetUid;
             this.fetch();
-        }      
+        }
         if (payload.action == 'asset-edit') {
             this.save();
-        }  
+        }
     }
 
 }
