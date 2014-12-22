@@ -39,12 +39,21 @@ var ResultPage = React.createClass({
         this.dispatcher = SearchDispatcher;
         this.actions = new SearchActions(this.dispatcher);
         var stores = this.dispatcher.stores;
+        this.forceUpdateBound = this.forceUpdate.bind(this);
         Object.keys(this.dispatcher.stores).map(function(store) {
-            stores[store].onChange(this.forceUpdate.bind(this));
+            stores[store].onChange(this.forceUpdateBound);
         }.bind(this));
 
         this.dispatcher.stores.filters.onChange(this.syncUrl);
         this.actions.changeSearchFilter(this.getQuery());
+    },
+
+    componentWillUnmount: function() {
+        var stores = this.dispatcher.stores;
+        Object.keys(this.dispatcher.stores).map(function(store) {
+            stores[store].listener.removeListener('change', this.forceUpdateBound);
+        }.bind(this));
+        this.dispatcher.stores.filters.listener.removeListener('change', this.syncUrl);
     },
 
     syncUrl: function() {

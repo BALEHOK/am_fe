@@ -94,14 +94,21 @@ var AssetEdit = React.createClass({
 
         var params = this.getParams();
 
-        this.dispatcher.stores.asset.onChange(this.forceUpdate.bind(this));
+        this.forceUpdateBound = this.forceUpdate.bind(this);
+        this.dispatcher.stores.asset.onChange(this.forceUpdateBound);
 
         this.actions.loadAsset(params);
     },
+
+    componentWillUnmount: function() {
+        this.dispatcher.stores.asset.listener.removeListener('change', this.forceUpdateBound);
+    },
+
     handleSubmit: function() {
         this.actions.saveAsset();
         this.transitionTo()
     },
+
     render: function() {
         var asset = this.dispatcher.getStore('asset').getState();
         return (
