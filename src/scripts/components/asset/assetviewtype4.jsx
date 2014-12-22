@@ -7,7 +7,7 @@ var ReactSelectize = require('../common/react-selectize');
 var TabbedArea = require('react-bootstrap/TabbedArea');
 var TabPane = require('react-bootstrap/TabPane');
 
-var AssetViewType3 = React.createClass({
+var AssetViewType4 = React.createClass({
     handleScreenChange: function() {
 
     },
@@ -77,7 +77,7 @@ var AssetViewType3 = React.createClass({
                         <div className="asset-data">
                             <div className="asset-data__content">
                                 <TabbedArea className="asset-data__tabs" defaultActiveKey={1} animation={false}>
-                                    <TabPane key={1} tab="General">
+                                    <TabPane eventKey={1} tab="General">
                                         <div className="asset-data__param">
                                             <span className="asset-data__param-title">Name:</span>
                                             test account
@@ -95,7 +95,7 @@ var AssetViewType3 = React.createClass({
                                             9/1/2014 11:13:47 AM
                                         </div>
                                     </TabPane>
-                                    <TabPane key={2} tab="Bool">
+                                    <TabPane eventKey={2} tab="Bool">
                                         <div className="asset-data__param">
                                             <span className="asset-data__param-title">bool:</span>
                                             <label className="checkbox">
@@ -132,7 +132,7 @@ var AssetViewType3 = React.createClass({
                                             ttt
                                         </div>
                                     </TabPane>
-                                    <TabPane key={3} tab="Advanced">
+                                    <TabPane eventKey={3} tab="Advanced">
                                         <div className="asset-data__param">
                                             <span className="asset-data__param-title">barcode:</span>
                                             <img src="assets/images/barcode.png"/>
@@ -169,7 +169,7 @@ var AssetViewType3 = React.createClass({
 
                                         </div>
                                     </TabPane>
-                                    <TabPane key={4} tab="Complex">
+                                    <TabPane eventKey={4} tab="Complex">
                                         <div className="asset-data__param">
                                             <span className="asset-data__param-title">asset:</span>
                                             <a>JAAMBEELDSTRAAT, 19, , WILSELE (3012) </a>  |  Related items
@@ -226,4 +226,4 @@ var AssetViewType3 = React.createClass({
         );
     }
 });
-module.exports = AssetViewType3;
+module.exports = AssetViewType4;

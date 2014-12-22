@@ -79,7 +79,7 @@ var AssetViewType3 = React.createClass({
                         <div className="asset-data">
                             <div className="asset-data__content">
                                 <TabbedArea className="asset-data__tabs" defaultActiveKey={1} animation={false}>
-                                    <TabPane key={1} tab="Dossier">
+                                    <TabPane eventKey={1} tab="Dossier">
                                         <div className="asset-data__param">
                                             <span className="asset-data__param-title">SOB50:</span>
                                             <label className="checkbox">
@@ -122,16 +122,16 @@ var AssetViewType3 = React.createClass({
                                             1320
                                         </div>
                                     </TabPane>
-                                    <TabPane key={2} tab="Fund">
+                                    <TabPane eventKey={2} tab="Fund">
 
                                     </TabPane>
-                                    <TabPane key={3} tab="Employment">
+                                    <TabPane eventKey={3} tab="Employment">
 
                                     </TabPane>
-                                    <TabPane key={4} tab="System">
+                                    <TabPane eventKey={4} tab="System">
 
                                     </TabPane>
-                                    <TabPane key={5} tab="Documents">
+                                    <TabPane eventKey={5} tab="Documents">
 
                                     </TabPane>
                                 </TabbedArea>

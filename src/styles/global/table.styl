@@ -1,0 +1,103 @@
+.table
+  margin 0 0 20px 0
+  width 100%
+  border none
+  border-collapse collapse
+  table-layout fixed
+  border-radius $br
+  font-family Tahoma, Arial, sans-serif
+  font-size 12px
+  line-height 1.5
+  color #7e7e7e
+
+  tr
+
+    th
+      background #4d4d4d
+      color #fff
+      border 1px solid #4d4d4d
+      border-bottom 5px solid #d1d1d1
+      vertical-align top
+      padding 8px 15px
+      text-align left
+      font-weight bold
+
+      &:last-child
+        text-align right
+
+      .small
+        font-size 10px
+        line-height 18px
+        font-weight normal
+        opacity 0.5
+
+    td
+      border none
+      border-bottom 1px solid #c7c7c7
+      vertical-align top
+      padding 10px 15px
+
+      &:first-child
+        border-left 1px solid #c7c7c7
+
+      &:last-child
+        border-right 1px solid #c7c7c7
+        text-align right
+
+      .field-cell
+        margin 0 -15px 15px -15px
+
+        &:last-child
+          margin-bottom 0
+
+    &:nth-child(even)
+      background #fcfcfc
+
+.field-cell
+  display block
+  white-space nowrap
+  font-size 0
+
+  &__name
+    font-weight bold
+    color #5c5c5c
+    width 21%
+
+  &__value
+  &__name
+    white-space normal
+    display inline-block
+    vertical-align top
+    font-size 12px
+    padding 0 15px
+
+  &__value
+    width 39.5%
+    position relative
+
+    &:before
+      content "\f105"
+      position absolute
+      display inline-block
+      font-family $FontAwesome
+      font-style normal
+      font-weight normal
+      line-height 1
+      font-size 18px
+      top 1px
+      right 100%
+
+    &_old
+      opacity 0.5
+      padding-left 30px
+
+      &::before
+        right auto
+        left 15px
+
+  &__deleted
+    color #ff0b0b
+
+  &__created
+    color #2ca0d6
+
