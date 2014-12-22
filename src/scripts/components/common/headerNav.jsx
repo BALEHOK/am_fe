@@ -37,6 +37,7 @@ var HeaderNav = React.createClass({
                             <a className="header-nav__item-link header-nav__item-link_icon_add" href="#" title="Add new reservation"></a>
                         </li>
                     </ul>
+                    <a href="/Asset/New/Step1.aspx" className="header-nav__btn btn btn_size_small">New asset <span className="btn__icon btn__icon_plus_square"></span></a>
                 </div>
             </nav>
         );
