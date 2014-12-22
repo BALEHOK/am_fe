@@ -14,7 +14,10 @@ var TextAttribute = require('./textAttribute.jsx');
 var ListAttribute = require('./listAttribute.jsx');
 
 var AuthenticatedRouteMixin = require('../../mixins/AuthenticatedRouteMixin');
-var assetStore = require('../../stores/AssetStore.ts').AssetStore.getInstance();
+var ReactSelectize = require('../common/react-selectize');
+
+var AssetActions = require('../../actions/AssetActions');
+var AssetDispatcher = require('../../dispatchers/AssetDispatcher');
 
 var Panel = React.createClass({
     render: function() {
@@ -24,8 +27,8 @@ var Panel = React.createClass({
                <h3>Panel name: {this.props.name}</h3>
                <ul>
                     {this.props.panelAttributes.map(function(attribute){                        
-                        if (attribute.datatype == 'asset') {                            
-                            return <AssetPicker key={attribute.uid} attribute={attribute} />    
+                        if (attribute.datatype == 'asset') {
+                            return <AssetPicker key={attribute.uid} attribute={attribute} />
                         } else if (attribute.datatype == 'bool') {
                             return <BooleanAttribute key={attribute.uid} attribute={attribute} />                        
                         } else if (attribute.datatype == 'text') {
@@ -36,8 +39,8 @@ var Panel = React.createClass({
                             return <ListAttribute key={attribute.uid} attribute={attribute} />
                         } else {
                             console.log(attribute.datatype);
-                            return <EditableAttribute key={attribute.uid} attribute={attribute} />    
-                        }	           			
+                            return <EditableAttribute key={attribute.uid} attribute={attribute} />
+                        }
 	           		})}
                </ul>
             </div>
@@ -47,39 +50,36 @@ var Panel = React.createClass({
 
 var AssetEdit = React.createClass({
 	mixins:[AuthenticatedRouteMixin, Router.Navigation, Router.State],
-    componentDidMount: function() {
-        var self = this;
-        assetStore.on("all", function(){
-            // workaround
-        	if (self._lifeCycleState == "MOUNTED")
-            	self.forceUpdate();
-        });
+    componentWillMount: function() {
+        this.dispatcher = AssetDispatcher;
+        this.actions = new AssetActions(this.dispatcher);
+
         var params = this.getParams();
-        AppDispatcher.dispatch({
-            action: 'asset-view',
-            data: {
-            	assetTypeUid: params.assetTypeUid,
-            	assetUid: params.assetUid
-            }
-        });
+
+        this.forceUpdateBound = this.forceUpdate.bind(this);
+        this.dispatcher.stores.asset.onChange(this.forceUpdateBound);
+
+        this.actions.loadAsset(params);
     },
+
     componentWillUnmount: function() {
-        assetStore.off(null, null, this);
+        this.dispatcher.stores.asset.listener.removeListener('change', this.forceUpdateBound);
     },
+
     handleSubmit: function() {
-        AppDispatcher.dispatch({
-            action: 'asset-edit'
-        });
+        this.actions.saveAsset();
     },
-    render: function() {        
+
+    render: function() {
+        var asset = this.dispatcher.getStore('asset').getState();
         return (
             <div>
                 <h1>Asset Edit Page</h1>
                 <form onSubmit={this.handleSubmit}>
-	        		{assetStore.screens.map(function(screen){
+	        		{asset.screens.map(function(screen){
                         return  <Screen key={screen.Id} name={screen.name}>
                                     {screen.panels.map(function(panel){
-                                        return <Panel key={panel.id} name={panel.name} panelAttributes={panel.panelAttributes} />
+                                        return <Panel key={panel.id} name={panel.name} panelAttributes={panel.attributes} />
                                     })}
                                 </Screen>
                     })}

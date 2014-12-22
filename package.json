@@ -14,14 +14,14 @@
     "backbone": "^1.1.2",
     "backbone-react-component": "^0.7.2",
     "extract-text-webpack-plugin": "^0.3.1",
-    "flux": "^2.0.1",
     "jquery": "^2.1.1",
     "keymirror": "^0.1.0",
     "moment": "^2.8.3",
     "react": "0.12.x",
     "react-bootstrap": "^0.13.0",
     "react-router": "^0.11.6",
-    "underscore": "^1.7.0"
+    "underscore": "^1.7.0",
+    "delorean": "^0.8.7"
   },
   "devDependencies": {
     "autoprefixer-loader": "^1.0.0",
@@ -48,7 +48,10 @@
     "stylus-loader": "^0.4.0",
     "url-loader": "~0.5.4",
     "webpack": "^1.4.13",
-    "through2": "^0.6.3"
+    "through2": "^0.6.3",
+    "traceur-loader": "^0.6.3",
+    "6to5": "^1.15.0",
+    "6to5-loader": "^0.2.4"
   },
   "scripts": {
     "postinstall": "bower install && tsd update --save --overwrite && cd ./webpack-loaders/ts-loader/ && npm install"
