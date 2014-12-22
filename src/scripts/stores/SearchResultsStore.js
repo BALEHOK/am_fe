@@ -2,7 +2,7 @@ var Flux = require('delorean').Flux;
 var SearchRepository = require('../services/SearchRepository');
 
 var SearchResultsStore = Flux.createStore({
-  results: [],
+  models: [],
 
   searchId: undefined,
 
@@ -15,12 +15,15 @@ var SearchResultsStore = Flux.createStore({
   },
 
   getState() {
-    return this.results;
+    return {
+      models: this.models,
+      searchId: this.searchId
+    };
   },
 
   loadResults(filters) {
     this.searchRepo.search(filters).then((data) => {
-      this.results = data.entities;
+      this.models = data.entities;
       this.searchId = data.searchId;
       this.emitChange();
     })

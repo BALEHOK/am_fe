@@ -30,6 +30,5 @@ var routes = (
   </Route>
 );
 
-var router = Router.create({ routes: routes });
-
-module.exports = router;
+var appRouter = Router.create({ routes: routes });
+module.exports = appRouter;

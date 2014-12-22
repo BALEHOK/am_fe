@@ -8,7 +8,8 @@ module.exports = class SearchActions extends Actions {
       return this._dispatcher.searchResults(filters);
     }).then(() => {
       var searchId = this._dispatcher.getStore('results').searchId;
-      return this._dispatcher.getCounters(searchId);
+      var filters = this._dispatcher.getStore('filters').getState();
+      return this._dispatcher.getCounters(searchId, filters.query);
     });
   }
 

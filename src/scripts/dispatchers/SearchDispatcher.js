@@ -1,6 +1,6 @@
 var Flux = require('delorean').Flux;
 var SearchResultsStore = require('../stores/SearchResultsStore');
-var SearchFilterStore = require('../stores/SearchResultsStore');
+var SearchFilterStore = require('../stores/SearchFilterStore');
 var SearchCounterStore = require('../stores/SearchCounterStore');
 
 var SearchDispatcher = Flux.createDispatcher({
@@ -13,8 +13,11 @@ var SearchDispatcher = Flux.createDispatcher({
     return this.dispatch('search:results', filters);
   },
 
-  getCounters(searchId) {
-    return this.dispatch('search:counters', searchId);
+  getCounters(searchId, query) {
+    return this.dispatch('search:counters', {
+      searchId: searchId,
+      query: query
+    });
   },
 
   getStores() {

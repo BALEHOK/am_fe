@@ -2,7 +2,11 @@ var Flux = require('delorean').Flux;
 var SearchRepository = require('../services/SearchRepository');
 
 var SearchCounterStore = Flux.createStore({
-  counters: {},
+  counters: {
+    assetTypes: [],
+    taxonomies: [],
+    totalCount: 0
+  },
 
   actions: {
     'search:counters': 'loadSearchCounters'
@@ -16,8 +20,8 @@ var SearchCounterStore = Flux.createStore({
     return this.counters;
   },
 
-  loadSearchCounters(searchId) {
-    this.searchRepo.counters(searchId).then((data) => {
+  loadSearchCounters(search) {
+    this.searchRepo.counters(search).then((data) => {
       this.counters = data;
       this.emitChange();
     });

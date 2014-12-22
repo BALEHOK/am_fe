@@ -10,18 +10,9 @@ var ReactSelectize = require('../common/react-selectize');
 var SearchSimpleForm = require('./searchSimpleForm');
 var RefinementLink = require('./refinement_link');
 var ResultItem = require('./result_item');
-var searchCounterStore = {
-    assetTypes: [],
-    taxonomies: [],
-    totalCount: 0
-};
 
 var SearchDispatcher = require('../../dispatchers/SearchDispatcher');
 var SearchActions = require('../../actions/SearchActions');
-
-var searchStore = {
-    models: []
-};
 
 var ResultPage = React.createClass({
     mixins: [Router.Navigation, Router.State],
@@ -43,129 +34,54 @@ var ResultPage = React.createClass({
             isTilesView: false
         };
     },
-    // loadResultFromServer: function(query, page, assetType, taxonomy, sortBy) {
-    //     AppDispatcher.dispatch({
-    //         action: 'search',
-    //         data: {
-    //             query:query,
-    //             page:page,
-    //             assetType:assetType,
-    //             taxonomy:taxonomy,
-    //             sortBy:sortBy
-    //     }});
-    // },
-    componentDidMount: function() {
-        console.log('mounted');
-        // var self = this;
-        // searchStore.on("all", function(){
-        //     self.forceUpdate();
-        // });
-        // searchCounterStore.on("all", function(){
-        //     self.forceUpdate();
-        // });
-        // searchStore.OnSearchDone.on(function(searchId){
-        //     AppDispatcher.dispatch({
-        //         action: 'search-counters',
-        //         data: {
-        //             query: self.getQuery().query,
-        //             searchId: searchId,
-        //         }});
-        // });
-    },
-    componentWillUnmount: function() {
-        // searchStore.off(null, null, this);
-    },
+
     componentWillMount: function() {
-        console.log('will mount');
-        this.props.dispatcher = SearchDispatcher;
-        this.actions = new SearchActions(this.props.dispatcher);
-        // var query = this.getQuery();
-        // this.loadResultFromServer(
-        //     query.query,
-        //     query.page,
-        //     query.assetType,
-        //     query.taxonomy,
-        //     query.sortBy);
-    },
-    componentWillUpdate: function(nextProps, nextState) {
-        // var params = this.getQuery();
-        // params.page = nextState.page;
-        // params.assetType = nextState.assetType;
-        // params.taxonomy = nextState.taxonomy;
-        // params.sortBy = nextState.sortBy;
-        // params.query = nextState.query;
-        // this.transitionTo('result', {}, params);
-    },
-    handleSimpleSearch: function(query) {
-        this.setState({query: query});
-        this.transitionTo('/search/result?query=' + query);
-        // this.loadResultFromServer(
-        //     query,
-        //     this.state.page,
-        //     this.state.assetType,
-        //     this.state.taxonomy,
-        //     this.state.sortBy);
-    },
-    // handlePageChange: function(page) {
-    //     this.setState({page: page});
-    //     this.loadResultFromServer(this.getQuery().query,
-    //         page,
-    //         this.state.assetType,
-    //         this.state.taxonomy,
-    //         this.state.sortBy);
-    // },
-    // handleRefinementChange: function(refinement, id) {
-    //     // TODO add optimistic refinements update.
-    //     // i.e. on click hide all others and left only selected one
-    //     if (refinement == 'assetType') {
-    //         this.setState({ assetType: id });
-    //         this.loadResultFromServer(
-    //             this.getQuery().query,
-    //             this.state.page,
-    //             id,
-    //             this.state.taxonomy,
-    //             this.state.sortBy);
-    //     } else {
-    //         this.setState({ taxonomy: id });
-    //         this.loadResultFromServer(
-    //             this.getQuery().query,
-    //             this.state.page,
-    //             this.state.assetType,
-    //             id,
-    //             this.state.sortBy);
-    //     }
-    // },
-    // handleRefinementClear: function() {
-    //     this.loadResultFromServer(
-    //         this.getQuery().query,
-    //         this.state.page,
-    //         undefined,
-    //         undefined,
-    //         this.state.sortBy);
+        this.dispatcher = SearchDispatcher;
+        this.actions = new SearchActions(this.dispatcher);
+        var stores = this.dispatcher.stores;
+        Object.keys(this.dispatcher.stores).map(function(store) {
+            stores[store].onChange(this.forceUpdate.bind(this));
+        }.bind(this));
 
-    //     this.setState({
-    //         assetType: undefined,
-    //         taxonomy: undefined
-    //     });
-    // },
-    // handleSortChange: function(value) {
-    //     var newSort = value;
-    //     this.setState({sortBy: newSort});
-    //     this.loadResultFromServer(
-    //         this.getQuery().query,
-    //         this.state.page,
-    //         this.state.assetType,
-    //         this.state.taxonomy,
-    //         newSort);
-    // },
-    // handleExportChange: function(value) {
+        this.dispatcher.stores.filters.onChange(this.syncUrl);
+        this.actions.changeSearchFilter(this.getQuery());
+    },
 
-    // },
+    syncUrl: function() {
+        var filters = this.dispatcher.getStore('filters').getState();
+        var clean = Object.keys(filters).reduce(function(acc, key) {
+            if(filters[key]) {
+                acc[key] = filters[key]
+            }
+            return acc;
+        }, {});
+        this.transitionTo('/search/result?' + $.param(clean));
+    },
+
+    filterCounters: function(param, counter) {
+        var id = this.dispatcher.getStore('filters').getState()[param];
+        if(!id) {
+            return true;
+        }
+        return parseInt(id) === counter.id;
+    },
+
+    handlePageChange: function(page) {
+        this.actions.changeSearchFilter({
+            page: page
+        });
+    },
+
+    handleSortChange: function(value) {
+        this.actions.changeSearchFilter({
+            sortBy: value
+        });
+    },
+
     toggleTilesView: function(state) {
         this.setState({isTilesView: state});
     },
     render: function() {
-        console.log('rendered');
         var self = this;
         var cx = React.addons.classSet;
         var searchResultsClasses = cx({
@@ -183,6 +99,9 @@ var ResultPage = React.createClass({
             'btn btn_type_second btn_state_active': this.state.isTilesView
         });
 
+        var results = this.dispatcher.getStore('results').getState();
+        var counters = this.dispatcher.getStore('counters').getState();
+        var filters = this.dispatcher.getStore('filters').getState();
         return (
             <div>
                 <div className="grid">
@@ -190,7 +109,7 @@ var ResultPage = React.createClass({
                         <h1 className="page-title page-title_small">Search results</h1>
                     </div>
                     <div className="grid__item ten-twelfths">
-                        <SearchSimpleForm actions={this.actions} value={this.getQuery().query} />
+                        <SearchSimpleForm dispatcher={this.dispatcher} actions={this.actions} value={this.getQuery().query} />
                     </div>
                 </div>
                 <div className="results-form">
@@ -217,7 +136,7 @@ var ResultPage = React.createClass({
                                         <span className="input-group__item-title">Sort by</span>
                                         <ReactSelectize
                                             items={this.sortItems}
-                                            value={parseInt(this.getInitialState().sortBy)}
+                                            value={filters.sortBy}
                                             onChange={this.handleSortChange}
                                             selectId="select-sortby"
                                             placeholder=" "
@@ -248,23 +167,29 @@ var ResultPage = React.createClass({
                             <nav className="nav-block">
                                 <span className="nav-block__title">Refine by assets</span>
                                 <ul className="nav-block__list">
-                                    {searchCounterStore.assetTypes.map(function(counter) {
-                                        return <RefinementLink
-                                                    key={counter.id}
-                                                    data={counter}
-                                                    assetType={self.state.assetType}/>;
-                                    })}
+                                    {counters.assetTypes.filter(this.filterCounters.bind(this, 'assetType'))
+                                        .map(function(counter) {
+                                            return <RefinementLink
+                                                        actions={self.actions}
+                                                        type="assetType"
+                                                        filters={filters}
+                                                        key={counter.id}
+                                                        data={counter}/>;
+                                        })}
                                 </ul>
                             </nav>
                             <nav className="nav-block">
                                 <span className="nav-block__title">Refine by taxonomies</span>
                                 <ul className="nav-block__list">
-                                    {searchCounterStore.taxonomies.map(function(counter) {
-                                        return <RefinementLink
-                                                    key={counter.id}
-                                                    data={counter}
-                                                    taxonomy={self.state.taxonomy}/>;
-                                    })}
+                                    {counters.taxonomies.filter(this.filterCounters.bind(this, 'taxonomy'))
+                                        .map(function(counter) {
+                                            return <RefinementLink
+                                                        actions={self.actions}
+                                                        type="taxonomy"
+                                                        filters={filters}
+                                                        key={counter.id}
+                                                        data={counter}/>;
+                                        })}
                                 </ul>
                             </nav>
                             <nav className="nav-block">
@@ -284,15 +209,15 @@ var ResultPage = React.createClass({
                                     <span className="search-results__header-item search-results__header-item_link">Go to result</span>
                                 </header>
                                 <ul className="search-results__list">
-                                    {searchStore.models.map(function(result) {
+                                    {results.models.map(function(result) {
                                         return <ResultItem
-                                                    key={result.get('indexUid')}
+                                                    key={result.indexUid}
                                                     model={result}
-                                                    searchId={searchStore.currentSearchId} />;
+                                                    searchId={results.searchId} />;
                                     })}
                                 </ul>
-                                {searchCounterStore.totalCount
-                                    ? <Pagination totalCount={searchCounterStore.totalCount}/>
+                                {counters.totalCount
+                                    ? <Pagination totalCount={counters.totalCount} onPageChanged={this.handlePageChange}/>
                                     : <div/>
                                 }
                             </div>

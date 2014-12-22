@@ -5,7 +5,7 @@
 
 // Components
 var React = require('react');
-var router = require('./router');
+var router = require('./appRouter');
 
 // Services and models
 var Config = require('./models/Config.ts').Config;
@@ -22,7 +22,6 @@ window.authService = authService;
 
 var Application = require('./models/Application.ts').Application;
 var app = new Application(config, authService, tokenStore);
-
 
 router.run(function (Handler, state) {
   React.render(<Handler model={app}/>, document.querySelector('.page-container'));

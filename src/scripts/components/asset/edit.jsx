@@ -6,8 +6,10 @@ var React = require('react');
 var Router = require('react-router');
 var Screen = require('./screen.jsx');
 var AuthenticatedRouteMixin = require('../../mixins/AuthenticatedRouteMixin');
-var assetStore = null;//require('../../stores/AssetStore.ts').AssetStore.getInstance();
 var ReactSelectize = require('../common/react-selectize');
+
+var AssetActions = require('../../actions/AssetActions');
+var AssetDispatcher = require('../../dispatchers/AssetDispatcher');
 
 var EditableAttribute = React.createClass({
     valueChanged: function(event) {
@@ -86,39 +88,30 @@ var Panel = React.createClass({
 
 var AssetEdit = React.createClass({
 	mixins:[AuthenticatedRouteMixin, Router.Navigation, Router.State],
-    componentDidMount: function() {
-        var self = this;
-        assetStore.on("all", function(){
-            // workaround
-        	if (self._lifeCycleState == "MOUNTED")
-            	self.forceUpdate();
-        });
+    componentWillMount: function() {
+        this.dispatcher = AssetDispatcher;
+        this.actions = new AssetActions(this.dispatcher);
+
         var params = this.getParams();
-        AppDispatcher.dispatch({
-            action: 'asset-view',
-            data: {
-            	assetTypeUid: params.assetTypeUid,
-            	assetUid: params.assetUid
-            }
-        });
-    },
-    componentWillUnmount: function() {
-        assetStore.off(null, null, this);
+
+        this.dispatcher.stores.asset.onChange(this.forceUpdate.bind(this));
+
+        this.actions.loadAsset(params);
     },
     handleSubmit: function() {
-        AppDispatcher.dispatch({
-            action: 'asset-edit'
-        });
+        this.actions.saveAsset();
+        this.transitionTo()
     },
     render: function() {
+        var asset = this.dispatcher.getStore('asset').getState();
         return (
             <div>
                 <h1>Asset Edit Page</h1>
                 <form onSubmit={this.handleSubmit}>
-	        		{assetStore.screens.map(function(screen){
+	        		{asset.screens.map(function(screen){
                         return  <Screen key={screen.Id} name={screen.name}>
                                     {screen.panels.map(function(panel){
-                                        return <Panel key={panel.id} name={panel.name} panelAttributes={panel.panelAttributes} />
+                                        return <Panel key={panel.id} name={panel.name} panelAttributes={panel.attributes} />
                                     })}
                                 </Screen>
                     })}

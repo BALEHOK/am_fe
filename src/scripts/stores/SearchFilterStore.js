@@ -2,7 +2,13 @@ var Flux = require('delorean').Flux;
 var _ = require('underscore');
 
 var SearchFilterStore = Flux.createStore({
-  filter: {},
+  filter: {
+    sortBy: undefined,
+    query: undefined,
+    assetType: undefined,
+    taxonomy: undefined,
+    page: undefined
+  },
 
   actions: {
     'search:filter': 'applySearchFilter'
@@ -13,7 +19,7 @@ var SearchFilterStore = Flux.createStore({
   },
 
   applySearchFilter(filter) {
-    this.filter = _.extends({}, this.filter, filter);
+    this.filter = _.extend({}, this.filter, filter);
     this.emitChange();
   }
 });
