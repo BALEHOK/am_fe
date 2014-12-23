@@ -1,4 +1,4 @@
-class SearchRepository {
+class AssetRepository {
     loadAsset(params) {
         var url = `/api/assettype/${params.assetTypeUid}/asset/${params.assetUid}`;
         return $.ajax({
@@ -9,4 +9,4 @@ class SearchRepository {
     }
 }
 
-module.exports = SearchRepository;
+module.exports = AssetRepository;
