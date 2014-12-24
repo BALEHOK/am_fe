@@ -10,8 +10,9 @@ var ReactSelectize = require('../common/react-selectize');
 var SearchSimpleForm = require('./searchSimpleForm');
 var RefinementLink = require('./refinement_link');
 var ResultItem = require('./result_item');
-var searchStore = require('../../stores/SearchStore.ts').SearchStore.getInstance();
-var searchCounterStore = require('../../stores/SearchCounterStore.ts').SearchCounterStore.getInstance();
+
+var SearchDispatcher = require('../../dispatchers/SearchDispatcher');
+var SearchActions = require('../../actions/SearchActions');
 
 var ResultPage = React.createClass({
     mixins: [Router.Navigation, Router.State],
@@ -24,10 +25,6 @@ var ResultPage = React.createClass({
     getInitialState: function() {
         var query = this.getQuery();
         return {
-            page: query.page,
-            assetType: query.assetType,
-            taxonomy: query.taxonomy,
-            sortBy: query.sortBy,
             searchId: null,
             counters: {
                 totalCount: null,
@@ -37,124 +34,61 @@ var ResultPage = React.createClass({
             isTilesView: false
         };
     },
-    loadResultFromServer: function(query, page, assetType, taxonomy, sortBy) {
-        AppDispatcher.dispatch({
-            action: 'search',
-            data: {
-                query:query,
-                page:page,
-                assetType:assetType,
-                taxonomy:taxonomy,
-                sortBy:sortBy
-        }});
-    },
-    componentDidMount: function() {
-        var self = this;
-        searchStore.on("all", function(){
-            self.forceUpdate();
-        });
-        searchCounterStore.on("all", function(){
-            self.forceUpdate();
-        });
-        searchStore.OnSearchDone.on(function(searchId){
-            AppDispatcher.dispatch({
-                action: 'search-counters',
-                data: {
-                    query: self.getQuery().query,
-                    searchId: searchId,
-                }});
-        });
-    },
-    componentWillUnmount: function() {
-        searchStore.off(null, null, this);
-    },
+
     componentWillMount: function() {
-        var query = this.getQuery();
-        this.loadResultFromServer(
-            query.query,
-            query.page,
-            query.assetType,
-            query.taxonomy,
-            query.sortBy);
-    },
-    componentWillUpdate: function(nextProps, nextState) {
-        var params = this.getQuery();
-        params.page = nextState.page;
-        params.assetType = nextState.assetType;
-        params.taxonomy = nextState.taxonomy;
-        params.sortBy = nextState.sortBy;
-        params.query = nextState.query;
-        this.transitionTo('result', {}, params);
-    },
-    handleSimpleSearch: function(query) {
-        this.setState({query: query});
-        this.loadResultFromServer(
-            query,
-            this.state.page,
-            this.state.assetType,
-            this.state.taxonomy,
-            this.state.sortBy);
-    },
-    handlePageChange: function(page) {
-        this.setState({page: page});
-        this.loadResultFromServer(this.getQuery().query,
-            page,
-            this.state.assetType,
-            this.state.taxonomy,
-            this.state.sortBy);
-    },
-    handleRefinementChange: function(refinement, id) {
-        // TODO add optimistic refinements update.
-        // i.e. on click hide all others and left only selected one
-        if (refinement == 'assetType') {
-            this.setState({ assetType: id });
-            this.loadResultFromServer(
-                this.getQuery().query,
-                this.state.page,
-                id,
-                this.state.taxonomy,
-                this.state.sortBy);
-        } else {
-            this.setState({ taxonomy: id });
-            this.loadResultFromServer(
-                this.getQuery().query,
-                this.state.page,
-                this.state.assetType,
-                id,
-                this.state.sortBy);
-        }
-    },
-    handleRefinementClear: function() {
-        this.loadResultFromServer(
-            this.getQuery().query,
-            this.state.page,
-            undefined,
-            undefined,
-            this.state.sortBy);
+        this.dispatcher = SearchDispatcher;
+        this.actions = new SearchActions(this.dispatcher);
+        var stores = this.dispatcher.stores;
+        this.forceUpdateBound = this.forceUpdate.bind(this);
+        Object.keys(this.dispatcher.stores).map(function(store) {
+            stores[store].onChange(this.forceUpdateBound);
+        }.bind(this));
 
-        this.setState({
-            assetType: undefined,
-            taxonomy: undefined
+        this.dispatcher.stores.filters.onChange(this.syncUrl);
+        this.actions.changeSearchFilter(this.getQuery());
+    },
+
+    componentWillUnmount: function() {
+        var stores = this.dispatcher.stores;
+        Object.keys(this.dispatcher.stores).map(function(store) {
+            stores[store].listener.removeListener('change', this.forceUpdateBound);
+        }.bind(this));
+        this.dispatcher.stores.filters.listener.removeListener('change', this.syncUrl);
+    },
+
+    syncUrl: function() {
+        var filters = this.dispatcher.getStore('filters').getState();
+        var clean = Object.keys(filters).reduce(function(acc, key) {
+            if(filters[key]) {
+                acc[key] = filters[key]
+            }
+            return acc;
+        }, {});
+        this.transitionTo('/search/result?' + $.param(clean));
+    },
+
+    filterCounters: function(param, counter) {
+        var id = this.dispatcher.getStore('filters').getState()[param];
+        if(!id) {
+            return true;
+        }
+        return parseInt(id) === counter.id;
+    },
+
+    handlePageChange: function(page) {
+        this.actions.changeSearchFilter({
+            page: page
         });
     },
-    handleSortChange: function(value) {
-        var newSort = value;
-        this.setState({sortBy: newSort});
-        this.loadResultFromServer(
-            this.getQuery().query,
-            this.state.page,
-            this.state.assetType,
-            this.state.taxonomy,
-            newSort);
-    },
-    handleExportChange: function(value) {
 
+    handleSortChange: function(value) {
+        this.actions.changeSearchFilter({
+            sortBy: value
+        });
     },
-    setTilesView: function() {
-        this.setState({isTilesView: true});
-    },
-    unsetTilesView: function() {
-        this.setState({isTilesView: false});
+
+    toggleTilesView: function(state) {
+        this.setState({isTilesView: state});
     },
     render: function() {
         var self = this;
@@ -163,6 +97,20 @@ var ResultPage = React.createClass({
             'search-results': true,
             'search-results_type_tiles': this.state.isTilesView
         });
+
+        var activeTileClasses = cx({
+            'btn btn_type_second': this.state.isTilesView,
+            'btn btn_type_second btn_state_active': !this.state.isTilesView
+        });
+
+        var deactiveTileClasses = cx({
+            'btn btn_type_second': !this.state.isTilesView,
+            'btn btn_type_second btn_state_active': this.state.isTilesView
+        });
+
+        var results = this.dispatcher.getStore('results').getState();
+        var counters = this.dispatcher.getStore('counters').getState();
+        var filters = this.dispatcher.getStore('filters').getState();
         return (
             <div>
                 <div className="grid">
@@ -170,7 +118,7 @@ var ResultPage = React.createClass({
                         <h1 className="page-title page-title_small">Search results</h1>
                     </div>
                     <div className="grid__item ten-twelfths">
-                        <SearchSimpleForm  value={this.getQuery().query} onQuerySubmit={this.handleSimpleSearch} />
+                        <SearchSimpleForm dispatcher={this.dispatcher} actions={this.actions} value={this.getQuery().query} />
                     </div>
                 </div>
                 <div className="results-form">
@@ -183,20 +131,13 @@ var ResultPage = React.createClass({
                                 <div className="input-group">
                                     <div className="input-group">
                                         <button type="button"
-                                            className={
-                                                this.state.isTilesView
-                                                    ? 'btn btn_type_second'
-                                                    : 'btn btn_type_second btn_state_active'
-                                                }
-                                            onClick={this.unsetTilesView}>
+                                            className={activeTileClasses}
+                                            onClick={this.toggleTilesView.bind(this, false)}>
                                             <i className="btn__icon btn__icon_list"></i>
                                         </button>
                                         <button type="button"
-                                            className={
-                                                this.state.isTilesView
-                                                    ? 'btn btn_type_second btn_state_active'
-                                                    : 'btn btn_type_second'}
-                                            onClick={this.setTilesView}>
+                                            className={deactiveTileClasses}
+                                            onClick={this.toggleTilesView.bind(this, true)}>
                                             <i className="btn__icon btn__icon_tiles"></i>
                                         </button>
                                     </div>
@@ -204,7 +145,7 @@ var ResultPage = React.createClass({
                                         <span className="input-group__item-title">Sort by</span>
                                         <ReactSelectize
                                             items={this.sortItems}
-                                            value={parseInt(this.getInitialState().sortBy)}
+                                            value={filters.sortBy}
                                             onChange={this.handleSortChange}
                                             selectId="select-sortby"
                                             placeholder=" "
@@ -235,27 +176,29 @@ var ResultPage = React.createClass({
                             <nav className="nav-block">
                                 <span className="nav-block__title">Refine by assets</span>
                                 <ul className="nav-block__list">
-                                    {searchCounterStore.assetTypes.map(function(counter) {
-                                        return <RefinementLink
-                                                    onRefinementChanged={self.handleRefinementChange.bind(self, 'assetType')}
-                                                    onRefinementClear={self.handleRefinementClear.bind(self, '')}
-                                                    key={counter.id}
-                                                    data={counter}
-                                                    assetType={self.state.assetType}/>;
-                                    })}
+                                    {counters.assetTypes.filter(this.filterCounters.bind(this, 'assetType'))
+                                        .map(function(counter) {
+                                            return <RefinementLink
+                                                        actions={self.actions}
+                                                        type="assetType"
+                                                        filters={filters}
+                                                        key={counter.id}
+                                                        data={counter}/>;
+                                        })}
                                 </ul>
                             </nav>
                             <nav className="nav-block">
                                 <span className="nav-block__title">Refine by taxonomies</span>
                                 <ul className="nav-block__list">
-                                    {searchCounterStore.taxonomies.map(function(counter) {
-                                        return <RefinementLink
-                                                    onRefinementChanged={self.handleRefinementChange.bind(self, 'taxonomy')}
-                                                    onRefinementClear={self.handleRefinementClear.bind(self, '')}
-                                                    key={counter.id}
-                                                    data={counter}
-                                                    taxonomy={self.state.taxonomy}/>;
-                                    })}
+                                    {counters.taxonomies.filter(this.filterCounters.bind(this, 'taxonomy'))
+                                        .map(function(counter) {
+                                            return <RefinementLink
+                                                        actions={self.actions}
+                                                        type="taxonomy"
+                                                        filters={filters}
+                                                        key={counter.id}
+                                                        data={counter}/>;
+                                        })}
                                 </ul>
                             </nav>
                             <nav className="nav-block">
@@ -275,16 +218,15 @@ var ResultPage = React.createClass({
                                     <span className="search-results__header-item search-results__header-item_link">Go to result</span>
                                 </header>
                                 <ul className="search-results__list">
-                                    {searchStore.models.map(function(result) {
+                                    {results.models.map(function(result) {
                                         return <ResultItem
-                                                    key={result.get('indexUid')}
+                                                    key={result.indexUid}
                                                     model={result}
-                                                    searchId={searchStore.currentSearchId} />;
+                                                    searchId={results.searchId} />;
                                     })}
                                 </ul>
-                                {searchCounterStore.totalCount
-                                    ? <Pagination totalCount={searchCounterStore.totalCount}
-                                                onPageChanged={this.handlePageChange} />
+                                {counters.totalCount
+                                    ? <Pagination totalCount={counters.totalCount} onPageChanged={this.handlePageChange}/>
                                     : <div/>
                                 }
                             </div>

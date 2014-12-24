@@ -9,21 +9,21 @@ var ResultItem = React.createClass({
     mixins: [Router.Navigation],
     render: function() {
         var assetLink = this.makeHref('asset-view', {
-                assetTypeUid: this.props.model.get('dynEntityConfigUid'),
-                assetUid: this.props.model.get('dynEntityUid')
+                assetTypeUid: this.props.model.dynEntityConfigUid,
+                assetUid: this.props.model.dynEntityUid
             }, {searchId: this.props.searchId});
         return (
             <li className="search-results__item">
                 <a className="search-results__item-link" href={assetLink}>
                     <span className="search-results__item-param search-results__item-param_name">
-                        <span className="link">{this.props.model.get('name')}</span>
+                        <span className="link">{this.props.model.name}</span>
                     </span>
                     <span className="search-results__item-param search-results__item-param_category">
-                        <span className="label">{this.props.model.get('categoryKeywords')}</span>
+                        <span className="label">{this.props.model.categoryKeywords}</span>
                     </span>
                     <span className="search-results__item-param search-results__item-param_attr">
                         <span className="search-results__item-attr">
-                            {this.props.model.get('allAttribValues')}
+                            {this.props.model.allAttribValues}
                         </span>
                     </span>
                     <span className="search-results__item-param search-results__item-param_link">
