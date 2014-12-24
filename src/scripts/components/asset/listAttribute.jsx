@@ -36,8 +36,11 @@ var ListAttribute = React.createClass({
     },
     render: function() {
         var selectId = "attribute-list-" + this.props.attribute.uid;
-        var list = this.dispatcher.getStore('list').getState();
-        console.log(list);
+        var lists = this.dispatcher.getStore('list').getState();
+        var list = lists[this.props.attribute.dynamicListUid];
+        var items = list != null 
+            ? list.items
+            : [];
         return (
             <li>
                 <span>{this.props.attribute.name}</span>:
@@ -46,7 +49,7 @@ var ListAttribute = React.createClass({
                     selectId={selectId} 
                     valueField="key"
                     labelField="value" 
-                    items={list.items} 
+                    items={items} 
                     onItemsRequest={this.onItemsRequest}                   
                     onChange={this.onChange}    
                     value={this.props.attribute.value}                             

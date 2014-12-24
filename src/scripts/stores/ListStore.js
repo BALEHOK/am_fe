@@ -3,10 +3,8 @@ var ListRepository = require('../services/ListRepository');
 
 var ListStore = Flux.createStore({
 
-  list: {
-    items: []
-  },
-
+  lists: [],
+  
   actions: {
     'list:load': 'loadDynamicList'
   },
@@ -16,16 +14,17 @@ var ListStore = Flux.createStore({
   },
 
   loadDynamicList(params) {
+    var uid = params.dynamicListUid;
     this.listRepo.loadDynamicList({
-      dynamicListUid: params.dynamicListUid
+      dynamicListUid: uid
     }).then((data) => {
-      this.list = data;
+      this.lists[uid] = data;
       this.emitChange();
     });
   },
 
   getState() {
-    return this.list;
+    return this.lists;
   }
 });
 
