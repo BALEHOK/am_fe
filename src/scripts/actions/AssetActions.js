@@ -8,6 +8,10 @@ class AssetActions extends Actions {
 
   saveAsset() {}
 
+  loadDynamicList(query) {
+  	this._dispatcher.loadDynamicList(query);
+  }
+
 }
 
 module.exports = AssetActions;

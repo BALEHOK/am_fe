@@ -4,42 +4,52 @@
 
 var React = require('react');
 var ReactSelectize = require('../common/react-selectize');
-var ListsCollection = require('../../models/ListsCollection.ts').ListsCollection;
+var AssetActions = require('../../actions/AssetActions');
+var AssetDispatcher = require('../../dispatchers/AssetDispatcher');
 
 var ListAttribute = React.createClass({
     componentWillMount: function() {
-        this.collection = new ListsCollection();
-        this.collection.assetTypeAttributeId = this.props.attribute.assetTypeAttributeId;
+        this.dispatcher = AssetDispatcher;
+        this.actions = new AssetActions(this.dispatcher);
+        this.forceUpdateBound = this.forceUpdate.bind(this);
+        this.dispatcher.stores.list.onChange(this.forceUpdateBound);
+        var uid = this.props.attribute.dynamicListUid;
+        this.actions.loadDynamicList({
+            dynamicListUid: uid
+        });
     },
     componentDidMount: function() {        
         var self = this;        
-        this.collection.on("all", function() {
-            self.forceUpdate();
-        });
     }, 
     componentWillUnmount: function() {
-        this.collection.off(null, null, this);
+        this.dispatcher.stores.list.listener.removeListener(
+            'change', this.forceUpdateBound);
     },   
     onChange: function(e) {
         this.props.attribute.value = e;        
     },
     onItemsRequest: function(query, callback) { 
-        this.collection.query = query;
-        this.collection.fetch();
+        var uid = this.props.attribute.dynamicListUid;
+        this.actions.loadDynamicList({
+            dynamicListUid: uid
+        });
     },
     render: function() {
+        var selectId = "attribute-list-" + this.props.attribute.uid;
+        var list = this.dispatcher.getStore('list').getState();
+        console.log(list);
         return (
             <li>
                 <span>{this.props.attribute.name}</span>:
                 &nbsp;
                 <ReactSelectize    
                     selectId={selectId} 
-                    valueField="uid"
-                    labelField="name"  
+                    valueField="key"
+                    labelField="value" 
+                    items={list.items} 
                     onItemsRequest={this.onItemsRequest}                   
-                    items={this.collection.models}
                     onChange={this.onChange}    
-                    value={this.props.attribute.relatedAsset.uid}                             
+                    value={this.props.attribute.value}                             
                     placeholder=" "
                     label=" " /> 
             </li>

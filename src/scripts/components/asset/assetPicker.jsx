@@ -28,7 +28,7 @@ var AssetPicker = React.createClass({
         this.collection.fetch();
     },
     render: function() {
-        var selectId = "attribute-" + this.props.attribute.uid;
+        var selectId = "attribute-asset-" + this.props.attribute.uid;
         return (
             <li>
                 <span>{this.props.attribute.name}</span>:
