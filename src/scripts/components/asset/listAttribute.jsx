@@ -18,9 +18,6 @@ var ListAttribute = React.createClass({
             dynamicListUid: uid
         });
     },
-    componentDidMount: function() {        
-        var self = this;        
-    }, 
     componentWillUnmount: function() {
         this.dispatcher.stores.list.listener.removeListener(
             'change', this.forceUpdateBound);
@@ -36,7 +33,7 @@ var ListAttribute = React.createClass({
     },
     render: function() {
         var selectId = "attribute-list-" + this.props.attribute.uid;
-        var lists = this.dispatcher.getStore('list').getState();
+        var lists = this.dispatcher.getStore('list').getState().dynlists;
         var list = lists[this.props.attribute.dynamicListUid];
         var items = list != null 
             ? list.items

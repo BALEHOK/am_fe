@@ -3,10 +3,14 @@ var ListRepository = require('../services/ListRepository');
 
 var ListStore = Flux.createStore({
 
-  lists: [],
+  lists: {
+    assets: [],
+    dynlists: []
+  },
   
   actions: {
-    'list:load': 'loadDynamicList'
+    'list:dynlists': 'loadDynamicList',
+    'list:assets': 'loadAssetsList'
   },
 
   initialize() {
@@ -18,7 +22,20 @@ var ListStore = Flux.createStore({
     this.listRepo.loadDynamicList({
       dynamicListUid: uid
     }).then((data) => {
-      this.lists[uid] = data;
+      this.lists.dynlists[uid] = data;
+      this.emitChange();
+    });
+  },
+
+  loadAssetsList(params) {
+    var assetTypeId = params.assetTypeId;
+    this.listRepo.loadAssetsList({
+      assetTypeId: params.assetTypeId,
+      query: params.query,
+      rowStart: params.rowStart,
+      rowsNumber: params.rowsNumber
+    }).then((data) => {
+      this.lists.assets[assetTypeId] = data;
       this.emitChange();
     });
   },

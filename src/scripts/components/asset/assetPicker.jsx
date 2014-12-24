@@ -4,31 +4,38 @@
 
 var React = require('react');
 var ReactSelectize = require('../common/react-selectize');
-var AssetsCollection = require('../../models/AssetsCollection.ts').AssetsCollection;
+var AssetActions = require('../../actions/AssetActions');
+var AssetDispatcher = require('../../dispatchers/AssetDispatcher');
 
 var AssetPicker = React.createClass({
     componentWillMount: function() {
-        this.collection = new AssetsCollection();
-        this.collection.assetTypeId = this.props.attribute.relatedAsset.assetTypeId;
-    },
-    componentDidMount: function() {        
-        var self = this;        
-        this.collection.on("all", function() {
-            self.forceUpdate();
+        this.dispatcher = AssetDispatcher;
+        this.actions = new AssetActions(this.dispatcher);
+        this.forceUpdateBound = this.forceUpdate.bind(this);
+        this.dispatcher.stores.list.onChange(this.forceUpdateBound);
+        var assetTypeId = this.props.attribute.relatedAsset.assetTypeId;
+        this.actions.loadAssetsList({
+            assetTypeId: assetTypeId
         });
-    }, 
+    },
     componentWillUnmount: function() {
-        this.collection.off(null, null, this);
+        this.dispatcher.stores.list.listener.removeListener(
+            'change', this.forceUpdateBound);
     },   
     onChange: function(e) {
         this.props.attribute.value = e;        
     },
     onItemsRequest: function(query, callback) { 
-        this.collection.query = query;
-        this.collection.fetch();
+        var assetTypeId = this.props.attribute.relatedAsset.assetTypeId;
+        this.actions.loadAssetsList({
+            assetTypeId: assetTypeId,
+            query: query
+        });
     },
     render: function() {
         var selectId = "attribute-asset-" + this.props.attribute.uid;
+        var lists = this.dispatcher.getStore('list').getState().assets;
+        var list = lists[this.props.attribute.relatedAsset.assetTypeId];
         return (
             <li>
                 <span>{this.props.attribute.name}</span>:
@@ -37,8 +44,8 @@ var AssetPicker = React.createClass({
                     selectId={selectId} 
                     valueField="uid"
                     labelField="name"  
+                    items={list}
                     onItemsRequest={this.onItemsRequest}                   
-                    items={this.collection.models}
                     onChange={this.onChange}    
                     value={this.props.attribute.relatedAsset.uid}                             
                     placeholder=" "
