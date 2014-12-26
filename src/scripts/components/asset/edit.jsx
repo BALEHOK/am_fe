@@ -5,27 +5,19 @@
 var React = require('react');
 var Router = require('react-router');
 var Screen = require('./screen.jsx');
+
+var Attribute = require('./attribute.jsx');
+var EditableAttribute = require('./editableAttribute.jsx');
 var AssetPicker = require('./assetPicker.jsx');
+var BooleanAttribute = require('./booleanAttribute.jsx');
+var TextAttribute = require('./textAttribute.jsx');
+var ListAttribute = require('./listAttribute.jsx');
+
 var AuthenticatedRouteMixin = require('../../mixins/AuthenticatedRouteMixin');
 var ReactSelectize = require('../common/react-selectize');
 
 var AssetActions = require('../../actions/AssetActions');
 var AssetDispatcher = require('../../dispatchers/AssetDispatcher');
-
-var EditableAttribute = React.createClass({
-    valueChanged: function(event) {
-        this.props.attribute.value = event.target.value;
-    },
-    render: function() {
-        return (
-            <li>
-                <span>{this.props.attribute.name}</span>:
-                &nbsp;
-                <input type="text" onChange={this.valueChanged} defaultValue={this.props.attribute.value} />
-            </li>
-        );
-    }
-});
 
 var Panel = React.createClass({
     render: function() {
@@ -34,10 +26,19 @@ var Panel = React.createClass({
             <div>
                <h3>Panel name: {this.props.name}</h3>
                <ul>
-                    {this.props.panelAttributes.map(function(attribute){
+                    {this.props.panelAttributes.map(function(attribute){                        
                         if (attribute.datatype == 'asset') {
                             return <AssetPicker key={attribute.uid} attribute={attribute} />
+                        } else if (attribute.datatype == 'bool') {
+                            return <BooleanAttribute key={attribute.uid} attribute={attribute} />                        
+                        } else if (attribute.datatype == 'text') {
+                            return <TextAttribute key={attribute.uid} attribute={attribute} />
+                        } else if (attribute.datatype == 'revision') {
+                            return <Attribute key={attribute.uid} attribute={attribute} />
+                        } else if (attribute.datatype == 'dynlist') {
+                            return <ListAttribute key={attribute.uid} attribute={attribute} />
                         } else {
+                            console.log(attribute.datatype);
                             return <EditableAttribute key={attribute.uid} attribute={attribute} />
                         }
 	           		})}

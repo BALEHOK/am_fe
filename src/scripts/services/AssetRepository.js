@@ -6,7 +6,7 @@ class AssetRepository {
             contentType: 'application/json',
             type: 'GET'
         });
-    }
+    }    
 }
 
 module.exports = AssetRepository;

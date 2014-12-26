@@ -5,23 +5,12 @@
 var React = require('react');
 var Router = require('react-router');
 var Screen = require('./screen.jsx');
+var Attribute = require('./attribute.jsx');
 var AuthenticatedRouteMixin = require('../../mixins/AuthenticatedRouteMixin');
 var Link = Router.Link;
 
 var AssetActions = require('../../actions/AssetActions');
 var AssetDispatcher = require('../../dispatchers/AssetDispatcher');
-
-var Attribute = React.createClass({
-    render: function() {
-        return (
-            <li>
-                <span>{this.props.attribute.name}</span>:
-                &nbsp;
-                <span>{this.props.attribute.value}</span>
-            </li>
-        );
-    }
-});
 
 var Panel = React.createClass({
     render: function() {

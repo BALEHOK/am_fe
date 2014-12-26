@@ -53,7 +53,7 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
     var $select = null,
       selectControl = this.getSelectizeControl();
 
-    if(selectControl) {
+    if(selectControl && this.props.items) {
       // rebuild
       selectControl.off();
       this.props.items.map(function(item){

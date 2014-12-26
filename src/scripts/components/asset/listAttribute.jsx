@@ -7,15 +7,15 @@ var ReactSelectize = require('../common/react-selectize');
 var AssetActions = require('../../actions/AssetActions');
 var AssetDispatcher = require('../../dispatchers/AssetDispatcher');
 
-var AssetPicker = React.createClass({
+var ListAttribute = React.createClass({
     componentWillMount: function() {
         this.dispatcher = AssetDispatcher;
         this.actions = new AssetActions(this.dispatcher);
         this.forceUpdateBound = this.forceUpdate.bind(this);
         this.dispatcher.stores.list.onChange(this.forceUpdateBound);
-        var assetTypeId = this.props.attribute.relatedAsset.assetTypeId;
-        this.actions.loadAssetsList({
-            assetTypeId: assetTypeId
+        var uid = this.props.attribute.dynamicListUid;
+        this.actions.loadDynamicList({
+            dynamicListUid: uid
         });
     },
     componentWillUnmount: function() {
@@ -26,33 +26,35 @@ var AssetPicker = React.createClass({
         this.props.attribute.value = e;        
     },
     onItemsRequest: function(query, callback) { 
-        var assetTypeId = this.props.attribute.relatedAsset.assetTypeId;
-        this.actions.loadAssetsList({
-            assetTypeId: assetTypeId,
-            query: query
+        var uid = this.props.attribute.dynamicListUid;
+        this.actions.loadDynamicList({
+            dynamicListUid: uid
         });
     },
     render: function() {
-        var selectId = "attribute-asset-" + this.props.attribute.uid;
-        var lists = this.dispatcher.getStore('list').getState().assets;
-        var list = lists[this.props.attribute.relatedAsset.assetTypeId];
+        var selectId = "attribute-list-" + this.props.attribute.uid;
+        var lists = this.dispatcher.getStore('list').getState().dynlists;
+        var list = lists[this.props.attribute.dynamicListUid];
+        var items = list != null 
+            ? list.items
+            : [];
         return (
             <li>
                 <span>{this.props.attribute.name}</span>:
                 &nbsp;
                 <ReactSelectize    
                     selectId={selectId} 
-                    valueField="uid"
-                    labelField="name"  
-                    items={list}
+                    valueField="key"
+                    labelField="value" 
+                    items={items} 
                     onItemsRequest={this.onItemsRequest}                   
                     onChange={this.onChange}    
-                    value={this.props.attribute.relatedAsset.uid}                             
+                    value={this.props.attribute.value}                             
                     placeholder=" "
-                    label=" " />                
+                    label=" " /> 
             </li>
         );
     }
 });
 
-module.exports = AssetPicker;
+module.exports = ListAttribute;

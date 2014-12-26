@@ -1,17 +1,27 @@
 var Flux = require('delorean').Flux;
 var AssetStore = require('../stores/AssetStore');
+var ListStore = require('../stores/ListStore');
 
-var SearchDispatcher = Flux.createDispatcher({
+var AssetDispatcher = Flux.createDispatcher({
 
   loadAsset(params) {
     return this.dispatch("asset:load", params);
   },
 
+  loadDynamicList(params) {
+  	return this.dispatch("list:dynlists", params);
+  },
+
+  loadAssetsList(params) {
+  	return this.dispatch("list:assets", params);
+  },
+
   getStores() {
     return {
       asset: new AssetStore(),
+      list: new ListStore()
     }
   }
 });
 
-module.exports = SearchDispatcher;
+module.exports = AssetDispatcher;

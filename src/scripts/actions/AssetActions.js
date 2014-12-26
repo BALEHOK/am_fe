@@ -6,6 +6,14 @@ class AssetActions extends Actions {
     this._dispatcher.loadAsset(params);
   }
 
+  loadAssetsList(params) {
+  	this._dispatcher.loadAssetsList(params);	
+  }
+
+  loadDynamicList(query) {
+  	this._dispatcher.loadDynamicList(query);
+  }
+
   saveAsset() {}
 
 }
