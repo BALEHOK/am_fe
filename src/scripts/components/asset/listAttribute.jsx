@@ -23,7 +23,7 @@ var ListAttribute = React.createClass({
             'change', this.forceUpdateBound);
     },   
     onChange: function(e) {
-        this.props.attribute.value = e;        
+        this.props.attribute.dynamicListItemUids = [parseInt(e)];
     },
     onItemsRequest: function(query, callback) { 
         var uid = this.props.attribute.dynamicListUid;
@@ -31,25 +31,26 @@ var ListAttribute = React.createClass({
             dynamicListUid: uid
         });
     },
-    render: function() {
+    render: function() {        
         var selectId = "attribute-list-" + this.props.attribute.uid;
         var lists = this.dispatcher.getStore('list').getState().dynlists;
         var list = lists[this.props.attribute.dynamicListUid];
         var items = list != null 
             ? list.items
             : [];
+        var value = _.first(this.props.attribute.dynamicListItemUids);
         return (
             <li>
                 <span>{this.props.attribute.name}</span>:
                 &nbsp;
                 <ReactSelectize    
                     selectId={selectId} 
-                    valueField="key"
+                    valueField="uid"
                     labelField="value" 
                     items={items} 
                     onItemsRequest={this.onItemsRequest}                   
                     onChange={this.onChange}    
-                    value={this.props.attribute.value}                             
+                    value={value}                             
                     placeholder=" "
                     label=" " /> 
             </li>

@@ -38,7 +38,6 @@ var Panel = React.createClass({
                         } else if (attribute.datatype == 'dynlist') {
                             return <ListAttribute key={attribute.uid} attribute={attribute} />
                         } else {
-                            console.log(attribute.datatype);
                             return <EditableAttribute key={attribute.uid} attribute={attribute} />
                         }
 	           		})}
