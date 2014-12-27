@@ -8,6 +8,9 @@ var Screen = require('./screen.jsx');
 var Attribute = require('./attribute.jsx');
 var AuthenticatedRouteMixin = require('../../mixins/AuthenticatedRouteMixin');
 var Link = Router.Link;
+var ReactSelectize = require('../common/react-selectize');
+
+var AssetViewType1 = require('./assetviewtype1');
 
 var AssetActions = require('../../actions/AssetActions');
 var AssetDispatcher = require('../../dispatchers/AssetDispatcher');
@@ -30,8 +33,14 @@ var Panel = React.createClass({
 
 var AssetView = React.createClass({
     mixins:[AuthenticatedRouteMixin, Router.Navigation, Router.State],
+
     componentDidMount: function() {
     },
+
+    getInitialState: function() {
+        return {};
+    },
+
     componentWillMount: function() {
         this.dispatcher = AssetDispatcher;
         this.actions = new AssetActions(this.dispatcher);
@@ -49,25 +58,18 @@ var AssetView = React.createClass({
     },
 
     render: function() {
-        var params = this.getParams();
         var asset = this.dispatcher.getStore('asset').getState();
-        return (
-            <div>
-                <h1>Asset View Page</h1>
-                <Link to="asset-edit"
-                    params={{
-                        assetTypeUid: params.assetTypeUid,
-                        assetUid: params.assetUid}}>Edit</Link>
+        var screens = asset.screens.map(function(el) {
+            return {name: el.name, id: el.id};
+        });
 
-                {asset.screens.map(function(screen){
-                    return  <Screen key={screen.Id} name={screen.name}>
-                                {screen.panels.map(function(panel){
-                                    return <Panel key={panel.id} name={panel.name} panelAttributes={panel.attributes} />
-                                })}
-                            </Screen>
-                })}
-            </div>
-        );
+        var selected = this.state.selectedScreen || screens[0] && screens[0].id;
+        return <AssetViewType1
+            asset={asset}
+            screens={screens}
+            selectedScreen={selected}
+            dispatcher={this.dispatcher}
+            actions={this.actions} />;
     }
 });
 module.exports = AssetView;

@@ -9,6 +9,7 @@ var AssetViewType1 = React.createClass({
     handleScreenChange: function() {
 
     },
+
     render: function() {
         return (
             <div>
@@ -19,13 +20,8 @@ var AssetViewType1 = React.createClass({
                 <div className="grid">
                     <div className="grid__item two-twelfths">
                         <ReactSelectize
-                            items={[
-                                { name: "Default", id: "1" },
-                                { name: "Asset view 2", id: "2" },
-                                { name: "Asset view 3", id: "3" },
-                                { name: "Asset view 4", id: "4" }
-                            ]}
-                            value={0}
+                            items={this.props.screens}
+                            value={this.props.selectedScreen}
                             onChange={this.handleScreenChange}
                             selectId="select-screen"
                             placeholder="Screen:"
