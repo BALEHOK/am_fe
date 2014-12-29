@@ -7,8 +7,8 @@ var React = require('react');
 var Attribute = React.createClass({
     render: function() {
         var file = this.props.params.value;
-        if(file.length > 40) {
-            file = file.slice(0, 30) + "..." + file.slice(-7);
+        if(file.length > 14) {
+            file = file.slice(0, 8) + "..." + file.slice(-3);
         }
         return (
             <div className="asset-data__param">
