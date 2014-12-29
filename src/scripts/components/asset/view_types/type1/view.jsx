@@ -5,12 +5,24 @@
 var React = require('react');
 var ReactSelectize = require('../../../common/react-selectize');
 var Panel = require('./panel');
+var Router = require('react-router');
+var Link = Router.Link;
 
 var AssetViewType1 = React.createClass({
     render: function() {
         var panels = this.props.screen.panels.map(function(el) {
             return <Panel data={el} title={el.name}/>
         });
+
+        var linkedAssets = this.props.linkedAssets.map((asset) => {
+            var link = (
+                <Link to="asset-view" params={{assetTypeUid: asset.typeId, assetUid: asset.uid}}>
+                    {asset.value}
+                </Link>
+            );
+            return <div><span>{asset.name}: {link}</span></div>;
+        });
+
         return (
             <div>
                 <h1 className="page-title">Search results: <span className="page-title__param">test</span></h1>
@@ -37,7 +49,7 @@ var AssetViewType1 = React.createClass({
                         <nav className="nav-block">
                             <span className="nav-block__title nav-block__title_type_second">Linked assets</span>
                             <div className="nav-block__item">
-                                <span>Update user: <a href="#">admin</a></span>
+                                {linkedAssets}
                             </div>
                         </nav>
                         <nav className="nav-block">

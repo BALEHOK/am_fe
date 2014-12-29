@@ -12,7 +12,9 @@ var Attribute = React.createClass({
         return (
             <div className="asset-data__param">
                 <span className="asset-data__param-title">{this.props.params.name}:</span>
-                <Link to="asset-view" params={{assetTypeUid: rel.assetTypeId, assetUid: rel.uid}}>{this.props.params.value}</Link>
+                <strong>
+                    <Link to="asset-view" params={{assetTypeUid: rel.assetTypeId, assetUid: rel.uid}}>{this.props.params.value}</Link>
+                </strong> |  Related items
             </div>
         );
     }
