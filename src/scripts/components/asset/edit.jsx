@@ -12,6 +12,7 @@ var AssetPicker = require('./assetPicker.jsx');
 var BooleanAttribute = require('./booleanAttribute.jsx');
 var TextAttribute = require('./textAttribute.jsx');
 var ListAttribute = require('./listAttribute.jsx');
+var MultipleListAttribute = require('./multipleListAttribute.jsx');
 
 var AuthenticatedRouteMixin = require('../../mixins/AuthenticatedRouteMixin');
 var ReactSelectize = require('../common/react-selectize');
@@ -37,6 +38,8 @@ var Panel = React.createClass({
                             return <Attribute key={attribute.uid} attribute={attribute} />
                         } else if (attribute.datatype == 'dynlist') {
                             return <ListAttribute key={attribute.uid} attribute={attribute} />
+                        } else if (attribute.datatype == 'dynlists') {
+                            return <MultipleListAttribute key={attribute.uid} attribute={attribute} />
                         } else {
                             return <EditableAttribute key={attribute.uid} attribute={attribute} />
                         }
