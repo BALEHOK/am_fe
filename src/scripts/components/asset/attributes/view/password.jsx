@@ -8,7 +8,7 @@ var Attribute = React.createClass({
     render: function() {
         return <div className="asset-data__param">
             <span className="asset-data__param-title">{this.props.params.name}:</span>
-            <span className="no-data">No data</span>
+            <span className="no-data">Hidden</span>
         </div>
     }
 });

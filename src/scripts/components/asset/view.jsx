@@ -23,6 +23,12 @@ var AssetView = React.createClass({
     componentWillUnmount: function() {
     },
 
+    onScreenChange: function(val) {
+        this.setState({
+            selectedScreen: parseInt(val)
+        });
+    },
+
     render: function() {
         var asset = this.state.stores.asset;
         var screens = asset.screens.map(function(el) {
@@ -31,9 +37,9 @@ var AssetView = React.createClass({
         var selected = this.state.selectedScreen || screens[0] && screens[0].id;
 
         var screen = asset.screens.filter(function(el) { return el.id === selected })[0];
-
         return <AssetViewType1
             screen={screen || {panels: []}}
+            onScreenChange={this.onScreenChange}
             screens={screens}
             selectedScreen={selected}
             actions={this.actions} />;

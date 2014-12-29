@@ -3,10 +3,11 @@
  */
 
 var React = require('react');
+var Asset = require('./asset');
 
 var Attribute = React.createClass({
     render: function() {
-        return (<div>asset</div>);
+        return <Asset params={this.props.params} />;
     }
 });
 

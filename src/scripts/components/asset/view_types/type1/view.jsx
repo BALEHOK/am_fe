@@ -7,10 +7,6 @@ var ReactSelectize = require('../../../common/react-selectize');
 var Panel = require('./panel');
 
 var AssetViewType1 = React.createClass({
-    handleScreenChange: function() {
-
-    },
-
     render: function() {
         var panels = this.props.screen.panels.map(function(el) {
             return <Panel data={el} title={el.name}/>
@@ -26,7 +22,7 @@ var AssetViewType1 = React.createClass({
                         <ReactSelectize
                             items={this.props.screens}
                             value={this.props.selectedScreen}
-                            onChange={this.handleScreenChange}
+                            onChange={this.props.onScreenChange}
                             selectId="select-screen"
                             placeholder="Screen:"
                             label=" "

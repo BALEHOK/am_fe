@@ -3,10 +3,11 @@
  */
 
 var React = require('react');
+var ImageAttribute = require('./image');
 
 var Attribute = React.createClass({
     render: function() {
-        return (<div>asset</div>);
+        return <ImageAttribute params={this.props.params} />
     }
 });
 
