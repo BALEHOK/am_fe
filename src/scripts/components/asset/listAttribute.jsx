@@ -22,18 +22,17 @@ var ListAttribute = React.createClass({
         this.dispatcher.stores.list.listener.removeListener(
             'change', this.forceUpdateBound);
     },   
-    onChange: function(e) {
+    onChange: function(items) {
+        var values = [parseInt(items)];
         if (this.props.isMultiple) {
-            var values = [];
+            values = [];
             if (items) {
                 items.map(function(item){
                     values.push(parseInt(item));
                 });
-            }
-            this.props.attribute.dynamicListItemUids = values;
-        } else {
-            this.props.attribute.dynamicListItemUids = [parseInt(e)];
-        }        
+            }            
+        }   
+        this.props.attribute.dynamicListItemUids = values;     
     },
     onItemsRequest: function(query, callback) { 
         var uid = this.props.attribute.dynamicListUid;
@@ -48,10 +47,9 @@ var ListAttribute = React.createClass({
         var items = list != null 
             ? list.items
             : [];
-        var value = _.first(this.props.attribute.dynamicListItemUids);
-        if (this.props.isMultiple) {
-            value = this.props.attribute.dynamicListItemUids;
-        }
+        var value = this.props.isMultiple
+            ? this.props.attribute.dynamicListItemUids
+            : _.first(this.props.attribute.dynamicListItemUids);        
         return (
             <li>
                 <span>{this.props.attribute.name}</span>:
