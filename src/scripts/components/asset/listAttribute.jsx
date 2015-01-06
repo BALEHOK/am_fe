@@ -23,7 +23,17 @@ var ListAttribute = React.createClass({
             'change', this.forceUpdateBound);
     },   
     onChange: function(e) {
-        this.props.attribute.dynamicListItemUids = [parseInt(e)];
+        if (this.props.isMultiple) {
+            var values = [];
+            if (items) {
+                items.map(function(item){
+                    values.push(parseInt(item));
+                });
+            }
+            this.props.attribute.dynamicListItemUids = values;
+        } else {
+            this.props.attribute.dynamicListItemUids = [parseInt(e)];
+        }        
     },
     onItemsRequest: function(query, callback) { 
         var uid = this.props.attribute.dynamicListUid;
@@ -39,11 +49,15 @@ var ListAttribute = React.createClass({
             ? list.items
             : [];
         var value = _.first(this.props.attribute.dynamicListItemUids);
+        if (this.props.isMultiple) {
+            value = this.props.attribute.dynamicListItemUids;
+        }
         return (
             <li>
                 <span>{this.props.attribute.name}</span>:
                 &nbsp;
-                <ReactSelectize    
+                <ReactSelectize   
+                    multiple={this.props.isMultiple} 
                     selectId={selectId} 
                     valueField="uid"
                     labelField="value" 
