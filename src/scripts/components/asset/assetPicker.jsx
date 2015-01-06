@@ -13,7 +13,7 @@ var AssetPicker = React.createClass({
         this.actions = new AssetActions(this.dispatcher);
         this.forceUpdateBound = this.forceUpdate.bind(this);
         this.dispatcher.stores.list.onChange(this.forceUpdateBound);
-        var assetTypeId = this.props.attribute.relatedAsset.assetTypeId;
+        var assetTypeId = this.props.attribute.relatedAsset.assetTypeId;        
         this.actions.loadAssetsList({
             assetTypeId: assetTypeId
         });
