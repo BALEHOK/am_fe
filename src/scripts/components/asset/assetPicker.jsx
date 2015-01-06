@@ -23,7 +23,16 @@ var AssetPicker = React.createClass({
             'change', this.forceUpdateBound);
     },   
     onChange: function(e) {
-        this.props.attribute.value = e;        
+        var values = e;
+        if (this.props.isMultiple) {
+            values = [];
+            if (e) {
+                e.map(function(item){
+                    values.push(parseInt(item));
+                });
+            }            
+        }   
+        this.props.attribute.value = values;        
     },
     onItemsRequest: function(query, callback) { 
         var assetTypeId = this.props.attribute.relatedAsset.assetTypeId;
@@ -40,7 +49,8 @@ var AssetPicker = React.createClass({
             <li>
                 <span>{this.props.attribute.name}</span>:
                 &nbsp;
-                <ReactSelectize    
+                <ReactSelectize   
+                    multiple={this.props.isMultiple} 
                     selectId={selectId} 
                     valueField="uid"
                     labelField="name"  

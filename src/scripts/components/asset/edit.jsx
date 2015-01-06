@@ -29,6 +29,8 @@ var Panel = React.createClass({
                     {this.props.panelAttributes.map(function(attribute){                        
                         if (attribute.datatype == 'asset') {
                             return <AssetPicker key={attribute.uid} attribute={attribute} />
+                        } else if (attribute.datatype == 'assets') {
+                            return <AssetPicker key={attribute.uid} attribute={attribute} isMultiple={true} />                        
                         } else if (attribute.datatype == 'bool') {
                             return <BooleanAttribute key={attribute.uid} attribute={attribute} />                        
                         } else if (attribute.datatype == 'text') {
