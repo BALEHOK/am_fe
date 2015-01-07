@@ -6,6 +6,10 @@ class AssetActions extends Actions {
     this._dispatcher.loadAsset(params);
   }
 
+  loadRelatedAssets(params) {
+    this._dispatcher.loadRelatedAssets(params);
+  }
+
   loadAssetsList(params) {
   	this._dispatcher.loadAssetsList(params);	
   }

@@ -13,7 +13,7 @@ class ListRepository {
     	var rowStart = params.rowStart || 1;
     	var rowsNumber = params.rowsNumber || 20;
         var query = params.query || '';
-        var url = `/api/assettype/id/${params.assetTypeId}/asset/?query=${query}`;
+        var url = `/api/assettype/id/${params.assetTypeId}/assets/?query=${query}`;
         return $.ajax({
             url: url,
             contentType: 'application/json',

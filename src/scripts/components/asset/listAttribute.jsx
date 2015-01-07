@@ -36,19 +36,19 @@ var ListAttribute = React.createClass({
                 });
             }            
         }   
-        //this.props.attribute.dynamicListItemUids = values;     
+        // TODO: save value
     },
     render: function() {        
         var selectId = "attribute-list-" + this.props.attribute.uid;
-        var lists = this.dispatcher.getStore('list').getState().dynlists;
-        console.log(lists);
+        var lists = this.dispatcher.getStore('list').getState().dynlists;        
         var list = lists[this.props.attribute.uid];        
         var items = list != null 
             ? list.items
-            : [];        
-        //var value = this.props.isMultiple
-        //    ? this.props.attribute.dynamicListItemUids
-        //    : _.first(this.props.attribute.dynamicListItemUids);        
+            : [];  
+        var value = _.chain(items)
+                     .where({selected: true})
+                     .pluck('uid')
+                     .value();           
         return (
             <li>
                 <span>{this.props.attribute.name}</span>:
