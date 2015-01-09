@@ -16,7 +16,8 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
       labelField : this.props.labelField || "name",
       searchField : this.props.searchField || "name",
       create : this.props.create || false,
-      options : this.props.items || []
+      options : this.props.items || [],
+      sortField : this.props.sortField || "name",
     };
 
     if(this.isMultiple(this.props)){
