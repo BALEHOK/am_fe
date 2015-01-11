@@ -36,10 +36,17 @@ var Pagination = React.createClass({
             page: parseInt(currentPage)
         };
     },
+    componentWillReceiveProps: function() {
+        this.setState({
+            page: parseInt(this.props.currentPage)
+        });
+    },
     handlePageChanged: function(page) {
         if (page > this.props.numPages || page < 1) return;
         this.props.onPageChanged(page);
-        this.setState({ page: page });
+        this.setState({
+            page: page
+        });
     },
 
     getDisplayCount: function() {
