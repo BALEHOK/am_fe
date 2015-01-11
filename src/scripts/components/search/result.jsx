@@ -4,12 +4,12 @@
 
 var React = require('react/addons');
 var Router = require('react-router');
-var Pagination = require('../common/pagination');
 var Link = Router.Link;
 var ReactSelectize = require('../common/react-selectize');
 var SearchSimpleForm = require('./searchSimpleForm');
 var RefinementLink = require('./refinement_link');
 var ResultItem = require('./result_item');
+var ResultPagination = require('./resultPagination.jsx');
 
 var SearchDispatcher = require('../../dispatchers/SearchDispatcher');
 var SearchActions = require('../../actions/SearchActions');
@@ -111,6 +111,9 @@ var ResultPage = React.createClass({
         var results = this.dispatcher.getStore('results').getState();
         var counters = this.dispatcher.getStore('counters').getState();
         var filters = this.dispatcher.getStore('filters').getState();
+
+        var postsPerPage = 20;
+
         return (
             <div>
                 <div className="grid">
@@ -226,7 +229,7 @@ var ResultPage = React.createClass({
                                     })}
                                 </ul>
                                 {counters.totalCount
-                                    ? <Pagination totalCount={counters.totalCount} onPageChanged={this.handlePageChange}/>
+                                    ? <ResultPagination currentPage={filters.page} totalCount={counters.totalCount} postsPerPage={postsPerPage} onPageChanged={this.handlePageChange}/>
                                     : <div/>
                                 }
                             </div>
