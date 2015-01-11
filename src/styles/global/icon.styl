@@ -13,16 +13,24 @@
       content "\f105"
 
   &_angle-d-right
-    &:before
+    &::before
       content "\f101"
 
+  &_angle-left
+    &::before
+      content "\f104"
+
+  &_angle-d-left
+    &::before
+      content: "\f100";
+
   &_cross
-    &:before
+    &::before
       content "\f00d"
 
   &_download
     margin 0 7px 0 0
-    &:before
+    &::before
       content "\f019"
 
   &_arrow_right
@@ -43,5 +51,5 @@
 
   &_eye
     font-size 18px
-    &:before
+    &::before
       content "\f06e"
