@@ -218,16 +218,19 @@ var ResultPage = React.createClass({
                                     <span className="search-results__header-item search-results__header-item_link">Go to result</span>
                                 </header>
                                 <ul className="search-results__list">
-                                    {results.models.map(function(result) {
-                                        return <ResultItem
+                                    {results.models.length !== 0
+                                        ? results.models.map(function(result) {
+                                            return <ResultItem
                                                     key={result.indexUid}
                                                     model={result}
-                                                    searchId={results.searchId} />;
-                                    })}
+                                                    searchId={results.searchId} />
+                                          })
+                                        : <li className="search-results__item search-results__item_empty"><span className="search-results__item-msg"><strong>Nothing was found</strong> for the specified search parameters</span></li>
+                                    }
                                 </ul>
                                 {counters.totalCount
                                     ? <Pagination totalCount={counters.totalCount} onPageChanged={this.handlePageChange}/>
-                                    : <div/>
+                                    : {}
                                 }
                             </div>
                         </div>
