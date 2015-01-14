@@ -18,10 +18,12 @@ var ListStore = Flux.createStore({
   },
 
   loadDynamicList(params) {
-    var uid = params.dynamicListUid;
+    var uid = params.attributeUid;
     this.listRepo.loadDynamicList({
-      dynamicListUid: uid
-    }).then((data) => {
+      assetTypeUid: params.assetTypeUid,
+      assetUid: params.assetUid,
+      attributeUid: params.attributeUid,
+    }).then((data) => {      
       this.lists.dynlists[uid] = data;
       this.emitChange();
     });

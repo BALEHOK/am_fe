@@ -3,52 +3,62 @@
  */
 
 var React = require('react');
+var Router = require('react-router');
 var ReactSelectize = require('../common/react-selectize');
 var AssetActions = require('../../actions/AssetActions');
 var AssetDispatcher = require('../../dispatchers/AssetDispatcher');
 
 var ListAttribute = React.createClass({
+    mixins:[Router.State],
     componentWillMount: function() {
         this.dispatcher = AssetDispatcher;
         this.actions = new AssetActions(this.dispatcher);
         this.forceUpdateBound = this.forceUpdate.bind(this);
         this.dispatcher.stores.list.onChange(this.forceUpdateBound);
-        var uid = this.props.attribute.dynamicListUid;
+        var params = this.getParams();
         this.actions.loadDynamicList({
-            dynamicListUid: uid
+            assetTypeUid: params.assetTypeUid,
+            assetUid: params.assetUid,
+            attributeUid: this.props.attribute.uid
         });
     },
     componentWillUnmount: function() {
         this.dispatcher.stores.list.listener.removeListener(
             'change', this.forceUpdateBound);
     },   
-    onChange: function(e) {
-        this.props.attribute.dynamicListItemUids = [parseInt(e)];
-    },
-    onItemsRequest: function(query, callback) { 
-        var uid = this.props.attribute.dynamicListUid;
-        this.actions.loadDynamicList({
-            dynamicListUid: uid
-        });
+    onChange: function(items) {
+        var values = [parseInt(items)];
+        if (this.props.isMultiple) {
+            values = [];
+            if (items) {
+                items.map(function(item){
+                    values.push(parseInt(item));
+                });
+            }            
+        }   
+        // TODO: save value
     },
     render: function() {        
         var selectId = "attribute-list-" + this.props.attribute.uid;
-        var lists = this.dispatcher.getStore('list').getState().dynlists;
-        var list = lists[this.props.attribute.dynamicListUid];
+        var lists = this.dispatcher.getStore('list').getState().dynlists;        
+        var list = lists[this.props.attribute.uid];        
         var items = list != null 
             ? list.items
-            : [];
-        var value = _.first(this.props.attribute.dynamicListItemUids);
+            : [];  
+        var value = _.chain(items)
+                     .where({selected: true})
+                     .pluck('uid')
+                     .value();           
         return (
             <li>
                 <span>{this.props.attribute.name}</span>:
                 &nbsp;
-                <ReactSelectize    
+                <ReactSelectize   
+                    multiple={this.props.isMultiple} 
                     selectId={selectId} 
                     valueField="uid"
                     labelField="value" 
                     items={items} 
-                    onItemsRequest={this.onItemsRequest}                   
                     onChange={this.onChange}    
                     value={value}                             
                     placeholder=" "
