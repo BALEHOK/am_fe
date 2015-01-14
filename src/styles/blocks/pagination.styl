@@ -30,6 +30,8 @@
     text-decoration none !important
     user-select none
     margin 0 0 0 5px
+    padding 0 2px
+    outline 0 !important
 
     &:only-child
       margin 0
@@ -52,6 +54,13 @@
       border-color #414141 !important
       box-shadow none !important
       cursor default
+      pointer-events none
+
+    &_disabled
+      color #bcbcbc !important
+      background #ffffff !important
+      pointer-events none
+      opacity 0.3
 
 .pagination-row
   padding 10px 20px

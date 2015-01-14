@@ -4,12 +4,13 @@
 
 var React = require('react/addons');
 var Router = require('react-router');
-var Pagination = require('../common/pagination');
 var Link = Router.Link;
 var ReactSelectize = require('../common/react-selectize');
 var SearchSimpleForm = require('./searchSimpleForm');
 var RefinementLink = require('./refinement_link');
 var ResultItem = require('./result_item');
+var ResultPagination = require('./resultPagination.jsx');
+var ResultHeaderPagination = require('./resultHeaderPagination.jsx');
 
 var SearchDispatcher = require('../../dispatchers/SearchDispatcher');
 var SearchActions = require('../../actions/SearchActions');
@@ -111,6 +112,13 @@ var ResultPage = React.createClass({
         var results = this.dispatcher.getStore('results').getState();
         var counters = this.dispatcher.getStore('counters').getState();
         var filters = this.dispatcher.getStore('filters').getState();
+
+        var postsPerPage = 20;
+        var pages = Math.ceil(counters.totalCount / postsPerPage);
+        var currentPage = typeof filters.page !== 'undefined' ? parseInt(filters.page) : 1;
+        var firstShowedItem = (currentPage-1) * postsPerPage + 1;
+        var lastShowedItem = counters.totalCount < (currentPage*postsPerPage) ? counters.totalCount : currentPage*postsPerPage;
+
         return (
             <div>
                 <div className="grid">
@@ -123,10 +131,7 @@ var ResultPage = React.createClass({
                 </div>
                 <div className="results-form">
                     <header className="results-form__header">
-                        <div className="grid">
-                            <div className="grid__item two-twelfths">
-
-                            </div>
+                        <div className="grid grid_right">
                             <div className="grid__item ten-twelfths">
                                 <div className="input-group">
                                     <div className="input-group">
@@ -168,6 +173,15 @@ var ResultPage = React.createClass({
                                         />
                                     </span>
                                 </div>
+                                {counters.totalCount
+                                    ? <ResultHeaderPagination pages={pages}
+                                                              currentPage={currentPage}
+                                                              firstShowedItem={firstShowedItem}
+                                                              totalCount={counters.totalCount}
+                                                              lastShowedItem={lastShowedItem}
+                                                              onPageChanged={this.handlePageChange}/>
+                                    : <div/>
+                                    }
                             </div>
                         </div>
                     </header>
@@ -229,7 +243,13 @@ var ResultPage = React.createClass({
                                     }
                                 </ul>
                                 {counters.totalCount
-                                    ? <Pagination totalCount={counters.totalCount} onPageChanged={this.handlePageChange}/>
+                                    ? <ResultPagination pages={pages}
+                                                        currentPage={currentPage}
+                                                        firstShowedItem={firstShowedItem}
+                                                        totalCount={counters.totalCount}
+                                                        lastShowedItem={lastShowedItem}
+                                                        postsPerPage={postsPerPage}
+                                                        onPageChanged={this.handlePageChange}/>
                                     : {}
                                 }
                             </div>
