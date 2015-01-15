@@ -17,11 +17,11 @@ var AssetPicker = React.createClass({
         this.dispatcher.stores.asset.onChange(this.forceUpdateBound);
 
         var params = this.getParams();
-        // this.actions.loadRelatedAssets({
-        //     assetTypeUid: params.assetTypeUid,
-        //     assetUid: params.assetUid,
-        //     attributeUid: this.props.attribute.uid
-        // });
+        this.actions.loadRelatedAssets({
+            assetTypeUid: params.assetTypeUid,
+            assetUid: params.assetUid,
+            attributeUid: this.props.attribute.uid
+        });
     },
     componentWillUnmount: function() {
         this.dispatcher.stores.asset.listener.removeListener(
@@ -41,12 +41,12 @@ var AssetPicker = React.createClass({
     },
     onItemsRequest: function(query, callback) { 
         var params = this.getParams();
-        // this.actions.loadRelatedAssets({
-        //     assetTypeUid: params.assetTypeUid,
-        //     assetUid: params.assetUid,
-        //     attributeUid: this.props.attribute.uid,
-        //     query: query
-        // });
+        this.actions.loadRelatedAssets({
+            assetTypeUid: params.assetTypeUid,
+            assetUid: params.assetUid,
+            attributeUid: this.props.attribute.uid,
+            query: query
+        });
     },
     render: function() {
         var selectId = "attribute-asset-" + this.props.attribute.uid;

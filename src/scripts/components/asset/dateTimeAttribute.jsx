@@ -4,6 +4,7 @@
 
 var React = require('react');
 var DatTimePicker = require('react-bootstrap-datetimepicker');
+var Input = require('react-bootstrap').Input;
 var BooleanAttribute = React.createClass({
     render: function() {
         return (
@@ -14,8 +15,7 @@ var BooleanAttribute = React.createClass({
                     type="text"
                     value={this.state.value}
                     ref="input"
-                    bsStyle={this.validationState()}
-                    onChange={this.valueChanged} />
+                    bsStyle={this.validationState()}/>
             </li>
         );
     }
