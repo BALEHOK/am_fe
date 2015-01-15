@@ -13,17 +13,17 @@
   "dependencies": {
     "backbone": "^1.1.2",
     "backbone-react-component": "^0.7.2",
+    "delorean": "^0.8.7",
     "extract-text-webpack-plugin": "^0.3.1",
+    "google-maps": "^2.1.1",
     "jquery": "^2.1.1",
     "keymirror": "^0.1.0",
     "moment": "^2.8.3",
     "react": "0.12.x",
     "react-bootstrap": "^0.13.0",
-    "react-router": "^0.11.6",
-    "underscore": "^1.7.0",
-    "delorean": "^0.8.7",
     "react-google-maps": "^0.2.4",
-    "google-maps": "^2.1.1"
+    "react-router": "^0.11.6",
+    "underscore": "^1.7.0"
   },
   "devDependencies": {
     "autoprefixer-loader": "^1.0.0",
