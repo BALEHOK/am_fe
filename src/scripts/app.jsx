@@ -8,19 +8,19 @@ var React = require('react');
 var router = require('./appRouter');
 
 // Services and models
-var Config = require('./models/Config.ts').Config;
+var Config = require('./models/Config.js').Config;
 var config = new Config();
 
-var TokenStore = require('./models/TokenStore.ts').CookieTokenStore;
+var TokenStore = require('./models/TokenStore.js').CookieTokenStore;
 var tokenStore = new TokenStore();
 
-var AuthService = require('./services/AuthService.ts').AuthService;
+var AuthService = require('./services/AuthService.js').AuthService;
 var authService = new AuthService();
 
 // TODO: to use the service in static AuthenticateRouteMixin
 window.authService = authService;
 
-var Application = require('./models/Application.ts').Application;
+var Application = require('./models/Application.js').Application;
 var app = new Application(config, authService, tokenStore);
 
 router.run(function (Handler, state) {

@@ -20,7 +20,7 @@ module.exports = {
        // new webpack.optimize.AggressiveMergingPlugin()
     ],
     resolve: {
-        extensions: ['', '.js', '.jsx', '.ts'],
+        extensions: ['', '.js', '.jsx'],
         modulesDirectories: ['bower_components', 'node_modules']
     },
     resolveLoader: {
@@ -28,8 +28,7 @@ module.exports = {
     },
     module: {
         loaders: [
-            { test: /^(?!.*(bower_components|node_modules))+.+\.js$/, loader: '6to5-loader'},
-            { test: /\.ts$/, loader: 'ts-loader' },
+            { test: /^(?!.*(bower_components|node_modules))+.+\.js$/, loader: '6to5-loader'},            
             { test: /\.jsx$/, loader: 'jsx-loader'}
         ],
         noParse: /\.min\.js/
