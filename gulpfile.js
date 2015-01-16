@@ -2,7 +2,7 @@ var gulp = require('gulp');
 var path = require('path');
 var gutil = require('gulp-util');
 var concat = require('gulp-concat');
-var webpack = require('gulp-webpack');
+var webpack = require('webpack');
 var autoprefixer = require('gulp-autoprefixer');
 var webpackConfig = require('./webpack.config.js');
 var stylus = require('gulp-stylus');
@@ -16,6 +16,7 @@ var gulpif = require('gulp-if');
 var browserSync = require('browser-sync');
 var replace = require('gulp-replace');
 var through = require('through2');
+var WebpackDevServer = require("webpack-dev-server");
 
 var buildDest = 'dist';
 var assetsDest = 'Content/assets';
@@ -34,24 +35,10 @@ function handleError(err) {
     this.emit('end');
 }
 
-function replaceConstants() {
-    var env = process.env.NODE_ENV || 'development';
-    var constants = require('./envs/' + env);
-    return through.obj(function(file, type, done) {
-        var contents = file.contents.toString();
-        Object.keys(constants).forEach(function(key) {
-            contents = contents.replace(key, constants[key]);
-        });
-        file.contents = new Buffer(contents, 'utf-8');
-        done(null, file);
-    });
-}
-
 gulp.task('webpack:build', function (callback) {
     var myConfig = Object.create(webpackConfig);
     return gulp.src('webpack_entries/*.js')
         .pipe(webpack(myConfig))
-        .pipe(replaceConstants())
         .pipe(gulp.dest(jsDest))
         .pipe(notify({ message: 'Webpack build task complete' }));
 });
@@ -111,8 +98,23 @@ gulp.task('replace', ['build'], function() {
         .pipe(gulp.dest(buildDest));
 });
 
+gulp.task("webpack-dev-server", function(callback) {
+    var myConfig = Object.create(webpackConfig);
+    var compiler = webpack(webpackConfig);
+    new WebpackDevServer(compiler, {
+        quiet: false,
+        noInfo: false,
+        publicPath: '/Content/assets/js',
+        contentBase: "./dist",
+        watchDelay: 300,
+        stats: { colors: true },
+    }).listen(3000, "localhost", function(err) {
+        if(err) throw new gutil.PluginError("webpack-dev-server", err);
+    });
+});
+
 // Production build
-gulp.task('build', ['views', 'images', 'fonts', 'css', 'webpack:build']);
-gulp.task('server', ['build', 'watch', 'browser-sync']);
+gulp.task('build', ['views', 'images', 'fonts', 'css']);
+gulp.task('server', ['build', 'watch', 'webpack-dev-server']);
 gulp.task('default', ['build']);
 gulp.task('deploy', ['replace']);

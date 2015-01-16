@@ -1,3 +1,3 @@
 module.exports = {
-  APIURL: 'http://am.local'
+  APIURL: JSON.stringify('http://am.local')
 };
