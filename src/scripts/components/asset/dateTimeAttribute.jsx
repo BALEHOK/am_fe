@@ -3,22 +3,19 @@
  */
 
 var React = require('react');
-var DatTimePicker = require('react-bootstrap-datetimepicker');
+var DateTimeField = require('react-bootstrap-datetimepicker/DateTimeField');
 var Input = require('react-bootstrap').Input;
-var BooleanAttribute = React.createClass({
+var DateTimeAttribute = React.createClass({
+    onChange: function() {},
     render: function() {
         return (
             <li>
                 <span>{this.props.attribute.name}</span>:
                 &nbsp;
-                <Input 
-                    type="text"
-                    value={this.state.value}
-                    ref="input"
-                    bsStyle={this.validationState()}/>
+                <DateTimeField onChange={this.onChange} />
             </li>
         );
     }
 });
 
-module.exports = BooleanAttribute;
+module.exports = DateTimeAttribute;
