@@ -3,16 +3,16 @@
  */
 
 var React = require('react');
-var DateTimeField = require('react-bootstrap-datetimepicker/DateTimeField');
-var Input = require('react-bootstrap').Input;
+var DateTimeField = require('react-datetimepicker');
+var moment = require('moment');
+
 var DateTimeAttribute = React.createClass({
-    onChange: function() {},
     render: function() {
         return (
             <li>
                 <span>{this.props.attribute.name}</span>:
                 &nbsp;
-                <DateTimeField onChange={this.onChange} />
+                <DateTimeField selectedDate={moment(this.props.attribute.value)}/>
             </li>
         );
     }
