@@ -1,3 +1,3 @@
 module.exports = {
-  APIURL: 'http://facilitymanager.facilityflexware.com'
+  APIURL: JSON.stringify('http://facilitymanager.facilityflexware.com')
 };
