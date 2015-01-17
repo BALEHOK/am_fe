@@ -3,6 +3,7 @@ var path = require('path');
 var gutil = require('gulp-util');
 var concat = require('gulp-concat');
 var webpack = require('webpack');
+var gwebpack = require('gulp-webpack');
 var autoprefixer = require('gulp-autoprefixer');
 var webpackConfig = require('./webpack.config.js');
 var stylus = require('gulp-stylus');
@@ -16,7 +17,7 @@ var gulpif = require('gulp-if');
 var browserSync = require('browser-sync');
 var replace = require('gulp-replace');
 var through = require('through2');
-var WebpackDevServer = require("webpack-dev-server");
+var webpackDevMiddleware = require("webpack-dev-middleware");
 
 var buildDest = 'dist';
 var assetsDest = 'Content/assets';
@@ -38,7 +39,7 @@ function handleError(err) {
 gulp.task('webpack:build', function (callback) {
     var myConfig = Object.create(webpackConfig);
     return gulp.src('webpack_entries/*.js')
-        .pipe(webpack(myConfig))
+        .pipe(gwebpack(myConfig))
         .pipe(gulp.dest(jsDest))
         .pipe(notify({ message: 'Webpack build task complete' }));
 });
@@ -87,7 +88,6 @@ gulp.task('images', function() {
 });
 gulp.task('watch', function() {
     gulp.watch('src/**/*.html', ['views', browserSync.reload]);
-    gulp.watch(['src/**/*.{js,ts,jsx}', 'webpack_entries/*.js'], ['webpack:build', browserSync.reload]);
     gulp.watch('src/**/*.{styl,css}', ['css', browserSync.reload]);
     gulp.watch('src/fonts/*.*', ['fonts', browserSync.reload]);
     gulp.watch('src/images/*.*', ['images', browserSync.reload]);
@@ -98,23 +98,28 @@ gulp.task('replace', ['build'], function() {
         .pipe(gulp.dest(buildDest));
 });
 
-gulp.task("webpack-dev-server", function(callback) {
+gulp.task("dev-server", function(callback) {
     var myConfig = Object.create(webpackConfig);
     var compiler = webpack(webpackConfig);
-    new WebpackDevServer(compiler, {
+    var middleware = webpackDevMiddleware(compiler, {
         quiet: false,
         noInfo: false,
         publicPath: '/Content/assets/js',
         contentBase: "./dist",
         watchDelay: 300,
         stats: { colors: true },
-    }).listen(3000, "localhost", function(err) {
-        if(err) throw new gutil.PluginError("webpack-dev-server", err);
+    });
+    browserSync({
+        server: {
+            baseDir: 'dist/',
+            proxy: 'local.dev',
+            middleware: middleware
+        }
     });
 });
 
 // Production build
-gulp.task('build', ['views', 'images', 'fonts', 'css']);
-gulp.task('server', ['build', 'watch', 'webpack-dev-server']);
+gulp.task('build', ['views', 'images', 'fonts', 'css', 'webpack:build']);
+gulp.task('server', ['watch', 'dev-server', 'views', 'images', 'fonts', 'css']);
 gulp.task('default', ['build']);
 gulp.task('deploy', ['replace']);

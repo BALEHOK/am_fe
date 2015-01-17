@@ -1,4 +1,5 @@
 var webpack = require('webpack');
+var path = require('path');
 var env = process.env.NODE_ENV || 'development';
 var constants = require('./envs/' + env);
 
@@ -14,7 +15,7 @@ module.exports = {
         main: ['./webpack_entries/app.js']
     },
     output: {
-        path: '/Users/terminal/Work/js/assetmanagerfrontend/dist/Content/assets/js',
+        path: path.join(__dirname, '/dist/Content/assets/js'),
         filename: 'bundle-main.js'
     },
     plugins: [

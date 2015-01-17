@@ -50,8 +50,9 @@
     "traceur-loader": "^0.6.3",
     "6to5": "^1.15.0",
     "6to5-loader": "^0.2.4",
-    "webpack-dev-server": "^1.7.0",
-    "webpack": "^1.4.15"
+    "webpack": "^1.4.15",
+    "gulp-webpack": "^1.1.2",
+    "webpack-dev-middleware": "^1.0.11"
   },
   "scripts": {
     "postinstall": "bower install && tsd update --save --overwrite && cd ./webpack-loaders/ts-loader/ && npm install"
