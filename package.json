@@ -55,6 +55,6 @@
     "webpack-dev-middleware": "^1.0.11"
   },
   "scripts": {
-    "postinstall": "bower install && tsd update --save --overwrite && cd ./webpack-loaders/ts-loader/ && npm install"
+    "postinstall": "bower install"
   }
 }
