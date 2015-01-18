@@ -1,4 +1,7 @@
 var webpack = require('webpack');
+var path = require('path');
+var env = process.env.NODE_ENV || 'development';
+var constants = require('./envs/' + env);
 
 module.exports = {
     target: 'web',
@@ -8,12 +11,15 @@ module.exports = {
         colors: true,
         reasons: false
     },
-    //entry: webpackEntries,
+    entry: {
+        main: ['./webpack_entries/app.js']
+    },
     output: {
-        publicPath: '/Content/assets/js',
-        filename: './bundle-[name].js'
+        path: path.join(__dirname, '/dist/Content/assets/js'),
+        filename: 'bundle-main.js'
     },
     plugins: [
+        new webpack.DefinePlugin(constants)
        // new webpack.optimize.DedupePlugin(),
        // new webpack.optimize.UglifyJsPlugin()
        // new webpack.optimize.OccurenceOrderPlugin(),

@@ -6,7 +6,6 @@
 // Components
 var React = require('react');
 var router = require('./appRouter');
-
 // Services and models
 var Config = require('./models/Config.js').Config;
 var config = new Config();

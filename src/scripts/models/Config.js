@@ -9,7 +9,7 @@ var Config = (function (_super) {
     __extends(Config, _super);
     function Config() {
         _super.call(this);
-        this.set('apiUrl', "APIURL");
+        this.set('apiUrl', APIURL);
     }
     Object.defineProperty(Config.prototype, "apiUrl", {
         get: function () {
