@@ -7,7 +7,7 @@ var Router = require('react-router');
 var Link = Router.Link;
 var ReactSelectize = require('../common/react-selectize');
 var SearchSimpleForm = require('./searchSimpleForm');
-var RefinementLink = require('./refinement_link');
+var RefinementBlock = require('./refinement_block');
 var ResultItem = require('./result_item');
 var ResultPagination = require('./resultPagination.jsx');
 var ResultHeaderPagination = require('./resultHeaderPagination.jsx');
@@ -91,6 +91,7 @@ var ResultPage = React.createClass({
     toggleTilesView: function(state) {
         this.setState({isTilesView: state});
     },
+
     render: function() {
         var self = this;
         var cx = React.addons.classSet;
@@ -112,6 +113,9 @@ var ResultPage = React.createClass({
         var results = this.dispatcher.getStore('results').getState();
         var counters = this.dispatcher.getStore('counters').getState();
         var filters = this.dispatcher.getStore('filters').getState();
+
+        var assetTypeRefinements = counters.assetTypes.filter(this.filterCounters.bind(this, 'assetType'));
+        var taxonomyRefinements = counters.taxonomies.filter(this.filterCounters.bind(this, 'taxonomy'));
 
         var postsPerPage = 20;
         var pages = Math.ceil(counters.totalCount / postsPerPage);
@@ -187,34 +191,26 @@ var ResultPage = React.createClass({
                     </header>
                     <div className="grid">
                         <div className="grid__item two-twelfths">
-                            <nav className="nav-block">
-                                <span className="nav-block__title">Refine by assets</span>
-                                <ul className="nav-block__list">
-                                    {counters.assetTypes.filter(this.filterCounters.bind(this, 'assetType'))
-                                        .map(function(counter) {
-                                            return <RefinementLink
-                                                        actions={self.actions}
-                                                        type="assetType"
-                                                        filters={filters}
-                                                        key={counter.id}
-                                                        data={counter}/>;
-                                        })}
-                                </ul>
-                            </nav>
-                            <nav className="nav-block">
-                                <span className="nav-block__title">Refine by taxonomies</span>
-                                <ul className="nav-block__list">
-                                    {counters.taxonomies.filter(this.filterCounters.bind(this, 'taxonomy'))
-                                        .map(function(counter) {
-                                            return <RefinementLink
-                                                        actions={self.actions}
-                                                        type="taxonomy"
-                                                        filters={filters}
-                                                        key={counter.id}
-                                                        data={counter}/>;
-                                        })}
-                                </ul>
-                            </nav>
+                            {assetTypeRefinements.length !== 0
+                                ? <RefinementBlock
+                                    title="Refine by assets"
+                                    list={assetTypeRefinements}
+                                    type="assetType"
+                                    actions={self.actions}
+                                    filters={filters}
+                                    maxItems={7}/>
+                                : {}
+                            }
+                            {taxonomyRefinements.length !== 0
+                                ? <RefinementBlock
+                                title="Refine by taxonomies"
+                                list={taxonomyRefinements}
+                                type="taxonomy"
+                                actions={self.actions}
+                                filters={filters}
+                                maxItems={7}/>
+                                : {}
+                            }
                             <nav className="nav-block">
                                 <span className="nav-block__title">Search result report</span>
                                 <ul className="nav-block__list">
