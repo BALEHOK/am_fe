@@ -1,5 +1,5 @@
 ﻿var LoginPage = require('../components/login/main.jsx');
-var AuthService = require('../services/AuthService.ts');
+var AuthService = require('../services/AuthService.js');
 
 // https://github.com/rackt/react-router/blob/master/docs/api/components/RouteHandler.md#static-lifecycle-methods
 var AuthenticatedRouteMixin = {
