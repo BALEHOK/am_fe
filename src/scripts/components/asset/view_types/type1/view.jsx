@@ -3,14 +3,26 @@
  */
 
 var React = require('react');
-var ReactSelectize = require('../common/react-selectize');
+var ReactSelectize = require('../../../common/react-selectize');
+var Panel = require('./panel');
+var Router = require('react-router');
+var Link = Router.Link;
 
 var AssetViewType1 = React.createClass({
-    handleScreenChange: function() {
-
-    },
-
     render: function() {
+        var panels = this.props.screen.panels.map(function(el) {
+            return <Panel data={el} title={el.name}/>
+        });
+
+        var linkedAssets = this.props.linkedAssets.filter(function(e) { return e.assets != null }).map((entity) => {
+            var links = entity.assets.map(function(asset){                
+                return <Link to="asset-view" params={{assetTypeUid: asset.assetTypeId, assetUid: asset.assetId}}>
+                            {asset.name}
+                        </Link>                   
+            });
+            return <div><span>{entity.name}: </span>{links}</div>;
+        });
+
         return (
             <div>
                 <h1 className="page-title">Search results: <span className="page-title__param">test</span></h1>
@@ -22,7 +34,7 @@ var AssetViewType1 = React.createClass({
                         <ReactSelectize
                             items={this.props.screens}
                             value={this.props.selectedScreen}
-                            onChange={this.handleScreenChange}
+                            onChange={this.props.onScreenChange}
                             selectId="select-screen"
                             placeholder="Screen:"
                             label=" "
@@ -37,7 +49,7 @@ var AssetViewType1 = React.createClass({
                         <nav className="nav-block">
                             <span className="nav-block__title nav-block__title_type_second">Linked assets</span>
                             <div className="nav-block__item">
-                                <span>Update user: <a href="#">admin</a></span>
+                                {linkedAssets}
                             </div>
                         </nav>
                         <nav className="nav-block">
@@ -70,64 +82,7 @@ var AssetViewType1 = React.createClass({
                         </nav>
                     </div>
                     <div className="grid__item ten-twelfths">
-                        <div className="asset-data">
-                            <div className="asset-data__header">
-                                <span className="asset-data__title">General</span>
-                            </div>
-                            <div className="asset-data__content">
-                                <div className="asset-data__param">
-                                    <span className="asset-data__param-title">Name:</span>
-                                    test update
-                                </div>
-                                <div className="asset-data__param">
-                                    <span className="asset-data__param-title">Revision:</span>
-                                    <strong>6</strong>
-                                </div>
-                                <div className="asset-data__param">
-                                    <span className="asset-data__param-title">Update user:</span>
-                                    <a href="#">admin</a> | Related items
-                                </div>
-                                <div className="asset-data__param">
-                                    <span className="asset-data__param-title">Update date:</span>
-                                    9/1/2014 11:13:47 AM
-                                </div>
-                            </div>
-                        </div>
-                        <div className="asset-data">
-                            <div className="asset-data__header">
-                                <span className="asset-data__title">Attributes</span>
-                            </div>
-                            <div className="asset-data__content">
-                                <div className="asset-data__param">
-                                    <span className="asset-data__param-title">CalcTest:</span>
-                                    <span className="no-data">No data</span>
-                                </div>
-                                <div className="asset-data__param">
-                                    <span className="asset-data__param-title">RelatedTestAssets:</span>
-                                    Related items
-                                </div>
-                                <div className="asset-data__param">
-                                    <span className="asset-data__param-title">Number:</span>
-                                    <span className="no-data">No data</span>
-                                </div>
-                                <div className="asset-data__param">
-                                    <span className="asset-data__param-title">TotalCalc:</span>
-                                    <strong>0</strong>
-                                </div>
-                                <div className="asset-data__param">
-                                    <span className="asset-data__param-title">Attribute_A:</span>
-                                    aa
-                                </div>
-                                <div className="asset-data__param">
-                                    <span className="asset-data__param-title">Attribute_B:</span>
-                                    bb
-                                </div>
-                                <div className="asset-data__param">
-                                    <span className="asset-data__param-title">CalculatedAttr:</span>
-                                    aa ? bb
-                                </div>
-                            </div>
-                        </div>
+                        {panels}
                         <div className="inputs-line inputs-line_width_full">
                             <button className="btn btn_type_second btn_size_small">
                                 <i className="btn__icon btn__icon_print"></i>
