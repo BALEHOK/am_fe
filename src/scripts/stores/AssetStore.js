@@ -4,9 +4,10 @@ var AssetRepository = require('../services/AssetRepository');
 var AssetStore = Flux.createStore({
 
   asset: {
-    screens: [],
-    relatedAssets: []
+    screens: [],    
   }, 
+
+  relatedAssets: [],
 
   actions: {
     'asset:load': 'loadAsset',
@@ -30,18 +31,18 @@ var AssetStore = Flux.createStore({
   loadRelatedAssets(params) {
     this.assetRepo.loadRelatedAssets({
       assetTypeUid: params.assetTypeUid,
-      assetUid: params.assetUid,
-      attributeUid: params.attributeUid,
-    }).then((data) => {
-      if (!this.asset.relatedAssets)
-        this.asset.relatedAssets = [];
-      this.asset.relatedAssets[params.attributeUid] = data;
+      assetUid: params.assetUid
+    }).then((data) => {  
+      this.relatedAssets = data;
       this.emitChange();
     });
   },
 
   getState() {
-    return this.asset;
+    return  { 
+      asset: this.asset,
+      relatedAssets: this.relatedAssets,
+    };
   }
 });
 

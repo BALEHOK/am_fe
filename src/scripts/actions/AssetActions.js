@@ -3,11 +3,10 @@ var Actions = require('./Actions');
 class AssetActions extends Actions {
 
   loadAsset(params) {
-    this._dispatcher.loadAsset(params);
-  }
-
-  loadRelatedAssets(params) {
-    this._dispatcher.loadRelatedAssets(params);
+    this._dispatcher.loadAsset(params).then(() => {
+      this._dispatcher.loadRelatedAssets(params);  
+    });
+    
   }
 
   loadAssetsList(params) {

@@ -8,7 +8,6 @@ var AttributesFactory = require('../../attributesFactory');
 
 var Panel = React.createClass({
     render: function() {
-        console.log(this.props.data.attributes);
         var attrs = this.props.data.attributes.map(function(attr) {
             return AttributesFactory.getViewAttribute(attr.datatype, attr);
         });
