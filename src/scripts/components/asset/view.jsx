@@ -47,7 +47,7 @@ var AssetView = React.createClass({
             screens={screens}
             linkedAssets={linkedAssets}
             selectedScreen={selected}
-            actions={this.actions} />;
+            actions={this.props.actions} />;
     }
 });
 module.exports = AssetView;

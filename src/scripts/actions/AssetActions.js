@@ -17,6 +17,10 @@ class AssetActions extends Actions {
   	this._dispatcher.loadDynamicList(query);
   }
 
+  loadSearchTracking(searchId) {
+    this._dispatcher.loadSearchTracking(searchId);
+  }
+
   saveAsset() {}
 
 }
