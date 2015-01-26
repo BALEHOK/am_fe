@@ -26,7 +26,7 @@ var AssetViewType1 = React.createClass({
             });
             return <div><span>{entity.name}: </span>{links}</div>;   
         });
-
+            
         return (
             <div>
                 <SearchResultsHeader actions={this.props.actions} />
@@ -41,7 +41,7 @@ var AssetViewType1 = React.createClass({
                             label=" "
                             className="select_width_full"
                         />
-                        <TaxonomyPath actions={this.props.actions} />
+                        <TaxonomyPath assetTypeId={this.props.assetTypeId} actions={this.props.actions} />
                         <nav className="nav-block">
                             <span className="nav-block__title nav-block__title_type_second">Linked assets</span>
                             <div className="nav-block__item">
