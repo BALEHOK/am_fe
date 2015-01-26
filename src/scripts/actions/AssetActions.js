@@ -20,6 +20,10 @@ class AssetActions extends Actions {
   loadTaxonomyPath(assetTypeId) {
     this._dispatcher.loadTaxonomyPath(assetTypeId);
   }
+  
+  loadSearchTracking(searchId) {
+    this._dispatcher.loadSearchTracking(searchId);
+  }
 
   saveAsset() {}
 
