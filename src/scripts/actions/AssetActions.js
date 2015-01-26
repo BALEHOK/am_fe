@@ -17,6 +17,10 @@ class AssetActions extends Actions {
   	this._dispatcher.loadDynamicList(query);
   }
 
+  loadTaxonomyPath(assetTypeId) {
+    this._dispatcher.loadTaxonomyPath(assetTypeId);
+  }
+
   saveAsset() {}
 
 }

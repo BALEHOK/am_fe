@@ -7,6 +7,7 @@ var ReactSelectize = require('../../../common/react-selectize');
 var Panel = require('./panel');
 var Router = require('react-router');
 var Link = Router.Link;
+var TaxonomyPath = require('../../taxonomyPath');
 
 var AssetViewType1 = React.createClass({
     render: function() {
@@ -42,12 +43,7 @@ var AssetViewType1 = React.createClass({
                             label=" "
                             className="select_width_full"
                         />
-                        <nav className="nav-block">
-                            <span className="nav-block__title nav-block__title_type_second">Asset type</span>
-                            <div className="nav-block__item">
-                                <span>System <span className="icon icon_arrow_right"></span> <a href="#">admin</a></span>
-                            </div>
-                        </nav>
+                        <TaxonomyPath actions={this.props.actions} />
                         <nav className="nav-block">
                             <span className="nav-block__title nav-block__title_type_second">Linked assets</span>
                             <div className="nav-block__item">
