@@ -1,6 +1,7 @@
 var Flux = require('delorean').Flux;
 var AssetStore = require('../stores/AssetStore');
 var ListStore = require('../stores/ListStore');
+var SearchTrackingStore = require('../stores/SearchTrackingStore');
 
 var AssetDispatcher = Flux.createDispatcher({
 
@@ -20,10 +21,15 @@ var AssetDispatcher = Flux.createDispatcher({
   	return this.dispatch("list:assets", params);
   },
 
+  loadSearchTracking(searchId) {
+    return this.dispatch("search:tracking", searchId);
+  },
+
   getStores() {
     return {
       asset: new AssetStore(),
-      list: new ListStore()
+      list: new ListStore(),
+      search: new SearchTrackingStore()
     }
   }
 });

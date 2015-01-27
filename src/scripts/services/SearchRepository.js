@@ -22,6 +22,15 @@ class SearchRepository {
             type: 'GET'
         })
     }
+
+    tracking(searchId) {
+        return $.ajax({
+            url: '/api/search/tracking',
+            contentType: 'application/json',
+            data: { searchId: searchId },
+            type: 'GET'
+        })
+    }
 }
 
 module.exports = SearchRepository;

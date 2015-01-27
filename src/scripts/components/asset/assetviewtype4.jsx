@@ -6,6 +6,7 @@ var React = require('react');
 var ReactSelectize = require('../common/react-selectize');
 var TabbedArea = require('react-bootstrap/TabbedArea');
 var TabPane = require('react-bootstrap/TabPane');
+var SearchResultsHeader = require('./searchResultsHeader');
 
 var AssetViewType4 = React.createClass({
     handleScreenChange: function() {
@@ -14,10 +15,7 @@ var AssetViewType4 = React.createClass({
     render: function() {
         return (
             <div>
-                <h1 className="page-title">Search results: <span className="page-title__param">test</span></h1>
-                <nav className="back-nav">
-                    <a href="" className="link link_second"><span className="icon icon_arrow-c_right"></span>Back to search</a>
-                </nav>
+                <SearchResultsHeader />
                 <div className="grid">
                     <div className="grid__item two-twelfths">
                         <ReactSelectize

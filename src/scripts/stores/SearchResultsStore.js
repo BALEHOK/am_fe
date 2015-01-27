@@ -3,11 +3,10 @@ var SearchRepository = require('../services/SearchRepository');
 
 var SearchResultsStore = Flux.createStore({
   models: [],
-
   searchId: undefined,
 
   actions: {
-    'search:results': 'loadResults'
+    'search:results': 'loadResults',
   },
 
   initialize() {
@@ -17,7 +16,7 @@ var SearchResultsStore = Flux.createStore({
   getState() {
     return {
       models: this.models,
-      searchId: this.searchId
+      searchId: this.searchId,
     };
   },
 
@@ -27,7 +26,8 @@ var SearchResultsStore = Flux.createStore({
       this.searchId = data.searchId;
       this.emitChange();
     })
-  }
+  },
+ 
 });
 
 module.exports = SearchResultsStore;
