@@ -17,16 +17,16 @@ var AssetViewType1 = React.createClass({
         });
 
         var linkedAssets = this.props.linkedAssets.filter(function(e) { return e.assets != null }).map((entity) => {
-            var links = entity.assets.map(function(asset){                
-                return <Link className="nav-block__item__related" 
-                             to="asset-view" 
+            var links = entity.assets.map(function(asset){
+                return <Link className="nav-block__item-related"
+                             to="asset-view"
                              params={{assetTypeUid: asset.assetTypeId, assetUid: asset.assetId}}>
                             {asset.name}
-                        </Link>                
+                        </Link>
             });
-            return <div><span>{entity.name}: </span>{links}</div>;   
+            return <div><span>{entity.name}: </span>{links}</div>;
         });
-            
+
         return (
             <div>
                 <SearchResultsHeader actions={this.props.actions} />
