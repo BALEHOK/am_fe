@@ -50,12 +50,11 @@ gulp.task('css:fonts', function () {
             url: {
                 name: 'url64',
                 limit: false
-            },
-            'include css': true
+            }
         }))
-        //.on('error', handleError)
+        .on('error', handleError)
         .pipe(gulp.dest(cssDest))
-        //.on('error', handleError)
+        .on('error', handleError)
         .pipe(gulp.dest(cssDest))
         .pipe(notify({ message: 'Fonts:css task complete' }));
 });
