@@ -24,6 +24,7 @@ var assetsDest = 'Content/assets';
 var jsSrc = 'src/scripts/**/*.*',
     jsDest = path.join(buildDest, assetsDest, 'js');
 var cssSrc = 'src/styles/*',
+    fontsCss = 'src/styles/fonts/*',
     cssDest = path.join(buildDest, assetsDest, 'css');
 
 /*gulp.task('clean', function () {
@@ -42,6 +43,21 @@ gulp.task('webpack:build', function (callback) {
         .pipe(gwebpack(myConfig))
         .pipe(gulp.dest(jsDest))
         .pipe(notify({ message: 'Webpack build task complete' }));
+});
+gulp.task('css:fonts', function () {
+    return gulp.src([fontsCss])
+        .pipe(stylus({
+            url: {
+                name: 'url64',
+                limit: false
+            },
+            'include css': true
+        }))
+        //.on('error', handleError)
+        .pipe(gulp.dest(cssDest))
+        //.on('error', handleError)
+        .pipe(gulp.dest(cssDest))
+        .pipe(notify({ message: 'Fonts:css task complete' }));
 });
 
 gulp.task('css', function () {
@@ -88,7 +104,7 @@ gulp.task('images', function() {
 });
 gulp.task('watch', function() {
     gulp.watch('src/**/*.html', ['views', browserSync.reload]);
-    gulp.watch('src/**/*.{styl,css}', ['css', browserSync.reload]);
+    gulp.watch('src/**/*.{styl,css}', ['css', 'css:fonts', browserSync.reload]);
     gulp.watch('src/fonts/*.*', ['fonts', browserSync.reload]);
     gulp.watch('src/images/*.*', ['images', browserSync.reload]);
 });
@@ -119,7 +135,7 @@ gulp.task("dev-server", function(callback) {
 });
 
 // Production build
-gulp.task('build', ['views', 'images', 'fonts', 'css', 'webpack:build']);
-gulp.task('server', ['watch', 'dev-server', 'views', 'images', 'fonts', 'css']);
+gulp.task('build', ['fonts', 'css:fonts', 'images', 'css', 'webpack:build', 'views']);
+gulp.task('server', ['fonts', 'css:fonts', 'images', 'css', 'watch', 'dev-server', 'views']);
 gulp.task('default', ['build']);
 gulp.task('deploy', ['replace']);
