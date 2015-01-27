@@ -1,7 +1,7 @@
 var Flux = require('delorean').Flux;
 var AssetStore = require('../stores/AssetStore');
 var ListStore = require('../stores/ListStore');
-var SearchResultsStore = require('../stores/SearchResultsStore');
+var SearchTrackingStore = require('../stores/SearchTrackingStore');
 
 var AssetDispatcher = Flux.createDispatcher({
 
@@ -29,7 +29,7 @@ var AssetDispatcher = Flux.createDispatcher({
     return {
       asset: new AssetStore(),
       list: new ListStore(),
-      search: new SearchResultsStore()
+      search: new SearchTrackingStore()
     }
   }
 });
