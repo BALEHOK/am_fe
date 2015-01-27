@@ -17,7 +17,6 @@ var SearchResultsStore = Flux.createStore({
     return {
       models: this.models,
       searchId: this.searchId,
-      tracking: this.tracking,
     };
   },
 
