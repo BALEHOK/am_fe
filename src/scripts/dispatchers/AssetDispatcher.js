@@ -21,6 +21,10 @@ var AssetDispatcher = Flux.createDispatcher({
   	return this.dispatch("list:assets", params);
   },
 
+  loadTaxonomyPath(assetTypeId) {
+    return this.dispatch("asset:taxonomy-path", assetTypeId);
+  },
+  
   loadSearchTracking(searchId) {
     return this.dispatch("search:tracking", searchId);
   },

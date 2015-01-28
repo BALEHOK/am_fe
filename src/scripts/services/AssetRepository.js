@@ -15,7 +15,16 @@ class AssetRepository {
             contentType: 'application/json',
             type: 'GET'
         });
-    }    
+    }   
+
+    loadTaxonomyPath(assetTypeId) {
+        var url = `/api/assettype/${assetTypeId}/taxonomy`;
+        return $.ajax({
+            url: url,
+            contentType: 'application/json',
+            type: 'GET'
+        });
+    } 
 }
 
 module.exports = AssetRepository;

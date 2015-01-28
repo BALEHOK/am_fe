@@ -11,7 +11,9 @@ var SearchResultsHeader = React.createClass({
 	mixins:[Router.State, Flux.mixins.storeListener],
     componentWillMount: function() {
         var query = this.getQuery();    
-        this.props.actions.loadSearchTracking(query.searchId);
+        if (query.searchId) {
+            this.props.actions.loadSearchTracking(query.searchId);
+        }
     },
     render: function() {   
         var tracking = this.state.stores.search.tracking;

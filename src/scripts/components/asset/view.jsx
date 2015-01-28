@@ -40,14 +40,15 @@ var AssetView = React.createClass({
         var selected = this.state.selectedScreen || screens[0] && screens[0].id;
 
         var screen = asset.screens.filter(function(el) { return el.id === selected })[0];
-
+        
         return <AssetViewType1
             screen={screen || {panels: []}}
             onScreenChange={this.onScreenChange}
             screens={screens}
             linkedAssets={linkedAssets}
             selectedScreen={selected}
-            actions={this.props.actions} />;
+            actions={this.props.actions}
+            assetTypeId={asset.assetTypeId} />;
     }
 });
 module.exports = AssetView;

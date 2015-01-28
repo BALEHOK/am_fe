@@ -8,6 +8,7 @@ var Panel = require('./panel');
 var Router = require('react-router');
 var Link = Router.Link;
 var SearchResultsHeader = require('../../searchResultsHeader');
+var TaxonomyPath = require('../../taxonomyPath');
 
 var AssetViewType1 = React.createClass({
     render: function() {
@@ -16,10 +17,12 @@ var AssetViewType1 = React.createClass({
         });
 
         var linkedAssets = this.props.linkedAssets.filter(function(e) { return e.assets != null }).map((entity) => {
-            var links = entity.assets.map(function(asset){                
-                return <Link to="asset-view" params={{assetTypeUid: asset.assetTypeId, assetUid: asset.assetId}}>
+            var links = entity.assets.map(function(asset){
+                return <Link className="nav-block__item-related"
+                             to="asset-view"
+                             params={{assetTypeUid: asset.assetTypeId, assetUid: asset.assetId}}>
                             {asset.name}
-                        </Link>                   
+                        </Link>
             });
             return <div><span>{entity.name}: </span>{links}</div>;
         });
@@ -38,12 +41,7 @@ var AssetViewType1 = React.createClass({
                             label=" "
                             className="select_width_full"
                         />
-                        <nav className="nav-block">
-                            <span className="nav-block__title nav-block__title_type_second">Asset type</span>
-                            <div className="nav-block__item">
-                                <span>System <span className="icon icon_arrow_right"></span> <a href="#">admin</a></span>
-                            </div>
-                        </nav>
+                        <TaxonomyPath assetTypeId={this.props.assetTypeId} actions={this.props.actions} />
                         <nav className="nav-block">
                             <span className="nav-block__title nav-block__title_type_second">Linked assets</span>
                             <div className="nav-block__item">
