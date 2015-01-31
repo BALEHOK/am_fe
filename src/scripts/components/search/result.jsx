@@ -45,7 +45,7 @@ var ResultPage = React.createClass({
             stores[store].onChange(this.forceUpdateBound);
         }.bind(this));
 
-        this.dispatcher.stores.filters.onChange(this.syncUrl);
+        this.dispatcher.stores.results.onChange(this.syncUrl);
         this.actions.changeSearchFilter(this.getQuery());
     },
 
@@ -54,11 +54,11 @@ var ResultPage = React.createClass({
         Object.keys(this.dispatcher.stores).map(function(store) {
             stores[store].listener.removeListener('change', this.forceUpdateBound);
         }.bind(this));
-        this.dispatcher.stores.filters.listener.removeListener('change', this.syncUrl);
+        this.dispatcher.stores.results.listener.removeListener('change', this.syncUrl);
     },
 
     syncUrl: function() {
-        var filters = this.dispatcher.getStore('filters').getState();
+        var filters = this.dispatcher.getStore('results').getState().filter;
         var clean = Object.keys(filters).reduce(function(acc, key) {
             if(filters[key]) {
                 acc[key] = filters[key]
@@ -69,7 +69,7 @@ var ResultPage = React.createClass({
     },
 
     filterCounters: function(param, counter) {
-        var id = this.dispatcher.getStore('filters').getState()[param];
+        var id = this.dispatcher.getStore('results').getState().filter[param];
         if(!id) {
             return true;
         }
@@ -94,10 +94,18 @@ var ResultPage = React.createClass({
 
     render: function() {
         var self = this;
+
+        var results = this.dispatcher.getStore('results').getState();
+        var counters = results.counters;
+        var filters = results.filter;
+
+        var blockNav = results.loadingResults || results.loadingCounters ? true : false;
+
         var cx = React.addons.classSet;
         var searchResultsClasses = cx({
             'search-results': true,
-            'search-results_type_tiles': this.state.isTilesView
+            'search-results_type_tiles': this.state.isTilesView,
+            'loading': results.loadingResults
         });
 
         var activeTileClasses = cx({
@@ -110,10 +118,6 @@ var ResultPage = React.createClass({
             'btn btn_type_second btn_state_active': this.state.isTilesView
         });
 
-        var results = this.dispatcher.getStore('results').getState();
-        var counters = this.dispatcher.getStore('counters').getState();
-        var filters = this.dispatcher.getStore('filters').getState();
-
         var assetTypeRefinements = counters.assetTypes.filter(this.filterCounters.bind(this, 'assetType'));
         var taxonomyRefinements = counters.taxonomies.filter(this.filterCounters.bind(this, 'taxonomy'));
 
@@ -125,6 +129,10 @@ var ResultPage = React.createClass({
 
         return (
             <div>
+                {results.loadingResults || results.loadingCounters
+                  ? <div className="loader"></div>
+                  : {}
+                }
                 <div className="grid">
                     <div className="grid__item two-twelfths">
                         <h1 className="page-title page-title_small">Search results</h1>
@@ -198,17 +206,19 @@ var ResultPage = React.createClass({
                                     type="assetType"
                                     actions={self.actions}
                                     filters={filters}
-                                    maxItems={7}/>
+                                    maxItems={7}
+                                    loading={blockNav}/>
                                 : {}
                             }
                             {taxonomyRefinements.length !== 0
                                 ? <RefinementBlock
-                                title="Refine by taxonomies"
-                                list={taxonomyRefinements}
-                                type="taxonomy"
-                                actions={self.actions}
-                                filters={filters}
-                                maxItems={7}/>
+                                    title="Refine by taxonomies"
+                                    list={taxonomyRefinements}
+                                    type="taxonomy"
+                                    actions={self.actions}
+                                    filters={filters}
+                                    maxItems={7}
+                                    loading={blockNav}/>
                                 : {}
                             }
                             <nav className="nav-block">
@@ -235,7 +245,11 @@ var ResultPage = React.createClass({
                                                     model={result}
                                                     searchId={results.searchId} />
                                           })
-                                        : <li className="search-results__item search-results__item_empty"><span className="search-results__item-msg"><strong>Nothing was found</strong> for the specified search parameters</span></li>
+                                        : {}
+                                    }
+                                    {results.models.length === 0 && results.loadingResults === false
+                                        ? <li className="search-results__item search-results__item_empty"><span className="search-results__item-msg"><strong>Nothing was found</strong> for the specified search parameters</span></li>
+                                        : {}
                                     }
                                 </ul>
                                 {counters.totalCount
