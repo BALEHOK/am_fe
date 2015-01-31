@@ -2,6 +2,18 @@
   border 1px solid #c7c7c7
   margin 0 0 20px 0
   border-radius $br
+  position relative
+
+  &.loading
+    &::before
+      content ""
+      position absolute
+      left -1px
+      top -1px
+      right -1px
+      bottom -1px
+      z-index 1
+      background rgba(255, 255, 255, .5)
 
   &__header
     background #4d4d4d
@@ -39,6 +51,8 @@
     margin 0
     padding 0
     list-style none
+    min-height 86px
+    position relative
 
     &:last-child
       .search-results__item:last-child

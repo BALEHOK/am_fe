@@ -10,12 +10,14 @@ var RefinementLink = React.createClass({
     onRefinementChanged: function(id) {
         var filter = {};
         filter[this.props.type] = id;
+        filter['page'] = 1;
         this.props.actions.changeSearchFilter(filter);
     },
 
     onRefinementClear: function() {
         var filter = {};
         filter[this.props.type] = undefined;
+        filter['page'] = 1;
         this.props.actions.changeSearchFilter(filter);
     },
 

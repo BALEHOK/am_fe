@@ -4,6 +4,17 @@
   margin 0 0 25px 0
   font-family "Tahoma", Arial, sans-serif
 
+  &.loading
+    &::before
+      content ""
+      position absolute
+      left 0
+      top 0
+      right 0
+      bottom 0
+      z-index 1
+      background rgba(255, 255, 255, .5)
+
   &__title
     display block
     background #4d4d4d
