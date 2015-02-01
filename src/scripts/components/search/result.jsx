@@ -138,7 +138,13 @@ var ResultPage = React.createClass({
                         <h1 className="page-title page-title_small">Search results</h1>
                     </div>
                     <div className="grid__item ten-twelfths">
-                        <SearchSimpleForm dispatcher={this.dispatcher} actions={this.actions} value={this.getQuery().query} />
+                        {this.getQuery().query
+                          ?  <SearchSimpleForm
+                                dispatcher={this.dispatcher}
+                                actions={this.actions}
+                                value={this.getQuery().query}/>
+                          : {}
+                        }
                     </div>
                 </div>
                 <div className="results-form">
