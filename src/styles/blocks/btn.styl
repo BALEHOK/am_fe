@@ -117,12 +117,14 @@
     border-color $btnSecondaryBorderColor
 
     &:hover
+      color $btnSecondaryColor
       background-color $btnSecondaryBgColorHover
       background-image linear-gradient(bottom, #efefef 0%, #fcfcfc 100%)
 
     &:active
     &.btn_state_active
       outline 0
+      color $btnSecondaryColor
       background-color $btnSecondaryBgColorActive
       background-image none
       box-shadow inset 0 3px 5px rgba(0, 0, 0, 0.125)
