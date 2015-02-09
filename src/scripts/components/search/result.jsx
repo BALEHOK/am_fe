@@ -77,8 +77,10 @@ var ResultPage = React.createClass({
     },
 
     handlePageChange: function(page) {
+        var searchId = this.dispatcher.getStore('results').getState().searchId;
         this.actions.changeSearchFilter({
-            page: page
+            page: page,
+            searchId: searchId
         });
     },
 

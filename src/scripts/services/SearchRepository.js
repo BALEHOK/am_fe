@@ -1,9 +1,10 @@
 class SearchRepository {
-    search(params) {
+    search(params) {        
         return $.ajax({
             url: '/api/search',
             contentType: 'application/json',
             data: {
+                searchId: params.searchId,
                 query: params.query,
                 page: params.page,
                 assetType: params.assetType,

@@ -45,8 +45,7 @@ var SearchResultsStore = Flux.createStore({
 
   loadResults(filters) {
     this.loadingResults = true;
-    this.emitChange();
-
+    this.emitChange();    
     this.searchRepo.search(filters)
         .done((data) => {
             this.models = data.entities;
