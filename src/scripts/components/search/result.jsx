@@ -90,6 +90,14 @@ var ResultPage = React.createClass({
         });
     },
 
+    handleExportChange: function(format) {
+        var searchId = this.dispatcher.getStore('results').getState().searchId;
+        this.actions.exportSearchResults({
+            searchId: searchId,
+            format: format
+        });
+    },
+
     toggleTilesView: function(state) {
         this.setState({isTilesView: state});
     },
