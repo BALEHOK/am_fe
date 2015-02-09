@@ -11,6 +11,7 @@ var RefinementLink = React.createClass({
         var filter = {};
         filter[this.props.type] = id;
         filter['page'] = 1;
+        filter.searchId = undefined;
         this.props.actions.changeSearchFilter(filter);
     },
 
@@ -18,6 +19,7 @@ var RefinementLink = React.createClass({
         var filter = {};
         filter[this.props.type] = undefined;
         filter['page'] = 1;
+        filter.searchId = undefined;
         this.props.actions.changeSearchFilter(filter);
     },
 
