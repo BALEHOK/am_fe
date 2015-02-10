@@ -24,17 +24,11 @@ var RefinementBlock = React.createClass({
     render: function() {
         var self = this;
 
-        var cx = React.addons.classSet;
-        var navBlockClasses = cx({
-            'nav-block': true,
-            'loading': this.props.loading
-        });
-
         var refinementRows = this.state.showAllRefinements ? undefined : parseInt(this.props.maxItems);
         var refinementsList = this.props.list.slice(0, refinementRows);
 
         return (
-            <nav className={navBlockClasses}>
+            <nav className={this.props.navBlockClasses}>
                 <span className="nav-block__title">{this.props.title}</span>
                 <ul className="nav-block__list">
                     {refinementsList
