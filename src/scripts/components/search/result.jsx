@@ -233,8 +233,16 @@ var ResultPage = React.createClass({
                             <nav className={navBlockClasses}>
                                 <span className="nav-block__title">Reports</span>
                                 <ul className="nav-block__list">
-                                    <li className="nav-block__item"><span>Detailed</span></li>
-                                    <li className="nav-block__item"><span>Compact</span></li>
+                                    <li className="nav-block__item">
+                                        <a className="link link_second">
+                                            <span className="icon icon_download"></span>Detailed
+                                        </a>
+                                    </li>
+                                    <li className="nav-block__item">
+                                        <a className="link link_second"> 
+                                            <span className="icon icon_download"></span>Compact
+                                        </a>
+                                    </li>
                                 </ul>
                             </nav>
                             <nav className={navBlockClasses}>
@@ -242,8 +250,10 @@ var ResultPage = React.createClass({
                                 <ul className="nav-block__list">
                                     {this.exportItems.map(function(format){
                                         return <li className="nav-block__item">
-                                                <a onClick={this.handleExportClick.bind(this, format)}>Export to {format}</a>
-                                            </li>;
+                                                    <a className="link link_second" onClick={this.handleExportClick.bind(this, format)}>
+                                                        <span className="icon icon_download"></span>.{format}
+                                                    </a>
+                                                </li>;
                                     }, this)}
                                 </ul>
                             </nav>
