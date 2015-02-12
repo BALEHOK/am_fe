@@ -26,6 +26,7 @@ var Panel = React.createClass({
                     {this.props.panelAttributes.map(function(attribute){    
                         if (attribute.datatype == 'asset') {
                             return <AssetPicker key={attribute.uid} 
+                                                actions={self.props.actions}
                                                 attribute={attribute} />
                         } else if (attribute.datatype == 'assets') {
                             return <AssetPicker key={attribute.uid} 
@@ -68,6 +69,7 @@ var AssetEdit = React.createClass({
     },
 
     render: function() {
+        var self = this;
         var store = this.state.stores.asset;
         return (
             <div>
@@ -78,7 +80,7 @@ var AssetEdit = React.createClass({
                                     {screen.panels.map(function(panel){
                                         return <Panel key={panel.id} 
                                                       name={panel.name} 
-                                                      asset={store.asset}
+                                                      actions={self.props.actions}
                                                       panelAttributes={panel.attributes} />
                                     })}
                                 </Screen>

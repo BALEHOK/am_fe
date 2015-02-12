@@ -27,11 +27,8 @@ var AssetPicker = React.createClass({
         }   
         this.props.attribute.value = values;        
     },
-    onItemsRequest: function(query, callback) { 
-        //this.actions.loadAssetsList({
-        //    assetTypeId: this.props.asset.assetTypeId,
-        //    query: query
-        //});
+    onItemsRequest: function(query, callback) {
+        
     },
     render: function() {
         var items = [];

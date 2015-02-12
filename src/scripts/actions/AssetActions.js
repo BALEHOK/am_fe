@@ -12,8 +12,12 @@ class AssetActions extends Actions {
     
   }
 
-  loadAssetLists(params) {
-  	this._dispatcher.loadAssetLists(params);	
+  loadAssetsList(params) {
+    this._dispatcher.loadAssetsList(params);  
+  }
+
+  loadDynamicList(query) {
+    this._dispatcher.loadDynamicList(query);
   }
   
   loadSearchTracking(searchId) {
