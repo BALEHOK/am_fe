@@ -13,12 +13,8 @@ var AssetDispatcher = Flux.createDispatcher({
     return this.dispatch("asset:load-related", params);
   },
 
-  loadDynamicList(params) {
-  	return this.dispatch("list:dynlists", params);
-  },
-
-  loadAssetsList(params) {
-  	return this.dispatch("list:assets", params);
+  loadAssetLists(params) {
+  	return this.dispatch("asset:load-lists", params);
   },
 
   loadTaxonomyPath(assetTypeId) {

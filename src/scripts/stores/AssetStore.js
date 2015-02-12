@@ -11,10 +11,16 @@ var AssetStore = Flux.createStore({
 
   taxonomyPath: undefined,
 
+  lists: {
+    assets: [],
+    dynlists: []
+  },
+
   actions: {
     'asset:load': 'loadAsset',
     'asset:load-related': 'loadRelatedAssets',
     'asset:taxonomy-path': 'loadTaxonomyPath',
+    'asset:load-lists': 'loadAssetLists'
   },
 
   initialize() {
@@ -48,11 +54,16 @@ var AssetStore = Flux.createStore({
     });
   },
 
+  loadAssetLists(params) {
+
+  },
+
   getState() {
     return  { 
       asset: this.asset,
       relatedAssets: this.relatedAssets,
-      taxonomyPath: this.taxonomyPath
+      taxonomyPath: this.taxonomyPath,
+      lists: this.lists
     };
   }
 });

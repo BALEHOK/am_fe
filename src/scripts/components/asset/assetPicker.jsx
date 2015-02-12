@@ -15,13 +15,6 @@ var AssetPicker = React.createClass({
         this.actions = new AssetActions(this.dispatcher);
         this.forceUpdateBound = this.forceUpdate.bind(this);
         this.dispatcher.stores.asset.onChange(this.forceUpdateBound);
-
-        var params = this.getParams();
-        this.actions.loadRelatedAssets({
-            assetTypeUid: params.assetTypeUid,
-            assetUid: params.assetUid,
-            attributeUid: this.props.attribute.uid
-        });
     },
     componentWillUnmount: function() {
         this.dispatcher.stores.asset.listener.removeListener(
@@ -40,18 +33,15 @@ var AssetPicker = React.createClass({
         this.props.attribute.value = values;        
     },
     onItemsRequest: function(query, callback) { 
-        var params = this.getParams();
-        this.actions.loadRelatedAssets({
-            assetTypeUid: params.assetTypeUid,
-            assetUid: params.assetUid,
-            attributeUid: this.props.attribute.uid,
+        this.actions.loadAssetsList({
+            assetTypeId: this.props.asset.assetTypeId,
             query: query
         });
     },
     render: function() {
         var selectId = "attribute-asset-" + this.props.attribute.uid;
-        var asset = this.dispatcher.getStore('asset').getState();
-        var assets = asset.relatedAssets[this.props.attribute.uid];
+        var assetTypeId = this.props.asset.assetTypeId;
+        var assets = this.dispatcher.getStore('list').getState().assets[assetTypeId];
         return (
             <li>
                 <span>{this.props.attribute.name}</span>:
