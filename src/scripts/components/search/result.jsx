@@ -23,6 +23,11 @@ var ResultPage = React.createClass({
         { name: "Location", id: 2 },
         { name: "User", id: 3 },
     ],
+    exportItems: [
+        'txt',
+        'xml',
+        //'html'
+    ],
     getInitialState: function() {
         var query = this.getQuery();
         return {
@@ -90,6 +95,14 @@ var ResultPage = React.createClass({
         });
     },
 
+    handleExportClick: function(format) {
+        var searchId = this.dispatcher.getStore('results').getState().searchId;
+        this.actions.exportSearchResults({
+           searchId: searchId,
+           format: format
+        });
+    },
+
     toggleTilesView: function(state) {
         this.setState({isTilesView: state});
     },
@@ -100,8 +113,6 @@ var ResultPage = React.createClass({
         var results = this.dispatcher.getStore('results').getState();
         var counters = results.counters;
         var filters = results.filter;
-
-        var blockNav = results.loadingResults || results.loadingCounters ? true : false;
 
         var cx = React.addons.classSet;
         var searchResultsClasses = cx({
@@ -118,6 +129,11 @@ var ResultPage = React.createClass({
         var deactiveTileClasses = cx({
             'btn btn_type_second': !this.state.isTilesView,
             'btn btn_type_second btn_state_active': this.state.isTilesView
+        });
+
+        var navBlockClasses = cx({
+            'nav-block': true,
+            'loading': results.loadingResults
         });
 
         var assetTypeRefinements = counters.assetTypes.filter(this.filterCounters.bind(this, 'assetType'));
@@ -176,22 +192,7 @@ var ResultPage = React.createClass({
                                             placeholder=" "
                                             label=" "
                                         />
-                                    </span>
-                                    <span className="input-group__item">
-                                        <span className="input-group__item-title">Export to</span>
-                                        <ReactSelectize
-                                            items={[
-                                                { name: "txt", id: "txt" },
-                                                { name: "xml", id: "xml" },
-                                                { name: "html", id: "html"}
-                                            ]}
-                                            value={0}
-                                            onChange={this.handleExportChange}
-                                            selectId="select-export"
-                                            placeholder=" "
-                                            label=" "
-                                        />
-                                    </span>
+                                    </span>                                   
                                 </div>
                                 {counters.totalCount
                                     ? <ResultHeaderPagination pages={pages}
@@ -215,7 +216,7 @@ var ResultPage = React.createClass({
                                     actions={self.actions}
                                     filters={filters}
                                     maxItems={7}
-                                    loading={blockNav}/>
+                                    navBlockClasses={navBlockClasses}/>
                                 : {}
                             }
                             {taxonomyRefinements.length !== 0
@@ -226,14 +227,24 @@ var ResultPage = React.createClass({
                                     actions={self.actions}
                                     filters={filters}
                                     maxItems={7}
-                                    loading={blockNav}/>
+                                    navBlockClasses={navBlockClasses}/>
                                 : {}
                             }
-                            <nav className="nav-block">
-                                <span className="nav-block__title">Search result report</span>
+                            <nav className={navBlockClasses}>
+                                <span className="nav-block__title">Reports</span>
                                 <ul className="nav-block__list">
                                     <li className="nav-block__item"><span>Detailed</span></li>
                                     <li className="nav-block__item"><span>Compact</span></li>
+                                </ul>
+                            </nav>
+                            <nav className={navBlockClasses}>
+                                <span className="nav-block__title">Export</span>
+                                <ul className="nav-block__list">
+                                    {this.exportItems.map(function(format){
+                                        return <li className="nav-block__item">
+                                                <a onClick={this.handleExportClick.bind(this, format)}>Export to {format}</a>
+                                            </li>;
+                                    }, this)}
                                 </ul>
                             </nav>
                         </div>
