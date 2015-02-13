@@ -13,7 +13,6 @@ var AssetPicker = React.createClass({
     mixins:[Flux.mixins.storeListener, Router.State],
     relatedAttribute: undefined,
     componentWillMount: function() {
-        
     },
     componentWillUnmount: function() {
     },
@@ -48,8 +47,11 @@ var AssetPicker = React.createClass({
         var attributeUid = this.props.attribute.uid;
         var selectId = "attribute-asset-" + attributeUid;
         if (this.relatedAttribute) {
-            items = this.state.stores.list.assets[this.relatedAttribute.relatedAssetTypeId] || 
-                    this.relatedAttribute.assets;
+            items = 
+                // all items from server, should be loaded on demand (to select a new one)
+                this.state.stores.list.assets[this.relatedAttribute.relatedAssetTypeId] ||
+                // pre-selected item(s) which come from server as attribute values
+                this.relatedAttribute.assets; 
             value = _.pluck(this.relatedAttribute.assets, 'id');
         }          
         return (

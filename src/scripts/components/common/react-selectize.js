@@ -79,11 +79,11 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
     }
 
     // load items on dropdown open
-    if (this.props.onItemsRequest) {
-      selectControl.on('dropdown_open', () => {
-        this.props.onItemsRequest();
-      });
-    }
+    // if (this.props.onItemsRequest) {
+    //   selectControl.on('dropdown_open', () => {
+    //     this.props.onItemsRequest();
+    //   });
+    // }
   },
 
   componentDidMount: function () {
