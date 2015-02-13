@@ -16,11 +16,11 @@ var tokenStore = new TokenStore();
 var AuthService = require('./services/AuthService.js').AuthService;
 var authService = new AuthService();
 
-// TODO: to use the service in static AuthenticateRouteMixin
-window.authService = authService;
-
 var Application = require('./models/Application.js').Application;
 var app = new Application(config, authService, tokenStore);
+
+// TODO: to use in static AuthenticateRouteMixin
+window.app = app;
 
 router.run(function (Handler, state) {
   React.render(<Handler model={app}/>, document.querySelector('.page-container'));

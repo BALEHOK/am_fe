@@ -6,7 +6,7 @@ var React = require('react');
 var Router = require('react-router');
 
 var LoginPage = React.createClass({
-    mixins: [Backbone.React.Component.mixin, Router.Navigation],
+    mixins: [Router.Navigation],
     statics: {
         attemptedTransition: null
     },
@@ -26,13 +26,7 @@ var LoginPage = React.createClass({
                 password: password
             })
             .done(function() {
-                if (LoginPage.attemptedTransition) {
-                    var transition = LoginPage.attemptedTransition;
-                    LoginPage.attemptedTransition = null;
-                    transition.retry();
-                } else {
-                    self.replaceWith('/');
-                }
+                self.transitionTo('/');
             })
             .error(function(data) {
                 self.setState({ errorMessage: data.responseJSON.error_description });
@@ -56,7 +50,7 @@ var LoginPage = React.createClass({
                 </div>
                 <div className="control-group">
                     <div className="controls">
-                        <button type="submit" className="btn" onClick={this.handleSubmit}>Sign in</button>
+                        <button className="btn" onClick={this.handleSubmit}>Sign in</button>
                     </div>
                 </div>
             </form>
