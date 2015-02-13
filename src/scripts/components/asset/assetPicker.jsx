@@ -11,10 +11,19 @@ var AssetDispatcher = require('../../dispatchers/AssetDispatcher');
 
 var AssetPicker = React.createClass({
     mixins:[Flux.mixins.storeListener, Router.State],
+    relatedAttribute: undefined,
     componentWillMount: function() {
+        
     },
     componentWillUnmount: function() {
-    },   
+    },
+    componentDidUpdate: function() {  
+        var attributeUid = this.props.attribute.uid;
+        this.relatedAttribute = _
+            .chain(this.state.stores.asset.relatedAssets)
+            .findWhere({attributeUid: attributeUid})
+            .value();
+    },
     onChange: function(e) {
         var values = e;
         if (this.props.isMultiple) {
@@ -28,20 +37,20 @@ var AssetPicker = React.createClass({
         this.props.attribute.value = values;        
     },
     onItemsRequest: function(query, callback) {
-        
+        this.props.actions.loadAssetsList({
+           assetTypeId: this.relatedAttribute.relatedAssetTypeId,
+           query: query
+        });
     },
     render: function() {
         var items = [];
         var value = null;
         var attributeUid = this.props.attribute.uid;
         var selectId = "attribute-asset-" + attributeUid;
-        var relatedAttribute = _
-            .chain(this.state.stores.asset.relatedAssets)
-            .findWhere({attributeUid: attributeUid})
-            .value();
-        if (relatedAttribute) {
-            items = relatedAttribute.assets;
-            value = _.pluck(relatedAttribute.assets, 'assetId');
+        if (this.relatedAttribute) {
+            items = this.state.stores.list.assets[this.relatedAttribute.relatedAssetTypeId] || 
+                    this.relatedAttribute.assets;
+            value = _.pluck(this.relatedAttribute.assets, 'id');
         }          
         return (
             <li>
@@ -50,9 +59,9 @@ var AssetPicker = React.createClass({
                 <ReactSelectize   
                     multiple={this.props.isMultiple} 
                     selectId={selectId} 
-                    valueField="assetId"
+                    valueField="id"
                     labelField="name"  
-                    sortField="assetId"                    
+                    sortField="id"                    
                     items={items}
                     onItemsRequest={this.onItemsRequest}                   
                     onChange={this.onChange}    

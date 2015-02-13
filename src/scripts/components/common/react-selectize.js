@@ -11,7 +11,7 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
 
   buildOptions: function () {
     var o = {
-      preload: true,
+      preload: false,
       valueField : this.props.valueField || "id",
       labelField : this.props.labelField || "name",
       searchField : this.props.searchField || "name",
@@ -78,6 +78,12 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
       selectControl.on('change', this.handleChange);
     }
 
+    // load items on dropdown open
+    if (this.props.onItemsRequest) {
+      selectControl.on('dropdown_open', () => {
+        this.props.onItemsRequest();
+      });
+    }
   },
 
   componentDidMount: function () {
