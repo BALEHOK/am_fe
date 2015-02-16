@@ -5,7 +5,7 @@ var AuthService = (function () {
     function AuthService() {
         this.onAuth = new events.LiteEvent();
     }
-    Object.defineProperty(AuthService.prototype, "OnAuthInfo", {
+    Object.defineProperty(AuthService.prototype, "OnLogin", {
         get: function () {
             return this.onAuth;
         },

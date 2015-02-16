@@ -38,8 +38,7 @@ var Application = (function (_super) {
             }
         });
 
-        this.authService.OnAuthInfo.on(function (response) {
-            //console.log(response);
+        this.authService.OnLogin.on(function (response) {
             if (response.access_token)
                 self.tokenStore.setToken(response.access_token);
             self.session.user = new user.UserModel({
