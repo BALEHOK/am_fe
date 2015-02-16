@@ -51,6 +51,7 @@ var AssetView = React.createClass({
         var selected = this.state.selectedScreen || screens[0] && screens[0].id;
         var screen = asset.screens.filter(function(el) { return el.id === selected })[0];
 
+        //TODO: change to parameter
         var ViewComponent = views[3];
         
         return (
