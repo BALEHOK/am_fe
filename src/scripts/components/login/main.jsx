@@ -50,7 +50,7 @@ var LoginPage = React.createClass({
                 </div>
                 <div className="control-group">
                     <div className="controls">
-                        <button className="btn" onClick={this.handleSubmit}>Sign in</button>
+                        <div className="btn" onClick={this.handleSubmit}>Sign in</div>
                     </div>
                 </div>
             </form>
