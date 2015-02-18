@@ -45,7 +45,7 @@ var ListStore = Flux.createStore({
 
   updateAssetValue(params) {
     var list = this.lists.assets[params.uid];
-    list.values = params.values;
+    list.values = _.compact(params.values);
     this.emitChange();
   },
 
