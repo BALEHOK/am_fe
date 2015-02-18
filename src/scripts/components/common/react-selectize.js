@@ -2,6 +2,8 @@
 
 /* React selectize wrapper */
 var React = require('react');
+var Selectize = require('selectize')
+var $ = require('jquery');
 var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
 
   isMultiple: function (props) {
@@ -17,7 +19,7 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
       searchField : this.props.searchField || "name",
       create : this.props.create || false,
       options : this.props.items || [],
-      sortField : this.props.sortField || "name",
+      sortField : this.props.sortField || "name"
     };
 
     if(this.isMultiple(this.props)){
@@ -70,7 +72,7 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
     if (initValue) {
       selectControl.setValue(initValue);  
       selectControl.on('load', function(e){
-          selectControl.setValue(initValue);  
+        selectControl.setValue(initValue);  
       });
     }
     
@@ -79,15 +81,65 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
     }
 
     // load items on dropdown open
-    // if (this.props.onItemsRequest) {
-    //   selectControl.on('dropdown_open', () => {
-    //     this.props.onItemsRequest();
-    //   });
-    // }
+    if (this.props.onItemsRequest) {
+      selectControl.on('dropdown_open', this.loadElements);
+    }
+  },
+
+  trackScroll: function(dropdown) {
+    var scrolledTo = dropdown[0].scrollHeight - dropdown.height() - dropdown.scrollTop();
+    if(scrolledTo < 150 && !this.listLoading) {
+      this.listLoading = true;
+      this.props.onItemsRequest().then(() => this.listLoading = false);
+    }
+  },
+
+  loadElements: function(element) {
+    if(this.props.items.length < 20) {
+      this.props.onItemsRequest();
+    }
+    var control = this.getSelectizeControl();
+    var contentElement = element.find('.selectize-dropdown-content');
+    var throttleTracker = _.throttle(this.trackScroll, 300).bind(this, contentElement);
+    contentElement.on('scroll', throttleTracker);
+
+    function untrackScroll() {
+      contentElement.off('scroll', throttleTracker);
+      control.off('dropdown_close', untrackScroll);
+    }
+
+    control.on('dropdown_close', untrackScroll);
   },
 
   componentDidMount: function () {
     this.rebuildSelectize();
+  },
+
+  updateList: function(list) {
+    this.props.items = list;
+    var control = this.getSelectizeControl();
+    list.map(el => control.addOption(el));
+    control.refreshOptions(false);
+  },
+
+  shouldComponentUpdate: function(nextProps, nextState) {
+    var nitems = nextProps.items;
+    var oitems = this.props.items;
+    nextProps.items = undefined;
+    this.props.items = undefined;
+    var equal = _.isEqual(nextProps, this.props);
+    var iequal = _.isEqual(nitems, oitems);
+    nextProps.items = nitems;
+    this.props.items = oitems;
+    var result = true;
+    if(equal && !iequal) {
+      this.updateList(nitems);
+      result = false;
+    }
+    if(equal && iequal) {
+      result = false;
+    }
+    return result;
   },
 
   componentDidUpdate: function () {    

@@ -13,6 +13,10 @@ var AssetDispatcher = Flux.createDispatcher({
     return this.dispatch("asset:load-related", params);
   },
 
+  setListValues(assets) {
+    return this.dispatch('list:currentVals', assets);
+  },
+
   loadDynamicList(params) {
     return this.dispatch("list:dynlists", params);
   },
