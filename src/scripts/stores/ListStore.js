@@ -7,11 +7,12 @@ var ListStore = Flux.createStore({
     assets: {},
     dynlists: [],
   },
-  
+
   actions: {
     'list:dynlists': 'loadDynamicList',
     'list:assets': 'loadAssetsList',
-    'list:currentVals': 'saveCurrentValues'
+    'list:currentVals': 'saveCurrentValues',
+    'list:asset-values': 'updateAssetValue'
   },
 
   initialize() {
@@ -20,8 +21,8 @@ var ListStore = Flux.createStore({
 
   saveCurrentValues(assets) {
     assets.forEach((el) => {
-      this.lists.assets[el.attributeUid] = { 
-        values: el.assets, 
+      this.lists.assets[el.attributeUid] = {
+        values: el.assets,
         items: [],
         rowStart: 0,
         rowsNumber: 20
@@ -40,6 +41,12 @@ var ListStore = Flux.createStore({
       this.lists.dynlists[uid] = data;
       this.emitChange();
     });
+  },
+
+  updateAssetValue(params) {
+    var list = this.lists.assets[params.uid];
+    list.values = params.values;
+    this.emitChange();
   },
 
   loadAssetsList(params) {

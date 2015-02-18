@@ -15,17 +15,9 @@ var AssetPicker = React.createClass({
     },
     componentWillUnmount: function() {
     },
-    onChange: function(e) {
-        var values = e;
-        if (this.props.isMultiple) {
-            values = [];
-            if (e) {
-                e.map(function(item){
-                    values.push(parseInt(item));
-                });
-            }            
-        }   
-        this.props.attribute.value = values;        
+    onChange: function(values) {
+        var uid = this.props.attribute.uid;
+        this.props.actions.updateAssetValue({values, uid});
     },
     onItemsRequest: function(query, callback) {
         return this.props.actions.loadAssetsList({
@@ -41,7 +33,7 @@ var AssetPicker = React.createClass({
             .chain(this.state.stores.asset.relatedAssets)
             .findWhere({attributeUid: attributeUid})
             .value();
-    }, 
+    },
 
     render: function() {
         var items = [];
@@ -59,18 +51,18 @@ var AssetPicker = React.createClass({
             <li>
                 <span>{this.props.attribute.name}</span>:
                 &nbsp;
-                <ReactSelectize   
-                    multiple={this.props.isMultiple} 
-                    selectId={selectId} 
+                <ReactSelectize
+                    multiple={this.props.isMultiple}
+                    selectId={selectId}
                     valueField="id"
-                    labelField="name"  
-                    sortField="id"                    
+                    labelField="name"
+                    sortField="id"
                     items={items}
-                    onItemsRequest={this.onItemsRequest}                   
-                    onChange={this.onChange}    
-                    value={value}                             
+                    onItemsRequest={this.onItemsRequest}
+                    onChange={this.onChange}
+                    value={value}
                     placeholder=" "
-                    label=" " />                
+                    label=" " />
             </li>
         );
     }

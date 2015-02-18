@@ -12,17 +12,21 @@ class AssetActions extends Actions {
       this._dispatcher.setListValues(assets);
       this._dispatcher.loadTaxonomyPath(asset.assetTypeId);
     });
-    
+
+  }
+
+  updateAssetValue(params) {
+    this._dispatcher.updateAssetValue(params);
   }
 
   loadAssetsList(params) {
-    return this._dispatcher.loadAssetsList(params);  
+    return this._dispatcher.loadAssetsList(params);
   }
 
   loadDynamicList(query) {
     return this._dispatcher.loadDynamicList(query);
   }
-  
+
   loadSearchTracking(searchId) {
     return this._dispatcher.loadSearchTracking(searchId);
   }
