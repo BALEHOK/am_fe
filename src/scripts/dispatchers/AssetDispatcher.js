@@ -2,6 +2,7 @@ var Flux = require('delorean').Flux;
 var AssetStore = require('../stores/AssetStore');
 var ListStore = require('../stores/ListStore');
 var SearchTrackingStore = require('../stores/SearchTrackingStore');
+var HistoryStore = require('../stores/HistoryStore');
 
 var AssetDispatcher = Flux.createDispatcher({
 
@@ -11,6 +12,10 @@ var AssetDispatcher = Flux.createDispatcher({
 
   loadRelatedAssets(params) {
     return this.dispatch("asset:load-related", params);
+  },
+
+  loadHistory(params) {
+    return this.dispatch("history:load", params);
   },
 
   loadDynamicList(params) {
@@ -24,7 +29,7 @@ var AssetDispatcher = Flux.createDispatcher({
   loadTaxonomyPath(assetTypeId) {
     return this.dispatch("asset:taxonomy-path", assetTypeId);
   },
-  
+
   loadSearchTracking(searchId) {
     return this.dispatch("search:tracking", searchId);
   },
@@ -33,7 +38,8 @@ var AssetDispatcher = Flux.createDispatcher({
     return {
       asset: new AssetStore(),
       list: new ListStore(),
-      search: new SearchTrackingStore()
+      search: new SearchTrackingStore(),
+      history: new HistoryStore()
     }
   }
 });
