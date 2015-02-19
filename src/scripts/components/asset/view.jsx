@@ -39,11 +39,23 @@ var AssetView = React.createClass({
             selectedScreen: parseInt(val)
         });
     },
-   
+
     render: function() {
         var assetStore = this.state.stores.asset;
         var asset = assetStore.asset;
         var linkedAssets = assetStore.relatedAssets;
+
+        var assetLinks = linkedAssets.filter(function(e) { return e.assets != null }).map((entity) => {
+            var links = entity.assets.map(function(asset){
+                console.log(asset);
+                return <Link className="nav-block__item-related"
+                             to="asset-view"
+                             params={{assetTypeUid: asset.assetTypeId, assetUid: asset.uid}}>
+                            {asset.name}
+                        </Link>
+            });
+            return <div><span>{entity.name}: </span>{links}</div>;
+        });
 
         var screens = asset.screens.map(function(el) {
             return {name: el.name, id: el.id};
@@ -53,7 +65,7 @@ var AssetView = React.createClass({
 
         //TODO: change to parameter
         var ViewComponent = views[3];
-        
+
         return (
             <div>
                 <SearchResultsHeader actions={this.props.actions} />
@@ -78,7 +90,7 @@ var AssetView = React.createClass({
                         <nav className="nav-block">
                             <span className="nav-block__title nav-block__title_type_second">Linked assets</span>
                             <div className="nav-block__item">
-                                <span>Update user: <a href="#">admin</a></span>
+                                {assetLinks}
                             </div>
                         </nav>
                         <nav className="nav-block">

@@ -13,17 +13,6 @@ var AssetViewType1 = React.createClass({
             return <Panel data={el} title={el.name}/>
         });
 
-        // var linkedAssets = this.props.linkedAssets.filter(function(e) { return e.assets != null }).map((entity) => {
-        //     var links = entity.assets.map(function(asset){
-        //         return <Link className="nav-block__item-related"
-        //                      to="asset-view"
-        //                      params={{assetTypeUid: asset.assetTypeId, assetUid: asset.assetId}}>
-        //                     {asset.name}
-        //                 </Link>
-        //     });
-        //     return <div><span>{entity.name}: </span>{links}</div>;
-        // });
-
         return (
             <div>
                 {panels}
