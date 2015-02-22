@@ -14,7 +14,7 @@ var SearchPage = require('./components/search/main.jsx');
 var ResultPage = require('./components/search/result.jsx');
 var LoginPage = require('./components/login/main.jsx');
 var AssetViewPage = require('./components/asset/viewHandler.jsx');
-var AssetEditPage = require('./components/asset/edit.jsx');
+var AssetEditPage = require('./components/asset/editHandler.jsx');
 var HistoryHandler = require('./components/history/historyHandler.jsx');
 
 var routes = (
