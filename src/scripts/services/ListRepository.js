@@ -12,11 +12,12 @@ class ListRepository {
     	var rowStart = params.rowStart || 1;
     	var rowsNumber = params.rowsNumber || 20;
         var query = params.query || '';
-        var url = `/api/assettype/${params.assetTypeId}/assets/?query=${query}`;
+        var url = `/api/assettype/${params.assetTypeId}/assets/`;
         return $.ajax({
             url: url,
             contentType: 'application/json',
-            type: 'GET'
+            type: 'GET',
+            data: params
         });
     }
 }
