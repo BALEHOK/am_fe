@@ -10,14 +10,13 @@ var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
 
 var Layout = React.createClass({
-    mixins: [Backbone.React.Component.mixin, Router.Navigation],
+    mixins: [Router.Navigation],
     handleLogout: function(){
-        app = this.getModel();
-        app.logout();
+        this.props.model.logout();
         location.href = '/logout';
     },
     render: function() {
-        var app = this.getModel();
+        var app = this.props.model;
         return (
             <div className="page-wrapper">
                 <header className="page-header">

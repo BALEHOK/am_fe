@@ -4,20 +4,21 @@
 
 var React = require('react');
 var Panel = require('./panel');
-// var Router = require('react-router');
-// var Link = Router.Link;
 
-var AssetViewType1 = React.createClass({
+var AssetViewType2 = React.createClass({
+    handleScreenChange: function() {
+
+    },
     render: function() {
         var panels = this.props.screen.panels.map(function(el) {
             return <Panel data={el} title={el.name}/>
         });
 
         return (
-            <div>
+            <div className="grid">
                 {panels}
             </div>
         );
     }
 });
-module.exports = AssetViewType1;
+module.exports = AssetViewType2;
