@@ -4,7 +4,6 @@
 
 var React = require('react');
 var Router = require('react-router');
-var Link = Router.Link
 
 var Attribute = React.createClass({
     mixins: [Router.State, Router.Navigation],
