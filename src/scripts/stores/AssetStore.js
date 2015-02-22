@@ -52,7 +52,7 @@ var AssetStore = Flux.createStore({
     return  { 
       asset: this.asset,
       relatedAssets: this.relatedAssets,
-      taxonomyPath: this.taxonomyPath
+      taxonomyPath: this.taxonomyPath,
     };
   }
 });

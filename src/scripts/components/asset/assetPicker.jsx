@@ -4,70 +4,65 @@
 
 var React = require('react');
 var Router = require('react-router');
+var Flux = require('delorean').Flux;
 var ReactSelectize = require('../common/react-selectize');
 var AssetActions = require('../../actions/AssetActions');
 var AssetDispatcher = require('../../dispatchers/AssetDispatcher');
 
 var AssetPicker = React.createClass({
-    mixins:[Router.State],
+    mixins:[Flux.mixins.storeListener, Router.State],
     componentWillMount: function() {
-        this.dispatcher = AssetDispatcher;
-        this.actions = new AssetActions(this.dispatcher);
-        this.forceUpdateBound = this.forceUpdate.bind(this);
-        this.dispatcher.stores.asset.onChange(this.forceUpdateBound);
-
-        var params = this.getParams();
-        this.actions.loadRelatedAssets({
-            assetTypeUid: params.assetTypeUid,
-            assetUid: params.assetUid,
-            attributeUid: this.props.attribute.uid
-        });
     },
     componentWillUnmount: function() {
-        this.dispatcher.stores.asset.listener.removeListener(
-            'change', this.forceUpdateBound);
-    },   
-    onChange: function(e) {
-        var values = e;
-        if (this.props.isMultiple) {
-            values = [];
-            if (e) {
-                e.map(function(item){
-                    values.push(parseInt(item));
-                });
-            }            
-        }   
-        this.props.attribute.value = values;        
     },
-    onItemsRequest: function(query, callback) { 
-        var params = this.getParams();
-        this.actions.loadRelatedAssets({
-            assetTypeUid: params.assetTypeUid,
-            assetUid: params.assetUid,
-            attributeUid: this.props.attribute.uid,
-            query: query
+    onChange: function(values) {
+        var uid = this.props.attribute.uid;
+        this.props.actions.updateAssetValue({values, uid});
+    },
+    onItemsRequest: function(query, callback) {
+        return this.props.actions.loadAssetsList({
+           assetTypeId: this.getRelatedAttribute().relatedAssetTypeId,
+           query: query,
+           uid: this.props.attribute.uid
         });
     },
+
+    getRelatedAttribute: function() {
+        var attributeUid = this.props.attribute.uid;
+        return _
+            .chain(this.state.stores.asset.relatedAssets)
+            .findWhere({attributeUid: attributeUid})
+            .value();
+    },
+
     render: function() {
-        var selectId = "attribute-asset-" + this.props.attribute.uid;
-        var asset = this.dispatcher.getStore('asset').getState();
-        var assets = asset.relatedAssets[this.props.attribute.uid];
+        var items = [];
+        var value = null;
+        var attributeUid = this.props.attribute.uid;
+        var selectId = "attribute-asset-" + attributeUid;
+        var listStore = this.state.stores.list.assets[attributeUid];
+        if(listStore) {
+            items = listStore.values || [];
+            items = _.unique(items.concat(listStore.items || []));
+            value = _.pluck(listStore.values, 'id');
+        }
+
         return (
             <li>
                 <span>{this.props.attribute.name}</span>:
                 &nbsp;
-                <ReactSelectize   
-                    multiple={this.props.isMultiple} 
-                    selectId={selectId} 
-                    valueField="uid"
-                    labelField="name"  
-                    sortField="uid"                    
-                    items={assets}
-                    onItemsRequest={this.onItemsRequest}                   
-                    onChange={this.onChange}    
-                    value={this.props.attribute.value}                             
+                <ReactSelectize
+                    multiple={this.props.isMultiple}
+                    selectId={selectId}
+                    valueField="id"
+                    labelField="name"
+                    sortField="id"
+                    items={items}
+                    onItemsRequest={this.onItemsRequest}
+                    onChange={this.onChange}
+                    value={value}
                     placeholder=" "
-                    label=" " />                
+                    label=" " />
             </li>
         );
     }

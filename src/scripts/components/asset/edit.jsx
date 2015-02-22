@@ -4,8 +4,9 @@
 
 var React = require('react');
 var Router = require('react-router');
-var Screen = require('./screen.jsx');
+var Flux = require('delorean').Flux;
 
+var Screen = require('./screen.jsx');
 var Attribute = require('./attribute.jsx');
 var EditableAttribute = require('./editableAttribute.jsx');
 var AssetPicker = require('./assetPicker.jsx');
@@ -13,12 +14,7 @@ var BooleanAttribute = require('./booleanAttribute.jsx');
 var TextAttribute = require('./textAttribute.jsx');
 var ListAttribute = require('./listAttribute.jsx');
 var DateTimeAttribute = require('./dateTimeAttribute');
-
-var AuthenticatedRouteMixin = require('../../mixins/AuthenticatedRouteMixin');
 var ReactSelectize = require('../common/react-selectize');
-
-var AssetActions = require('../../actions/AssetActions');
-var AssetDispatcher = require('../../dispatchers/AssetDispatcher');
 
 var Panel = React.createClass({
     render: function() {
@@ -27,11 +23,16 @@ var Panel = React.createClass({
             <div>
                <h3>Panel name: {this.props.name}</h3>
                <ul>
-                    {this.props.panelAttributes.map(function(attribute){                        
+                    {this.props.panelAttributes.map(function(attribute){    
                         if (attribute.datatype == 'asset') {
-                            return <AssetPicker key={attribute.uid} attribute={attribute} />
+                            return <AssetPicker key={attribute.uid} 
+                                                actions={self.props.actions}
+                                                attribute={attribute} />
                         } else if (attribute.datatype == 'assets') {
-                            return <AssetPicker key={attribute.uid} attribute={attribute} isMultiple={true} />                        
+                            return <AssetPicker key={attribute.uid} 
+                                                attribute={attribute} 
+                                                actions={self.props.actions}
+                                                isMultiple={true} />                        
                         } else if (attribute.datatype == 'bool') {
                             return <BooleanAttribute key={attribute.uid} attribute={attribute} />                        
                         } else if (attribute.datatype == 'text') {
@@ -55,21 +56,13 @@ var Panel = React.createClass({
 });
 
 var AssetEdit = React.createClass({
-	mixins:[AuthenticatedRouteMixin, Router.Navigation, Router.State],
+	mixins:[Flux.mixins.storeListener, Router.Navigation, Router.State],
     componentWillMount: function() {
-        this.dispatcher = AssetDispatcher;
-        this.actions = new AssetActions(this.dispatcher);
-
         var params = this.getParams();
-
-        this.forceUpdateBound = this.forceUpdate.bind(this);
-        this.dispatcher.stores.asset.onChange(this.forceUpdateBound);
-
-        this.actions.loadAsset(params);
+        this.props.actions.loadAsset(params);
     },
 
     componentWillUnmount: function() {
-        this.dispatcher.stores.asset.listener.removeListener('change', this.forceUpdateBound);
     },
 
     handleSubmit: function() {
@@ -77,15 +70,19 @@ var AssetEdit = React.createClass({
     },
 
     render: function() {
-        var asset = this.dispatcher.getStore('asset').getState();
+        var self = this;
+        var store = this.state.stores.asset;
         return (
             <div>
                 <h1>Asset Edit Page</h1>
                 <form onSubmit={this.handleSubmit}>
-	        		{asset.screens.map(function(screen){
+	        		{store.asset.screens.map(function(screen){
                         return  <Screen key={screen.Id} name={screen.name}>
                                     {screen.panels.map(function(panel){
-                                        return <Panel key={panel.id} name={panel.name} panelAttributes={panel.attributes} />
+                                        return <Panel key={panel.id} 
+                                                      name={panel.name} 
+                                                      actions={self.props.actions}
+                                                      panelAttributes={panel.attributes} />
                                     })}
                                 </Screen>
                     })}
