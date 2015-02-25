@@ -8,8 +8,9 @@ var AttributesFactory = require('../attributesFactory');
 
 var Panel = React.createClass({
     render: function() {
+        var actions = this.props.actions;
         var attrs = this.props.data.attributes.map(function(attr) {
-           return AttributesFactory.getEditAttribute(attr.datatype, attr);
+           return AttributesFactory.getEditAttribute(attr.datatype, attr, actions);
         });
         return (
                 <div className="asset-data asset-data_aside_true">

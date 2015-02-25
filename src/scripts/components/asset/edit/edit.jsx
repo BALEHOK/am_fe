@@ -3,91 +3,71 @@
  */
 
 var React = require('react');
-var Router = require('react-router');
+var ReactSelectize = require('../../common/react-selectize');
 var Flux = require('delorean').Flux;
+var Router = require('react-router');
 
-var Screen = require('../screen.jsx');
-var Attribute = require('../attribute.jsx');
-var EditableAttribute = require('../editableAttribute.jsx');
-var AssetPicker = require('../assetPicker.jsx');
-var BooleanAttribute = require('../booleanAttribute.jsx');
-var TextAttribute = require('../textAttribute.jsx');
-var ListAttribute = require('../listAttribute.jsx');
-var DateTimeAttribute = require('../dateTimeAttribute');
-var Panel = React.createClass({
-    render: function() {
-        var self = this;
-        return (
-            <div>
-               <h3>Panel name: {this.props.name}</h3>
-               <ul>
-                    {this.props.panelAttributes.map(function(attribute){    
-                        if (attribute.datatype == 'asset') {
-                            return <AssetPicker key={attribute.uid} 
-                                                actions={self.props.actions}
-                                                attribute={attribute} />
-                        } else if (attribute.datatype == 'assets') {
-                            return <AssetPicker key={attribute.uid} 
-                                                attribute={attribute} 
-                                                actions={self.props.actions}
-                                                isMultiple={true} />                        
-                        } else if (attribute.datatype == 'bool') {
-                            return <BooleanAttribute key={attribute.uid} attribute={attribute} />                        
-                        } else if (attribute.datatype == 'text') {
-                            return <TextAttribute key={attribute.uid} attribute={attribute} />
-                        } else if (attribute.datatype == 'revision') {
-                            return <Attribute key={attribute.uid} attribute={attribute} />
-                        } else if (attribute.datatype == 'dynlist') {
-                            return <ListAttribute key={attribute.uid} attribute={attribute} />
-                        } else if (attribute.datatype == 'dynlists') {
-                            return <ListAttribute key={attribute.uid} attribute={attribute} isMultiple={true} />
-                        } else if(attribute.datatype == 'datetime') {
-                            return <DateTimeAttribute key={attribute.uid} attribute={attribute}/>
-                        } else {
-                            return <EditableAttribute key={attribute.uid} attribute={attribute} />
-                        }
-	           		})}
-               </ul>
-            </div>
-        );
-    }
-});
+var Panel = require('./panel');
 
-var AssetEdit = React.createClass({
-	mixins:[Flux.mixins.storeListener, Router.Navigation, Router.State],
+var Edit = React.createClass({
+    mixins:[Flux.mixins.storeListener, Router.State],
+
     componentWillMount: function() {
         var params = this.getParams();
         this.props.actions.loadAsset(params);
     },
 
-    componentWillUnmount: function() {
-    },
+    handleSelectChange: function() {
 
-    handleSubmit: function() {
-        this.actions.saveAsset();
     },
-
     render: function() {
-        var self = this;
-        var store = this.state.stores.asset;
+        var actions = this.props.actions;
+        var screen = this.state.stores.asset.asset.screens[0]  || {panels: []};
+        var panels = screen.panels.map(function(el) {
+            return <Panel data={el} title={el.name} actions={actions} />
+        });
         return (
             <div>
-                <h1>Asset Edit Page</h1>
-                <form onSubmit={this.handleSubmit}>
-	        		{store.asset.screens.map(function(screen){
-                        return  <Screen key={screen.Id} name={screen.name}>
-                                    {screen.panels.map(function(panel){
-                                        return <Panel key={panel.id} 
-                                                      name={panel.name} 
-                                                      actions={self.props.actions}
-                                                      panelAttributes={panel.attributes} />
-                                    })}
-                                </Screen>
-                    })}
-                    <input type="submit" value="Save" />
-                </form>
+                <h1 className="page-title">Edit: <span className="page-title__param">test1</span></h1>
+                <nav className="back-nav">
+                    <span className="light-grey">[r.1  -  11/21/2013 11:23:10 PM]</span>
+                </nav>
+                <div className="grid">
+                    <div className="grid__item two-twelfths">
+                        <ReactSelectize
+                            items={[
+                                { name: "Default", id: "1" },
+                                { name: "Asset view 2", id: "2" },
+                                { name: "Asset view 3", id: "3" },
+                                { name: "Asset view 4", id: "4" }
+                            ]}
+                            value={0}
+                            onChange={this.handleSelectChange}
+                            selectId="select-screen"
+                            placeholder="Screen:"
+                            label=" "
+                            className="select_width_full select_size_small"
+                        />
+                        <nav className="nav-block">
+                            <span className="nav-block__title nav-block__title_type_second">Categories</span>
+                            <div className="nav-block__item">
+                                <span>System > <a href="#">admin</a></span>
+                            </div>
+                        </nav>
+                    </div>
+                    <div className="grid__item ten-twelfths">
+                        {panels}
+                        <div className="inputs-line inputs-line_width_full">
+                            <button className="btn btn_size_small">Save</button>
+                            <button className="btn btn_type_second btn_size_small">Save and Add new</button>
+                            <button className="btn btn_type_second btn_size_small">
+                                <i className="btn__icon btn__icon_undo"></i>Undo
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }
 });
-module.exports = AssetEdit;
+module.exports = Edit;

@@ -16,7 +16,7 @@ var AttributesFactory = {
     return <Component params={params}/>;
   },
 
-  getEditAttribute: function(name, params) {
+  getEditAttribute: function(name, params, actions) {
     var Component;
     if (name == 'asset') {
         Component = require("./attributes/edit/assetPicker.jsx"); 
@@ -35,7 +35,7 @@ var AttributesFactory = {
     } else {
         Component = require("./attributes/edit/string.jsx");
     } 
-    return <Component params={params}/>;
+    return <Component params={params} actions={actions} />;
   }
 
 };
