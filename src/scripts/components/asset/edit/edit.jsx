@@ -14,7 +14,6 @@ var BooleanAttribute = require('../booleanAttribute.jsx');
 var TextAttribute = require('../textAttribute.jsx');
 var ListAttribute = require('../listAttribute.jsx');
 var DateTimeAttribute = require('../dateTimeAttribute');
-
 var Panel = React.createClass({
     render: function() {
         var self = this;
@@ -22,11 +21,16 @@ var Panel = React.createClass({
             <div>
                <h3>Panel name: {this.props.name}</h3>
                <ul>
-                    {this.props.panelAttributes.map(function(attribute){                        
+                    {this.props.panelAttributes.map(function(attribute){    
                         if (attribute.datatype == 'asset') {
-                            return <AssetPicker key={attribute.uid} attribute={attribute} />
+                            return <AssetPicker key={attribute.uid} 
+                                                actions={self.props.actions}
+                                                attribute={attribute} />
                         } else if (attribute.datatype == 'assets') {
-                            return <AssetPicker key={attribute.uid} attribute={attribute} isMultiple={true} />                        
+                            return <AssetPicker key={attribute.uid} 
+                                                attribute={attribute} 
+                                                actions={self.props.actions}
+                                                isMultiple={true} />                        
                         } else if (attribute.datatype == 'bool') {
                             return <BooleanAttribute key={attribute.uid} attribute={attribute} />                        
                         } else if (attribute.datatype == 'text') {
@@ -51,7 +55,6 @@ var Panel = React.createClass({
 
 var AssetEdit = React.createClass({
 	mixins:[Flux.mixins.storeListener, Router.Navigation, Router.State],
-
     componentWillMount: function() {
         var params = this.getParams();
         this.props.actions.loadAsset(params);
@@ -65,16 +68,19 @@ var AssetEdit = React.createClass({
     },
 
     render: function() {
-        var asset = this.state.stores.asset;
-        console.log(asset)
+        var self = this;
+        var store = this.state.stores.asset;
         return (
             <div>
                 <h1>Asset Edit Page</h1>
                 <form onSubmit={this.handleSubmit}>
-	        		{asset.screens.map(function(screen){
+	        		{store.asset.screens.map(function(screen){
                         return  <Screen key={screen.Id} name={screen.name}>
                                     {screen.panels.map(function(panel){
-                                        return <Panel key={panel.id} name={panel.name} panelAttributes={panel.attributes} />
+                                        return <Panel key={panel.id} 
+                                                      name={panel.name} 
+                                                      actions={self.props.actions}
+                                                      panelAttributes={panel.attributes} />
                                     })}
                                 </Screen>
                     })}

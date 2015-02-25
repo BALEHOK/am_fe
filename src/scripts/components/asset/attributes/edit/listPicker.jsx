@@ -4,27 +4,16 @@
 
 var React = require('react');
 var Router = require('react-router');
+var Flux = require('delorean').Flux;
 var ReactSelectize = require('../../../common/react-selectize');
 var AssetActions = require('../../../../actions/AssetActions');
 var AssetDispatcher = require('../../../../dispatchers/AssetDispatcher');
 
 var ListPicker = React.createClass({
-    mixins:[Router.State],
+    mixins:[Flux.mixins.storeListener, Router.State],
     componentWillMount: function() {
-        this.dispatcher = AssetDispatcher;
-        this.actions = new AssetActions(this.dispatcher);
-        this.forceUpdateBound = this.forceUpdate.bind(this);
-        this.dispatcher.stores.list.onChange(this.forceUpdateBound);
-        var params = this.getParams();
-        this.actions.loadDynamicList({
-            assetTypeUid: params.assetTypeUid,
-            assetUid: params.assetUid,
-            attributeUid: this.props.attribute.uid
-        });
     },
     componentWillUnmount: function() {
-        this.dispatcher.stores.list.listener.removeListener(
-            'change', this.forceUpdateBound);
     },   
     onChange: function(items) {
         var values = [parseInt(items)];
@@ -40,7 +29,7 @@ var ListPicker = React.createClass({
     },
     render: function() {        
         var selectId = "attribute-list-" + this.props.attribute.uid;
-        var lists = this.dispatcher.getStore('list').getState().dynlists;        
+        var lists = this.state.stores.list.dynlists;        
         var list = lists[this.props.attribute.uid];        
         var items = list != null 
             ? list.items
