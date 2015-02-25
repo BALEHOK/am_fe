@@ -4,7 +4,6 @@
 
 var React = require('react');
 var Router = require('react-router');
-var Attribute = require('./attribute.jsx');
 var Link = Router.Link;
 var ReactSelectize = require('../common/react-selectize');
 var AssetViewType1 = require('./view_types/type1/view');

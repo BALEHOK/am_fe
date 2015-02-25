@@ -4,21 +4,16 @@
 
 var React = require('react');
 var Router = require('react-router');
-var Screen = require('./screen.jsx');
+var Flux = require('delorean').Flux;
 
-var Attribute = require('./attribute.jsx');
-var EditableAttribute = require('./editableAttribute.jsx');
-var AssetPicker = require('./assetPicker.jsx');
-var BooleanAttribute = require('./booleanAttribute.jsx');
-var TextAttribute = require('./textAttribute.jsx');
-var ListAttribute = require('./listAttribute.jsx');
-var DateTimeAttribute = require('./dateTimeAttribute');
-
-var AuthenticatedRouteMixin = require('../../mixins/AuthenticatedRouteMixin');
-var ReactSelectize = require('../common/react-selectize');
-
-var AssetActions = require('../../actions/AssetActions');
-var AssetDispatcher = require('../../dispatchers/AssetDispatcher');
+var Screen = require('../screen.jsx');
+var Attribute = require('../attribute.jsx');
+var EditableAttribute = require('../editableAttribute.jsx');
+var AssetPicker = require('../assetPicker.jsx');
+var BooleanAttribute = require('../booleanAttribute.jsx');
+var TextAttribute = require('../textAttribute.jsx');
+var ListAttribute = require('../listAttribute.jsx');
+var DateTimeAttribute = require('../dateTimeAttribute');
 
 var Panel = React.createClass({
     render: function() {
@@ -55,21 +50,14 @@ var Panel = React.createClass({
 });
 
 var AssetEdit = React.createClass({
-	mixins:[AuthenticatedRouteMixin, Router.Navigation, Router.State],
+	mixins:[Flux.mixins.storeListener, Router.Navigation, Router.State],
+
     componentWillMount: function() {
-        this.dispatcher = AssetDispatcher;
-        this.actions = new AssetActions(this.dispatcher);
-
         var params = this.getParams();
-
-        this.forceUpdateBound = this.forceUpdate.bind(this);
-        this.dispatcher.stores.asset.onChange(this.forceUpdateBound);
-
-        this.actions.loadAsset(params);
+        this.props.actions.loadAsset(params);
     },
 
     componentWillUnmount: function() {
-        this.dispatcher.stores.asset.listener.removeListener('change', this.forceUpdateBound);
     },
 
     handleSubmit: function() {
@@ -77,7 +65,8 @@ var AssetEdit = React.createClass({
     },
 
     render: function() {
-        var asset = this.dispatcher.getStore('asset').getState();
+        var asset = this.state.stores.asset;
+        console.log(asset)
         return (
             <div>
                 <h1>Asset Edit Page</h1>

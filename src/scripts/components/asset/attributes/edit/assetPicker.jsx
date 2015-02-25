@@ -4,9 +4,9 @@
 
 var React = require('react');
 var Router = require('react-router');
-var ReactSelectize = require('../common/react-selectize');
-var AssetActions = require('../../actions/AssetActions');
-var AssetDispatcher = require('../../dispatchers/AssetDispatcher');
+var ReactSelectize = require('../../../common/react-selectize');
+var AssetActions = require('../../../../actions/AssetActions');
+var AssetDispatcher = require('../../../../dispatchers/AssetDispatcher');
 
 var AssetPicker = React.createClass({
     mixins:[Router.State],
@@ -18,9 +18,9 @@ var AssetPicker = React.createClass({
 
         var params = this.getParams();
         this.actions.loadRelatedAssets({
-            assetTypeUid: params.assetTypeUid,
-            assetUid: params.assetUid,
-            attributeUid: this.props.attribute.uid
+           assetTypeUid: params.assetTypeUid,
+           assetUid: params.assetUid,
+           attributeUid: this.props.params.uid
         });
     },
     componentWillUnmount: function() {
@@ -37,24 +37,24 @@ var AssetPicker = React.createClass({
                 });
             }            
         }   
-        this.props.attribute.value = values;        
+        this.props.params.value = values;        
     },
     onItemsRequest: function(query, callback) { 
         var params = this.getParams();
         this.actions.loadRelatedAssets({
             assetTypeUid: params.assetTypeUid,
             assetUid: params.assetUid,
-            attributeUid: this.props.attribute.uid,
+            attributeUid: this.props.params.uid,
             query: query
         });
     },
     render: function() {
-        var selectId = "attribute-asset-" + this.props.attribute.uid;
+        var selectId = "attribute-asset-" + this.props.params.uid;
         var asset = this.dispatcher.getStore('asset').getState();
-        var assets = asset.relatedAssets[this.props.attribute.uid];
+        var assets = asset.relatedAssets[this.props.params.uid];
         return (
             <li>
-                <span>{this.props.attribute.name}</span>:
+                <span>{this.props.params.name}</span>:
                 &nbsp;
                 <ReactSelectize   
                     multiple={this.props.isMultiple} 
@@ -65,7 +65,7 @@ var AssetPicker = React.createClass({
                     items={assets}
                     onItemsRequest={this.onItemsRequest}                   
                     onChange={this.onChange}    
-                    value={this.props.attribute.value}                             
+                    value={this.props.params.value}                             
                     placeholder=" "
                     label=" " />                
             </li>

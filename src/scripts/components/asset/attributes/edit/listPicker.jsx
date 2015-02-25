@@ -4,11 +4,11 @@
 
 var React = require('react');
 var Router = require('react-router');
-var ReactSelectize = require('../common/react-selectize');
-var AssetActions = require('../../actions/AssetActions');
-var AssetDispatcher = require('../../dispatchers/AssetDispatcher');
+var ReactSelectize = require('../../../common/react-selectize');
+var AssetActions = require('../../../../actions/AssetActions');
+var AssetDispatcher = require('../../../../dispatchers/AssetDispatcher');
 
-var ListAttribute = React.createClass({
+var ListPicker = React.createClass({
     mixins:[Router.State],
     componentWillMount: function() {
         this.dispatcher = AssetDispatcher;
@@ -68,4 +68,4 @@ var ListAttribute = React.createClass({
     }
 });
 
-module.exports = ListAttribute;
+module.exports = ListPicker;
