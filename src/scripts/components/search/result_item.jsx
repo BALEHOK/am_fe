@@ -9,8 +9,8 @@ var ResultItem = React.createClass({
     mixins: [Router.Navigation],
     render: function() {
         var assetLink = this.makeHref('asset-view', {
-                assetTypeUid: this.props.model.dynEntityConfigUid,
-                assetUid: this.props.model.dynEntityUid
+                assetTypeId: this.props.model.dynEntityConfigId,
+                assetId: this.props.model.dynEntityId
             }, {searchId: this.props.searchId});
         return (
             <li className="search-results__item">
