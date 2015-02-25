@@ -46,10 +46,9 @@ var AssetView = React.createClass({
 
         var assetLinks = linkedAssets.filter(function(e) { return e.assets != null }).map((entity) => {
             var links = entity.assets.map(function(asset){
-                console.log(asset);
                 return <Link className="nav-block__item-related"
                              to="asset-view"
-                             params={{assetTypeUid: asset.assetTypeId, assetUid: asset.uid}}>
+                             params={{assetTypeId: asset.assetTypeId, assetId: asset.id}}>
                             {asset.name}
                         </Link>
             });
