@@ -7,14 +7,20 @@ var ReactSelectize = require('../../common/react-selectize');
 var Flux = require('delorean').Flux;
 var Router = require('react-router');
 
+var TaxonomyPath = require('../taxonomyPath');
 var Panel = require('./panel');
 
 var Edit = React.createClass({
-    mixins:[Flux.mixins.storeListener, Router.State],
+    mixins:[Flux.mixins.storeListener, Router.State, Router.Navigation],
 
     componentWillMount: function() {
         var params = this.getParams();
         this.props.actions.loadAsset(params);
+    },
+
+    handleTransition(route) {
+        var params = this.getParams();
+        this.transitionTo('asset-view', params);
     },
 
     handleSelectChange: function() {
@@ -22,7 +28,8 @@ var Edit = React.createClass({
     },
     render: function() {
         var actions = this.props.actions;
-        var screen = this.state.stores.asset.asset.screens[0]  || {panels: []};
+        var asset = this.state.stores.asset.asset;
+        var screen = asset.screens[0] || {panels: []};
         var panels = screen.panels.map(function(el) {
             return <Panel data={el} title={el.name} actions={actions} />
         });
@@ -48,19 +55,15 @@ var Edit = React.createClass({
                             label=" "
                             className="select_width_full select_size_small"
                         />
-                        <nav className="nav-block">
-                            <span className="nav-block__title nav-block__title_type_second">Categories</span>
-                            <div className="nav-block__item">
-                                <span>System > <a href="#">admin</a></span>
-                            </div>
-                        </nav>
+                        <TaxonomyPath assetTypeId={asset.assetTypeId} actions={this.props.actions} />
                     </div>
                     <div className="grid__item ten-twelfths">
                         {panels}
                         <div className="inputs-line inputs-line_width_full">
                             <button className="btn btn_size_small">Save</button>
                             <button className="btn btn_type_second btn_size_small">Save and Add new</button>
-                            <button className="btn btn_type_second btn_size_small">
+                            <button className="btn btn_type_second btn_size_small"
+                                    onClick={this.handleTransition}>
                                 <i className="btn__icon btn__icon_undo"></i>Undo
                             </button>
                         </div>
