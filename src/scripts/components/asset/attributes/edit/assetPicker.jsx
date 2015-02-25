@@ -48,7 +48,7 @@ var AssetPicker = React.createClass({
         return (
             <div className="asset-data__param">
                 <span className="asset-data__param-title">{this.props.params.name}:</span>
-                <label className="input-txt input-txt_size_small">
+                <div className="input-group">
                     <ReactSelectize
                         multiple={this.props.isMultiple}
                         selectId={selectId}
@@ -60,8 +60,13 @@ var AssetPicker = React.createClass({
                         onChange={this.onChange}
                         value={value}
                         placeholder=" "
-                        label=" " />
-                </label>
+                        label=" "
+                        className="select_size_small" />
+                
+                    <button className="btn btn_size_small btn_type_second">
+                        <i className="btn__icon btn__icon_plus_circle"></i>
+                    </button>
+                </div>
             </div>
         );
     }

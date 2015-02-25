@@ -20,7 +20,12 @@ var Panel = React.createClass({
                         <form className="asset-data__form">
                             {attrs}
                             <div className="asset-data__aside">
-                                <p>Document file:</p>
+                                <p>Barcode:</p>
+                                <img src="assets/images/barcode.png"/>
+                                <label className="input-txt input-txt_width_full input-txt_size_small">
+                                    <input type="text" className="input-txt__field" />
+                                </label>
+                                <p>Document:</p>
                                 <button className="btn btn_type_second btn_size_small">
                                     Attach document
                                     <input type="file" name=" " className="input-file"/>

@@ -7,6 +7,7 @@ var AuthenticatedRouteMixin = require('../../../mixins/AuthenticatedRouteMixin')
 var AssetActions = require('../../../actions/AssetActions');
 var AssetDispatcher = require('../../../dispatchers/AssetDispatcher');
 var Edit = require('./itemEdit');
+//var Edit = require('../resultViewEdit');
 
 var AssetEditHandler = React.createClass({
     mixins:[AuthenticatedRouteMixin],
