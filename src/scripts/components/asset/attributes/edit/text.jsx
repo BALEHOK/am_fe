@@ -5,18 +5,19 @@
 var React = require('react');
 var TextAttribute = React.createClass({
 	getInitialState: function() { 
-		return { isChecked: this.props.attribute.value ? true : false }; 
+		return { isChecked: this.props.params.value ? true : false }; 
 	},
     valueChanged: function(event) {
-    	this.props.attribute.value = event.target.value;        
+    	this.props.params.value = event.target.value;        
     },
     render: function() {
         return (
-            <li>
-                <span>{this.props.attribute.name}</span>:
-                &nbsp;
-                <textarea onChange={this.valueChanged} defaultValue={this.props.attribute.value} />
-            </li>
+            <div className="asset-data__param">
+                <span className="asset-data__param-title">{this.props.params.name}:</span>
+                <label className="input-txt input-txt_size_small">
+                    <textarea onChange={this.valueChanged} defaultValue={this.props.params.value} />
+                </label>
+            </div>
         );
     }
 });

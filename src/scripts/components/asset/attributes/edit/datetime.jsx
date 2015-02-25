@@ -9,11 +9,12 @@ var moment = require('moment');
 var DateTimeAttribute = React.createClass({
     render: function() {
         return (
-            <li>
-                <span>{this.props.attribute.name}</span>:
-                &nbsp;
-                <DateTimeField selectedDate={moment(this.props.attribute.value)}/>
-            </li>
+            <div className="asset-data__param">
+                <span className="asset-data__param-title">{this.props.params.name}:</span>
+                <label className="input-txt input-txt_size_small">
+                	<DateTimeField selectedDate={moment(this.props.params.value)}/>
+            	</label>
+            </div>
         );
     }
 });
