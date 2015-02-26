@@ -26,8 +26,12 @@ var RevisionRow = React.createClass({
                 </td>
                 <td width="6%">
                     <Link className="link link_second"
-                        to="asset-view"
-                        params={{assetTypeUid: revision.assetTypeUid, assetUid: revision.assetUid}}>
+                        to="asset-revision"
+                        params={{
+                            assetTypeId: revision.assetTypeId, 
+                            assetId: revision.assetId, 
+                            revision: revision.revisionNumber
+                        }}>
                         <span className="icon icon_eye"></span>
                     </Link>
                 </td>

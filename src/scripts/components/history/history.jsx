@@ -32,10 +32,10 @@ var AssetHistoryLayout = React.createClass({
                     <div className="grid__item two-twelfths">
                         <Link className="back-btn"
                             to="asset-view"
-                            params={{assetTypeUid: params.assetTypeUid, assetUid: params.assetUid}}>
+                            params={{assetTypeId: params.assetTypeId, assetId: params.assetId}}>
                             <span className="icon icon_arrow-c_right"></span>Current revision
                         </Link>
-                        <TaxonomyPath assetTypeId={params.assetTypeUid} actions={this.props.actions} />
+                        <TaxonomyPath assetTypeId={params.assetTypeId} actions={this.props.actions} />
                     </div>
                     <div className="grid__item ten-twelfths">
                         <table className="table">
