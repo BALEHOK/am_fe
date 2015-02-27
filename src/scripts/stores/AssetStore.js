@@ -22,10 +22,7 @@ var AssetStore = Flux.createStore({
   },
 
   loadAsset(params) {
-    this.assetRepo.loadAsset({
-      assetTypeId: params.assetTypeId,
-      assetId: params.assetId
-    }).then((data) => {
+    this.assetRepo.loadAsset(params).then((data) => {
       this.asset = data;
       this.emitChange();
     });
