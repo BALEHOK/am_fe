@@ -26,13 +26,16 @@ var routes = (
       handler={SearchPage} />
     <Route name="result" path="/search/result/?:searchId?" handler={ResultPage} />
     <Route name="asset-view"
-      path="/assettype/:assetTypeUid/asset/:assetUid"
+      path="/assettype/:assetTypeId/asset/:assetId"
+      handler={AssetViewPage} />
+    <Route name="asset-revision"
+      path="/assettype/:assetTypeId/asset/:assetId/revisions/:revision"
       handler={AssetViewPage} />
     <Route name="asset-edit"
-      path="/assettype/:assetTypeUid/asset/:assetUid/edit"
+      path="/assettype/:assetTypeId/asset/:assetId/edit"
       handler={AssetEditPage} />
     <Route name="asset-history"
-      path="/assettype/:assetTypeUid/asset/:assetUid/history"
+      path="/assettype/:assetTypeId/asset/:assetId/history"
       handler={HistoryHandler} />
     <DefaultRoute handler={SearchPage} />
   </Route>

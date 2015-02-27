@@ -1,6 +1,6 @@
 class AssetRepository {
     loadAsset(params) {
-        var url = `/api/assettype/${params.assetTypeUid}/asset/${params.assetUid}`;
+        var url = `/api/assettype/${params.assetTypeId}/asset/${params.assetId}`;
         return $.ajax({
             url: url,
             contentType: 'application/json',
@@ -9,7 +9,7 @@ class AssetRepository {
     }
 
     loadRelatedAssets(params) {
-        var url = `/api/assettype/${params.assetTypeUid}/asset/${params.assetUid}/related`;
+        var url = `/api/assettype/${params.assetTypeId}/asset/${params.assetId}/related`;
         return $.ajax({
             url: url,
             contentType: 'application/json',
