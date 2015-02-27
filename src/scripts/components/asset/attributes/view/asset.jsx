@@ -9,7 +9,7 @@ var Attribute = React.createClass({
     mixins: [Router.State, Router.Navigation],
     render: function() {
         var params = this.getParams();
-        var relHref = this.makeHref('type-search', { assetTypeUid: params.assetTypeUid });
+        var relHref = this.makeHref('type-search', { assetTypeId: params.assetTypeId });
         var rel = this.props.params;                
         return (
             <div className="asset-data__param">

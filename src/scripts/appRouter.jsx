@@ -22,7 +22,7 @@ var routes = (
     <Route name="login" handler={LoginPage}/>
     <Route name="search" handler={SearchPage} />
     <Route name="type-search"
-      path="/search/type/:assetTypeUid"
+      path="/search/type/:assetTypeId"
       handler={SearchPage} />
     <Route name="result" path="/search/result/?:searchId?" handler={ResultPage} />
     <Route name="asset-view"
