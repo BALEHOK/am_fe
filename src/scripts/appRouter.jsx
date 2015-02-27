@@ -21,6 +21,9 @@ var routes = (
   <Route name="app" path="/" handler={Layout}>
     <Route name="login" handler={LoginPage}/>
     <Route name="search" handler={SearchPage} />
+    <Route name="type-search"
+      path="/search/type/:assetTypeUid"
+      handler={SearchPage} />
     <Route name="result" path="/search/result/?:searchId?" handler={ResultPage} />
     <Route name="asset-view"
       path="/assettype/:assetTypeUid/asset/:assetUid"
