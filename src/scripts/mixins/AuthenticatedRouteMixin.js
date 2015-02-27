@@ -5,12 +5,12 @@ var AuthService = require('../services/AuthService.js');
 var AuthenticatedRouteMixin = {
     statics: {
         willTransitionTo: function (transition, params, query) {
-            // if (!window.app.Session.user) {
-            //     if (location.href.indexOf('localhost') > 0)
-            //         transition.redirect('login');
-            //     else
-            //         location.href = '/login';
-            // }
+            if (!window.app.tokenStore.getToken()) {
+                if (location.href.indexOf('localhost') > 0)
+                    transition.redirect('login');
+                else
+                    location.href = '/login';
+            }
         }
     }
 };
