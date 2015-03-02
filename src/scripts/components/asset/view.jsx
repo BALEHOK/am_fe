@@ -43,7 +43,11 @@ var AssetView = React.createClass({
     },
 
     onAssetDelete: function() {
-        //this.props.actions.deleteAsset(this.getParams());
+        this.props.actions.deleteAsset(this.getParams());
+    },
+
+    onAssetRestore: function() {
+        this.props.actions.restoreAsset(this.getParams());
     },
 
     render: function() {
@@ -139,7 +143,8 @@ var AssetView = React.createClass({
                             actions={this.props.actions}
                             assetTypeId={asset.assetTypeId} />
                         <AssetToolbar isHistory={asset.isHistory}
-                                      onAssetDelete={this.onAssetDelete} />
+                                      onAssetDelete={this.onAssetDelete}
+                                      onAssetRestore={this.onAssetRestore} />
                     </div>
                 </div>
             </div>

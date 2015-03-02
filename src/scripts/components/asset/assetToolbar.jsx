@@ -7,6 +7,11 @@ var Router = require('react-router');
 
 var AssetToolbar = React.createClass({
     mixins: [Router.State, Router.Navigation],
+    getInitialState() {
+        return {
+            deleted: false
+        };
+    },
     handleTransition(route) {
         var params = this.getParams();
         this.transitionTo(route, params);
@@ -55,9 +60,16 @@ var AssetToolbar = React.createClass({
 
                 {this.props.isHistory
                     ? ''
-                    : <button className="btn btn_type_warning btn_size_small pull-right"
+                    : <button className={this.state.deleted 
+                                ? 'btn btn_type_second btn_size_small pull-right' 
+                                : 'btn btn_type_warning btn_size_small pull-right'}
                               onClick={this.handleAssetDeletion}>
-                        <i className="btn__icon btn__icon_cross"></i>Delete
+                        <i className={this.state.deleted 
+                            ? 'btn__icon btn__icon_undo' 
+                            : 'btn__icon btn__icon_cross'}></i>
+                        {this.state.deleted 
+                            ? 'Restore' 
+                            : 'Delete'}
                       </button>
                 }
             </div>
