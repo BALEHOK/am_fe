@@ -138,7 +138,8 @@ var AssetView = React.createClass({
                             screen={screen || {panels: []}}
                             actions={this.props.actions}
                             assetTypeId={asset.assetTypeId} />
-                        <AssetToolbar onAssetDelete={this.onAssetDelete} />
+                        <AssetToolbar isHistory={asset.isHistory}
+                                      onAssetDelete={this.onAssetDelete} />
                     </div>
                 </div>
             </div>
