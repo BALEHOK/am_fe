@@ -3,6 +3,7 @@
  */
 
 var React = require('react');
+var moment = require('moment');
 var Router = require('react-router');
 var Link = Router.Link;
 var ReactSelectize = require('../common/react-selectize');
@@ -13,6 +14,8 @@ var Flux = require('delorean').Flux;
 var SearchResultsHeader = require('./searchResultsHeader');
 var TaxonomyPath = require('./taxonomyPath');
 var AssetToolbar = require('./assetToolbar');
+var RevisionInfo = require('./revisionInfo');
+var ValueTransformer = require('../../util/valueTransformer').ValueTransformer;
 
 var views = {
     1: AssetViewType1,
@@ -64,9 +67,15 @@ var AssetView = React.createClass({
         //TODO: change to parameter
         var ViewComponent = views[3];
 
+        var dateTransform = new ValueTransformer(function (date) {
+          return moment(date).format('DD.MM.YYYY HH:mm');
+        });
+
         return (
             <div>
                 <SearchResultsHeader actions={this.props.actions} />
+                <h1 className="page-title"><span className="page-title__param">{asset.name}</span></h1>
+                <RevisionInfo asset={asset} dateTransform={dateTransform} />
                 <div className="grid">
                     <div className="grid__item two-twelfths">
                         <ReactSelectize

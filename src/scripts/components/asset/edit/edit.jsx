@@ -9,6 +9,7 @@ var Router = require('react-router');
 
 var TaxonomyPath = require('../taxonomyPath');
 var Panel = require('./panel');
+var RevisionInfo = require('../revisionInfo');
 
 var Edit = React.createClass({
     mixins:[Flux.mixins.storeListener, Router.State, Router.Navigation],
@@ -35,10 +36,8 @@ var Edit = React.createClass({
         });
         return (
             <div>
-                <h1 className="page-title">Edit: <span className="page-title__param">test1</span></h1>
-                <nav className="back-nav">
-                    <span className="light-grey">[r.1  -  11/21/2013 11:23:10 PM]</span>
-                </nav>
+                <h1 className="page-title">Edit: <span className="page-title__param">{asset.name}</span></h1>
+                <RevisionInfo asset={asset} />
                 <div className="grid">
                     <div className="grid__item two-twelfths">
                         <ReactSelectize

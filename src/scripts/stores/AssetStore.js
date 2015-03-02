@@ -4,6 +4,9 @@ var AssetRepository = require('../services/AssetRepository');
 var AssetStore = Flux.createStore({
 
   asset: {
+    name: undefined,
+    revision: undefined,
+    updatedAt: undefined,
     screens: [],    
   }, 
 
