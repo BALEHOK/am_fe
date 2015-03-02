@@ -42,6 +42,10 @@ var AssetView = React.createClass({
         });
     },
 
+    onAssetDelete: function() {
+        //this.props.actions.deleteAsset(this.getParams());
+    },
+
     render: function() {
         var assetStore = this.state.stores.asset;
         var asset = assetStore.asset;
@@ -134,7 +138,7 @@ var AssetView = React.createClass({
                             screen={screen || {panels: []}}
                             actions={this.props.actions}
                             assetTypeId={asset.assetTypeId} />
-                        <AssetToolbar />
+                        <AssetToolbar onAssetDelete={this.onAssetDelete} />
                     </div>
                 </div>
             </div>
