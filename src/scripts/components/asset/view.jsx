@@ -134,7 +134,7 @@ var AssetView = React.createClass({
                             screen={screen || {panels: []}}
                             actions={this.props.actions}
                             assetTypeId={asset.assetTypeId} />
-                        <AssetToolbar />
+                        <AssetToolbar isHistory={asset.isHistory} />
                     </div>
                 </div>
             </div>

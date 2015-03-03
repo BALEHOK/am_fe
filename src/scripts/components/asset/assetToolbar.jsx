@@ -17,20 +17,36 @@ var AssetToolbar = React.createClass({
                 <button className="btn btn_type_second btn_size_small">
                     <i className="btn__icon btn__icon_print"></i>
                 </button>
-                <button className="btn btn_type_second btn_size_small" 
-                        onClick={this.handleTransition.bind(this, 'asset-history')}>
-                    <i className="btn__icon btn__icon_history"></i>History
-                </button>
-                <button className="btn btn_type_second btn_size_small" 
-                        onClick={this.handleTransition.bind(this, 'asset-edit')}>
-                    <i className="btn__icon btn__icon_edit"></i>Edit
-                </button>
+
+                {this.props.isHistory
+                    ?   <button className="btn btn_type_second btn_size_small" 
+                                onClick={this.handleTransition.bind(this, 'asset-view')}>
+                            <i className="btn__icon btn__icon_history"></i>Current version
+                        </button>
+                    :   <button className="btn btn_type_second btn_size_small" 
+                                onClick={this.handleTransition.bind(this, 'asset-history')}>
+                            <i className="btn__icon btn__icon_history"></i>History
+                        </button> 
+                }
+
+                {this.props.isHistory
+                    ? ''
+                    : <button className="btn btn_type_second btn_size_small" 
+                             onClick={this.handleTransition.bind(this, 'asset-edit')}>
+                         <i className="btn__icon btn__icon_edit"></i>Edit
+                     </button> 
+                }
+
                 <button className="btn btn_type_second btn_size_small">
                     <i className="btn__icon btn__icon_docs"></i>Documents
                 </button>
-                <button className="btn btn_type_warning btn_size_small pull-right">
-                    <i className="btn__icon btn__icon_cross"></i>Delete
-                </button>
+
+                {this.props.isHistory
+                    ? ''
+                    : <button className="btn btn_type_warning btn_size_small pull-right">
+                        <i className="btn__icon btn__icon_cross"></i>Delete
+                      </button>
+                }
             </div>
         );
     }

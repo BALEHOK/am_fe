@@ -1,6 +1,9 @@
 class AssetRepository {
     loadAsset(params) {
         var url = `/api/assettype/${params.assetTypeId}/asset/${params.assetId}`;
+        if (params.revision) {
+            url += `/revisions/${params.revision}`;
+        }
         return $.ajax({
             url: url,
             contentType: 'application/json',
