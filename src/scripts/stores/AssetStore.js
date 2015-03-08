@@ -18,6 +18,8 @@ var AssetStore = Flux.createStore({
     'asset:load': 'loadAsset',
     'asset:load-related': 'loadRelatedAssets',
     'asset:taxonomy-path': 'loadTaxonomyPath',
+    'asset:delete': 'deleteAssset',
+    'asset:restore': 'restoreAsset',
   },
 
   initialize() {
@@ -44,6 +46,20 @@ var AssetStore = Flux.createStore({
   loadTaxonomyPath(assetTypeId) {
     this.assetRepo.loadTaxonomyPath(assetTypeId).then((data) => {  
       this.taxonomyPath = data;
+      this.emitChange();
+    });
+  },
+
+  deleteAsset(params) {
+    this.assetRepo.deleteAsset(params).then(() => {
+      this.asset.isHistory = true;
+      this.emitChange();
+    });
+  },
+
+  restoreAsset(params) {
+    this.assetRepo.restoreAsset(params).then(() => {
+      this.asset.isHistory = false;
       this.emitChange();
     });
   },

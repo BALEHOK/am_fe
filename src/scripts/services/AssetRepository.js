@@ -28,6 +28,14 @@ class AssetRepository {
             type: 'GET'
         });
     } 
+
+    deleteAsset(params) {
+
+    }
+
+    restoreAsset(params) {
+        
+    }
 }
 
 module.exports = AssetRepository;

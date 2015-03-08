@@ -42,6 +42,14 @@ var AssetDispatcher = Flux.createDispatcher({
     return this.dispatch("search:tracking", searchId);
   },
 
+  deleteAsset(params) {
+    return this.dispatch("asset:delete", params);
+  },
+
+  restoreAsset(params) {
+    return this.dispatch("asset:restore", params);
+  },
+
   getStores() {
     return {
       asset: new AssetStore(),
