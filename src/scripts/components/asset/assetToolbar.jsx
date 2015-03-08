@@ -29,10 +29,18 @@ var AssetToolbar = React.createClass({
         });
     },
     isEditButtonVisible() {
-        return !this.props.isHistory && this.props.canEdit;
+        return !this.props.isHistory 
+            && !this.props.isDeleted 
+            && this.props.canEdit;
     },
     isDeleteButtonVisible() {
-        return !this.props.isHistory && this.props.canDelete;
+        return !this.props.isHistory
+            && !this.props.isDeleted 
+            && this.props.canDelete;
+    },
+    isRestoreButtonVisible() {
+        return this.props.isDeleted 
+           // && this.state.deleted;
     },
     render: function() {
         return (
@@ -65,16 +73,19 @@ var AssetToolbar = React.createClass({
                 </button>
 
                 {this.isDeleteButtonVisible()
-                    ? <button className={this.state.deleted 
-                                ? 'btn btn_type_second btn_size_small pull-right' 
-                                : 'btn btn_type_warning btn_size_small pull-right'}
-                              onClick={this.handleAssetDeletion}>
-                        <i className={this.state.deleted 
-                            ? 'btn__icon btn__icon_undo' 
-                            : 'btn__icon btn__icon_cross'}></i>
-                        {this.state.deleted 
-                            ? 'Restore' 
-                            : 'Delete'}
+                    ? <button className='btn btn_type_warning btn_size_small pull-right'
+                            onClick={this.handleAssetDeletion}>
+                        <i className='btn__icon btn__icon_cross'></i>
+                        Delete
+                     </button>
+                    : ''
+                }
+
+                {this.isRestoreButtonVisible()
+                    ? <button className='btn btn_type_second btn_size_small pull-right' 
+                            onClick={this.handleAssetDeletion}>
+                        <i className='btn__icon btn__icon_undo'></i>
+                        Restore 
                       </button>
                     : ''
                 }
