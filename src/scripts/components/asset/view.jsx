@@ -143,6 +143,8 @@ var AssetView = React.createClass({
                             actions={this.props.actions}
                             assetTypeId={asset.assetTypeId} />
                         <AssetToolbar isHistory={asset.isHistory}
+                                      canEdit={asset.editable}
+                                      canDelete={asset.deletable}
                                       onAssetDelete={this.onAssetDelete}
                                       onAssetRestore={this.onAssetRestore} />
                     </div>

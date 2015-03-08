@@ -18,7 +18,7 @@ var AssetStore = Flux.createStore({
     'asset:load': 'loadAsset',
     'asset:load-related': 'loadRelatedAssets',
     'asset:taxonomy-path': 'loadTaxonomyPath',
-    'asset:delete': 'deleteAssset',
+    'asset:delete': 'deleteAsset',
     'asset:restore': 'restoreAsset',
   },
 

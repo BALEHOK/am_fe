@@ -28,6 +28,12 @@ var AssetToolbar = React.createClass({
             deleted: !deleted
         });
     },
+    isEditButtonVisible() {
+        return !this.props.isHistory && this.props.canEdit;
+    },
+    isDeleteButtonVisible() {
+        return !this.props.isHistory && this.props.canDelete;
+    },
     render: function() {
         return (
             <div className="inputs-line inputs-line_width_full">
@@ -46,21 +52,20 @@ var AssetToolbar = React.createClass({
                         </button> 
                 }
 
-                {this.props.isHistory
-                    ? ''
-                    : <button className="btn btn_type_second btn_size_small" 
+                {this.isEditButtonVisible()
+                    ? <button className="btn btn_type_second btn_size_small" 
                              onClick={this.handleTransition.bind(this, 'asset-edit')}>
                          <i className="btn__icon btn__icon_edit"></i>Edit
-                     </button> 
+                      </button> 
+                    : ''
                 }
 
                 <button className="btn btn_type_second btn_size_small">
                     <i className="btn__icon btn__icon_docs"></i>Documents
                 </button>
 
-                {this.props.isHistory
-                    ? ''
-                    : <button className={this.state.deleted 
+                {this.isDeleteButtonVisible()
+                    ? <button className={this.state.deleted 
                                 ? 'btn btn_type_second btn_size_small pull-right' 
                                 : 'btn btn_type_warning btn_size_small pull-right'}
                               onClick={this.handleAssetDeletion}>
@@ -71,6 +76,7 @@ var AssetToolbar = React.createClass({
                             ? 'Restore' 
                             : 'Delete'}
                       </button>
+                    : ''
                 }
             </div>
         );

@@ -30,7 +30,12 @@ class AssetRepository {
     } 
 
     deleteAsset(params) {
-
+        var url = `/api/assettype/${params.assetTypeId}/asset/${params.assetId}`;
+        return $.ajax({
+            url: url,
+            contentType: 'application/json',
+            type: 'DELETE'
+        });
     }
 
     restoreAsset(params) {
