@@ -7,9 +7,40 @@ var Router = require('react-router');
 
 var AssetToolbar = React.createClass({
     mixins: [Router.State, Router.Navigation],
+    getInitialState() {
+        return {
+            deleted: false
+        };
+    },
     handleTransition(route) {
         var params = this.getParams();
         this.transitionTo(route, params);
+    },
+    handleAssetDeletion() {
+        this.props.onAssetDelete();
+        this.setState({
+            deleted: true
+        });
+    },
+    handleAssetRestoration() {
+        this.props.onAssetRestore();
+        this.setState({
+            deleted: false
+        });
+    },
+    isEditButtonVisible() {
+        return !this.props.isHistory 
+            && !this.props.isDeleted 
+            && this.props.canEdit;
+    },
+    isDeleteButtonVisible() {
+        return !this.props.isHistory
+            && !this.props.isDeleted 
+            && this.props.canDelete;
+    },
+    isRestoreButtonVisible() {
+        return this.props.isDeleted 
+           // && this.state.deleted;
     },
     render: function() {
         return (
@@ -29,23 +60,34 @@ var AssetToolbar = React.createClass({
                         </button> 
                 }
 
-                {this.props.isHistory
-                    ? ''
-                    : <button className="btn btn_type_second btn_size_small" 
+                {this.isEditButtonVisible()
+                    ? <button className="btn btn_type_second btn_size_small" 
                              onClick={this.handleTransition.bind(this, 'asset-edit')}>
                          <i className="btn__icon btn__icon_edit"></i>Edit
-                     </button> 
+                      </button> 
+                    : ''
                 }
 
                 <button className="btn btn_type_second btn_size_small">
                     <i className="btn__icon btn__icon_docs"></i>Documents
                 </button>
 
-                {this.props.isHistory
-                    ? ''
-                    : <button className="btn btn_type_warning btn_size_small pull-right">
-                        <i className="btn__icon btn__icon_cross"></i>Delete
+                {this.isDeleteButtonVisible()
+                    ? <button className='btn btn_type_warning btn_size_small pull-right'
+                            onClick={this.handleAssetDeletion}>
+                        <i className='btn__icon btn__icon_cross'></i>
+                        Delete
+                     </button>
+                    : ''
+                }
+
+                {this.isRestoreButtonVisible()
+                    ? <button className='btn btn_type_second btn_size_small pull-right' 
+                            onClick={this.handleAssetRestoration}>
+                        <i className='btn__icon btn__icon_undo'></i>
+                        Restore 
                       </button>
+                    : ''
                 }
             </div>
         );

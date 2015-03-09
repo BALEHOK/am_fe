@@ -42,6 +42,14 @@ var AssetView = React.createClass({
         });
     },
 
+    onAssetDelete: function() {
+        this.props.actions.deleteAsset(this.getParams());
+    },
+
+    onAssetRestore: function() {
+        this.props.actions.restoreAsset(this.getParams());
+    },
+
     render: function() {
         var assetStore = this.state.stores.asset;
         var asset = assetStore.asset;
@@ -71,10 +79,20 @@ var AssetView = React.createClass({
           return moment(date).format('DD.MM.YYYY HH:mm');
         });
 
+        var cx = React.addons.classSet;
+        var titleClasses = cx({
+            'page-title__param': true,
+            'light-grey': asset.isDeleted
+        });
+
         return (
             <div>
                 <SearchResultsHeader actions={this.props.actions} />
-                <h1 className="page-title"><span className="page-title__param">{asset.name}</span></h1>
+                <h1 className="page-title">
+                    <span className={titleClasses}>
+                        {asset.name}
+                    </span>
+                </h1>
                 <RevisionInfo asset={asset} dateTransform={dateTransform} />
                 <div className="grid">
                     <div className="grid__item two-twelfths">
@@ -134,7 +152,12 @@ var AssetView = React.createClass({
                             screen={screen || {panels: []}}
                             actions={this.props.actions}
                             assetTypeId={asset.assetTypeId} />
-                        <AssetToolbar isHistory={asset.isHistory} />
+                        <AssetToolbar isHistory={asset.isHistory}
+                                      isDeleted={asset.isDeleted}
+                                      canEdit={asset.editable}
+                                      canDelete={asset.deletable}                                      
+                                      onAssetDelete={this.onAssetDelete}
+                                      onAssetRestore={this.onAssetRestore} />
                     </div>
                 </div>
             </div>

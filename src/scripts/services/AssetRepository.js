@@ -28,6 +28,24 @@ class AssetRepository {
             type: 'GET'
         });
     } 
+
+    deleteAsset(params) {
+        var url = `/api/assettype/${params.assetTypeId}/asset/${params.assetId}`;
+        return $.ajax({
+            url: url,
+            contentType: 'application/json',
+            type: 'DELETE'
+        });
+    }
+
+    restoreAsset(params) {
+        var url = `/api/assettype/${params.assetTypeId}/asset/${params.assetId}/restore`;
+        return $.ajax({
+            url: url,
+            contentType: 'application/json',
+            type: 'POST'
+        });
+    }
 }
 
 module.exports = AssetRepository;

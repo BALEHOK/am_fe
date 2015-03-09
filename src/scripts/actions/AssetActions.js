@@ -37,6 +37,14 @@ class AssetActions extends Actions {
 
   saveAsset() {}
 
+  deleteAsset(params) {
+    this._dispatcher.deleteAsset(params);
+  }
+
+  restoreAsset(params) {
+    this._dispatcher.restoreAsset(params);
+  }
+
 }
 
 module.exports = AssetActions;

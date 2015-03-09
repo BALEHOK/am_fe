@@ -19,9 +19,12 @@ var RevisionInfo = React.createClass({
 		return this.props.dateTransform.getTransformedValue(this.props.asset.updatedAt);
 	},
     render: function() {
+    	var deletedText = this.props.asset.isDeleted
+    		? ' (deleted) '
+    		: '';
         return (
 				<nav className="back-nav">
-                    <span className="light-grey">[rev.{this.props.asset.revision}  &mdash;  {this.getUpdatedAt()}]</span>
+                    <span className="light-grey">[rev.{this.props.asset.revision}{deletedText}  &mdash;  {this.getUpdatedAt()}]</span>
                 </nav>
         );
     }
