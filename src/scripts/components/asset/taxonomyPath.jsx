@@ -10,28 +10,32 @@ var Link = Router.Link;
 var TaxonomyLink = React.createClass({
     render: function() {
         var taxonomy = this.props.taxonomy;
-        return (
-            <span>
-                {taxonomy.name}
-                &nbsp;<span className="icon icon_arrow_right"></span>&nbsp;
-                {taxonomy.child ? <TaxonomyLink taxonomy={taxonomy.child} /> : <a href="#">admin</a>}
-            </span>
-        );
+        if (taxonomy.assetType) {
+            return (
+                <span>
+                    {taxonomy.assetType.displayName}
+                </span>
+            );
+        } else {
+            return (
+                <span>
+                    {taxonomy.name}
+                    &nbsp;<span className="icon icon_arrow_right"></span>&nbsp;
+                    {taxonomy.child ? <TaxonomyLink taxonomy={taxonomy.child} /> : false}
+                </span>
+            );
+        }
     }
 });
 
 var TaxonomyPath = React.createClass({
-	mixins:[Flux.mixins.storeListener],
     render: function() {        
-    	var path = this.state.stores.asset.taxonomyPath;   
-    	return path  
-            ?   <nav className="nav-block">
+    	return <nav className="nav-block">
     			    <span className="nav-block__title nav-block__title_type_second">Asset type</span>
-    			    <div className="nav-block__item">   
-                        <TaxonomyLink taxonomy={path} />                  
+    			    <div className="nav-block__item">  
+                        {this.props.taxonomyPath ? <TaxonomyLink taxonomy={this.props.taxonomyPath} /> : false} 
     			    </div>
     			</nav>           
-            :   <nav />;
     }
 });
 module.exports = TaxonomyPath;

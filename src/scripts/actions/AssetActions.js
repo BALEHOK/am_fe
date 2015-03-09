@@ -5,14 +5,13 @@ class AssetActions extends Actions {
   loadAsset(params) {
     return this._dispatcher.loadAsset(params).then(() => {
       var assetStore = this._dispatcher.getStore('asset').getState();
-      var asset = assetStore.asset;
+      var asset = assetStore.asset;      
+      this._dispatcher.loadTaxonomyPath(asset.assetTypeId);
       return this._dispatcher.loadRelatedAssets(params);
     }).then(() => {
       var assets = this._dispatcher.getStore('asset').getState().relatedAssets;
       this._dispatcher.setListValues(assets);
-      this._dispatcher.loadTaxonomyPath(asset.assetTypeId);
     });
-
   }
 
   updateAssetValue(params) {

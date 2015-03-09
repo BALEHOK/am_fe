@@ -54,6 +54,7 @@ var AssetView = React.createClass({
         var assetStore = this.state.stores.asset;
         var asset = assetStore.asset;
         var linkedAssets = assetStore.relatedAssets;
+        var taxonomyPath = this.state.stores.asset.taxonomyPath;
 
         var assetLinks = linkedAssets.filter(function(e) { return e.assets != null }).map((entity) => {
             var links = entity.assets.map(function(asset){
@@ -103,15 +104,8 @@ var AssetView = React.createClass({
                             selectId="select-screen"
                             placeholder="Screen:"
                             label=" "
-                            className="select_width_full"
-                        />
-                        <TaxonomyPath assetTypeId={asset.assetTypeId} actions={this.props.actions} />
-                        <nav className="nav-block">
-                            <span className="nav-block__title nav-block__title_type_second">Asset type</span>
-                            <div className="nav-block__item">
-                                <span>System <span className="icon icon_arrow_right"></span> <a href="#">admin</a></span>
-                            </div>
-                        </nav>
+                            className="select_width_full" />
+                        <TaxonomyPath taxonomyPath={taxonomyPath} />
                         <nav className="nav-block">
                             <span className="nav-block__title nav-block__title_type_second">Linked assets</span>
                             <div className="nav-block__item">
