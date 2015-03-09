@@ -17,15 +17,15 @@ var AssetToolbar = React.createClass({
         this.transitionTo(route, params);
     },
     handleAssetDeletion() {
-        var deleted = this.state.deleted;
-        
-        if (!deleted)
-            this.props.onAssetDelete();
-        else
-            this.props.onAssetRestore();
-
+        this.props.onAssetDelete();
         this.setState({
-            deleted: !deleted
+            deleted: true
+        });
+    },
+    handleAssetRestoration() {
+        this.props.onAssetRestore();
+        this.setState({
+            deleted: false
         });
     },
     isEditButtonVisible() {
@@ -83,7 +83,7 @@ var AssetToolbar = React.createClass({
 
                 {this.isRestoreButtonVisible()
                     ? <button className='btn btn_type_second btn_size_small pull-right' 
-                            onClick={this.handleAssetDeletion}>
+                            onClick={this.handleAssetRestoration}>
                         <i className='btn__icon btn__icon_undo'></i>
                         Restore 
                       </button>

@@ -52,14 +52,14 @@ var AssetStore = Flux.createStore({
 
   deleteAsset(params) {
     this.assetRepo.deleteAsset(params).then(() => {
-      this.asset.isHistory = true;
+      this.asset.isDeleted = true;
       this.emitChange();
     });
   },
 
   restoreAsset(params) {
     this.assetRepo.restoreAsset(params).then(() => {
-      this.asset.isHistory = false;
+      this.asset.isDeleted = false;
       this.emitChange();
     });
   },

@@ -39,7 +39,12 @@ class AssetRepository {
     }
 
     restoreAsset(params) {
-        
+        var url = `/api/assettype/${params.assetTypeId}/asset/${params.assetId}/restore`;
+        return $.ajax({
+            url: url,
+            contentType: 'application/json',
+            type: 'POST'
+        });
     }
 }
 
