@@ -26,7 +26,7 @@ var ResultPage = React.createClass({
     exportItems: [
         'txt',
         'xml',
-        //'html'
+        'xlsx'
     ],
     getInitialState: function() {
         var query = this.getQuery();
