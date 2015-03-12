@@ -7,7 +7,8 @@ var AssetStore = Flux.createStore({
     name: undefined,
     revision: undefined,
     updatedAt: undefined,
-    screens: [],    
+    screens: [],  
+    barcode: undefined,  
   }, 
 
   relatedAssets: [],
@@ -20,6 +21,7 @@ var AssetStore = Flux.createStore({
     'asset:taxonomy-path': 'loadTaxonomyPath',
     'asset:delete': 'deleteAsset',
     'asset:restore': 'restoreAsset',
+    'asset:barcode': 'loadBarcode',
   },
 
   initialize() {
@@ -57,6 +59,13 @@ var AssetStore = Flux.createStore({
   restoreAsset(params) {
     this.assetRepo.restoreAsset(params).then(() => {
       this.asset.isDeleted = false;
+      this.emitChange();
+    });
+  },
+
+  loadBarcode(barcode) {
+    this.assetRepo.loadBarcode(barcode).then((data) => {
+      this.asset.barcode = data;
       this.emitChange();
     });
   },

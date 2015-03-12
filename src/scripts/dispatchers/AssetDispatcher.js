@@ -50,6 +50,10 @@ var AssetDispatcher = Flux.createDispatcher({
     return this.dispatch("asset:restore", params);
   },
 
+  loadBarcode(barcode) {
+    return this.dispatch("asset:barcode", barcode);
+  },
+
   getStores() {
     return {
       asset: new AssetStore(),

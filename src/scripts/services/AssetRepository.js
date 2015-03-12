@@ -29,6 +29,15 @@ class AssetRepository {
         });
     } 
 
+    loadBarcode(barcode) {
+        var url = `/api/barcode/${barcode}`;
+        return $.ajax({
+            url: url,
+            contentType: 'image/png',
+            type: 'GET'
+        });
+    }
+
     loadTaxonomyPath(assetTypeId) {
         var url = `/api/assettype/${assetTypeId}/taxonomy`;
         return $.ajax({

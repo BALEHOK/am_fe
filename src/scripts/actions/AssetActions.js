@@ -7,6 +7,7 @@ class AssetActions extends Actions {
       var assetStore = this._dispatcher.getStore('asset').getState();
       var asset = assetStore.asset;      
       this._dispatcher.loadTaxonomyPath(asset.assetTypeId);
+      this._dispatcher.loadBarcode(asset.barcode);
       return this._dispatcher.loadRelatedAssets(params);
     }).then(() => {
       var assets = this._dispatcher.getStore('asset').getState().relatedAssets;
@@ -43,7 +44,6 @@ class AssetActions extends Actions {
   restoreAsset(params) {
     this._dispatcher.restoreAsset(params);
   }
-
 }
 
 module.exports = AssetActions;
