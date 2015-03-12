@@ -5,7 +5,7 @@ class AssetRepository {
             url += `/revisions/${params.revision}`;
         } 
         else if (params.uid) {
-            url += `/uid/${params.uid}`;
+            url += `?uid=${params.uid}`;
         } 
         return $.ajax({
             url: url,

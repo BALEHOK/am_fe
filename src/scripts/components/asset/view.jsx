@@ -30,7 +30,8 @@ var AssetView = React.createClass({
     },
 
     componentWillMount: function() {
-        this.props.actions.loadAsset(this.getParams());
+        var params = _.extend({}, this.getParams(), this.getQuery());
+        this.props.actions.loadAsset(params);
     },
 
     componentWillUnmount: function() {

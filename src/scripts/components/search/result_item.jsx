@@ -7,20 +7,14 @@ var Router = require('react-router');
 
 var ResultItem = React.createClass({
     mixins: [Router.Navigation],
-    render: function() {        
-        var assetLink;
-        if (this.props.isHistory) {
-            assetLink = this.makeHref('asset-by-uid', {
-                assetTypeId: this.props.model.dynEntityConfigId,
-                assetId: this.props.model.dynEntityId,
-                uid: this.props.model.dynEntityUid
-            }, {searchId: this.props.searchId});
-        } else {
-            assetLink = this.makeHref('asset-view', {
-                assetTypeId: this.props.model.dynEntityConfigId,
-                assetId: this.props.model.dynEntityId,
-            }, {searchId: this.props.searchId});
-        }
+    render: function() { 
+        var query = {searchId: this.props.searchId};  
+        if (this.props.isHistory) 
+            query.uid = this.props.model.dynEntityUid; 
+        var assetLink = this.makeHref('asset-view', {
+            assetTypeId: this.props.model.dynEntityConfigId,
+            assetId: this.props.model.dynEntityId,
+        }, query);
         return (
             <li className="search-results__item">
                 <a className="search-results__item-link" href={assetLink}>
