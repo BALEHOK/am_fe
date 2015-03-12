@@ -3,7 +3,10 @@ class AssetRepository {
         var url = `/api/assettype/${params.assetTypeId}/asset/${params.assetId}`;
         if (params.revision) {
             url += `/revisions/${params.revision}`;
-        }
+        } 
+        else if (params.uid) {
+            url += `/uid/${params.uid}`;
+        } 
         return $.ajax({
             url: url,
             contentType: 'application/json',

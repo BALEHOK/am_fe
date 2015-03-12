@@ -146,7 +146,8 @@ var ResultPage = React.createClass({
         var lastShowedItem = counters.totalCount < (currentPage*postsPerPage) ? counters.totalCount : currentPage*postsPerPage;
 
         var urlQuery = this.getQuery();
-        
+        var isHistory = urlQuery.context == 2;
+
         return (
             <div>
                 {results.loadingResults || results.loadingCounters
@@ -275,7 +276,8 @@ var ResultPage = React.createClass({
                                             return <ResultItem
                                                     key={result.indexUid}
                                                     model={result}
-                                                    searchId={results.searchId} />
+                                                    searchId={results.searchId}
+                                                    isHistory={isHistory} />
                                           })
                                         : {}
                                     }
