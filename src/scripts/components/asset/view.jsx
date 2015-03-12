@@ -39,7 +39,7 @@ var AssetView = React.createClass({
 
     onScreenChange: function(val) {
         this.setState({
-            selectedScreen: parseInt(val)
+            selectedScreen: val[0].id
         });
     },
 
@@ -71,11 +71,14 @@ var AssetView = React.createClass({
         var screens = asset.screens.map(function(el) {
             return {name: el.name, id: el.id};
         });
-        var selected = this.state.selectedScreen || screens[0] && screens[0].id;
+        var defaultScreen = _
+            .chain(asset.screens)
+            .findWhere({isDefault: true})
+            .value();
+        var selected = this.state.selectedScreen || defaultScreen && defaultScreen.id;
         var screen = asset.screens.filter(function(el) { return el.id === selected })[0];
 
-        //TODO: change to parameter
-        var ViewComponent = views[3];
+        var ViewComponent = screen && views[screen.layoutType] || views[1];
 
         var dateTransform = new ValueTransformer(function (date) {
           return moment(date).format('DD.MM.YYYY HH:mm');
