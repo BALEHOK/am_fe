@@ -7,20 +7,20 @@ var ReactSelectize = require('../common/react-selectize');
 var Flux = require('delorean').Flux;
 
 var SearchSimpleForm = React.createClass({
-    mixins: [Backbone.React.Component.mixin, Flux.mixins.storeListener],
+    mixins: [Flux.mixins.storeListener],
     searchContext: [
         { name: "Active assets", id: 1 },
         { name: "History", id: 2 }
     ],
     getInitialState: function () {
         return {
-            searchContextId: 1,
+            searchContextId: this.props.context || 1,
             disabled: true,
             query: this.props.value
         }
     },
     handleSelectChange: function (e) {
-        this.setState({ searchContextId : e });
+        this.setState({ searchContextId : e[0].id });
     },
     handleQueryChange: function (e) {
         this.setState({
@@ -38,7 +38,8 @@ var SearchSimpleForm = React.createClass({
             query: this.state.query,
             page: 1,
             assetType: undefined,
-            taxonomy: undefined
+            taxonomy: undefined,
+            context: this.state.searchContextId,
         });
     },
     render: function() {

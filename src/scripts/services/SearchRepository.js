@@ -9,7 +9,8 @@ class SearchRepository {
                 page: params.page,
                 assetType: params.assetType,
                 taxonomy: params.taxonomy,
-                sortBy: params.sortBy
+                sortBy: params.sortBy,
+                context: params.context
             },
             type: 'GET'
         });

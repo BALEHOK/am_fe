@@ -145,6 +145,8 @@ var ResultPage = React.createClass({
         var firstShowedItem = (currentPage-1) * postsPerPage + 1;
         var lastShowedItem = counters.totalCount < (currentPage*postsPerPage) ? counters.totalCount : currentPage*postsPerPage;
 
+        var urlQuery = this.getQuery();
+        
         return (
             <div>
                 {results.loadingResults || results.loadingCounters
@@ -160,7 +162,8 @@ var ResultPage = React.createClass({
                           ?  <SearchSimpleForm
                                 dispatcher={this.dispatcher}
                                 actions={this.actions}
-                                value={this.getQuery().query}/>
+                                value={urlQuery.query}
+                                context={urlQuery.context} />
                           : {}
                         }
                     </div>

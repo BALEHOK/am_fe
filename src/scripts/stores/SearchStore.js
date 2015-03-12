@@ -19,7 +19,8 @@ var SearchResultsStore = Flux.createStore({
     query: undefined,
     assetType: undefined,
     taxonomy: undefined,
-    page: undefined
+    page: undefined,
+    context: 1
   },
 
   actions: {
@@ -52,7 +53,8 @@ var SearchResultsStore = Flux.createStore({
             this.searchId = data.searchId;
             var search = {
                 searchId: this.searchId,
-                query: this.filter.query
+                query: this.filter.query,
+                context: this.filter.context
             };
             this.loadSearchCounters(search);
         })
