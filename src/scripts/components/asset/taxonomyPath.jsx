@@ -10,21 +10,14 @@ var Link = Router.Link;
 var TaxonomyLink = React.createClass({
     render: function() {
         var taxonomy = this.props.taxonomy;
-        if (taxonomy.assetType) {
-            return (
-                <span>
-                    {taxonomy.assetType.displayName}
-                </span>
-            );
-        } else {
-            return (
-                <span>
-                    {taxonomy.name}
-                    &nbsp;<span className="icon icon_arrow_right"></span>&nbsp;
-                    {taxonomy.child ? <TaxonomyLink taxonomy={taxonomy.child} /> : false}
-                </span>
-            );
-        }
+        return (
+            <span>
+                {taxonomy.name}
+                &nbsp;<span className="icon icon_arrow_right"></span>&nbsp;
+                {taxonomy.child ? <TaxonomyLink taxonomy={taxonomy.child} /> : false}
+                {taxonomy.assetType ? taxonomy.assetType.displayName : false}
+            </span>
+        );
     }
 });
 
