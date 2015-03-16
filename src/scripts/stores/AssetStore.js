@@ -22,6 +22,7 @@ var AssetStore = Flux.createStore({
     'asset:delete': 'deleteAsset',
     'asset:restore': 'restoreAsset',
     'asset:barcode': 'loadBarcode',
+    'asset:validate-attribute': 'validateAttribute',
   },
 
   initialize() {
@@ -66,6 +67,12 @@ var AssetStore = Flux.createStore({
   loadBarcode(barcode) {
     this.assetRepo.loadBarcode(barcode).then((data) => {
       this.asset.barcode = data;
+      this.emitChange();
+    });
+  },
+
+  validateAttribute(params) {
+    this.assetRepo.validateAttribute(params).then(() => {
       this.emitChange();
     });
   },

@@ -45,6 +45,10 @@ class AssetActions extends Actions {
   restoreAsset(params) {
     this._dispatcher.restoreAsset(params);
   }
+
+  validateAttribute(params) {
+    this._dispatcher.validateAttribute(params); 
+  }
 }
 
 module.exports = AssetActions;
