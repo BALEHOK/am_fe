@@ -67,8 +67,7 @@ var Edit = React.createClass({
                             selectId="select-screen"
                             placeholder="Screen:"
                             label=" "
-                            className="select_width_full select_size_small"
-                        />
+                            className="select_width_full select_size_small" />
                         <TaxonomyPath assetTypeId={asset.assetTypeId} actions={this.props.actions} />
                     </div>
                     <div className="grid__item ten-twelfths">
@@ -77,12 +76,15 @@ var Edit = React.createClass({
                         <div className="inputs-line inputs-line_width_full">
                             <button 
                                 disabled={!this.state.isValid}
-                                className="btn btn_size_small">Save</button>
+                                className="btn btn_size_small">Save
+                            </button>
                             <button 
                                 disabled={!this.state.isValid}
-                                className="btn btn_type_second btn_size_small">Save and Add new</button>
-                            <button className="btn btn_type_second btn_size_small"
-                                    onClick={this.handleUndo}>
+                                className="btn btn_type_second btn_size_small">Save and Add new
+                            </button>
+                            <button 
+                                className="btn btn_type_second btn_size_small"
+                                onClick={this.handleUndo}>
                                 <i className="btn__icon btn__icon_undo"></i>Undo
                             </button>
                         </div>
