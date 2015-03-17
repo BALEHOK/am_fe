@@ -10,7 +10,7 @@ var EditableAttribute = React.createClass({
     mixins: [Flux.mixins.storeListener],
     componentWillMount: function () {
         var self = this;
-        this.delayedValidation = _.debounce(function(){
+        this.delayedValidation = _.debounce(() => {
             self.props.actions.validateAttribute({
                 attributeId: self.props.params.id,
                 value: self.props.params.value
