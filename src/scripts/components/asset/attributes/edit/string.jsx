@@ -11,7 +11,6 @@ var EditableAttribute = React.createClass({
     componentWillMount: function () {
         var self = this;
         this.delayedValidation = _.debounce(function(){
-            console.log('validate', self.props.params.value);
             self.props.actions.validateAttribute({
                 attributeId: self.props.params.id,
                 value: self.props.params.value
