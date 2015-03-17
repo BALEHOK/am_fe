@@ -15,6 +15,8 @@ var AssetStore = Flux.createStore({
 
   taxonomyPath: undefined,
 
+  validation: [],
+
   actions: {
     'asset:load': 'loadAsset',
     'asset:load-related': 'loadRelatedAssets',
@@ -72,7 +74,8 @@ var AssetStore = Flux.createStore({
   },
 
   validateAttribute(params) {
-    this.assetRepo.validateAttribute(params).then(() => {
+    this.assetRepo.validateAttribute(params).then((data) => {
+      this.validation[data.id] = data;
       this.emitChange();
     });
   },
@@ -82,6 +85,7 @@ var AssetStore = Flux.createStore({
       asset: this.asset,
       relatedAssets: this.relatedAssets,
       taxonomyPath: this.taxonomyPath,
+      validation: this.validation,
     };
   }
 });

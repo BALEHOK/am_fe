@@ -4,20 +4,27 @@
 
 var React = require('react');
 var Input = require('react-bootstrap').Input;
+var Flux = require('delorean').Flux;
 
 var EditableAttribute = React.createClass({
-    mixins: [React.addons.LinkedStateMixin],
+    mixins: [Flux.mixins.storeListener, React.addons.LinkedStateMixin],
     getInitialState: function() {
         return {
-            value: this.props.params.value
+            value: this.props.params.value,
+            hasFeedback: false,
+            validationState: undefined
         };
     },
-    validationState: function() {  
-        return 'warning';      
-        //var length = this.state.value.length;
-        //if (length > 10) return 'success';
-        //else if (length > 5) return 'warning';
-        //else if (length > 0) return 'error';
+    storeDidChange: function (storeName) {
+        if (storeName != 'asset') return;
+        console.log(storeName);
+        var valState = this.state.stores.asset.validation[this.props.params.id];
+        if (valState) {
+            this.setState({
+                hasFeedback: true,
+                validationState:  valState.isValid ? 'success' : 'error'
+            });
+        }
     },
     valueChanged: function(event) {
         var value = event.target.value;
@@ -39,9 +46,8 @@ var EditableAttribute = React.createClass({
                         type="text"
                         className="input-txt__field"
                         value={this.state.value}
-                        bsStyle="error"
-                        hasFeedback
-                        label="Something wrong"
+                        bsStyle={this.state.validationState}
+                        hasFeedback={this.state.hasFeedback}
                         onChange={this.valueChanged} />
                 </label>
             </div>
