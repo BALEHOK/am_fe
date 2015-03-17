@@ -6,20 +6,25 @@ var React = require('react');
 var Input = require('react-bootstrap').Input;
 
 var EditableAttribute = React.createClass({
+    mixins: [React.addons.LinkedStateMixin],
     getInitialState: function() {
-    return {
+        return {
             value: this.props.params.value
         };
     },
-    validationState: function() {
-        // TODO
-        var length = this.state.value.length;
-        if (length > 10) return 'success';
-        else if (length > 5) return 'warning';
-        else if (length > 0) return 'error';
+    validationState: function() {  
+        return 'warning';      
+        //var length = this.state.value.length;
+        //if (length > 10) return 'success';
+        //else if (length > 5) return 'warning';
+        //else if (length > 0) return 'error';
     },
     valueChanged: function(event) {
-        value = this.refs.input.getValue();
+        var value = event.target.value;
+        this.props.actions.validateAttribute({
+            attributeId: this.props.params.id,
+            value: value
+        });
         this.setState({
             value: value
         });
@@ -34,8 +39,9 @@ var EditableAttribute = React.createClass({
                         type="text"
                         className="input-txt__field"
                         value={this.state.value}
-                        ref="input"
-                        bsStyle={this.validationState()}
+                        bsStyle="error"
+                        hasFeedback
+                        label="Something wrong"
                         onChange={this.valueChanged} />
                 </label>
             </div>
