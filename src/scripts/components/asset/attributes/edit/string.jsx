@@ -21,16 +21,16 @@ var EditableAttribute = React.createClass({
         return {
             value: this.props.params.value,
             hasFeedback: false,
-            validationState: undefined
+            validationState: undefined,
         };
     },
     storeDidChange: function (storeName) {
         if (storeName != 'asset') return;
-        var valState = this.state.stores.asset.validation[this.props.params.id];
-        if (valState) {
+        var valResult = this.state.stores.asset.validation[this.props.params.id];
+        if (valResult) {
             this.setState({
                 hasFeedback: true,
-                validationState:  valState.isValid ? 'success' : 'error'
+                validationState:  valResult.isValid ? 'success' : 'error',
             });
         }
     },

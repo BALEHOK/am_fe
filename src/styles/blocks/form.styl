@@ -7,10 +7,6 @@
 .form-control
   display inline-block
   height 42px
-
-  &.has-error
-    .form-control    
-      border-color #a94442
       
 // Form control feedback states
 //
@@ -63,3 +59,11 @@
 
   &.sr-only ~ .form-control-feedback
     top 0
+
+.validation-summary
+  border-left 5px solid $state-danger-bg
+  padding-left 15px
+  font-weight bold
+  
+  li
+    list-style-type none

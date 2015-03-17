@@ -10,6 +10,7 @@ var Router = require('react-router');
 var TaxonomyPath = require('../taxonomyPath');
 var Panel = require('./panel');
 var RevisionInfo = require('../revisionInfo');
+var ValidationResult = require('./validationResult');
 
 var Edit = React.createClass({
     mixins:[Flux.mixins.storeListener, Router.State, Router.Navigation],
@@ -58,6 +59,7 @@ var Edit = React.createClass({
                     </div>
                     <div className="grid__item ten-twelfths">
                         {panels}
+                        <ValidationResult />
                         <div className="inputs-line inputs-line_width_full">
                             <button className="btn btn_size_small">Save</button>
                             <button className="btn btn_type_second btn_size_small">Save and Add new</button>
