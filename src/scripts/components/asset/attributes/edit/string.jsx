@@ -7,7 +7,17 @@ var Input = require('react-bootstrap').Input;
 var Flux = require('delorean').Flux;
 
 var EditableAttribute = React.createClass({
-    mixins: [Flux.mixins.storeListener, React.addons.LinkedStateMixin],
+    mixins: [Flux.mixins.storeListener],
+    componentWillMount: function () {
+        var self = this;
+        this.delayedValidation = _.debounce(function(){
+            console.log('validate', self.props.params.value);
+            self.props.actions.validateAttribute({
+                attributeId: self.props.params.id,
+                value: self.props.params.value
+            });
+        }, 500);
+    },
     getInitialState: function() {
         return {
             value: this.props.params.value,
@@ -17,7 +27,6 @@ var EditableAttribute = React.createClass({
     },
     storeDidChange: function (storeName) {
         if (storeName != 'asset') return;
-        console.log(storeName);
         var valState = this.state.stores.asset.validation[this.props.params.id];
         if (valState) {
             this.setState({
@@ -28,14 +37,11 @@ var EditableAttribute = React.createClass({
     },
     valueChanged: function(event) {
         var value = event.target.value;
-        this.props.actions.validateAttribute({
-            attributeId: this.props.params.id,
-            value: value
-        });
         this.setState({
             value: value
         });
         this.props.params.value = value;
+        this.delayedValidation();
     },
     render: function() {
         return (
