@@ -20,7 +20,21 @@ var Edit = React.createClass({
         this.props.actions.loadAsset(params);
     },
 
-    handleTransition(route) {
+    getInitialState: function() {
+        return {
+            isValid: true,
+        }
+    },
+
+    storeDidChange: function (storeName) {
+        if (storeName != 'asset') return;
+        var valResults = _.where(this.state.stores.asset.validation, {isValid: false});
+        this.setState({
+            isValid: _.size(valResults) == 0
+        });
+    },
+
+    handleUndo: function () {
         var params = this.getParams();
         this.transitionTo('asset-view', params);
     },
@@ -61,10 +75,14 @@ var Edit = React.createClass({
                         {panels}
                         <ValidationResult />
                         <div className="inputs-line inputs-line_width_full">
-                            <button className="btn btn_size_small">Save</button>
-                            <button className="btn btn_type_second btn_size_small">Save and Add new</button>
+                            <button 
+                                disabled={!this.state.isValid}
+                                className="btn btn_size_small">Save</button>
+                            <button 
+                                disabled={!this.state.isValid}
+                                className="btn btn_type_second btn_size_small">Save and Add new</button>
                             <button className="btn btn_type_second btn_size_small"
-                                    onClick={this.handleTransition}>
+                                    onClick={this.handleUndo}>
                                 <i className="btn__icon btn__icon_undo"></i>Undo
                             </button>
                         </div>
