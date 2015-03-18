@@ -13,6 +13,7 @@ var AssetToolbar = require('./assetToolbar');
 var RevisionInfo = require('./revisionInfo');
 var ValueTransformer = require('../../util/valueTransformer').ValueTransformer;
 var LayoutSwitcher = require('./layoutSwitcher');
+var ViewsFactory = require('./viewsFactory');
 
 var AssetView = React.createClass({
     mixins:[Router.State, Flux.mixins.storeListener],
@@ -36,23 +37,34 @@ var AssetView = React.createClass({
         this.props.actions.restoreAsset(this.getParams());
     },
 
+    storeDidChange: function (storeName) {
+        if (storeName != 'asset') return;
+
+        var asset = this.state.stores.asset.asset;
+        var defaultScreen = _
+            .chain(asset.screens)
+            .findWhere({isDefault: true})
+            .value();
+
+        if (!this.state.selectedScreen) {
+            this.setState({
+                selectedScreen: defaultScreen
+            });
+        }
+    },
+
     onScreenChange: function(screen) {
-        console.log(screen)
         this.setState({
             selectedScreen: screen
         });
-    },
-
-    getViewComponent: function() {
-        return false;
     },
 
     render: function() {
         var assetStore = this.state.stores.asset;
         var asset = assetStore.asset;
         var linkedAssets = assetStore.relatedAssets;
-        var taxonomyPath = this.state.stores.asset.taxonomyPath;
-
+        var taxonomyPath = assetStore.taxonomyPath;
+        
         var assetLinks = linkedAssets.filter(function(e) { return e.assets != null }).map((entity) => {
             var links = entity.assets.map(function(asset){
                 return <Link className="nav-block__item-related"
@@ -74,6 +86,9 @@ var AssetView = React.createClass({
             'light-grey': asset.isDeleted
         });
 
+        var ViewComponent = ViewsFactory.getViewComponent(
+            asset.screens, this.state.selectedScreen);
+        
         return (
             <div>
                 <SearchResultsHeader actions={this.props.actions} />
@@ -85,7 +100,10 @@ var AssetView = React.createClass({
                 <RevisionInfo asset={asset} dateTransform={dateTransform} />
                 <div className="grid">
                     <div className="grid__item two-twelfths">
-                        <LayoutSwitcher screens={asset.screens} onChange={this.onScreenChange} />
+                        <LayoutSwitcher 
+                            screens={asset.screens} 
+                            selectedScreen={this.state.selectedScreen}
+                            onChange={this.onScreenChange} />
                         <TaxonomyPath taxonomyPath={taxonomyPath} />
                         <nav className="nav-block">
                             <span className="nav-block__title nav-block__title_type_second">Linked assets</span>
@@ -123,11 +141,10 @@ var AssetView = React.createClass({
                         </nav>
                     </div>
                     <div className="grid__item ten-twelfths">
-                        {this.getViewComponent()}
-                        {/*<ViewComponent
-                            screen={screen || {panels: []}}
+                        <ViewComponent
+                            screen={this.state.selectedScreen || {panels: []}}
                             actions={this.props.actions}
-                            assetTypeId={asset.assetTypeId} />*/}
+                            assetTypeId={asset.assetTypeId} />
                         <AssetToolbar isHistory={asset.isHistory}
                                       isDeleted={asset.isDeleted}
                                       canEdit={asset.editable}
