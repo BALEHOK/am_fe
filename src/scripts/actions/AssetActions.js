@@ -36,7 +36,9 @@ class AssetActions extends Actions {
     return this._dispatcher.loadSearchTracking(searchId);
   }
 
-  saveAsset() {}
+  saveAsset(asset) {
+    this._dispatcher.saveAsset(asset);
+  }
 
   deleteAsset(params) {
     this._dispatcher.deleteAsset(params);

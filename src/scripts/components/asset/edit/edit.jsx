@@ -30,7 +30,8 @@ var Edit = React.createClass({
 
     storeDidChange: function (storeName) {
         if (storeName != 'asset') return;
-        var isValid = this.state.stores.asset.isValid;
+        var store = this.state.stores.asset;
+        var isValid = store.isValid;
         this.setState({
             isValid: isValid
         });
@@ -56,6 +57,10 @@ var Edit = React.createClass({
         this.setState({
             selectedScreen: screen
         });
+    },
+
+    handleSave: function() {
+        this.props.actions.saveAsset(this.state.stores.asset.asset);
     },
 
     render: function() {
@@ -86,12 +91,13 @@ var Edit = React.createClass({
                         <div className="inputs-line inputs-line_width_full">
                             <button 
                                 disabled={!this.state.isValid}
+                                onClick={this.handleSave}
                                 className="btn btn_size_small">Save
                             </button>
-                            <button 
+                            {/*<button 
                                 disabled={!this.state.isValid}
                                 className="btn btn_type_second btn_size_small">Save and Add new
-                            </button>
+                            </button>*/}
                             <button 
                                 className="btn btn_type_second btn_size_small"
                                 onClick={this.handleUndo}>

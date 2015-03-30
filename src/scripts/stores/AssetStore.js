@@ -27,6 +27,7 @@ var AssetStore = Flux.createStore({
     'asset:restore': 'restoreAsset',
     'asset:barcode': 'loadBarcode',
     'asset:validate-attribute': 'validateAttribute',
+    'asset:save': 'saveAsset',
   },
 
   initialize() {
@@ -85,6 +86,12 @@ var AssetStore = Flux.createStore({
   getValidationState() {
     var valResults = _.where(this.validation, {isValid: false});
     return _.size(valResults) == 0;
+  },
+
+  saveAsset(asset) {
+    this.assetRepo.saveAsset(asset).then(() => {
+      this.emitChange();
+    });
   },
 
   getState() {
