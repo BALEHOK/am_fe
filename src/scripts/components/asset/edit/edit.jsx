@@ -30,11 +30,9 @@ var Edit = React.createClass({
 
     storeDidChange: function (storeName) {
         if (storeName != 'asset') return;
-
         var store = this.state.stores.asset;
-        var valResults = _.where(store.validation, {isValid: false});
         this.setState({
-            isValid: _.size(valResults) == 0
+            isValid: store.isValid
         });
 
         var asset = store.asset;
@@ -69,6 +67,7 @@ var Edit = React.createClass({
         var panels = screen.panels.map(function(el) {
             return <Panel data={el} title={el.name} actions={actions} />
         });
+        var validationData = this.state.stores.asset.validation;
         return (
             <div>
                 <h1 className="page-title">Edit: <span className="page-title__param">{asset.name}</span></h1>
@@ -83,7 +82,7 @@ var Edit = React.createClass({
                     </div>
                     <div className="grid__item ten-twelfths">
                         {panels}
-                        <ValidationResult />
+                        <ValidationResult validation={validationData} />
                         <div className="inputs-line inputs-line_width_full">
                             <button 
                                 disabled={!this.state.isValid}
