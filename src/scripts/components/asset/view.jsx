@@ -6,41 +6,27 @@ var React = require('react');
 var moment = require('moment');
 var Router = require('react-router');
 var Link = Router.Link;
-var ReactSelectize = require('../common/react-selectize');
-var AssetViewType1 = require('./view_types/type1/view');
-var AssetViewType2 = require('./view_types/type2/view');
-var AssetViewType3 = require('./view_types/type3/view');
 var Flux = require('delorean').Flux;
 var SearchResultsHeader = require('./searchResultsHeader');
 var TaxonomyPath = require('./taxonomyPath');
 var AssetToolbar = require('./assetToolbar');
 var RevisionInfo = require('./revisionInfo');
 var ValueTransformer = require('../../util/valueTransformer').ValueTransformer;
-
-var views = {
-    1: AssetViewType1,
-    2: AssetViewType2,
-    3: AssetViewType3
-};
+var LayoutSwitcher = require('./layoutSwitcher');
+var ViewsFactory = require('./viewsFactory');
 
 var AssetView = React.createClass({
     mixins:[Router.State, Flux.mixins.storeListener],
 
-    componentDidMount: function() {
+    getInitialState: function() {
+        return {
+            selectedScreen: undefined
+        };
     },
 
     componentWillMount: function() {
         var params = _.extend({}, this.getParams(), this.getQuery());
         this.props.actions.loadAsset(params);
-    },
-
-    componentWillUnmount: function() {
-    },
-
-    onScreenChange: function(val) {
-        this.setState({
-            selectedScreen: val[0].id
-        });
     },
 
     onAssetDelete: function() {
@@ -51,12 +37,34 @@ var AssetView = React.createClass({
         this.props.actions.restoreAsset(this.getParams());
     },
 
+    storeDidChange: function (storeName) {
+        if (storeName != 'asset') return;
+
+        var asset = this.state.stores.asset.asset;
+        var defaultScreen = _
+            .chain(asset.screens)
+            .findWhere({isDefault: true})
+            .value();
+
+        if (!this.state.selectedScreen) {
+            this.setState({
+                selectedScreen: defaultScreen
+            });
+        }
+    },
+
+    onScreenChange: function(screen) {
+        this.setState({
+            selectedScreen: screen
+        });
+    },
+
     render: function() {
         var assetStore = this.state.stores.asset;
         var asset = assetStore.asset;
         var linkedAssets = assetStore.relatedAssets;
-        var taxonomyPath = this.state.stores.asset.taxonomyPath;
-
+        var taxonomyPath = assetStore.taxonomyPath;
+        
         var assetLinks = linkedAssets.filter(function(e) { return e.assets != null }).map((entity) => {
             var links = entity.assets.map(function(asset){
                 return <Link className="nav-block__item-related"
@@ -68,18 +76,6 @@ var AssetView = React.createClass({
             return <div><span>{entity.name}: </span>{links}</div>;
         });
 
-        var screens = asset.screens.map(function(el) {
-            return {name: el.name, id: el.id};
-        });
-        var defaultScreen = _
-            .chain(asset.screens)
-            .findWhere({isDefault: true})
-            .value();
-        var selected = this.state.selectedScreen || defaultScreen && defaultScreen.id;
-        var screen = asset.screens.filter(function(el) { return el.id === selected })[0];
-
-        var ViewComponent = screen && views[screen.layoutType] || views[1];
-
         var dateTransform = new ValueTransformer(function (date) {
           return moment(date).format('DD.MM.YYYY HH:mm');
         });
@@ -90,6 +86,9 @@ var AssetView = React.createClass({
             'light-grey': asset.isDeleted
         });
 
+        var ViewComponent = ViewsFactory.getViewComponent(
+            asset.screens, this.state.selectedScreen);
+        
         return (
             <div>
                 <SearchResultsHeader actions={this.props.actions} />
@@ -101,14 +100,10 @@ var AssetView = React.createClass({
                 <RevisionInfo asset={asset} dateTransform={dateTransform} />
                 <div className="grid">
                     <div className="grid__item two-twelfths">
-                        <ReactSelectize
-                            items={screens}
-                            value={selected}
-                            onChange={this.onScreenChange}
-                            selectId="select-screen"
-                            placeholder="Screen:"
-                            label=" "
-                            className="select_width_full" />
+                        <LayoutSwitcher 
+                            screens={asset.screens} 
+                            selectedScreen={this.state.selectedScreen}
+                            onChange={this.onScreenChange} />
                         <TaxonomyPath taxonomyPath={taxonomyPath} />
                         <nav className="nav-block">
                             <span className="nav-block__title nav-block__title_type_second">Linked assets</span>
@@ -147,7 +142,7 @@ var AssetView = React.createClass({
                     </div>
                     <div className="grid__item ten-twelfths">
                         <ViewComponent
-                            screen={screen || {panels: []}}
+                            screen={this.state.selectedScreen || {panels: []}}
                             actions={this.props.actions}
                             assetTypeId={asset.assetTypeId} />
                         <AssetToolbar isHistory={asset.isHistory}

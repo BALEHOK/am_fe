@@ -3,7 +3,6 @@
  */
 
 var React = require('react');
-var ReactSelectize = require('../../common/react-selectize');
 var Flux = require('delorean').Flux;
 var Router = require('react-router');
 
@@ -11,6 +10,8 @@ var TaxonomyPath = require('../taxonomyPath');
 var Panel = require('./panel');
 var RevisionInfo = require('../revisionInfo');
 var ValidationResult = require('./validationResult');
+var LayoutSwitcher = require('../layoutSwitcher');
+var ViewsFactory = require('../viewsFactory');
 
 var Edit = React.createClass({
     mixins:[Flux.mixins.storeListener, Router.State, Router.Navigation],
@@ -23,15 +24,27 @@ var Edit = React.createClass({
     getInitialState: function() {
         return {
             isValid: true,
+            selectedScreen: undefined,
         }
     },
 
     storeDidChange: function (storeName) {
         if (storeName != 'asset') return;
-        var isValid = this.state.stores.asset.isValid;
+        var store = this.state.stores.asset;
         this.setState({
-            isValid: isValid
+            isValid: store.isValid
         });
+
+        var asset = store.asset;
+        var defaultScreen = _
+            .chain(asset.screens)
+            .findWhere({isDefault: true})
+            .value();
+        if (!this.state.selectedScreen) {
+            this.setState({
+                selectedScreen: defaultScreen
+            });
+        }
     },
 
     handleUndo: function () {
@@ -39,13 +52,18 @@ var Edit = React.createClass({
         this.transitionTo('asset-view', params);
     },
 
-    handleSelectChange: function() {
-
+    onScreenChange: function(screen) {
+        this.setState({
+            selectedScreen: screen
+        });
     },
+
     render: function() {
         var actions = this.props.actions;
-        var asset = this.state.stores.asset.asset;
-        var screen = asset.screens[0] || {panels: []};
+        var assetStore = this.state.stores.asset;
+        var asset = assetStore.asset;
+        var taxonomyPath = assetStore.taxonomyPath;
+        var screen = this.state.selectedScreen || {panels: []};
         var panels = screen.panels.map(function(el) {
             return <Panel data={el} title={el.name} actions={actions} />
         });
@@ -56,21 +74,11 @@ var Edit = React.createClass({
                 <RevisionInfo asset={asset} />
                 <div className="grid">
                     <div className="grid__item two-twelfths">
-                        <ReactSelectize
-                            items={[
-                                { name: "Default", id: "1" },
-                                { name: "Asset view 2", id: "2" },
-                                { name: "Asset view 3", id: "3" },
-                                { name: "Asset view 4", id: "4" }
-                            ]}
-                            value={0}
-                            onChange={this.handleSelectChange}
-                            selectId="select-screen"
-                            placeholder="Screen:"
-                            label=" "
-                            className="select_width_full select_size_small"
-                        />
-                        <TaxonomyPath assetTypeId={asset.assetTypeId} actions={this.props.actions} />
+                        <LayoutSwitcher 
+                            screens={asset.screens} 
+                            selectedScreen={this.state.selectedScreen}
+                            onChange={this.onScreenChange} />
+                        <TaxonomyPath taxonomyPath={taxonomyPath} />
                     </div>
                     <div className="grid__item ten-twelfths">
                         {panels}
@@ -78,12 +86,15 @@ var Edit = React.createClass({
                         <div className="inputs-line inputs-line_width_full">
                             <button 
                                 disabled={!this.state.isValid}
-                                className="btn btn_size_small">Save</button>
+                                className="btn btn_size_small">Save
+                            </button>
                             <button 
                                 disabled={!this.state.isValid}
-                                className="btn btn_type_second btn_size_small">Save and Add new</button>
-                            <button className="btn btn_type_second btn_size_small"
-                                    onClick={this.handleUndo}>
+                                className="btn btn_type_second btn_size_small">Save and Add new
+                            </button>
+                            <button 
+                                className="btn btn_type_second btn_size_small"
+                                onClick={this.handleUndo}>
                                 <i className="btn__icon btn__icon_undo"></i>Undo
                             </button>
                         </div>
