@@ -20,6 +20,7 @@ var Panel = React.createClass({
                     <div className="asset-data__content">
                         <form className="asset-data__form">
                             {attrs}
+                            {/*
                             <div className="asset-data__aside">
                                 <p>Barcode:</p>
                                 <img src="assets/images/barcode.png"/>
@@ -32,6 +33,7 @@ var Panel = React.createClass({
                                     <input type="file" name=" " className="input-file"/>
                                 </button>
                             </div>
+                            */}
                         </form>
                     </div>
                 </div>

@@ -64,6 +64,15 @@ class AssetRepository {
             type: 'POST'
         });
     }
+
+    validateAttribute(params) {
+        var url = `/api/validation/attribute/${params.attributeId}/?value=${params.value}`;
+        return $.ajax({
+            url: url,
+            contentType: 'application/json',
+            type: 'GET'
+        });
+    }
 }
 
 module.exports = AssetRepository;

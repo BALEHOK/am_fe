@@ -16,6 +16,7 @@
     "tests"
   ],
   "dependencies": {
-    "react.backbone": "*"
+    "react.backbone": "*",
+    "bootstrap-stylus": "~4.0.2"
   }
 }

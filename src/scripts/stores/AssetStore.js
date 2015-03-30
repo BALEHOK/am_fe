@@ -15,6 +15,10 @@ var AssetStore = Flux.createStore({
 
   taxonomyPath: undefined,
 
+  validation: [],
+
+  isValid: undefined,
+
   actions: {
     'asset:load': 'loadAsset',
     'asset:load-related': 'loadRelatedAssets',
@@ -22,6 +26,7 @@ var AssetStore = Flux.createStore({
     'asset:delete': 'deleteAsset',
     'asset:restore': 'restoreAsset',
     'asset:barcode': 'loadBarcode',
+    'asset:validate-attribute': 'validateAttribute',
   },
 
   initialize() {
@@ -70,11 +75,25 @@ var AssetStore = Flux.createStore({
     });
   },
 
+  validateAttribute(params) {
+    this.assetRepo.validateAttribute(params).then((data) => {
+      this.validation[data.id] = data;
+      this.emitChange();
+    });
+  },
+
+  getValidationState() {
+    var valResults = _.where(this.validation, {isValid: false});
+    return _.size(valResults) == 0;
+  },
+
   getState() {
     return  { 
       asset: this.asset,
       relatedAssets: this.relatedAssets,
       taxonomyPath: this.taxonomyPath,
+      validation: this.validation,
+      isValid: this.getValidationState(),
     };
   }
 });

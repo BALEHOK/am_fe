@@ -54,6 +54,10 @@ var AssetDispatcher = Flux.createDispatcher({
     return this.dispatch("asset:barcode", barcode);
   },
 
+  validateAttribute(params) {
+    return this.dispatch("asset:validate-attribute", params);
+  },
+
   getStores() {
     return {
       asset: new AssetStore(),
