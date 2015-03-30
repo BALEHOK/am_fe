@@ -70,7 +70,7 @@ class AssetRepository {
         return $.ajax({
             type: 'POST',
             url: url,
-            data: JSON.stringify({ model: asset }),
+            data: JSON.stringify(asset),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
         });
