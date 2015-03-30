@@ -31,9 +31,8 @@ var Edit = React.createClass({
     storeDidChange: function (storeName) {
         if (storeName != 'asset') return;
         var store = this.state.stores.asset;
-        var isValid = store.isValid;
         this.setState({
-            isValid: isValid
+            isValid: store.isValid
         });
 
         var asset = store.asset;
