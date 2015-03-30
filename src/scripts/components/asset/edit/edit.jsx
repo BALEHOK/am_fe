@@ -49,6 +49,7 @@ var Edit = React.createClass({
         var panels = screen.panels.map(function(el) {
             return <Panel data={el} title={el.name} actions={actions} />
         });
+        var validationData = this.state.stores.asset.validation;
         return (
             <div>
                 <h1 className="page-title">Edit: <span className="page-title__param">{asset.name}</span></h1>
@@ -73,7 +74,7 @@ var Edit = React.createClass({
                     </div>
                     <div className="grid__item ten-twelfths">
                         {panels}
-                        <ValidationResult />
+                        <ValidationResult validation={validationData} />
                         <div className="inputs-line inputs-line_width_full">
                             <button 
                                 disabled={!this.state.isValid}
