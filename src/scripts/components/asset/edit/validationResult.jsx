@@ -6,9 +6,8 @@ var React = require('react');
 var Flux = require('delorean').Flux;
 
 var ValidationResult = React.createClass({
-	mixins: [Flux.mixins.storeListener],
     render: function() {
-        var messages = this.state.stores.asset.validation.map((item) => {
+        var messages = this.props.validation.map((item) => {
             return <li key={item.id}>{item.message}</li>;
         });
         return (

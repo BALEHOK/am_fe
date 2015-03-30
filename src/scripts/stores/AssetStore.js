@@ -17,6 +17,8 @@ var AssetStore = Flux.createStore({
 
   validation: [],
 
+  isValid: undefined,
+
   actions: {
     'asset:load': 'loadAsset',
     'asset:load-related': 'loadRelatedAssets',
@@ -80,12 +82,18 @@ var AssetStore = Flux.createStore({
     });
   },
 
+  getValidationState() {
+    var valResults = _.where(this.validation, {isValid: false});
+    return _.size(valResults) == 0;
+  },
+
   getState() {
     return  { 
       asset: this.asset,
       relatedAssets: this.relatedAssets,
       taxonomyPath: this.taxonomyPath,
       validation: this.validation,
+      isValid: this.getValidationState(),
     };
   }
 });
