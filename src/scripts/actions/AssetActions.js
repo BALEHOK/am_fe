@@ -37,7 +37,11 @@ class AssetActions extends Actions {
   }
 
   saveAsset(asset) {
-    this._dispatcher.saveAsset(asset);
+    this._dispatcher.saveAsset(asset).then(() => {
+      console.log('TODO: redirect to asset view on done');
+      //var appRouter = require('../appRouter');
+      //appRouter.transitionTo('');  
+    });    
   }
 
   deleteAsset(params) {

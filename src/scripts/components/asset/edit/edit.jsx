@@ -71,7 +71,7 @@ var Edit = React.createClass({
         var panels = screen.panels.map(function(el) {
             return <Panel data={el} title={el.name} actions={actions} />
         });
-        var validationData = this.state.stores.asset.validation;
+        var validationData = assetStore.validation;
         return (
             <div>
                 <h1 className="page-title">Edit: <span className="page-title__param">{asset.name}</span></h1>
