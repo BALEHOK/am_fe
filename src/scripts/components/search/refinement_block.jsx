@@ -34,7 +34,7 @@ var RefinementBlock = React.createClass({
                     {refinementsList
                         .map(function(counter) {
                             return <RefinementLink
-                                actions={self.props.actions}
+                                changeFilter={self.props.changeFilter}
                                 type={self.props.type}
                                 filters={self.props.filters}
                                 key={counter.id}

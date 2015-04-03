@@ -9,29 +9,29 @@ var Link = Router.Link;
 var TaxonomyPath = require('../asset/taxonomyPath.jsx');
 var RevisionRow = require('./revisionRow.jsx');
 var Loader = require('../common/loader.jsx');
+var LoaderMixin = require('../../mixins/LoaderMixin');
 
 var AssetHistoryLayout = React.createClass({
 
-    mixins:[Router.State, Flux.mixins.storeListener],
+    mixins:[Router.State, Flux.mixins.storeListener, LoaderMixin],
 
     componentDidMount() {
         var params = this.getParams();
-        this.props.actions.loadHistory(params);
-        this.props.actions.loadAsset(params);
+        var hp = this.props.actions.loadHistory(params);
+        var ap = this.props.actions.loadAsset(params);
+        this.waitFor(hp, ap);
     },
 
     render() {
         var params = this.getParams();
-        var history = this.state.stores.history.value;
+        var history = this.state.stores.history;
         var asset = this.state.stores.asset.asset;
-        var hloading = this.state.stores.history.loading;
-        var aloading = this.state.stores.asset.loading;
 
         var rows = history.revisions.map((el) => <RevisionRow revision={el} />)
         return (
             <div>
                 <h1 className="page-title"><span className="icon icon_history"></span>Asset history - <span className="page-title__param">{asset.name}</span></h1>
-                <Loader loading={hloading || aloading}>
+                <Loader loading={this.state.loading}>
                     <div className="grid">
                         <div className="grid__item two-twelfths">
                             <Link className="back-btn"

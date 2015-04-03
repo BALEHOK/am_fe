@@ -12,12 +12,11 @@ var ResultItem = require('./result_item');
 var ResultPagination = require('./resultPagination.jsx');
 var ResultHeaderPagination = require('./resultHeaderPagination.jsx');
 var Loader = require('../common/loader.jsx');
-
-var SearchDispatcher = require('../../dispatchers/SearchDispatcher');
-var SearchActions = require('../../actions/SearchActions');
+var LoaderMixin = require('../../mixins/LoaderMixin');
+var Flux = require('delorean').Flux;
 
 var ResultPage = React.createClass({
-    mixins: [Router.Navigation, Router.State],
+    mixins: [Router.Navigation, Router.State, LoaderMixin, Flux.mixins.storeListener],
     sortItems: [
         { name: "Rank", id: 0 },
         { name: "Date", id: 1 },
@@ -42,29 +41,23 @@ var ResultPage = React.createClass({
         };
     },
 
-    componentWillMount: function() {
-        this.dispatcher = SearchDispatcher;
-        this.actions = new SearchActions(this.dispatcher);
-        var stores = this.dispatcher.stores;
-        this.forceUpdateBound = this.forceUpdate.bind(this);
-        Object.keys(this.dispatcher.stores).map(function(store) {
-            stores[store].onChange(this.forceUpdateBound);
-        }.bind(this));
-
-        this.dispatcher.stores.results.onChange(this.syncUrl);
-        this.actions.changeSearchFilter(this.getQuery());
+    componentDidMount: function() {
+        this.actions = this.props.actions;
+        this.props.dispatcher.stores.results.onChange(this.syncUrl);
+        this.loadData(this.getQuery());
     },
 
-    componentWillUnmount: function() {
-        var stores = this.dispatcher.stores;
-        Object.keys(this.dispatcher.stores).map(function(store) {
-            stores[store].listener.removeListener('change', this.forceUpdateBound);
-        }.bind(this));
-        this.dispatcher.stores.results.listener.removeListener('change', this.syncUrl);
+    loadData: function(filters, updateCounters = true) {
+        var res = this.actions.changeSearchFilter(filters);
+        this.waitFor(res);
+        if(updateCounters) {
+            this.startWaiting('loadingCounters',
+                res.then(() => this.actions.fetchSearchCounters()));
+        }
     },
 
     syncUrl: function() {
-        var filters = this.dispatcher.getStore('results').getState().filter;
+        var filters = this.state.stores.results.filter;
         var clean = Object.keys(filters).reduce(function(acc, key) {
             if(filters[key]) {
                 acc[key] = filters[key]
@@ -75,7 +68,7 @@ var ResultPage = React.createClass({
     },
 
     filterCounters: function(param, counter) {
-        var id = this.dispatcher.getStore('results').getState().filter[param];
+        var id = this.state.stores.results.filter[param];
         if(!id) {
             return true;
         }
@@ -83,21 +76,21 @@ var ResultPage = React.createClass({
     },
 
     handlePageChange: function(page) {
-        var searchId = this.dispatcher.getStore('results').getState().searchId;
-        this.actions.changeSearchFilter({
+        var searchId = this.state.stores.results.searchId;
+        this.loadData({
             page: page,
             searchId: searchId
-        });
+        }, false);
     },
 
     handleSortChange: function(value) {
-        this.actions.changeSearchFilter({
-            sortBy: value
-        });
+        this.loadData({
+            sortBy: value[0].id
+        }, false);
     },
 
     handleExportClick: function(format) {
-        var searchId = this.dispatcher.getStore('results').getState().searchId;
+        var searchId = this.state.stores.results.searchId;
         this.actions.exportSearchResults({
            searchId: searchId,
            format: format
@@ -111,7 +104,7 @@ var ResultPage = React.createClass({
     render: function() {
         var self = this;
 
-        var results = this.dispatcher.getStore('results').getState();
+        var results = this.state.stores.results;
         var counters = results.counters;
         var filters = results.filter;
 
@@ -119,7 +112,6 @@ var ResultPage = React.createClass({
         var searchResultsClasses = cx({
             'search-results': true,
             'search-results_type_tiles': this.state.isTilesView,
-            'loading': results.loadingResults
         });
 
         var activeTileClasses = cx({
@@ -134,7 +126,6 @@ var ResultPage = React.createClass({
 
         var navBlockClasses = cx({
             'nav-block': true,
-            'loading': results.loadingResults
         });
 
         var assetTypeRefinements = counters.assetTypes.filter(this.filterCounters.bind(this, 'assetType'));
@@ -151,7 +142,6 @@ var ResultPage = React.createClass({
 
         return (
             <div>
-                <Loader loading={results.loadingResults || results.loadingCounters} />
                 <div className="grid">
                     <div className="grid__item two-twelfths">
                         <h1 className="page-title page-title_small">Search results</h1>
@@ -160,7 +150,7 @@ var ResultPage = React.createClass({
                         {this.getQuery().query
                           ?  <SearchSimpleForm
                                 dispatcher={this.dispatcher}
-                                actions={this.actions}
+                                changeFilter={this.loadData}
                                 value={urlQuery.query}
                                 context={urlQuery.context} />
                           : {}
@@ -210,91 +200,97 @@ var ResultPage = React.createClass({
                     </header>
                     <div className="grid">
                         <div className="grid__item two-twelfths">
-                            {assetTypeRefinements.length !== 0
-                                ? <RefinementBlock
-                                    title="Refine by assets"
-                                    list={assetTypeRefinements}
-                                    type="assetType"
-                                    actions={self.actions}
-                                    filters={filters}
-                                    maxItems={7}
-                                    navBlockClasses={navBlockClasses}/>
-                                : {}
-                            }
-                            {taxonomyRefinements.length !== 0
-                                ? <RefinementBlock
-                                    title="Refine by taxonomies"
-                                    list={taxonomyRefinements}
-                                    type="taxonomy"
-                                    actions={self.actions}
-                                    filters={filters}
-                                    maxItems={7}
-                                    navBlockClasses={navBlockClasses}/>
-                                : {}
-                            }
-                            <nav className={navBlockClasses}>
-                                <span className="nav-block__title">Reports</span>
-                                <ul className="nav-block__list">
-                                    <li className="nav-block__item">
-                                        <a className="link link_second">
-                                            <span className="icon icon_download"></span>Detailed
-                                        </a>
-                                    </li>
-                                    <li className="nav-block__item">
-                                        <a className="link link_second">
-                                            <span className="icon icon_download"></span>Compact
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                            <nav className={navBlockClasses}>
-                                <span className="nav-block__title">Export</span>
-                                <ul className="nav-block__list">
-                                    {this.exportItems.map(function(format){
-                                        return <li className="nav-block__item">
-                                                    <a className="link link_second" onClick={this.handleExportClick.bind(this, format)}>
-                                                        <span className="icon icon_download"></span>.{format}
-                                                    </a>
-                                                </li>;
-                                    }, this)}
-                                </ul>
-                            </nav>
+                            <Loader loading={this.state.loadingCounters}>
+                                <div>
+                                    {assetTypeRefinements.length !== 0
+                                        ? <RefinementBlock
+                                            title="Refine by assets"
+                                            list={assetTypeRefinements}
+                                            type="assetType"
+                                            changeFilter={self.loadData}
+                                            filters={filters}
+                                            maxItems={7}
+                                            navBlockClasses={navBlockClasses}/>
+                                        : {}
+                                    }
+                                    {taxonomyRefinements.length !== 0
+                                        ? <RefinementBlock
+                                            title="Refine by taxonomies"
+                                            list={taxonomyRefinements}
+                                            type="taxonomy"
+                                            changeFilter={self.loadData}
+                                            filters={filters}
+                                            maxItems={7}
+                                            navBlockClasses={navBlockClasses}/>
+                                        : {}
+                                    }
+                                    <nav className={navBlockClasses}>
+                                        <span className="nav-block__title">Reports</span>
+                                        <ul className="nav-block__list">
+                                            <li className="nav-block__item">
+                                                <a className="link link_second">
+                                                    <span className="icon icon_download"></span>Detailed
+                                                </a>
+                                            </li>
+                                            <li className="nav-block__item">
+                                                <a className="link link_second">
+                                                    <span className="icon icon_download"></span>Compact
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                    <nav className={navBlockClasses}>
+                                        <span className="nav-block__title">Export</span>
+                                        <ul className="nav-block__list">
+                                            {this.exportItems.map(function(format){
+                                                return <li className="nav-block__item">
+                                                            <a className="link link_second" onClick={this.handleExportClick.bind(this, format)}>
+                                                                <span className="icon icon_download"></span>.{format}
+                                                            </a>
+                                                        </li>;
+                                            }, this)}
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </Loader>
                         </div>
                         <div className="grid__item ten-twelfths">
-                            <div className={searchResultsClasses}>
-                                <header className="search-results__header">
-                                    <span className="search-results__header-item search-results__header-item_name">Assets path</span>
-                                    <span className="search-results__header-item search-results__header-item_category">Category</span>
-                                    <span className="search-results__header-item search-results__header-item_attr">Attributes set</span>
-                                    <span className="search-results__header-item search-results__header-item_link">Go to result</span>
-                                </header>
-                                <ul className="search-results__list">
-                                    {results.models.length !== 0
-                                        ? results.models.map(function(result) {
-                                            return <ResultItem
-                                                    key={result.indexUid}
-                                                    model={result}
-                                                    searchId={results.searchId}
-                                                    isHistory={isHistory} />
-                                          })
+                            <Loader loading={this.state.loading} >
+                                <div className={searchResultsClasses}>
+                                    <header className="search-results__header">
+                                        <span className="search-results__header-item search-results__header-item_name">Assets path</span>
+                                        <span className="search-results__header-item search-results__header-item_category">Category</span>
+                                        <span className="search-results__header-item search-results__header-item_attr">Attributes set</span>
+                                        <span className="search-results__header-item search-results__header-item_link">Go to result</span>
+                                    </header>
+                                    <ul className="search-results__list">
+                                        {results.models.length !== 0
+                                            ? results.models.map(function(result) {
+                                                return <ResultItem
+                                                        key={result.indexUid}
+                                                        model={result}
+                                                        searchId={results.searchId}
+                                                        isHistory={isHistory} />
+                                              })
+                                            : {}
+                                        }
+                                        {results.models.length === 0 && this.state.loading === false
+                                            ? <li className="search-results__item search-results__item_empty"><span className="search-results__item-msg"><strong>Nothing was found</strong> for the specified search parameters</span></li>
+                                            : {}
+                                        }
+                                    </ul>
+                                    {counters.totalCount
+                                        ? <ResultPagination pages={pages}
+                                                            currentPage={currentPage}
+                                                            firstShowedItem={firstShowedItem}
+                                                            totalCount={counters.totalCount}
+                                                            lastShowedItem={lastShowedItem}
+                                                            postsPerPage={postsPerPage}
+                                                            onPageChanged={this.handlePageChange}/>
                                         : {}
                                     }
-                                    {results.models.length === 0 && results.loadingResults === false
-                                        ? <li className="search-results__item search-results__item_empty"><span className="search-results__item-msg"><strong>Nothing was found</strong> for the specified search parameters</span></li>
-                                        : {}
-                                    }
-                                </ul>
-                                {counters.totalCount
-                                    ? <ResultPagination pages={pages}
-                                                        currentPage={currentPage}
-                                                        firstShowedItem={firstShowedItem}
-                                                        totalCount={counters.totalCount}
-                                                        lastShowedItem={lastShowedItem}
-                                                        postsPerPage={postsPerPage}
-                                                        onPageChanged={this.handlePageChange}/>
-                                    : {}
-                                }
-                            </div>
+                                </div>
+                            </Loader>
                         </div>
                     </div>
                 </div>

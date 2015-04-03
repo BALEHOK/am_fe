@@ -15,9 +15,10 @@ var ValueTransformer = require('../../util/valueTransformer').ValueTransformer;
 var LayoutSwitcher = require('./layoutSwitcher');
 var ViewsFactory = require('./viewsFactory');
 var Loader = require('../common/loader.jsx');
+var LoaderMixin = require('../../mixins/LoaderMixin');
 
 var AssetView = React.createClass({
-    mixins:[Router.State, Flux.mixins.storeListener],
+    mixins:[Router.State, Flux.mixins.storeListener, LoaderMixin],
 
     getInitialState: function() {
         return {
@@ -27,7 +28,7 @@ var AssetView = React.createClass({
 
     componentWillMount: function() {
         var params = _.extend({}, this.getParams(), this.getQuery());
-        this.props.actions.loadAsset(params);
+        this.waitFor(this.props.actions.loadAsset(params));
     },
 
     onAssetDelete: function() {
@@ -66,8 +67,6 @@ var AssetView = React.createClass({
         var linkedAssets = assetStore.relatedAssets;
         var taxonomyPath = assetStore.taxonomyPath;
 
-        var loading = this.state.stores.asset.loading;
-
         var assetLinks = linkedAssets.filter(function(e) { return e.assets != null }).map((entity) => {
             var links = entity.assets.map(function(asset){
                 return <Link className="nav-block__item-related"
@@ -101,7 +100,7 @@ var AssetView = React.createClass({
                     </span>
                 </h1>
                 <RevisionInfo asset={asset} dateTransform={dateTransform} />
-                <Loader loading={loading}>
+                <Loader loading={this.state.loading}>
                     <div className="grid">
                         <div className="grid__item two-twelfths">
                             <LayoutSwitcher

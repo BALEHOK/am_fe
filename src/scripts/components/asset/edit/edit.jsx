@@ -13,13 +13,14 @@ var ValidationResult = require('./validationResult');
 var LayoutSwitcher = require('../layoutSwitcher');
 var ViewsFactory = require('../viewsFactory');
 var Loader = require('../../common/loader.jsx');
+var LoaderMixin = require('../../../mixins/LoaderMixin');
 
 var Edit = React.createClass({
-    mixins:[Flux.mixins.storeListener, Router.State, Router.Navigation],
+    mixins:[Flux.mixins.storeListener, Router.State, Router.Navigation, LoaderMixin],
 
     componentWillMount: function() {
         var params = this.getParams();
-        this.props.actions.loadAsset(params);
+        this.waitFor(this.props.actions.loadAsset(params));
     },
 
     getInitialState: function() {
@@ -62,7 +63,6 @@ var Edit = React.createClass({
     render: function() {
         var actions = this.props.actions;
         var assetStore = this.state.stores.asset;
-        var loading = this.state.stores.asset.loading;
         var asset = assetStore.asset;
         var taxonomyPath = assetStore.taxonomyPath;
         var screen = this.state.selectedScreen || {panels: []};
@@ -83,7 +83,7 @@ var Edit = React.createClass({
                         <TaxonomyPath taxonomyPath={taxonomyPath} />
                     </div>
                     <div className="grid__item ten-twelfths">
-                        <Loader loading={loading}>
+                        <Loader loading={this.state.loading}>
                             <div>
                                 {panels}
                             </div>

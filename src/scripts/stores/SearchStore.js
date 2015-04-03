@@ -2,9 +2,6 @@ var Flux = require('delorean').Flux;
 var SearchRepository = require('../services/SearchRepository');
 
 var SearchResultsStore = Flux.createStore({
-  loadingResults: undefined,
-  loadingCounters: undefined,
-
   models: [],
   searchId: undefined,
 
@@ -35,8 +32,6 @@ var SearchResultsStore = Flux.createStore({
 
   getState() {
     return {
-      loadingResults: this.loadingResults,
-      loadingCounters: this.loadingCounters,
       models: this.models,
       searchId: this.searchId,
       counters: this.counters,
@@ -45,35 +40,22 @@ var SearchResultsStore = Flux.createStore({
   },
 
   loadResults(filters) {
-    this.loadingResults = true;
-    this.emitChange();
     this.searchRepo.search(filters)
         .done((data) => {
             this.models = data.entities;
             this.searchId = data.searchId;
-            var search = {
-                searchId: this.searchId,
-                query: this.filter.query,
-                context: this.filter.context
-            };
-            this.loadSearchCounters(search);
         })
         .always((data) => {
-            this.loadingResults = false;
             this.emitChange();
         })
   },
 
   loadSearchCounters(search) {
-    this.loadingCounters = true;
-    this.emitChange();
-
     this.searchRepo.counters(search)
         .done((data) => {
             this.counters = data;
         })
         .always((data) => {
-            this.loadingCounters = false;
             this.emitChange();
         })
   },
