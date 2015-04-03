@@ -6,7 +6,6 @@ var React = require('react');
 var Router = require('react-router');
 
 var LoginPage = React.createClass({
-    mixins: [Router.Navigation],
     statics: {
         attemptedTransition: null
     },
@@ -26,7 +25,7 @@ var LoginPage = React.createClass({
                 password: password
             })
             .done(function() {
-                self.transitionTo('/');
+                self.context.router.context.router.transitionTo('/');
             })
             .error(function(data) {
                 self.setState({ errorMessage: data.responseJSON.error_description });

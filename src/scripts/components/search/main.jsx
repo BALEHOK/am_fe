@@ -14,7 +14,7 @@ var SearchDispatcher = require('../../dispatchers/SearchDispatcher');
 var SearchMainActions = require('../../actions/SearchMainActions');
 
 var SearchPage = React.createClass({
-    mixins: [AuthenticatedRouteMixin, Router.Navigation],
+    mixins: [AuthenticatedRouteMixin],
 
     componentWillMount: function() {
         this.dispatcher = SearchDispatcher;
@@ -22,7 +22,7 @@ var SearchPage = React.createClass({
     },
 
     handleSimpleSearch: function(query) {
-        this.transitionTo('/search/result', {}, {'query' : query});
+        this.context.router.context.router.transitionTo('/search/result', {}, {'query' : query});
     },
     render: function() {
         return (

@@ -16,7 +16,7 @@ var Loader = require('../../common/loader.jsx');
 var LoaderMixin = require('../../../mixins/LoaderMixin');
 
 var Edit = React.createClass({
-    mixins:[Flux.mixins.storeListener, Router.State, Router.Navigation, LoaderMixin],
+    mixins:[Flux.mixins.storeListener, LoaderMixin],
 
     componentWillMount: function() {
         var params = this.context.router.getCurrentParams();
@@ -51,7 +51,7 @@ var Edit = React.createClass({
 
     handleUndo: function () {
         var params = this.context.router.getCurrentParams();
-        this.transitionTo('asset-view', params);
+        this.context.router.context.router.transitionTo('asset-view', params);
     },
 
     onScreenChange: function(screen) {

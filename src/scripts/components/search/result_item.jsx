@@ -6,12 +6,11 @@ var React = require('react/addons');
 var Router = require('react-router');
 
 var ResultItem = React.createClass({
-    mixins: [Router.Navigation],
-    render: function() { 
-        var query = {searchId: this.props.searchId};  
-        if (this.props.isHistory) 
-            query.uid = this.props.model.dynEntityUid; 
-        var assetLink = this.makeHref('asset-view', {
+    render: function() {
+        var query = {searchId: this.props.searchId};
+        if (this.props.isHistory)
+            query.uid = this.props.model.dynEntityUid;
+        var assetLink = this.context.router.context.router.makeHref('asset-view', {
             assetTypeId: this.props.model.dynEntityConfigId,
             assetId: this.props.model.dynEntityId,
         }, query);

@@ -64,7 +64,7 @@ var ResultPage = React.createClass({
             }
             return acc;
         }, {});
-        this.transitionTo('/search/result?' + $.param(clean));
+        this.context.router.transitionTo('/search/result?' + $.param(clean));
     },
 
     filterCounters: function(param, counter) {

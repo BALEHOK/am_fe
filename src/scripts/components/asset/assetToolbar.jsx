@@ -6,7 +6,6 @@ var React = require('react/addons');
 var Router = require('react-router');
 
 var AssetToolbar = React.createClass({
-    mixins: [Router.State, Router.Navigation],
     getInitialState() {
         return {
             deleted: false
@@ -14,7 +13,7 @@ var AssetToolbar = React.createClass({
     },
     handleTransition(route) {
         var params = this.context.router.getCurrentParams();
-        this.transitionTo(route, params);
+        this.context.router.context.router.transitionTo(route, params);
     },
     handleAssetDeletion() {
         this.props.onAssetDelete();
