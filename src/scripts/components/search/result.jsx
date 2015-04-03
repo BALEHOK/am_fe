@@ -149,7 +149,7 @@ var ResultPage = React.createClass({
                     <div className="grid__item ten-twelfths">
                         {this.getQuery().query
                           ?  <SearchSimpleForm
-                                dispatcher={this.dispatcher}
+                                dispatcher={this.props.dispatcher}
                                 changeFilter={this.loadData}
                                 value={urlQuery.query}
                                 context={urlQuery.context} />

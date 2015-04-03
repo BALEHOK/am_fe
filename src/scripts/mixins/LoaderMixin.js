@@ -11,7 +11,9 @@ var LoaderMixin = {
   setLoading(attr, val) {
     var setter = {};
     setter[attr] = val;
-    this.setState();
+    this.setState(function(nextState) {
+      return _.extend({}, nextState, setter)
+    });
   }
 };
 
