@@ -14,11 +14,11 @@ var AssetViewType3 = React.createClass({
     },
     render: function() {
         var i = 0;
-        var panels = this.props.screen.panels.map(function(el) {
+        var panels = this.props.screen.panels.map((el) => {
             i++;
             return (
                 <TabPane eventKey={i} tab={el.name}>
-                    <Panel data={el} title={el.name}/>
+                    <Panel data={el} title={el.name} dispatcher={this.props.dispatcher}/>
                 </TabPane>);
         });
 
@@ -30,7 +30,7 @@ var AssetViewType3 = React.createClass({
                     </TabbedArea>
                 </div>
             </div>
-            
+
         );
     }
 });

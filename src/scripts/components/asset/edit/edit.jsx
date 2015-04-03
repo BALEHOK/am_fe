@@ -19,7 +19,7 @@ var Edit = React.createClass({
     mixins:[Flux.mixins.storeListener, Router.State, Router.Navigation, LoaderMixin],
 
     componentWillMount: function() {
-        var params = this.getParams();
+        var params = this.context.router.getCurrentParams();
         this.waitFor(this.props.actions.loadAsset(params));
     },
 
@@ -50,7 +50,7 @@ var Edit = React.createClass({
     },
 
     handleUndo: function () {
-        var params = this.getParams();
+        var params = this.context.router.getCurrentParams();
         this.transitionTo('asset-view', params);
     },
 
@@ -66,8 +66,8 @@ var Edit = React.createClass({
         var asset = assetStore.asset;
         var taxonomyPath = assetStore.taxonomyPath;
         var screen = this.state.selectedScreen || {panels: []};
-        var panels = screen.panels.map(function(el) {
-            return <Panel data={el} title={el.name} actions={actions} />
+        var panels = screen.panels.map((el) => {
+            return <Panel data={el} dispatcher={this.props.dispatcher} title={el.name} actions={actions} />
         });
         var validationData = this.state.stores.asset.validation;
         return (

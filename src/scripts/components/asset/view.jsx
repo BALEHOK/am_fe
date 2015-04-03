@@ -27,16 +27,16 @@ var AssetView = React.createClass({
     },
 
     componentWillMount: function() {
-        var params = _.extend({}, this.getParams(), this.getQuery());
+        var params = _.extend({}, this.context.router.getCurrentParams(), this.context.router.getCurrentQuery());
         this.waitFor(this.props.actions.loadAsset(params));
     },
 
     onAssetDelete: function() {
-        this.props.actions.deleteAsset(this.getParams());
+        this.props.actions.deleteAsset(this.context.router.getCurrentParams());
     },
 
     onAssetRestore: function() {
-        this.props.actions.restoreAsset(this.getParams());
+        this.props.actions.restoreAsset(this.context.router.getCurrentParams());
     },
 
     storeDidChange: function (storeName) {
@@ -93,7 +93,7 @@ var AssetView = React.createClass({
 
         return (
             <div>
-                <SearchResultsHeader actions={this.props.actions} />
+                <SearchResultsHeader actions={this.props.actions} dispatcher={this.props.dispatcher} />
                 <h1 className="page-title">
                     <span className={titleClasses}>
                         {asset.name}
@@ -147,6 +147,7 @@ var AssetView = React.createClass({
                             <ViewComponent
                                 screen={this.state.selectedScreen || {panels: []}}
                                 actions={this.props.actions}
+                                dispatcher={this.props.dispatcher}
                                 assetTypeId={asset.assetTypeId} />
                             <AssetToolbar isHistory={asset.isHistory}
                                           isDeleted={asset.isDeleted}

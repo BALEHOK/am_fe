@@ -30,7 +30,7 @@ var SearchPage = React.createClass({
                 <h1 className="page-title">Search</h1>
                 <TabbedArea defaultActiveKey={1} animation={false}>
                     <TabPane eventKey={1} tab="Simple">
-                        <SearchSimpleForm actions={this.actions} dispatcher={this.dispatcher} />
+                        <SearchSimpleForm changeFilter={this.actions.changeSearchFilter.bind(this.actions)} dispatcher={this.dispatcher} />
                     </TabPane>
                     <TabPane eventKey={2} tab="By type">
                         New version of Type Search is under development.

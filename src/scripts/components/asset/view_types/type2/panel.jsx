@@ -5,8 +5,8 @@ var AttributesFactory = require('../../attributesFactory');
 
 var Panel = React.createClass({
     render: function() {
-        var attrs = this.props.data.attributes.map(function(attr) {
-            return AttributesFactory.getViewAttribute(attr.datatype, attr);
+        var attrs = this.props.data.attributes.map((attr) => {
+            return AttributesFactory.getViewAttribute(attr.datatype, attr, this.props.dispatcher);
         });
         return (
             <div className="grid__item one-half">

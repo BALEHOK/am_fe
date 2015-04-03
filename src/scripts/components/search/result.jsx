@@ -16,7 +16,7 @@ var LoaderMixin = require('../../mixins/LoaderMixin');
 var Flux = require('delorean').Flux;
 
 var ResultPage = React.createClass({
-    mixins: [Router.Navigation, Router.State, LoaderMixin, Flux.mixins.storeListener],
+    mixins: [Router.Navigation, LoaderMixin, Flux.mixins.storeListener],
     sortItems: [
         { name: "Rank", id: 0 },
         { name: "Date", id: 1 },
@@ -29,7 +29,7 @@ var ResultPage = React.createClass({
         'xlsx'
     ],
     getInitialState: function() {
-        var query = this.getQuery();
+        var query = this.context.router.getCurrentQuery();
         return {
             searchId: null,
             counters: {
@@ -44,7 +44,7 @@ var ResultPage = React.createClass({
     componentDidMount: function() {
         this.actions = this.props.actions;
         this.props.dispatcher.stores.results.onChange(this.syncUrl);
-        this.loadData(this.getQuery());
+        this.loadData(this.context.router.getCurrentQuery());
     },
 
     loadData: function(filters, updateCounters = true) {
@@ -137,7 +137,7 @@ var ResultPage = React.createClass({
         var firstShowedItem = (currentPage-1) * postsPerPage + 1;
         var lastShowedItem = counters.totalCount < (currentPage*postsPerPage) ? counters.totalCount : currentPage*postsPerPage;
 
-        var urlQuery = this.getQuery();
+        var urlQuery = this.context.router.getCurrentQuery();
         var isHistory = urlQuery.context == 2;
 
         return (
@@ -147,7 +147,7 @@ var ResultPage = React.createClass({
                         <h1 className="page-title page-title_small">Search results</h1>
                     </div>
                     <div className="grid__item ten-twelfths">
-                        {this.getQuery().query
+                        {this.context.router.getCurrentQuery().query
                           ?  <SearchSimpleForm
                                 dispatcher={this.props.dispatcher}
                                 changeFilter={this.loadData}

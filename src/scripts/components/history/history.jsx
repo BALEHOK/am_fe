@@ -16,14 +16,14 @@ var AssetHistoryLayout = React.createClass({
     mixins:[Router.State, Flux.mixins.storeListener, LoaderMixin],
 
     componentDidMount() {
-        var params = this.getParams();
+        var params = this.context.router.getCurrentParams();
         var hp = this.props.actions.loadHistory(params);
         var ap = this.props.actions.loadAsset(params);
         this.waitFor(hp, ap);
     },
 
     render() {
-        var params = this.getParams();
+        var params = this.context.router.getCurrentParams();
         var history = this.state.stores.history;
         var asset = this.state.stores.asset.asset;
 
