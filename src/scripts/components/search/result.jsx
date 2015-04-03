@@ -11,6 +11,7 @@ var RefinementBlock = require('./refinement_block');
 var ResultItem = require('./result_item');
 var ResultPagination = require('./resultPagination.jsx');
 var ResultHeaderPagination = require('./resultHeaderPagination.jsx');
+var Loader = require('../common/loader.jsx');
 
 var SearchDispatcher = require('../../dispatchers/SearchDispatcher');
 var SearchActions = require('../../actions/SearchActions');
@@ -150,10 +151,7 @@ var ResultPage = React.createClass({
 
         return (
             <div>
-                {results.loadingResults || results.loadingCounters
-                  ? <div className="loader"></div>
-                  : {}
-                }
+                <Loader loading={results.loadingResults || results.loadingCounters} />
                 <div className="grid">
                     <div className="grid__item two-twelfths">
                         <h1 className="page-title page-title_small">Search results</h1>
@@ -196,7 +194,7 @@ var ResultPage = React.createClass({
                                             placeholder=" "
                                             label=" "
                                         />
-                                    </span>                                   
+                                    </span>
                                 </div>
                                 {counters.totalCount
                                     ? <ResultHeaderPagination pages={pages}
@@ -243,7 +241,7 @@ var ResultPage = React.createClass({
                                         </a>
                                     </li>
                                     <li className="nav-block__item">
-                                        <a className="link link_second"> 
+                                        <a className="link link_second">
                                             <span className="icon icon_download"></span>Compact
                                         </a>
                                     </li>

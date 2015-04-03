@@ -12,6 +12,7 @@ var RevisionInfo = require('../revisionInfo');
 var ValidationResult = require('./validationResult');
 var LayoutSwitcher = require('../layoutSwitcher');
 var ViewsFactory = require('../viewsFactory');
+var Loader = require('../../common/loader.jsx');
 
 var Edit = React.createClass({
     mixins:[Flux.mixins.storeListener, Router.State, Router.Navigation],
@@ -61,6 +62,7 @@ var Edit = React.createClass({
     render: function() {
         var actions = this.props.actions;
         var assetStore = this.state.stores.asset;
+        var loading = this.state.stores.asset.loading;
         var asset = assetStore.asset;
         var taxonomyPath = assetStore.taxonomyPath;
         var screen = this.state.selectedScreen || {panels: []};
@@ -74,25 +76,29 @@ var Edit = React.createClass({
                 <RevisionInfo asset={asset} />
                 <div className="grid">
                     <div className="grid__item two-twelfths">
-                        <LayoutSwitcher 
-                            screens={asset.screens} 
+                        <LayoutSwitcher
+                            screens={asset.screens}
                             selectedScreen={this.state.selectedScreen}
                             onChange={this.onScreenChange} />
                         <TaxonomyPath taxonomyPath={taxonomyPath} />
                     </div>
                     <div className="grid__item ten-twelfths">
-                        {panels}
+                        <Loader loading={loading}>
+                            <div>
+                                {panels}
+                            </div>
+                        </Loader>
                         <ValidationResult validation={validationData} />
                         <div className="inputs-line inputs-line_width_full">
-                            <button 
+                            <button
                                 disabled={!this.state.isValid}
                                 className="btn btn_size_small">Save
                             </button>
-                            <button 
+                            <button
                                 disabled={!this.state.isValid}
                                 className="btn btn_type_second btn_size_small">Save and Add new
                             </button>
-                            <button 
+                            <button
                                 className="btn btn_type_second btn_size_small"
                                 onClick={this.handleUndo}>
                                 <i className="btn__icon btn__icon_undo"></i>Undo
