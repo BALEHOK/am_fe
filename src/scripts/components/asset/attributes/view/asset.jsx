@@ -8,7 +8,7 @@ var Router = require('react-router');
 var Attribute = React.createClass({
     render: function() {
         var params = this.context.router.getCurrentParams();
-        var relHref = this.context.router.context.router.makeHref('type-search', { assetTypeId: params.assetTypeId });
+        var relHref = this.context.router.makeHref('type-search', { assetTypeId: params.assetTypeId });
         var rel = this.props.params;
         return (
             <div className="asset-data__param">

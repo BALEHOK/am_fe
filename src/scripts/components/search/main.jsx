@@ -22,7 +22,7 @@ var SearchPage = React.createClass({
     },
 
     handleSimpleSearch: function(query) {
-        this.context.router.context.router.transitionTo('/search/result', {}, {'query' : query});
+        this.context.router.transitionTo('/search/result', {}, {'query' : query});
     },
     render: function() {
         return (

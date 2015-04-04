@@ -25,7 +25,7 @@ var LoginPage = React.createClass({
                 password: password
             })
             .done(function() {
-                self.context.router.context.router.transitionTo('/');
+                self.context.router.transitionTo('/');
             })
             .error(function(data) {
                 self.setState({ errorMessage: data.responseJSON.error_description });

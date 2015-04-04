@@ -51,7 +51,7 @@ var Edit = React.createClass({
 
     handleUndo: function () {
         var params = this.context.router.getCurrentParams();
-        this.context.router.context.router.transitionTo('asset-view', params);
+        this.context.router.transitionTo('asset-view', params);
     },
 
     onScreenChange: function(screen) {

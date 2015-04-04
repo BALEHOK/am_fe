@@ -13,7 +13,7 @@ var AssetToolbar = React.createClass({
     },
     handleTransition(route) {
         var params = this.context.router.getCurrentParams();
-        this.context.router.context.router.transitionTo(route, params);
+        this.context.router.transitionTo(route, params);
     },
     handleAssetDeletion() {
         this.props.onAssetDelete();
