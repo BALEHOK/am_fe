@@ -9,8 +9,8 @@ var Panel = require('./panel');
 
 var AssetViewType1 = React.createClass({
     render: function() {
-        var panels = this.props.screen.panels.map(function(el) {
-            return <Panel data={el} title={el.name}/>
+        var panels = this.props.screen.panels.map((el) => {
+            return <Panel data={el} title={el.name} dispatcher={this.props.dispatcher}/>
         });
 
         return (

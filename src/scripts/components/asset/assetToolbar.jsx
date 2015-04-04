@@ -6,15 +6,14 @@ var React = require('react/addons');
 var Router = require('react-router');
 
 var AssetToolbar = React.createClass({
-    mixins: [Router.State, Router.Navigation],
     getInitialState() {
         return {
             deleted: false
         };
     },
     handleTransition(route) {
-        var params = this.getParams();
-        this.transitionTo(route, params);
+        var params = this.context.router.getCurrentParams();
+        this.context.router.transitionTo(route, params);
     },
     handleAssetDeletion() {
         this.props.onAssetDelete();
@@ -29,17 +28,17 @@ var AssetToolbar = React.createClass({
         });
     },
     isEditButtonVisible() {
-        return !this.props.isHistory 
-            && !this.props.isDeleted 
+        return !this.props.isHistory
+            && !this.props.isDeleted
             && this.props.canEdit;
     },
     isDeleteButtonVisible() {
         return !this.props.isHistory
-            && !this.props.isDeleted 
+            && !this.props.isDeleted
             && this.props.canDelete;
     },
     isRestoreButtonVisible() {
-        return this.props.isDeleted 
+        return this.props.isDeleted
            // && this.state.deleted;
     },
     render: function() {
@@ -50,21 +49,21 @@ var AssetToolbar = React.createClass({
                 </button>
 
                 {this.props.isHistory
-                    ?   <button className="btn btn_type_second btn_size_small" 
+                    ?   <button className="btn btn_type_second btn_size_small"
                                 onClick={this.handleTransition.bind(this, 'asset-view')}>
                             <i className="btn__icon btn__icon_history"></i>Current version
                         </button>
-                    :   <button className="btn btn_type_second btn_size_small" 
+                    :   <button className="btn btn_type_second btn_size_small"
                                 onClick={this.handleTransition.bind(this, 'asset-history')}>
                             <i className="btn__icon btn__icon_history"></i>History
-                        </button> 
+                        </button>
                 }
 
                 {this.isEditButtonVisible()
-                    ? <button className="btn btn_type_second btn_size_small" 
+                    ? <button className="btn btn_type_second btn_size_small"
                              onClick={this.handleTransition.bind(this, 'asset-edit')}>
                          <i className="btn__icon btn__icon_edit"></i>Edit
-                      </button> 
+                      </button>
                     : ''
                 }
 
@@ -82,10 +81,10 @@ var AssetToolbar = React.createClass({
                 }
 
                 {this.isRestoreButtonVisible()
-                    ? <button className='btn btn_type_second btn_size_small pull-right' 
+                    ? <button className='btn btn_type_second btn_size_small pull-right'
                             onClick={this.handleAssetRestoration}>
                         <i className='btn__icon btn__icon_undo'></i>
-                        Restore 
+                        Restore
                       </button>
                     : ''
                 }

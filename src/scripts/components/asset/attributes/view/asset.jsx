@@ -6,11 +6,10 @@ var React = require('react');
 var Router = require('react-router');
 
 var Attribute = React.createClass({
-    mixins: [Router.State, Router.Navigation],
     render: function() {
-        var params = this.getParams();
-        var relHref = this.makeHref('type-search', { assetTypeId: params.assetTypeId });
-        var rel = this.props.params;                
+        var params = this.context.router.getCurrentParams();
+        var relHref = this.context.router.makeHref('type-search', { assetTypeId: params.assetTypeId });
+        var rel = this.props.params;
         return (
             <div className="asset-data__param">
                 <span className="asset-data__param-title">{rel.name}:</span>

@@ -9,6 +9,13 @@ module.exports = class SearchActions extends Actions {
     });
   }
 
+  fetchSearchCounters(results) {
+    var results = this._dispatcher.getStore('results').getState();
+    return this._dispatcher.getCounters(results.searchId,
+      results.filter.query,
+      results.filter.context);
+  }
+
   exportSearchResults(params) {
   	window.location = APIURL + `/v2/export?searchId=${params.searchId}&format=${params.format}`;
   }

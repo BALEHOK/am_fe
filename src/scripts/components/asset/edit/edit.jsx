@@ -12,13 +12,15 @@ var RevisionInfo = require('../revisionInfo');
 var ValidationResult = require('./validationResult');
 var LayoutSwitcher = require('../layoutSwitcher');
 var ViewsFactory = require('../viewsFactory');
+var Loader = require('../../common/loader.jsx');
+var LoaderMixin = require('../../../mixins/LoaderMixin');
 
 var Edit = React.createClass({
-    mixins:[Flux.mixins.storeListener, Router.State, Router.Navigation],
+    mixins:[Flux.mixins.storeListener, LoaderMixin],
 
     componentWillMount: function() {
-        var params = this.getParams();
-        this.props.actions.loadAsset(params);
+        var params = this.context.router.getCurrentParams();
+        this.waitFor(this.props.actions.loadAsset(params));
     },
 
     getInitialState: function() {
@@ -48,8 +50,8 @@ var Edit = React.createClass({
     },
 
     handleUndo: function () {
-        var params = this.getParams();
-        this.transitionTo('asset-view', params);
+        var params = this.context.router.getCurrentParams();
+        this.context.router.transitionTo('asset-view', params);
     },
 
     onScreenChange: function(screen) {
@@ -64,8 +66,8 @@ var Edit = React.createClass({
         var asset = assetStore.asset;
         var taxonomyPath = assetStore.taxonomyPath;
         var screen = this.state.selectedScreen || {panels: []};
-        var panels = screen.panels.map(function(el) {
-            return <Panel data={el} title={el.name} actions={actions} />
+        var panels = screen.panels.map((el) => {
+            return <Panel data={el} dispatcher={this.props.dispatcher} title={el.name} actions={actions} />
         });
         var validationData = this.state.stores.asset.validation;
         return (
@@ -74,25 +76,29 @@ var Edit = React.createClass({
                 <RevisionInfo asset={asset} />
                 <div className="grid">
                     <div className="grid__item two-twelfths">
-                        <LayoutSwitcher 
-                            screens={asset.screens} 
+                        <LayoutSwitcher
+                            screens={asset.screens}
                             selectedScreen={this.state.selectedScreen}
                             onChange={this.onScreenChange} />
                         <TaxonomyPath taxonomyPath={taxonomyPath} />
                     </div>
                     <div className="grid__item ten-twelfths">
-                        {panels}
+                        <Loader loading={this.state.loading}>
+                            <div>
+                                {panels}
+                            </div>
+                        </Loader>
                         <ValidationResult validation={validationData} />
                         <div className="inputs-line inputs-line_width_full">
-                            <button 
+                            <button
                                 disabled={!this.state.isValid}
                                 className="btn btn_size_small">Save
                             </button>
-                            <button 
+                            <button
                                 disabled={!this.state.isValid}
                                 className="btn btn_type_second btn_size_small">Save and Add new
                             </button>
-                            <button 
+                            <button
                                 className="btn btn_type_second btn_size_small"
                                 onClick={this.handleUndo}>
                                 <i className="btn__icon btn__icon_undo"></i>Undo

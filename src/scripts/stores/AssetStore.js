@@ -7,9 +7,9 @@ var AssetStore = Flux.createStore({
     name: undefined,
     revision: undefined,
     updatedAt: undefined,
-    screens: [],  
-    barcode: undefined,  
-  }, 
+    screens: [],
+    barcode: undefined,
+  },
 
   relatedAssets: [],
 
@@ -41,14 +41,14 @@ var AssetStore = Flux.createStore({
   },
 
   loadRelatedAssets(params) {
-    this.assetRepo.loadRelatedAssets(params).then((data) => {  
+    this.assetRepo.loadRelatedAssets(params).then((data) => {
       this.relatedAssets = data;
       this.emitChange();
     });
   },
 
   loadTaxonomyPath(assetTypeId) {
-    this.assetRepo.loadTaxonomyPath(assetTypeId).then((data) => {  
+    this.assetRepo.loadTaxonomyPath(assetTypeId).then((data) => {
       this.taxonomyPath = data;
       this.emitChange();
     });
@@ -88,12 +88,12 @@ var AssetStore = Flux.createStore({
   },
 
   getState() {
-    return  { 
+    return  {
       asset: this.asset,
       relatedAssets: this.relatedAssets,
       taxonomyPath: this.taxonomyPath,
       validation: this.validation,
-      isValid: this.getValidationState(),
+      isValid: this.getValidationState()
     };
   }
 });
