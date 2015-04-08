@@ -9,6 +9,9 @@ var Link = Router.Link;
 
 var SearchResultsHeader = React.createClass({
 	mixins:[Router.State, Flux.mixins.storeListener],
+    contextTypes: {
+        router: React.PropTypes.func
+    },
     componentWillMount: function() {
         var query = this.context.router.getCurrentQuery();
         if (query.searchId) {

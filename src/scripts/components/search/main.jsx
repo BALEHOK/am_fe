@@ -16,6 +16,10 @@ var SearchMainActions = require('../../actions/SearchMainActions');
 var SearchPage = React.createClass({
     mixins: [AuthenticatedRouteMixin],
 
+    contextTypes: {
+        router: React.PropTypes.func
+    },
+
     componentWillMount: function() {
         this.dispatcher = SearchDispatcher;
         this.actions = new SearchMainActions(this.dispatcher);

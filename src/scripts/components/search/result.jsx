@@ -17,6 +17,9 @@ var Flux = require('delorean').Flux;
 
 var ResultPage = React.createClass({
     mixins: [Router.Navigation, LoaderMixin, Flux.mixins.storeListener],
+    contextTypes: {
+        router: React.PropTypes.func
+    },
     sortItems: [
         { name: "Rank", id: 0 },
         { name: "Date", id: 1 },
