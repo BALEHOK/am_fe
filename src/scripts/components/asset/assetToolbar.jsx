@@ -6,6 +6,9 @@ var React = require('react/addons');
 var Router = require('react-router');
 
 var AssetToolbar = React.createClass({
+    contextTypes: {
+        router: React.PropTypes.func
+    },
     getInitialState() {
         return {
             deleted: false

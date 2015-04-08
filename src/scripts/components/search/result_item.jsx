@@ -6,6 +6,9 @@ var React = require('react/addons');
 var Router = require('react-router');
 
 var ResultItem = React.createClass({
+    contextTypes: {
+        router: React.PropTypes.func
+    },
     render: function() {
         var query = {searchId: this.props.searchId};
         if (this.props.isHistory)

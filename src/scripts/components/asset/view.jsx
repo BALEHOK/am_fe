@@ -20,6 +20,10 @@ var LoaderMixin = require('../../mixins/LoaderMixin');
 var AssetView = React.createClass({
     mixins:[Router.State, Flux.mixins.storeListener, LoaderMixin],
 
+    contextTypes: {
+        router: React.PropTypes.func
+    },
+
     getInitialState: function() {
         return {
             selectedScreen: undefined

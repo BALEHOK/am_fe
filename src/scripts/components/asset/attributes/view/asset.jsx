@@ -6,6 +6,9 @@ var React = require('react');
 var Router = require('react-router');
 
 var Attribute = React.createClass({
+    contextTypes: {
+        router: React.PropTypes.func
+    },
     render: function() {
         var params = this.context.router.getCurrentParams();
         var relHref = this.context.router.makeHref('type-search', { assetTypeId: params.assetTypeId });

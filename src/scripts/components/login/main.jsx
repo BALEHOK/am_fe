@@ -6,6 +6,9 @@ var React = require('react');
 var Router = require('react-router');
 
 var LoginPage = React.createClass({
+    contextTypes: {
+        router: React.PropTypes.func
+    },
     statics: {
         attemptedTransition: null
     },
@@ -32,6 +35,7 @@ var LoginPage = React.createClass({
             });
     },
     render: function() {
+        console.log(this.context)
         return (
             <form className="form-horizontal">
                 {this.state.errorMessage}

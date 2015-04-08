@@ -18,6 +18,10 @@ var LoaderMixin = require('../../../mixins/LoaderMixin');
 var Edit = React.createClass({
     mixins:[Flux.mixins.storeListener, LoaderMixin],
 
+    contextTypes: {
+        router: React.PropTypes.func
+    },
+
     componentWillMount: function() {
         var params = this.context.router.getCurrentParams();
         this.waitFor(this.props.actions.loadAsset(params));

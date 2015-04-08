@@ -15,6 +15,10 @@ var AssetHistoryLayout = React.createClass({
 
     mixins:[Router.State, Flux.mixins.storeListener, LoaderMixin],
 
+    contextTypes: {
+        router: React.PropTypes.func
+    },
+
     componentDidMount() {
         var params = this.context.router.getCurrentParams();
         var hp = this.props.actions.loadHistory(params);
