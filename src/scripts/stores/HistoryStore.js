@@ -7,6 +7,7 @@ var HistoryStore = Flux.createStore({
         revisions: []
     },
 
+
     actions: {
         'history:load': 'loadHistory'
     },

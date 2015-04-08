@@ -11,10 +11,11 @@ var SearchDispatcher = Flux.createDispatcher({
     return this.dispatch('search:results', filters);
   },
 
-  getCounters(searchId, query) {
+  getCounters(searchId, query, context) {
     return this.dispatch('search:counters', {
       searchId: searchId,
-      query: query
+      query: query,
+      context: context
     });
   },
 

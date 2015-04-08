@@ -11,7 +11,7 @@ var DefaultRoute = Router.DefaultRoute;
 // Pages
 var Layout = require('./components/common/layout.jsx');
 var SearchPage = require('./components/search/main.jsx');
-var ResultPage = require('./components/search/result.jsx');
+var ResultPage = require('./components/search/results_handler.jsx');
 var LoginPage = require('./components/login/main.jsx');
 var AssetViewPage = require('./components/asset/viewHandler.jsx');
 var AssetEditPage = require('./components/asset/edit/editHandler.jsx');

@@ -47,7 +47,7 @@ var EditableAttribute = React.createClass({
             <div className="asset-data__param">
                 <span className="asset-data__param-title">{this.props.params.name}:</span>
                 <label className="input-txt input-txt_size_small">
-                    <Input 
+                    <Input
                         type="text"
                         className="input-txt__field"
                         value={this.state.value}

@@ -14,7 +14,7 @@ var SearchDispatcher = require('../../dispatchers/SearchDispatcher');
 var SearchMainActions = require('../../actions/SearchMainActions');
 
 var SearchPage = React.createClass({
-    mixins: [AuthenticatedRouteMixin, Router.Navigation],
+    mixins: [AuthenticatedRouteMixin],
 
     componentWillMount: function() {
         this.dispatcher = SearchDispatcher;
@@ -22,7 +22,7 @@ var SearchPage = React.createClass({
     },
 
     handleSimpleSearch: function(query) {
-        this.transitionTo('/search/result', {}, {'query' : query});
+        this.context.router.transitionTo('/search/result', {}, {'query' : query});
     },
     render: function() {
         return (
@@ -30,7 +30,7 @@ var SearchPage = React.createClass({
                 <h1 className="page-title">Search</h1>
                 <TabbedArea defaultActiveKey={1} animation={false}>
                     <TabPane eventKey={1} tab="Simple">
-                        <SearchSimpleForm actions={this.actions} dispatcher={this.dispatcher} />
+                        <SearchSimpleForm changeFilter={this.actions.changeSearchFilter.bind(this.actions)} dispatcher={this.dispatcher} />
                     </TabPane>
                     <TabPane eventKey={2} tab="By type">
                         New version of Type Search is under development.

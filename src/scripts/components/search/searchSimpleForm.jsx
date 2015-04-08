@@ -33,7 +33,7 @@ var SearchSimpleForm = React.createClass({
             this.doQuery();
     },
     doQuery: function() {
-        this.props.actions.changeSearchFilter({
+        this.props.changeFilter({
             searchId: undefined,
             query: this.state.query,
             page: 1,
