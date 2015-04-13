@@ -24,6 +24,10 @@ var Application = (function (_super) {
         this.config = config;
         this.tokenStore = tokenStore;
 
+        var userData = localStorage.getItem('user');
+        if (userData)
+            this.user = JSON.parse(userData);
+
         $.ajaxPrefilter(function (options) {
             options.url = config.apiUrl + options.url;
             options.crossDomain = true;
@@ -44,10 +48,13 @@ var Application = (function (_super) {
                 lastLogin: response.lastLogin,
                 email: response.email
             });
+            localStorage.setItem('user', JSON.stringify(self.user));
         });
     }
 
     Application.prototype.logout = function () {
+        this.user = null;
+        localStorage.removeItem('user');
         this.tokenStore.removeToken();
     };
     return Application;

@@ -31,7 +31,6 @@ var LoginPage = React.createClass({
                 self.context.router.transitionTo('/');
             })
             .error(function(data) {
-                console.log(data);
                 self.setState({ errorMessage: data.responseJSON.error_description });
             });
     },

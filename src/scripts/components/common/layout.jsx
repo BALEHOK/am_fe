@@ -10,14 +10,15 @@ var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
 
 var Layout = React.createClass({
-    mixins: [Router.Navigation],
+    contextTypes: {
+        router: React.PropTypes.func
+    },
     handleLogout: function(){
-        this.props.model.logout();
-        location.href = '/logout';
+        this.props.app.logout();
+        this.context.router.transitionTo('login');
     },
     render: function() {
-        var app = this.props.model;
-        console.log(app.user)
+        var app = this.props.app;        
         return (
             <div className="page-wrapper">
                 <header className="page-header">
