@@ -5,7 +5,6 @@
 var React = require('react');
 
 var UserNav = React.createClass({
-    mixins: [Backbone.React.Component.mixin],
     render: function() {              
         return (
             <div className="user-nav">

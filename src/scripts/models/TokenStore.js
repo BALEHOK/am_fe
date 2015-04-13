@@ -10,6 +10,10 @@
         document.cookie = this.tokenCookieName + '=' + token;
     };
 
+    CookieTokenStore.prototype.removeToken = function () {
+        document.cookie = this.tokenCookieName + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    };
+
     CookieTokenStore.prototype.getCookie = function (name) {
         var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
         return matches ? decodeURIComponent(matches[1]) : undefined;
@@ -27,6 +31,9 @@ var LocalStorageTokenStore = (function () {
     };
     LocalStorageTokenStore.prototype.setToken = function (token) {
         localStorage.setItem(this.tokenName, token);
+    };
+    LocalStorageTokenStore.prototype.removeToken = function () {
+        localStorage.removeItem(this.tokenName);
     };
     return LocalStorageTokenStore;
 })();
