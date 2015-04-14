@@ -22,7 +22,7 @@ var ListPicker = React.createClass({
         var items = [];
         var value = null;
         var attributeUid = this.props.params.uid;
-        var selectId = "attribute-asset-" + attributeUid;
+        var selectId = "attribute-dynlist-" + attributeUid;
         var listStore = this.state.stores.list.dynlists[attributeUid];
         if (listStore) {
             items = listStore.items || [];
