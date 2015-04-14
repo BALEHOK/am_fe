@@ -25,10 +25,10 @@ var EditableAttribute = React.createClass({
         this.validate({id: this.props.params.id, value: this.props.params.value});
     },
     render: function() {
-        var datatype = 'text';
-        if (this.props.params.datatype == 'text')
-            datatype = 'textarea';
-
+        var datatype =  this.props.params.datatype == 'text'
+            ? 'textarea'
+            : 'text';
+            
         var cx = React.addons.classSet;
         var classes = cx('input-txt', 'input-txt_' + datatype);
 

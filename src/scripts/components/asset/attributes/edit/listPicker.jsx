@@ -10,17 +10,18 @@ var ValidationMixin = require('../../../../mixins/ValidationMixin');
 
 var ListPicker = React.createClass({
     mixins:[Flux.mixins.storeListener, ValidationMixin],
+
     componentWillMount: function() {
         this.setupValidation(this.props.actions);
     },
-    componentWillUnmount: function() {
-    },   
-    onChange: function(items) {
-        // TODO: save value
+
+    onChange: function(values) {
+        this.props.params.value = _.pluck(values, 'uid').join(',');
     },
+
     render: function() {      
         var items = [];
-        var value = null;
+        var value = this.props.params.value.split(',');
         var attributeUid = this.props.params.uid;
         var selectId = "attribute-dynlist-" + attributeUid;
         var listStore = this.state.stores.list.dynlists[attributeUid];
