@@ -63,9 +63,9 @@ var AssetPicker = React.createClass({
                         label=" "
                         className="select_size_small" />
                 
-                    <button className="btn btn_size_small btn_type_second">
+                    {/*<button className="btn btn_size_small btn_type_second">
                         <i className="btn__icon btn__icon_plus_circle"></i>
-                    </button>
+                    </button>*/}
                 </div>
             </div>
         );

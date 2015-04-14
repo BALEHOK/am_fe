@@ -9,8 +9,11 @@ var AttributesFactory = require('../attributesFactory');
 var Panel = React.createClass({
     render: function() {
         var actions = this.props.actions;
-        var attrs = this.props.data.attributes.map((attr) => {
-           return AttributesFactory.getEditAttribute(attr.datatype, attr, actions, this.props.dispatcher);
+        var attrs = this.props.data.attributes.map((attr) => {  
+            var validationData = this.props.validation[attr.id];          
+            return attr.editable 
+                ? AttributesFactory.getEditAttribute(attr.datatype, attr, actions, this.props.dispatcher, validationData)
+                : AttributesFactory.getViewAttribute(attr.datatype, attr, this.props.dispatcher);
         });
         return (
                 <div className="asset-data asset-data_aside_true">

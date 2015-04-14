@@ -35,7 +35,6 @@ var LoginPage = React.createClass({
             });
     },
     render: function() {
-        console.log(this.context)
         return (
             <form className="form-horizontal">
                 {this.state.errorMessage}

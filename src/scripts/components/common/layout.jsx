@@ -10,13 +10,15 @@ var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
 
 var Layout = React.createClass({
-    mixins: [Router.Navigation],
+    contextTypes: {
+        router: React.PropTypes.func
+    },
     handleLogout: function(){
-        this.props.model.logout();
-        location.href = '/logout';
+        this.props.app.logout();
+        this.context.router.transitionTo('login');
     },
     render: function() {
-        var app = this.props.model;
+        var app = this.props.app;        
         return (
             <div className="page-wrapper">
                 <header className="page-header">
@@ -25,7 +27,7 @@ var Layout = React.createClass({
                             <a className="page-header__logo hide-text" href="/">ACV CSC METEA</a>
                             <span className="page-header__banner hide-text">Asset Management</span>
                             <div className="page-header__user-nav pull-right">
-                                {app.Session.user ? <UserNav model={app.Session} onLogout={this.handleLogout} /> : <div />}
+                                {app.user ? <UserNav user={app.user} onLogout={this.handleLogout} /> : <div />}
                             </div>
                         </div>
                     </div>

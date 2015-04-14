@@ -23,7 +23,7 @@ var app = new Application(config, authService, tokenStore);
 window.app = app;
 
 router.run(function (Handler, state) {
-  React.render(<Handler model={app}/>, document.querySelector('.page-container'));
+  React.render(<Handler app={app}/>, document.querySelector('.page-container'));
 });
 // enable react devtools
 typeof window !== "undefined" && (window.React = React)

@@ -4,35 +4,17 @@
 
 var React = require('react');
 var Input = require('react-bootstrap').Input;
-var Flux = require('delorean').Flux;
+var ValidationMixin = require('../../../../mixins/ValidationMixin');
 
 var EditableAttribute = React.createClass({
-    mixins: [Flux.mixins.storeListener],
-    componentWillMount: function () {
-        var self = this;
-        this.delayedValidation = _.debounce(() => {
-            self.props.actions.validateAttribute({
-                attributeId: self.props.params.id,
-                value: self.props.params.value
-            });
-        }, 500);
+    mixins: [ValidationMixin],
+    componentWillMount: function() {
+        this.setupValidation(this.props.actions);
     },
     getInitialState: function() {
         return {
             value: this.props.params.value,
-            hasFeedback: false,
-            validationState: undefined,
         };
-    },
-    storeDidChange: function (storeName) {
-        if (storeName != 'asset') return;
-        var valResult = this.state.stores.asset.validation[this.props.params.id];
-        if (valResult) {
-            this.setState({
-                hasFeedback: true,
-                validationState:  valResult.isValid ? 'success' : 'error',
-            });
-        }
     },
     valueChanged: function(event) {
         var value = event.target.value;
@@ -40,15 +22,22 @@ var EditableAttribute = React.createClass({
             value: value
         });
         this.props.params.value = value;
-        this.delayedValidation();
+        this.validate({id: this.props.params.id, value: this.props.params.value});
     },
     render: function() {
+        var datatype =  this.props.params.datatype == 'text'
+            ? 'textarea'
+            : 'text';
+            
+        var cx = React.addons.classSet;
+        var classes = cx('input-txt', 'input-txt_' + datatype);
+
         return (
             <div className="asset-data__param">
                 <span className="asset-data__param-title">{this.props.params.name}:</span>
-                <label className="input-txt input-txt_size_small">
+                <label className={classes}>
                     <Input
-                        type="text"
+                        type={datatype}
                         className="input-txt__field"
                         value={this.state.value}
                         bsStyle={this.state.validationState}

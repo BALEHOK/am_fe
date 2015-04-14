@@ -4,16 +4,14 @@
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var session = require('./Session');
-var user = require('./User');
 
+var user = require('./User');
 var exceptionsModule = require('../exceptions');
 
 var Application = (function (_super) {
     __extends(Application, _super);
     function Application(config, authService, tokenStore) {
         _super.call(this);
-        this.session = new session.SessionModel();
         var self = this;
         if (config == null)
             throw new exceptionsModule.ArgumentNullException('config is null');
@@ -25,6 +23,10 @@ var Application = (function (_super) {
         this.authService = authService;
         this.config = config;
         this.tokenStore = tokenStore;
+
+        var userData = localStorage.getItem('user');
+        if (userData)
+            this.user = JSON.parse(userData);
 
         $.ajaxPrefilter(function (options) {
             options.url = config.apiUrl + options.url;
@@ -41,23 +43,19 @@ var Application = (function (_super) {
         this.authService.OnLogin.on(function (response) {
             if (response.access_token)
                 self.tokenStore.setToken(response.access_token);
-            self.session.user = new user.UserModel({
+            self.user = new user.UserModel({
                 userName: response.userName,
                 lastLogin: response.lastLogin,
                 email: response.email
             });
+            localStorage.setItem('user', JSON.stringify(self.user));
         });
     }
-    Object.defineProperty(Application.prototype, "Session", {
-        get: function () {
-            return this.session;
-        },
-        enumerable: true,
-        configurable: true
-    });
 
     Application.prototype.logout = function () {
-        this.tokenStore.setToken(null);
+        this.user = null;
+        localStorage.removeItem('user');
+        this.tokenStore.removeToken();
     };
     return Application;
 })(Backbone.Model);

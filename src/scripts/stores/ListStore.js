@@ -21,23 +21,24 @@ var ListStore = Flux.createStore({
 
   saveCurrentValues(assets) {
     assets.forEach((el) => {
-      this.lists.assets[el.attributeUid] = {
-        values: el.assets,
-        items: [],
-        rowStart: 0,
-        rowsNumber: 20
-      };
+      if (el.datatype.indexOf('asset') == 0) {
+        this.lists.assets[el.attributeUid] = {
+          values: el.assets,
+          items: [],
+          rowStart: 0,
+          rowsNumber: 20
+        };
+      } 
+      else if (el.datatype.indexOf('dynlist') == 0) {
+        this.lists.dynlists[el.attributeUid] = el.list;
+      }  
     });
     this.emitChange();
   },
 
   loadDynamicList(params) {
     var uid = params.attributeUid;
-    this.listRepo.loadDynamicList({
-      assetTypeUid: params.assetTypeUid,
-      assetUid: params.assetUid,
-      attributeUid: params.attributeUid,
-    }).then((data) => {
+    this.listRepo.loadDynamicList(params.dynListUid).then((data) => {
       this.lists.dynlists[uid] = data;
       this.emitChange();
     });

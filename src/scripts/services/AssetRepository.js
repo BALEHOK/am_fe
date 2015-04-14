@@ -65,6 +65,17 @@ class AssetRepository {
         });
     }
 
+    saveAsset(asset) {
+        var url = `/api/assettype/${asset.assetTypeId}/asset/${asset.id}`;
+        return $.ajax({
+            type: 'POST',
+            url: url,
+            data: JSON.stringify(asset),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+        });
+    }
+
     validateAttribute(params) {
         var url = `/api/validation/attribute/${params.attributeId}/?value=${params.value}`;
         return $.ajax({

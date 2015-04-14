@@ -6,52 +6,46 @@ var React = require('react');
 var Router = require('react-router');
 var Flux = require('delorean').Flux;
 var ReactSelectize = require('../../../common/react-selectize');
+var ValidationMixin = require('../../../../mixins/ValidationMixin');
 
 var ListPicker = React.createClass({
-    mixins:[Flux.mixins.storeListener, Router.State],
+    mixins:[Flux.mixins.storeListener, ValidationMixin],
+
     componentWillMount: function() {
+        this.setupValidation(this.props.actions);
     },
-    componentWillUnmount: function() {
-    },   
-    onChange: function(items) {
-        var values = [parseInt(items)];
-        if (this.props.isMultiple) {
-            values = [];
-            if (items) {
-                items.map(function(item){
-                    values.push(parseInt(item));
-                });
-            }            
-        }   
-        // TODO: save value
+
+    onChange: function(values) {
+        this.props.params.value = _.pluck(values, 'uid').join(',');
     },
-    render: function() {        
-        var selectId = "attribute-list-" + this.props.params.uid;
-        var lists = this.state.stores.list.dynlists;        
-        var list = lists[this.props.params.uid];        
-        var items = list != null 
-            ? list.items
-            : [];  
-        var value = _.chain(items)
-                     .where({selected: true})
-                     .pluck('uid')
-                     .value();           
+
+    render: function() {      
+        var items = [];
+        var value = this.props.params.value.split(',');
+        var attributeUid = this.props.params.uid;
+        var selectId = "attribute-dynlist-" + attributeUid;
+        var listStore = this.state.stores.list.dynlists[attributeUid];
+        if (listStore) {
+            items = listStore.items || [];
+        }
+
+        var cx = React.addons.classSet;
+        var classes = cx('asset-data__param', 'has-' + this.state.validationState);
+
         return (
-           <div className="asset-data__param">
+           <div className={classes}>
                 <span className="asset-data__param-title">{this.props.params.name}:</span>
-                <div className="input-group">
-                    <ReactSelectize   
-                        multiple={this.props.isMultiple} 
-                        selectId={selectId} 
-                        valueField="uid"
-                        labelField="value" 
-                        items={items} 
-                        onChange={this.onChange}    
-                        value={value}                             
-                        placeholder=" "
-                        label=" "
-                        className="select_size_small" /> 
-                </div>
+                <ReactSelectize   
+                    multiple={this.props.isMultiple} 
+                    selectId={selectId} 
+                    valueField="uid"
+                    labelField="value" 
+                    items={items} 
+                    onChange={this.onChange}    
+                    value={value}                             
+                    placeholder=" "
+                    label=" "
+                    className="select_size_small" /> 
             </div>
         );
     }
