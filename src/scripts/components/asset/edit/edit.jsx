@@ -75,11 +75,15 @@ var Edit = React.createClass({
         var assetStore = this.state.stores.asset;
         var asset = assetStore.asset;
         var taxonomyPath = assetStore.taxonomyPath;
+        var validationData = assetStore.validation;
         var screen = this.state.selectedScreen || {panels: []};
         var panels = screen.panels.map((el) => {
-            return <Panel data={el} dispatcher={this.props.dispatcher} title={el.name} actions={actions} />
-        });
-        var validationData = assetStore.validation;
+            return <Panel data={el} 
+                          dispatcher={this.props.dispatcher} 
+                          title={el.name} 
+                          actions={actions}
+                          validation={validationData} />
+        });        
         return (
             <div>
                 <h1 className="page-title">Edit: <span className="page-title__param">{asset.name}</span></h1>
