@@ -59,7 +59,6 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
   rebuildSelectize: function () {
     var $select = null,
       selectControl = this.getSelectizeControl();
-
     if(selectControl && this.props.items) {
       // rebuild
       selectControl.off();
@@ -71,7 +70,7 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
       $select = $("#" + this.props.selectId).selectize(this.buildOptions());
       selectControl = $select[0].selectize;
     }
-
+    selectControl.$control.addClass('form-control');
     var initValue = this.props.value;
     if (initValue) {
       selectControl.setValue(initValue);

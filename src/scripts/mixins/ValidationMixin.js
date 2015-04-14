@@ -27,6 +27,7 @@ var ValidationMixin = {
         if (valResult) {
             this.setState({
                 hasFeedback: true,
+                isValid: valResult.isValid,
                 validationState:  valResult.isValid ? 'success' : 'error',
             });
         }
