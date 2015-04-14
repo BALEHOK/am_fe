@@ -14,28 +14,17 @@ var ListPicker = React.createClass({
     componentWillUnmount: function() {
     },   
     onChange: function(items) {
-        var values = [parseInt(items)];
-        if (this.props.isMultiple) {
-            values = [];
-            if (items) {
-                items.map(function(item){
-                    values.push(parseInt(item));
-                });
-            }            
-        }   
         // TODO: save value
     },
-    render: function() {        
-        var selectId = "attribute-list-" + this.props.params.uid;
-        var lists = this.state.stores.list.dynlists;        
-        var list = lists[this.props.params.uid];        
-        var items = list != null 
-            ? list.items
-            : [];  
-        var value = _.chain(items)
-                     .where({selected: true})
-                     .pluck('uid')
-                     .value();           
+    render: function() {      
+        var items = [];
+        var value = null;
+        var attributeUid = this.props.params.uid;
+        var selectId = "attribute-asset-" + attributeUid;
+        var listStore = this.state.stores.list.dynlists[attributeUid];
+        if (listStore) {
+            items = listStore.items || [];
+        }
         return (
            <div className="asset-data__param">
                 <span className="asset-data__param-title">{this.props.params.name}:</span>

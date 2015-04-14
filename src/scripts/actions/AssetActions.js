@@ -11,7 +11,7 @@ class AssetActions extends Actions {
         this._dispatcher.loadBarcode(asset.barcode);
       return this._dispatcher.loadRelatedAssets(params);
     }).then(() => {
-      var assets = this._dispatcher.getStore('asset').getState().relatedAssets;
+      var assets = this._dispatcher.getStore('asset').getState().relatedAssets;      
       this._dispatcher.setListValues(assets);
     });
   }
