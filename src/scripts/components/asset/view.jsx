@@ -118,6 +118,7 @@ var AssetView = React.createClass({
                                     {assetLinks}
                                 </div>
                             </nav>
+                            {/*
                             <nav className="nav-block">
                                 <span className="nav-block__title nav-block__title_type_second">Search result report</span>
                                 <ul className="nav-block__list">
@@ -146,6 +147,7 @@ var AssetView = React.createClass({
                                     </li>
                                 </ul>
                             </nav>
+                            */}
                         </div>
                         <div className="grid__item ten-twelfths">
                             <ViewComponent

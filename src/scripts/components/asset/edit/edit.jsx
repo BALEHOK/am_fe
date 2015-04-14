@@ -65,7 +65,9 @@ var Edit = React.createClass({
     },
 
     handleSave: function() {
-        this.props.actions.saveAsset(this.state.stores.asset.asset);
+        this.props.actions.saveAsset(this.state.stores.asset.asset).then(() =>{
+            console.log('save done');
+        });
     },
 
     render: function() {
