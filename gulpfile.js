@@ -41,8 +41,7 @@ gulp.task('webpack:build', function (callback) {
     var myConfig = Object.create(webpackConfig);
     return gulp.src('webpack_entries/*.js')
         .pipe(gwebpack(myConfig))
-        .pipe(gulp.dest(jsDest))
-        .pipe(notify({ message: 'Webpack build task complete' }));
+        .pipe(gulp.dest(jsDest));
 });
 gulp.task('css:fonts', function () {
     return gulp.src([fontsCss])
@@ -55,8 +54,7 @@ gulp.task('css:fonts', function () {
         .on('error', handleError)
         .pipe(gulp.dest(cssDest))
         .on('error', handleError)
-        .pipe(gulp.dest(cssDest))
-        .pipe(notify({ message: 'Fonts:css task complete' }));
+        .pipe(gulp.dest(cssDest));
 });
 
 gulp.task('css', function () {
@@ -71,8 +69,7 @@ gulp.task('css', function () {
         .pipe(rename({ suffix: '.min' }))
         .pipe(minifycss())
         .on('error', handleError)
-        .pipe(gulp.dest(cssDest))
-        .pipe(notify({ message: 'Styles task complete' }));
+        .pipe(gulp.dest(cssDest));
 });
 
 gulp.task('views', function() {
