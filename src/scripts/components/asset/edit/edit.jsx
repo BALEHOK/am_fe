@@ -71,7 +71,7 @@ var Edit = React.createClass({
         var saveRequest = this.props.actions.saveAsset(model);
         saveRequest.then((data) => {
             console.log(data)
-            self.context.router.transitionTo('asset-view', params);
+            //self.context.router.transitionTo('asset-view', params);
         });
         this.waitFor(saveRequest);
     },
