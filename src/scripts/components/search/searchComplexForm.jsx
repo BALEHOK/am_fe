@@ -7,8 +7,7 @@
 
 var React = require('react');
 var ReactSelectize = require('../common/react-selectize');
-var TabbedArea = require('react-bootstrap/TabbedArea');
-var TabPane = require('react-bootstrap/TabPane');
+var Tabs = require('react-simpletabs');
 
 var SearchSelectValues = {
     getSelectList: function () {
@@ -200,8 +199,8 @@ var SearchComplexForm = React.createClass({
 
                             </div>
                             <div className="table-search__row-item table-search__row-item_type_inner">
-                                <TabbedArea defaultActiveKey={2} animation={false}>
-                                    <TabPane key={1} tab="Simple condition">
+                                <Tabs defaultActiveKey={2} animation={false}>
+                                    <Tabs.Panel key={1} tab="Simple condition">
                                         <div className="search-condition">
                                             <div className="search-condition__content">
                                                 <div className="search-condition__row">
@@ -211,8 +210,8 @@ var SearchComplexForm = React.createClass({
                                                 </div>
                                             </div>
                                         </div>
-                                    </TabPane>
-                                    <TabPane key={2} tab="Advanced condition">
+                                    </Tabs.Panel>
+                                    <Tabs.Panel key={2} tab="Advanced condition">
                                         <div className="search-condition">
                                             <div className="search-condition__content">
                                                 <div className="search-condition__row">
@@ -275,8 +274,8 @@ var SearchComplexForm = React.createClass({
                                             </div>
                                             <span className="search-condition__add-row">Add a new row</span>
                                         </div>
-                                    </TabPane>
-                                </TabbedArea>
+                                    </Tabs.Panel>
+                                </Tabs>
                             </div>
                         </div>
                     </div>

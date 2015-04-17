@@ -3,7 +3,7 @@
  */
 
 var React = require('react');
-var Input = require('react-bootstrap').Input;
+//var Input = require('react-bootstrap').Input;
 var ValidationMixin = require('../../../../mixins/ValidationMixin');
 
 var EditableAttribute = React.createClass({
@@ -36,6 +36,7 @@ var EditableAttribute = React.createClass({
             <div className="asset-data__param">
                 <span className="asset-data__param-title">{this.props.params.name}:</span>
                 <label className={classes}>
+                {/*
                     <Input
                         type={datatype}
                         className="input-txt__field"
@@ -43,6 +44,7 @@ var EditableAttribute = React.createClass({
                         bsStyle={this.state.validationState}
                         hasFeedback={this.state.hasFeedback}
                         onChange={this.valueChanged} />
+                */}
                 </label>
             </div>
         );
