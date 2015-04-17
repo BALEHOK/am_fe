@@ -65,9 +65,15 @@ var Edit = React.createClass({
     },
 
     handleSave: function() {
-        this.props.actions.saveAsset(this.state.stores.asset.asset).then(() =>{
-            console.log('save done');
+        var self = this;
+        var model = this.state.stores.asset.asset;
+        var params = this.context.router.getCurrentParams();
+        var saveRequest = this.props.actions.saveAsset(model);
+        saveRequest.then((data) => {
+            console.log(data)
+            self.context.router.transitionTo('asset-view', params);
         });
+        this.waitFor(saveRequest);
     },
 
     render: function() {
@@ -105,7 +111,7 @@ var Edit = React.createClass({
                         <ValidationResult validation={validationData} />
                         <div className="inputs-line inputs-line_width_full">
                             <button
-                                disabled={!this.state.isValid}
+                                disabled={!this.state.isValid || this.state.loading}
                                 onClick={this.handleSave}
                                 className="btn btn_size_small">Save
                             </button>
@@ -114,6 +120,7 @@ var Edit = React.createClass({
                                 className="btn btn_type_second btn_size_small">Save and Add new
                             </button>*/}
                             <button
+                                disabled={this.state.loading}
                                 className="btn btn_type_second btn_size_small"
                                 onClick={this.handleUndo}>
                                 <i className="btn__icon btn__icon_undo"></i>Undo
