@@ -20,7 +20,6 @@
     "keymirror": "^0.1.0",
     "moment": "^2.8.3",
     "react": "0.13.x",
-    "react-bootstrap": "^0.13.0",
     "react-google-maps": "^0.2.4",
     "react-router": "^0.13.2",
     "underscore": "^1.7.0",
