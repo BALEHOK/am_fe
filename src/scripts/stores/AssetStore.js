@@ -92,7 +92,7 @@ var AssetStore = Flux.createStore({
     var self = this;
     var request = this.assetRepo.saveAsset(asset);
     request
-      .done((data) => {
+      .then(() => {
         self.emitChange();
       })
       .fail((jqXHR, textStatus) => {
