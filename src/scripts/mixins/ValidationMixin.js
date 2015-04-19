@@ -19,6 +19,7 @@ var ValidationMixin = {
         return {
             hasFeedback: false,
             validationState: undefined,
+            isValid: undefined
         };
     },
 

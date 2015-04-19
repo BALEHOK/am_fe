@@ -2,7 +2,6 @@
 var React = require('react');
 
 var AttributesFactory = require('../../attributesFactory');
-var TabPane = require('react-bootstrap/TabPane');
 
 var Panel = React.createClass({
     render: function() {

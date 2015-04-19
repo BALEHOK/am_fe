@@ -4,8 +4,7 @@
 
 var React = require('react');
 var Panel = require('./panel');
-var TabbedArea = require('react-bootstrap/TabbedArea');
-var TabPane = require('react-bootstrap/TabPane');
+var Tabs = require('react-simpletabs');
 
 
 var AssetViewType3 = React.createClass({
@@ -17,17 +16,17 @@ var AssetViewType3 = React.createClass({
         var panels = this.props.screen.panels.map((el) => {
             i++;
             return (
-                <TabPane eventKey={i} tab={el.name}>
+                <Tabs.Panel eventKey={i} tab={el.name}>
                     <Panel data={el} title={el.name} dispatcher={this.props.dispatcher}/>
-                </TabPane>);
+                </Tabs.Panel>);
         });
 
         return (
             <div className="asset-data">
                 <div className="asset-data__content">
-                    <TabbedArea className="asset-data__tabs" defaultActiveKey={1} animation={false}>
+                    <Tabs className="asset-data__tabs" defaultActiveKey={1} animation={false}>
                         {panels}
-                    </TabbedArea>
+                    </Tabs>
                 </div>
             </div>
 
