@@ -19,6 +19,7 @@ var LoginPage = React.createClass({
         'click button' : 'submit'
     },
     handleSubmit : function(e){
+        var nextPath = this.context.router.getCurrentQuery().nextPath;
         var login = this.refs.login.getDOMNode().value.trim();
         var password = this.refs.password.getDOMNode().value.trim();
         var authService = this.props.app.authService;
@@ -28,7 +29,11 @@ var LoginPage = React.createClass({
                 password: password
             })
             .done(function() {
-                self.context.router.transitionTo('/');
+                if (nextPath) {
+                    self.context.router.replaceWith(nextPath);
+                } else {
+                    self.context.router.replaceWith('/');
+                }
             })
             .error(function(data) {
                 self.setState({ errorMessage: data.responseJSON.error_description });

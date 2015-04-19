@@ -1,13 +1,12 @@
 ﻿var LoginPage = require('../components/login/main.jsx');
 var AuthService = require('../services/AuthService.js');
 
-// https://github.com/rackt/react-router/blob/master/docs/api/components/RouteHandler.md#static-lifecycle-methods
 var AuthenticatedRouteMixin = {
     statics: {
         willTransitionTo: function (transition, params, query) {
             if (!window.app.tokenStore.getToken()) {
                 if (location.href.indexOf('localhost') > 0)
-                    transition.redirect('login');
+                    transition.redirect('login', {}, {'nextPath' : transition.path});
                 else
                     location.href = '/login';
             }
