@@ -7,7 +7,6 @@ install node.js
 
 1. npm install -g gulp
 2. npm install -g bower
-3. npm install -g tsd
 
 ### Install dependencies
 ### Commands below run in project dir
