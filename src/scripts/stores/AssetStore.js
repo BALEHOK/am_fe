@@ -90,11 +90,13 @@ var AssetStore = Flux.createStore({
 
   saveAsset(asset) {
     var self = this;
-    var request = this.assetRepo.saveAsset(asset)
-      .always((data) => {
-            this.emitChange();
+    var request = this.assetRepo.saveAsset(asset);
+    request
+      .done((data) => {
+        self.emitChange();
       })
       .fail((jqXHR, textStatus) => {
+        self.emitRollback();
         if (jqXHR.status == 400) {
           var validationResult = JSON.parse(jqXHR.responseText);
           if (validationResult && validationResult.modelState) {
@@ -106,9 +108,8 @@ var AssetStore = Flux.createStore({
                 isValid: false
               };
             });
-            self.emitChange();
           }
-        }      
+        }
       });
     return request;
   },
