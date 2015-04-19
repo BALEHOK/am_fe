@@ -40,6 +40,12 @@ var Application = (function (_super) {
             }
         });
 
+        $( document ).ajaxComplete(function( event, xhr, settings ) {
+            if (xhr.status == 401) {
+                self.logout();
+            }
+        });
+
         this.authService.OnLogin.on(function (response) {
             if (response.access_token)
                 self.tokenStore.setToken(response.access_token);
