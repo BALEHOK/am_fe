@@ -6,17 +6,23 @@ var React = require('react');
 var Router = require('react-router');
 var Flux = require('delorean').Flux;
 var ReactSelectize = require('../../../common/react-selectize');
+var ControlWrapper = require('./controlWrapper');
+var ValidationMixin = require('../../../../mixins/ValidationMixin');
+var cx = require('classnames');
 
 var AssetPicker = React.createClass({
-    mixins:[Flux.mixins.storeListener, Router.State],
+    mixins:[Flux.mixins.storeListener, Router.State, ValidationMixin],
+    
     componentWillMount: function() {
+        this.setupValidation(this.props.actions);
     },
-    componentWillUnmount: function() {
-    },
+
     onChange: function(values) {
         var uid = this.props.params.uid;
         this.props.actions.updateAssetValue({values, uid});
+        this.validate({id: this.props.params.id, value: values});
     },
+
     onItemsRequest: function(query, callback) {
         return this.props.actions.loadAssetsList({
            assetTypeId: this.getRelatedAttribute().relatedAssetTypeId,
@@ -45,29 +51,27 @@ var AssetPicker = React.createClass({
             value = _.pluck(listStore.values, 'id');
         }
 
+        var classes = cx('input-group', 'select_size_small');
         return (
-            <div className="asset-data__param">
-                <span className="asset-data__param-title">{this.props.params.name}:</span>
-                <div className="input-group">
-                    <ReactSelectize
-                        multiple={this.props.isMultiple}
-                        selectId={selectId}
-                        valueField="id"
-                        labelField="name"
-                        sortField="id"
-                        items={items}
-                        onItemsRequest={this.onItemsRequest}
-                        onChange={this.onChange}
-                        value={value}
-                        placeholder=" "
-                        label=" "
-                        className="select_size_small" />
-                
-                    {/*<button className="btn btn_size_small btn_type_second">
-                        <i className="btn__icon btn__icon_plus_circle"></i>
-                    </button>*/}
-                </div>
-            </div>
+            <ControlWrapper
+                name={this.props.params.name} 
+                className={classes}
+                validationState={this.state.validation}>
+
+                <ReactSelectize
+                    multiple={this.props.isMultiple}
+                    selectId={selectId}
+                    valueField="id"
+                    labelField="name"
+                    sortField="id"
+                    items={items}
+                    onItemsRequest={this.onItemsRequest}
+                    onChange={this.onChange}
+                    value={value}
+                    placeholder=" "
+                    label=" " />
+
+            </ControlWrapper>
         );
     }
 });
