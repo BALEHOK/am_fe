@@ -37,7 +37,7 @@ class AssetActions extends Actions {
   }
 
   saveAsset(asset) {
-    return this._dispatcher.saveAsset(asset);    
+    return this._dispatcher.getStore('asset').saveAsset(asset);    
   }
 
   deleteAsset(params) {

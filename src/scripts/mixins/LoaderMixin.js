@@ -8,6 +8,10 @@ var LoaderMixin = {
     return this.startWaiting('loading', ...promises);
   },
 
+  stopWaiting(...promises) {
+    this.setLoading('loading', false);
+  },
+
   setLoading(attr, val) {
     var setter = {};
     setter[attr] = val;

@@ -68,9 +68,13 @@ var Edit = React.createClass({
         var self = this;
         var model = this.state.stores.asset.asset;
         var params = this.context.router.getCurrentParams();
-        this.waitFor(this.props.actions.saveAsset(model))
-            .then((data) => { self.context.router.transitionTo('asset-view', params) },                 
-                  (error) => { console.log(error) });
+        this.waitFor(this.props.actions.saveAsset(model)).then(
+            (data) => { 
+                self.context.router.transitionTo('asset-view', params) 
+            },                 
+            (error) => { 
+                self.stopWaiting();
+            });
     },
 
     render: function() {

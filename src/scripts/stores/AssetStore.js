@@ -108,6 +108,7 @@ var AssetStore = Flux.createStore({
                 isValid: false
               };
             });
+            self.emitChange();
           }
         }
       });
