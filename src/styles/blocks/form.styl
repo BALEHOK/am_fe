@@ -27,7 +27,7 @@
 .form-control-feedback
   position absolute
   top 0
-  right 0
+  right -40px
   z-index 2 // Ensure icon is above input groups
   display block
   width $input-height-base
@@ -56,12 +56,12 @@
 
 
 // Reposition feedback icon if input has visible label above
-.has-feedback label
-  &  ~ .form-control-feedback
-    top ($line-height-computed + 5) // Height of the `label` and its margin
-
-  &.sr-only ~ .form-control-feedback
-    top 0
+//.has-feedback label
+//  &  ~ .form-control-feedback
+//    top ($line-height-computed + 5) // Height of the `label` and its margin
+//
+//  &.sr-only ~ .form-control-feedback
+//    top 0
 
 .validation-summary
   border-left 5px solid $state-danger-bg

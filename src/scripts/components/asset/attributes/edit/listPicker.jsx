@@ -8,6 +8,7 @@ var Flux = require('delorean').Flux;
 var ReactSelectize = require('../../../common/react-selectize');
 var ValidationMixin = require('../../../../mixins/ValidationMixin');
 var cx = require('classnames');
+var ControlWrapper = require('./controlWrapper');
 
 var ListPicker = React.createClass({
     mixins:[Flux.mixins.storeListener, ValidationMixin],
@@ -18,6 +19,7 @@ var ListPicker = React.createClass({
 
     onChange: function(values) {
         this.props.params.value = _.pluck(values, 'uid').join(',');
+        this.validate({id: this.props.params.id, value: this.props.params.value});
     },
 
     render: function() {      
@@ -29,24 +31,26 @@ var ListPicker = React.createClass({
         if (listStore) {
             items = listStore.items || [];
         }
-
-        var classes = cx('asset-data__param', 'has-' + this.state.validationState);
-
+       
+        var classes = cx('select', 'select_size_small');
         return (
-           <div className={classes}>
-                <span className="asset-data__param-title">{this.props.params.name}:</span>
-                <ReactSelectize   
-                    multiple={this.props.isMultiple} 
-                    selectId={selectId} 
-                    valueField="uid"
-                    labelField="value" 
-                    items={items} 
-                    onChange={this.onChange}    
-                    value={value}                             
-                    placeholder=" "
-                    label=" "
-                    className="select_size_small" /> 
-            </div>
+           <ControlWrapper 
+                name={this.props.params.name} 
+                className={classes}
+                validationState={this.state.validation}>
+
+                    <ReactSelectize   
+                        multiple={this.props.isMultiple} 
+                        selectId={selectId} 
+                        valueField="uid"
+                        labelField="value" 
+                        items={items} 
+                        onChange={this.onChange}    
+                        value={value}                             
+                        placeholder=" "
+                        label=" " /> 
+
+            </ControlWrapper>
         );
     }
 });

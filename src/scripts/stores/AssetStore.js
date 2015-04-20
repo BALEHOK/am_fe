@@ -100,14 +100,17 @@ var AssetStore = Flux.createStore({
         if (jqXHR.status == 400) {
           var validationResult = JSON.parse(jqXHR.responseText);
           if (validationResult && validationResult.modelState) {
-            var keys = _.keys(validationResult.modelState);
-            _.each(keys, (key) => {
-              self.validation[key] = {
-                id: key,
-                message: validationResult.modelState[key][0],
-                isValid: false
-              };
-            });
+            var keys = _.chain(validationResult.modelState)
+              .keys()
+              .map(k => { return parseInt(k) })
+              .filter(k => !_.isNaN(k))
+              .each(key => {
+                self.validation[key] = {
+                  id: key,
+                  message: validationResult.modelState[key][0],
+                  isValid: false
+                };
+              });
             self.emitChange();
           }
         }
