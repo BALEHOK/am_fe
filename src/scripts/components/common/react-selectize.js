@@ -150,7 +150,7 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
   },
 
   render: function () {
-    return React.DOM.label( {for:this.props.selectId},
+    return React.DOM.label( {className: 'select', for:this.props.selectId},
       React.DOM.select( {id:this.props.selectId, placeholder:this.props.placeholder})
     )
   }
