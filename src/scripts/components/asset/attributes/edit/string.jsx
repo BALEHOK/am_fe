@@ -4,6 +4,7 @@
 
 var React = require('react');
 var ValidationMixin = require('../../../../mixins/ValidationMixin');
+var cx = require('classnames');
 
 var EditableAttribute = React.createClass({
     mixins: [ValidationMixin],
@@ -24,9 +25,8 @@ var EditableAttribute = React.createClass({
         this.validate({id: this.props.params.id, value: this.props.params.value});
     },
     render: function() {
-        var isMultiline =  this.props.params.datatype == 'text';
-            
-        var cx = React.addons.classSet;
+        var isMultiline =  this.props.params.datatype == 'text';           
+        
         var labelClasses = cx('input-txt', 'input-txt_' + (isMultiline ? 'textarea' : 'text'));
         var groupClasses = cx({
             'form-group': true,

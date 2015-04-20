@@ -16,6 +16,7 @@ var LayoutSwitcher = require('./layoutSwitcher');
 var ViewsFactory = require('./viewsFactory');
 var Loader = require('../common/loader.jsx');
 var LoaderMixin = require('../../mixins/LoaderMixin');
+var cx = require('classnames');
 
 var AssetView = React.createClass({
     mixins:[Router.State, Flux.mixins.storeListener, LoaderMixin],
@@ -86,7 +87,6 @@ var AssetView = React.createClass({
           return moment(date).format('DD.MM.YYYY HH:mm');
         });
 
-        var cx = React.addons.classSet;
         var titleClasses = cx({
             'page-title__param': true,
             'light-grey': asset.isDeleted
