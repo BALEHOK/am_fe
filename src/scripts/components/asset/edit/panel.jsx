@@ -10,7 +10,7 @@ var Panel = React.createClass({
     render: function() {
         var actions = this.props.actions;
         var attrs = this.props.data.attributes.map((attr) => {  
-            var validationData = this.props.validation[attr.id];          
+            var validationData = this.props.validation[attr.id];    
             return attr.editable 
                 ? AttributesFactory.getEditAttribute(attr.datatype, attr, actions, this.props.dispatcher, validationData)
                 : AttributesFactory.getViewAttribute(attr.datatype, attr, this.props.dispatcher);

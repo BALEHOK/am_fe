@@ -18,6 +18,7 @@ var ListPicker = React.createClass({
 
     onChange: function(values) {
         this.props.params.value = _.pluck(values, 'uid').join(',');
+        this.validate({id: this.props.params.id, value: this.props.params.value});
     },
 
     render: function() {      
@@ -29,23 +30,27 @@ var ListPicker = React.createClass({
         if (listStore) {
             items = listStore.items || [];
         }
-
-        var classes = cx('asset-data__param', 'has-' + this.state.validationState);
-
+       
+        var labelClasses = cx('select', 'select_size_small', this.state.groupClasses);
         return (
-           <div className={classes}>
+           <div className='asset-data__param'>
                 <span className="asset-data__param-title">{this.props.params.name}:</span>
-                <ReactSelectize   
-                    multiple={this.props.isMultiple} 
-                    selectId={selectId} 
-                    valueField="uid"
-                    labelField="value" 
-                    items={items} 
-                    onChange={this.onChange}    
-                    value={value}                             
-                    placeholder=" "
-                    label=" "
-                    className="select_size_small" /> 
+                <label className={labelClasses}>
+                    <ReactSelectize   
+                        multiple={this.props.isMultiple} 
+                        selectId={selectId} 
+                        valueField="uid"
+                        labelField="value" 
+                        items={items} 
+                        onChange={this.onChange}    
+                        value={value}                             
+                        placeholder=" "
+                        label=" " /> 
+                    {this.state.hasFeedback 
+                        ? <span className={this.state.feedbackClasses}></span>
+                        : ''
+                    }  
+                </label> 
             </div>
         );
     }
