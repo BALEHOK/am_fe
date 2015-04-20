@@ -51,7 +51,7 @@ var AssetPicker = React.createClass({
             value = _.pluck(listStore.values, 'id');
         }
 
-        var classes = cx('input-group', 'select_size_small');
+        var classes = cx('select', 'select_size_small');
         return (
             <ControlWrapper
                 name={this.props.params.name} 

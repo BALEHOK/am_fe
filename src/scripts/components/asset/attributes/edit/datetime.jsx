@@ -5,16 +5,26 @@
 var React = require('react');
 var DateTimeField = require('react-datetimepicker');
 var moment = require('moment');
+var ControlWrapper = require('./controlWrapper');
+var ValidationMixin = require('../../../../mixins/ValidationMixin');
 
 var DateTimeAttribute = React.createClass({
+    mixins: [ValidationMixin],
+
+    componentWillMount: function() {
+        this.setupValidation(this.props.actions);
+    },
+
     render: function() {
         return (
-            <div className="asset-data__param">
-                <span className="asset-data__param-title">{this.props.params.name}:</span>
-                <label className="input-txt input-txt_size_small">
-                	<DateTimeField selectedDate={moment(this.props.params.value)}/>
-            	</label>
-            </div>
+            <ControlWrapper
+                name={this.props.params.name} 
+                className="input-txt input-txt_size_small"
+                validationState={this.state.validation}>
+
+                <DateTimeField selectedDate={moment(this.props.params.value)}/>
+
+            </ControlWrapper>
         );
     }
 });
