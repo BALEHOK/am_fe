@@ -14,6 +14,7 @@ var ResultHeaderPagination = require('./resultHeaderPagination.jsx');
 var Loader = require('../common/loader.jsx');
 var LoaderMixin = require('../../mixins/LoaderMixin');
 var Flux = require('delorean').Flux;
+var cx = require('classnames');
 
 var ResultPage = React.createClass({
     mixins: [Router.Navigation, LoaderMixin, Flux.mixins.storeListener],
@@ -111,7 +112,6 @@ var ResultPage = React.createClass({
         var counters = results.counters;
         var filters = results.filter;
 
-        var cx = React.addons.classSet;
         var searchResultsClasses = cx({
             'search-results': true,
             'search-results_type_tiles': this.state.isTilesView,

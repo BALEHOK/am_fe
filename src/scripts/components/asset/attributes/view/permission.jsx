@@ -3,7 +3,7 @@
  */
 
 var React = require('react');
-var cx = React.addons.classSet;
+var cx = require('classnames');
 
 var Attribute = React.createClass({
     render: function() {

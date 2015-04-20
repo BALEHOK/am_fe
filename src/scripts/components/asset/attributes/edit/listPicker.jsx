@@ -7,6 +7,7 @@ var Router = require('react-router');
 var Flux = require('delorean').Flux;
 var ReactSelectize = require('../../../common/react-selectize');
 var ValidationMixin = require('../../../../mixins/ValidationMixin');
+var cx = require('classnames');
 
 var ListPicker = React.createClass({
     mixins:[Flux.mixins.storeListener, ValidationMixin],
@@ -29,7 +30,6 @@ var ListPicker = React.createClass({
             items = listStore.items || [];
         }
 
-        var cx = React.addons.classSet;
         var classes = cx('asset-data__param', 'has-' + this.state.validationState);
 
         return (

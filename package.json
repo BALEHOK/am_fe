@@ -11,6 +11,7 @@
   "mainInput": "assetmanagerfrontend",
   "mainOutput": "main",
   "dependencies": {
+    "classnames": "^1.2.0",
     "delorean": "0.8.7",
     "extract-text-webpack-plugin": "^0.3.1",
     "google-maps": "^2.1.1",
