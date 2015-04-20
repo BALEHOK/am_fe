@@ -8,6 +8,7 @@ var Flux = require('delorean').Flux;
 var ReactSelectize = require('../../../common/react-selectize');
 var ValidationMixin = require('../../../../mixins/ValidationMixin');
 var cx = require('classnames');
+var ControlWrapper = require('./controlWrapper');
 
 var ListPicker = React.createClass({
     mixins:[Flux.mixins.storeListener, ValidationMixin],
@@ -31,11 +32,13 @@ var ListPicker = React.createClass({
             items = listStore.items || [];
         }
        
-        var labelClasses = cx('select', 'select_size_small', this.state.groupClasses);
+        var classes = cx('select', 'select_size_small');
         return (
-           <div className='asset-data__param'>
-                <span className="asset-data__param-title">{this.props.params.name}:</span>
-                <label className={labelClasses}>
+           <ControlWrapper 
+                name={this.props.params.name} 
+                className={classes}
+                validationState={this.state.validation}>
+
                     <ReactSelectize   
                         multiple={this.props.isMultiple} 
                         selectId={selectId} 
@@ -46,12 +49,8 @@ var ListPicker = React.createClass({
                         value={value}                             
                         placeholder=" "
                         label=" " /> 
-                    {this.state.hasFeedback 
-                        ? <span className={this.state.feedbackClasses}></span>
-                        : ''
-                    }  
-                </label> 
-            </div>
+
+            </ControlWrapper>
         );
     }
 });

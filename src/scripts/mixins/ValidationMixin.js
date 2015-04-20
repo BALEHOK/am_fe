@@ -19,11 +19,13 @@ var ValidationMixin = {
 
 	getInitialState: function() {
         return {
-            hasFeedback: false,
-            validationState: undefined,
-            isValid: undefined,
-            groupClasses: 'form-group',
-            feedbackClasses: 'glyphicon form-control-feedback'
+            validation : {
+                hasFeedback: false,
+                validationState: undefined,
+                isValid: undefined,
+                groupClasses: 'form-group',
+                feedbackClasses: 'glyphicon form-control-feedback'
+            }
         };
     },
 
@@ -42,11 +44,13 @@ var ValidationMixin = {
                 'glyphicon' + (valResult.isValid ? '-ok' : '-remove'));
 
             this.setState({
-                hasFeedback: true,
-                isValid: valResult.isValid,
-                validationState:  valResult.isValid ? 'success' : 'error',
-                groupClasses: groupClasses,
-                feedbackClasses: feedbackClasses
+                validation: {
+                    hasFeedback: true,
+                    isValid: valResult.isValid,
+                    validationState:  valResult.isValid ? 'success' : 'error',
+                    groupClasses: groupClasses,
+                    feedbackClasses: feedbackClasses
+                }
             });
         }
     },
