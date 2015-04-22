@@ -31,6 +31,7 @@ var AttributesFactory = {
         case 'password':
         case 'datetime':
         case 'richtext':
+        case 'permission':
             Component = require("./attributes/edit/" + name + ".jsx");
             break;
         case 'usd':
