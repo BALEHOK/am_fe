@@ -69,10 +69,10 @@ var Edit = React.createClass({
         var model = this.state.stores.asset.asset;
         var params = this.context.router.getCurrentParams();
         this.waitFor(this.props.actions.saveAsset(model)).then(
-            (data) => { 
-                self.context.router.transitionTo('asset-view', params) 
-            },                 
-            (error) => { 
+            (data) => {
+                self.context.router.transitionTo('asset-view', params)
+            },
+            (error) => {
                 self.stopWaiting();
             });
     },
@@ -85,12 +85,12 @@ var Edit = React.createClass({
         var validationData = assetStore.validation;
         var screen = this.state.selectedScreen || {panels: []};
         var panels = screen.panels.map((el) => {
-            return <Panel data={el} 
-                          dispatcher={this.props.dispatcher} 
-                          title={el.name} 
+            return <Panel data={el}
+                          dispatcher={this.props.dispatcher}
+                          title={el.name}
                           actions={actions}
                           validation={validationData} />
-        });        
+        });
         return (
             <div>
                 <h1 className="page-title">Edit: <span className="page-title__param">{asset.name}</span></h1>
@@ -116,7 +116,7 @@ var Edit = React.createClass({
                                 onClick={this.handleSave}
                                 className="btn btn_size_small">Save
                             </button>
-                            {/*<button 
+                            {/*<button
                                 disabled={!this.state.isValid}
                                 className="btn btn_type_second btn_size_small">Save and Add new
                             </button>*/}
