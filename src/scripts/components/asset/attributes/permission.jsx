@@ -5,6 +5,11 @@
 var React = require('react');
 var cx = require('classnames');
 
+const COMMON_READ = 0b1000;
+const COMMON_WRITE = 0b100;
+const FINANCE_READ = 0b10;
+const FINANCE_WRITE = 0b1;
+
 var Attribute = React.createClass({
 
     getDefaultProps() {
@@ -28,10 +33,10 @@ var Attribute = React.createClass({
 
         return (
             <div>
-                <span onClick={this.props.onChange.bind(this, 0b1000)} className={createCx(0b1000)}>R</span>
-                <span onClick={this.props.onChange.bind(this, 0b100)} className={createCx(0b100)}>W</span>
-                <span onClick={this.props.onChange.bind(this, 0b10)} className={createCx(0b10)}>R</span>
-                <span onClick={this.props.onChange.bind(this, 0b1)} className={createCx(0b1)}>W</span>
+                <span onClick={this.props.onChange.bind(this, COMMON_READ)} className={createCx(COMMON_READ)}>R</span>
+                <span onClick={this.props.onChange.bind(this, COMMON_WRITE)} className={createCx(COMMON_WRITE)}>W</span>
+                <span onClick={this.props.onChange.bind(this, FINANCE_READ)} className={createCx(FINANCE_READ)}>R</span>
+                <span onClick={this.props.onChange.bind(this, FINANCE_WRITE)} className={createCx(FINANCE_WRITE)}>W</span>
             </div>
         );
     }
