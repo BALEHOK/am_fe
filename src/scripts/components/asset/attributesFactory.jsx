@@ -31,6 +31,10 @@ var AttributesFactory = {
         case 'datetime':
             Component = require("./attributes/edit/" + name + ".jsx");
             break;
+        case 'email':
+        case 'money':
+        case 'url':
+        case 'zipcode':
         default:
             Component = require("./attributes/edit/string.jsx");
     }
