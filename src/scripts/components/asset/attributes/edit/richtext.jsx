@@ -17,8 +17,8 @@ var RichtextEdit = React.createClass({
         this.setupValidation(this.props.actions);
     },
 
-    valueChanged: function(event) {
-        this.props.params.value = event.target.value;
+    onTextChange: function(value) {
+        this.props.params.value = value;
         this.validate({id: this.props.params.id, value: this.props.params.value});
         this.forceUpdate();
     },
@@ -30,7 +30,7 @@ var RichtextEdit = React.createClass({
                 className="rich-editor"
                 validationState={this.state.validation}>
 
-                <Quill toolbar={items} theme="snow" value={this.props.params.value}/>
+                <Quill toolbar={items} onChange={_.debounce(this.onTextChange, 500)} theme="snow" value={this.props.params.value}/>
 
             </ControlWrapper>
         );
