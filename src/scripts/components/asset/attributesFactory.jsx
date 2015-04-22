@@ -18,18 +18,21 @@ var AttributesFactory = {
 
   getEditAttribute: function(name, params, actions, dispatcher, validation) {
     var Component;
-    if (name == 'asset') {
-        Component = require("./attributes/edit/assetPicker.jsx");
-    } else if (name == 'assets') {
-        Component = require("./attributes/edit/assetPicker.jsx");
-    } else if (name == 'dynlist') {
-        Component = require("./attributes/edit/listPicker.jsx");
-    } else if (name == 'dynlists') {
-        Component = require("./attributes/edit/listPicker.jsx");
-    } else if (name == 'bool' || name == 'datetime') {
-        Component = require("./attributes/edit/" + name + ".jsx");
-    } else {
-        Component = require("./attributes/edit/string.jsx");
+    switch(name) {
+        case 'asset':
+        case 'assets':
+            Component = require("./attributes/edit/assetPicker.jsx");
+            break;
+        case 'dynlist':
+        case 'dynlists':
+            Component = require("./attributes/edit/listPicker.jsx");
+            break;
+        case 'bool':
+        case 'datetime':
+            Component = require("./attributes/edit/" + name + ".jsx");
+            break;
+        default:
+            Component = require("./attributes/edit/string.jsx");
     }
     return <Component dispatcher={dispatcher} params={params} actions={actions} validation={validation} />;
   }
