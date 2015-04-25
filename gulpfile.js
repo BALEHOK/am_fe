@@ -24,6 +24,7 @@ var assetsDest = 'Content/assets';
 var jsSrc = 'src/scripts/**/*.*',
     jsDest = path.join(buildDest, assetsDest, 'js');
 var cssSrc = 'src/styles/*',
+    cssVendorSrc = 'src/styles/vendor-css/*',
     fontsCss = 'src/styles/fonts/*',
     cssDest = path.join(buildDest, assetsDest, 'css');
 
@@ -58,8 +59,11 @@ gulp.task('css:fonts', function () {
 });
 
 gulp.task('css', function () {
-    return gulp.src([cssSrc])
+    var styl = filter('**/*.styl');
+    return gulp.src([cssSrc, cssVendorSrc])
+        .pipe(styl)
         .pipe(stylus())
+        .pipe(styl.restore())
         .on('error', handleError)
         .pipe(concat('style.css'))
         .pipe(autoprefixer({
@@ -92,7 +96,7 @@ gulp.task('browser-sync', function() {
 
 gulp.task('fonts', function() {
     return gulp.src(['src/fonts/**/*', 'src/scripts/libs/bootstrap-stylus/fonts/*'])
-        .pipe(gulp.dest(path.join(buildDest, assetsDest, 'fonts'))); 
+        .pipe(gulp.dest(path.join(buildDest, assetsDest, 'fonts')));
 });
 gulp.task('images', function() {
     return gulp.src('src/images/**/*')

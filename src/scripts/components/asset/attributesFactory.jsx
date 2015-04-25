@@ -28,7 +28,9 @@ var AttributesFactory = {
             Component = require("./attributes/edit/listPicker.jsx");
             break;
         case 'bool':
+        case 'password':
         case 'datetime':
+        case 'richtext':
             Component = require("./attributes/edit/" + name + ".jsx");
             break;
         case 'usd':

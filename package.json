@@ -25,7 +25,8 @@
     "react-simpletabs": "^0.6.1",
     "react-time-picker": "^1.0.8",
     "selectize": "^0.12.0",
-    "underscore": "^1.7.0"
+    "underscore": "^1.7.0",
+    "react-quill": "0.0.4"
   },
   "devDependencies": {
     "6to5": "^1.15.0",
