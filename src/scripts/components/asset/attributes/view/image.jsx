@@ -31,11 +31,10 @@ var Attribute = React.createClass({
             }
         };
         
-        var classes = cx('image-wrapper', this.props.params.className);
         return (
             <div className="asset-data__param">
                 <span className="asset-data__param-title">{this.props.params.name}:</span>
-                <div className={classes}>
+                <div className="image-wrapper">
                     <div className="image-wrapper__subwrapper">
                         {component()}
                     </div>
