@@ -12,7 +12,7 @@ var Attribute = React.createClass({
     render: function() {
     	var urlParams = this.context.router.getCurrentParams();
     	var params = this.props.params;
-    	var url = `/FileHandler.ashx?assetTypeId=${urlParams.assetTypeId}&assetId=${urlParams.assetId}&attributeId=${params.id}`;
+    	var url = BASE_URL + `/FileHandler.ashx?assetTypeId=${urlParams.assetTypeId}&assetId=${urlParams.assetId}&attributeId=${params.id}`;
     	params = _.extend(params, { url: url });
         return <Url params={params} />;
     }
