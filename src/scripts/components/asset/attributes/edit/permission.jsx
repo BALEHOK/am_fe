@@ -15,8 +15,12 @@ var PermissionEdit = React.createClass({
         this.setupValidation(this.props.actions);
     },
 
-    valueChanged: function(bt) {
-        this.props.params.value ^= bt;
+    valueChanged: function(bt, op) {
+        if(this.props.params.value & op) {
+            this.props.params.value = bt - op ;
+        } else {
+            this.props.params.value = bt;
+        }
         this.validate({id: this.props.params.id, value: this.props.params.value});
         this.forceUpdate();
     },

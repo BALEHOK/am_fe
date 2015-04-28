@@ -10,6 +10,11 @@ const COMMON_WRITE = 0b100;
 const FINANCE_READ = 0b10;
 const FINANCE_WRITE = 0b1;
 
+const FIRST_TIER = COMMON_READ;
+const SECOND_TIER = FIRST_TIER | COMMON_WRITE;
+const THIRD_TIER = SECOND_TIER | FINANCE_READ;
+const FOURTH_TIER = THIRD_TIER | FINANCE_WRITE;
+
 var Attribute = React.createClass({
 
     getDefaultProps() {
@@ -33,10 +38,10 @@ var Attribute = React.createClass({
 
         return (
             <div>
-                <span onClick={this.props.onChange.bind(this, COMMON_READ)} className={createCx(COMMON_READ)}>R</span>
-                <span onClick={this.props.onChange.bind(this, COMMON_WRITE)} className={createCx(COMMON_WRITE)}>W</span>
-                <span onClick={this.props.onChange.bind(this, FINANCE_READ)} className={createCx(FINANCE_READ)}>R</span>
-                <span onClick={this.props.onChange.bind(this, FINANCE_WRITE)} className={createCx(FINANCE_WRITE)}>W</span>
+                <span onClick={this.props.onChange.bind(this, FIRST_TIER, COMMON_READ)} className={createCx(COMMON_READ)}>R</span>
+                <span onClick={this.props.onChange.bind(this, SECOND_TIER, COMMON_WRITE)} className={createCx(COMMON_WRITE)}>W</span>
+                <span onClick={this.props.onChange.bind(this, THIRD_TIER, FINANCE_READ)} className={createCx(FINANCE_READ)}>R</span>
+                <span onClick={this.props.onChange.bind(this, FOURTH_TIER, FINANCE_WRITE)} className={createCx(FINANCE_WRITE)}>W</span>
             </div>
         );
     }
