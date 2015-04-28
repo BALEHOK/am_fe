@@ -38,6 +38,9 @@ var AttributesFactory = {
         case 'euro':
             Component = require("./attributes/edit/typed_money.jsx");
             break;
+        case 'googlemaps':
+            Component = require("./attributes/edit/googlemaps.jsx");
+            break;
         case 'email':
         case 'money':
         case 'url':
