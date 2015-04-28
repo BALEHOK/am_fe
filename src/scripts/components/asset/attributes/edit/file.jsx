@@ -8,7 +8,7 @@ var File = require('../file.jsx');
 var ControlWrapper = require('./controlWrapper');
 var ValidationMixin = require('../../../../mixins/ValidationMixin');
 
-var FileAttribute = React.createClass({
+var FileEditAttribute = React.createClass({
     mixins: [ValidationMixin],
     contextTypes: {
         router: React.PropTypes.func
@@ -54,4 +54,4 @@ var FileAttribute = React.createClass({
     }
 });
 
-module.exports = FileAttribute;
+module.exports = FileEditAttribute;
