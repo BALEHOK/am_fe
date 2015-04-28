@@ -10,10 +10,11 @@ var Attribute = React.createClass({
         if(value.length > 40) {
             value = value.slice(0, 30) + "..." + value.slice(-7);
         }
+        var url = this.props.params.url || this.props.params.value;
         return (
             <div className="asset-data__param">
                 <span className="asset-data__param-title">{this.props.params.name}:</span>
-                <a href={this.props.params.value} target="_blank">{value}</a>
+                <a href={url} target="_blank">{value}</a>
             </div>
         );
     }
