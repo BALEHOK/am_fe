@@ -23,6 +23,13 @@ var FileEditAttribute = React.createClass({
 
     valueChanged: function(name) {
         this.props.params.value = name;
+        this.setState({
+            validation: {
+                feedbackClasses: cx(this.state.validation.feedbackClasses, {
+                    'form-control-feedback_loading': false
+                })
+            }
+        });
         this.validate({id: this.props.params.id, value: this.props.params.value});
     },
 

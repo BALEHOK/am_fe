@@ -4,6 +4,7 @@
 
 var React = require('react');
 var cx = require('classnames');
+var FileUrlProvider = require('../../../../services/file_url_provider');
 
 var Attribute = React.createClass({
     contextTypes: {
@@ -24,13 +25,13 @@ var Attribute = React.createClass({
                             <img src={src} alt={this.props.params.name} />
                         </div>;
             } else {
-                var src = BASE_URL + `/FileHandler.ashx?assetTypeId=${urlParams.assetTypeId}&assetId=${urlParams.assetId}&attributeId=${this.props.params.id}`;
+                var src = FileUrlProvider.getFileUrl(urlParams.assetTypeId, urlParams.assetId, this.props.params.id);
                 return <a className="image-wrapper__img" href={src}>
                             <img src={src + '&w=165&h=95&mode=crop'} alt={this.props.params.name} />
                         </a>;
             }
         };
-        
+
         return (
             <div className="asset-data__param">
                 <span className="asset-data__param-title">{this.props.params.name}:</span>
