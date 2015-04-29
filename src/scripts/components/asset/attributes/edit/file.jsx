@@ -42,7 +42,7 @@ var FileEditAttribute = React.createClass({
                 name={this.props.params.name}
                 className="input-txt input-txt_size_small"
                 validationState={this.state.validation}>
-
+                {this.props.children}
                 <File onUpload={this.valueChanged}
                     onStart={this.onStart}
                     attributeId={this.props.params.id}
