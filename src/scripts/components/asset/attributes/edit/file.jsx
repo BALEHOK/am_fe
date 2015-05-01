@@ -16,14 +16,19 @@ var FileEditAttribute = React.createClass({
     componentWillMount: function() {
         this.setupValidation(this.props.actions);
     },
-
-    getInitialState: function() {
-        return { };
-    },
-
-    valueChanged: function(name) {
-        this.props.params.value = name;
+    
+    valueChanged: function(filename, fileId) {
+        this.props.params.value = filename;
+        this.setState({
+            validation: {
+                feedbackClasses: cx(this.state.validation.feedbackClasses, {
+                    'form-control-feedback_loading': false
+                })
+            }
+        });
         this.validate({id: this.props.params.id, value: this.props.params.value});
+        if (this.props.onUpload)
+            this.props.onUpload(filename, fileId);
     },
 
     onStart: function() {
@@ -42,6 +47,8 @@ var FileEditAttribute = React.createClass({
                 name={this.props.params.name}
                 className="input-txt input-txt_size_small"
                 validationState={this.state.validation}>
+
+                {this.props.children}
 
                 <File onUpload={this.valueChanged}
                     onStart={this.onStart}
