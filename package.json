@@ -14,6 +14,7 @@
     "classnames": "^1.2.0",
     "delorean": "0.8.7",
     "extract-text-webpack-plugin": "^0.3.1",
+    "fileapi": "^2.0.10",
     "google-maps": "^2.1.1",
     "jquery": "^2.1.1",
     "keymirror": "^0.1.0",
@@ -21,12 +22,12 @@
     "react": "0.13.x",
     "react-date-picker": "^2.0.15",
     "react-google-maps": "^1.0.0",
+    "react-quill": "0.0.4",
     "react-router": "^0.13.2",
     "react-simpletabs": "^0.6.1",
     "react-time-picker": "^1.0.8",
     "selectize": "^0.12.0",
-    "underscore": "^1.7.0",
-    "react-quill": "0.0.4"
+    "underscore": "^1.7.0"
   },
   "devDependencies": {
     "6to5": "^1.15.0",

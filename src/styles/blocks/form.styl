@@ -7,10 +7,10 @@
 .form-control
   display inline-block
   height 42px
-  
+
   &:hover
     border-color #cccccc
-      
+
 // Form control feedback states
 //
 // Apply contextual and semantic states to individual form controls.
@@ -24,6 +24,14 @@
     padding-right ($input-height-base * 1.25)
 
 // Feedback icon (requires .glyphicon classes)
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
+}
 .form-control-feedback
   position absolute
   top 0
@@ -35,6 +43,14 @@
   line-height $input-height-base
   text-align center
   pointer-events none
+
+  &_loading
+    animation: spin 1000ms infinite linear;
+    &::before
+        content "\f110"
+        font normal normal normal 13px/1 $FontAwesome !important
+        color #81e151
+
 
 .input-lg + .form-control-feedback
   width $input-height-large
@@ -67,6 +83,6 @@
   border-left 5px solid $state-danger-bg
   padding-left 15px
   font-weight bold
-  
+
   li
     list-style-type none
