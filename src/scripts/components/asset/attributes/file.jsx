@@ -29,7 +29,8 @@ var File = React.createClass({
                 attributeId: this.props.attributeId
             },
             complete: (err, xhr) => {
-                this.props.onUpload(JSON.parse(xhr.responseText));
+                var response = JSON.parse(xhr.responseText);
+                this.props.onUpload(response.filename, response.fileId);
             }
         });
     },
