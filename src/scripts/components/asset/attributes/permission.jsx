@@ -20,7 +20,7 @@ var Attribute = React.createClass({
     getDefaultProps() {
         return {
             params: {},
-            onChange: function() {},
+            onChange: function() { return function() {}; },
             editable: false
         };
     },
@@ -38,10 +38,10 @@ var Attribute = React.createClass({
 
         return (
             <div>
-                <span onClick={this.props.onChange.bind(this, FIRST_TIER, COMMON_READ)} className={createCx(COMMON_READ)}>R</span>
-                <span onClick={this.props.onChange.bind(this, SECOND_TIER, COMMON_WRITE)} className={createCx(COMMON_WRITE)}>W</span>
-                <span onClick={this.props.onChange.bind(this, THIRD_TIER, FINANCE_READ)} className={createCx(FINANCE_READ)}>R</span>
-                <span onClick={this.props.onChange.bind(this, FOURTH_TIER, FINANCE_WRITE)} className={createCx(FINANCE_WRITE)}>W</span>
+                <span onClick={this.props.onChange(FIRST_TIER, COMMON_READ)} className={createCx(COMMON_READ)}>R</span>
+                <span onClick={this.props.onChange(SECOND_TIER, COMMON_WRITE)} className={createCx(COMMON_WRITE)}>W</span>
+                <span onClick={this.props.onChange(THIRD_TIER, FINANCE_READ)} className={createCx(FINANCE_READ)}>R</span>
+                <span onClick={this.props.onChange(FOURTH_TIER, FINANCE_WRITE)} className={createCx(FINANCE_WRITE)}>W</span>
             </div>
         );
     }

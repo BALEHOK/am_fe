@@ -13,16 +13,16 @@ class AssetActions extends Actions {
         return this._dispatcher
           .loadRelatedAssets(params)
           .then(() => {
-            var assets = this._dispatcher.getStore('asset').getState().relatedAssets; 
+            var assets = this._dispatcher.getStore('asset').getState().relatedAssets;
             this._dispatcher.setListValues(assets);
           });
-      });      
+      });
   }
 
   updateAssetValue(params) {
     this._dispatcher.updateAssetValue(params);
   }
-  
+
   loadHistory(params) {
     this._dispatcher.loadHistory(params)
   }
@@ -40,7 +40,15 @@ class AssetActions extends Actions {
   }
 
   saveAsset(asset) {
-    return this._dispatcher.getStore('asset').saveAsset(asset);    
+    return this._dispatcher.getStore('asset').saveAsset(asset);
+  }
+
+  loadBarcode(params) {
+      return this._dispatcher.loadBarcode(params);
+  }
+
+  generateBarcode(params) {
+      return this._dispatcher.generateBarcode(params);
   }
 
   deleteAsset(params) {
@@ -52,7 +60,7 @@ class AssetActions extends Actions {
   }
 
   validateAttribute(params) {
-    this._dispatcher.validateAttribute(params); 
+    this._dispatcher.validateAttribute(params);
   }
 }
 

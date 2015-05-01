@@ -22,6 +22,10 @@ var AssetDispatcher = Flux.createDispatcher({
     return this.dispatch('list:currentVals', assets);
   },
 
+  generateBarcode(params) {
+      return this.dispatch('barcode:generate', params);
+  },
+
   updateAssetValue(params) {
     return this.dispatch('list:asset-values', params);
   },

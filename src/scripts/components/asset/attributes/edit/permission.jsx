@@ -16,13 +16,15 @@ var PermissionEdit = React.createClass({
     },
 
     valueChanged: function(bt, op) {
-        if(this.props.params.value & op) {
-            this.props.params.value = bt - op ;
-        } else {
-            this.props.params.value = bt;
-        }
-        this.validate({id: this.props.params.id, value: this.props.params.value});
-        this.forceUpdate();
+        return () => {
+            if(this.props.params.value & op) {
+                this.props.params.value = bt - op ;
+            } else {
+                this.props.params.value = bt;
+            }
+            this.validate({id: this.props.params.id, value: this.props.params.value});
+            this.forceUpdate();
+        };
     },
 
     render: function() {
@@ -32,7 +34,7 @@ var PermissionEdit = React.createClass({
                 className="input-txt input-txt_size_small"
                 validationState={this.state.validation}>
                 <Permission editable={true}
-                    onChange={this.valueChanged.bind(this)}
+                    onChange={this.valueChanged}
                     params={this.props.params} />
 
 

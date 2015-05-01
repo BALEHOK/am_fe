@@ -4,10 +4,9 @@
 
 var React = require('react');
 var Google = require('google-maps');
-var {GoogleMapsMixin, Map, Marker} = require("react-google-maps");
+var {GoogleMaps, Marker} = require("react-google-maps");
 
 var GoogleMapsComponent = React.createClass({
-    mixins: [GoogleMapsMixin],
 
     getInitialState () {
         var markers = [];
@@ -44,7 +43,7 @@ var GoogleMapsComponent = React.createClass({
                 }
               });
             });
-        }        
+        }
     },
 
     handleMapClick: function(event) {
@@ -74,18 +73,21 @@ var GoogleMapsComponent = React.createClass({
     },
 
     render: function() {
-        var onClickFunc = this.props.viewOnly 
-            ? null 
+        var onClickFunc = this.props.viewOnly
+            ? null
             : this.handleMapClick;
         return (
             <div className="googlemaps">
-                <Map ref="map"
-                    center={this.state.center} 
-                    style={{height: "396px", width: "600px"}} 
+                <GoogleMaps ref="map"
+                    center={this.state.center}
+                    containerProps={{style: {height: "300px"}}}
+                    mapProps={{style: { height: "300px" }}}
+                    googleMapsApi={this.props.googleMapsApi}
+                    style={{height: "396px", width: "600px"}}
                     zoom={this.state.zoom}
                     onClick={onClickFunc}>
-                </Map>
                 {this.state.markers.map(toMarker, this)}
+                </GoogleMaps>
                 {/*<div className="googlemaps__inputs">
                     <div className="input-group input-group_block">
                         <div className="grid input-group__row">
@@ -112,7 +114,7 @@ var GoogleMapsComponent = React.createClass({
           return <Marker
             position={marker.position}
             key={marker.key}
-            onRightclick={this.handleMarkerRightClick.bind(this, index)} />;        
+            onRightclick={this.handleMarkerRightClick.bind(this, index)} />;
         }
 
     }

@@ -21,7 +21,7 @@
     "moment": "^2.8.3",
     "react": "0.13.x",
     "react-date-picker": "^2.0.15",
-    "react-google-maps": "^0.2.4",
+    "react-google-maps": "^1.0.0",
     "react-quill": "0.0.4",
     "react-router": "^0.13.2",
     "react-simpletabs": "^0.6.1",

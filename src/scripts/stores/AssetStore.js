@@ -1,5 +1,6 @@
 var Flux = require('delorean').Flux;
 var AssetRepository = require('../services/AssetRepository');
+var BarcodeRepository = require('../services/BarcodeRepository');
 
 var AssetStore = Flux.createStore({
 
@@ -28,10 +29,12 @@ var AssetStore = Flux.createStore({
     'asset:barcode': 'loadBarcode',
     'asset:validate-attribute': 'validateAttribute',
     'asset:save': 'saveAsset',
+    'barcode:generate': 'generateBarcode',
   },
 
   initialize() {
     this.assetRepo = new AssetRepository();
+    this.barcodeRepo = new BarcodeRepository();
   },
 
   loadAsset(params) {
@@ -60,6 +63,22 @@ var AssetStore = Flux.createStore({
       this.asset.isDeleted = true;
       this.emitChange();
     });
+  },
+
+  getAttribute(id) {
+      return this.asset.screens
+        .reduce((acc, el) => acc.concat(el.panels), [])
+        .reduce((acc, el) => acc.concat(el.attributes), [])
+        .filter(el => el.id === id)[0];
+  },
+
+  generateBarcode(params) {
+      this.barcodeRepo.generate().then((data) => {
+          this.asset.barcode = data.base64Image;
+          var attr = this.getAttribute(params.id);
+          attr.value = data.barcode;
+          this.emitChange();
+      });
   },
 
   restoreAsset(params) {
