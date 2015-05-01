@@ -12,11 +12,27 @@ var ImageEditAttribute = React.createClass({
         router: React.PropTypes.func
     },
 
-    render: function() {
+    getInitialState: function() {
         var params = this.context.router.getCurrentParams();
+        var url = this.props.params.value 
+            ? FileUrlProvider.getFileUrl(params.assetTypeId, params.assetId, this.props.params.id)
+            : '';
+        return { 
+            url: url
+        };
+    },
+
+    handleUpload: function(filename, fileId) {
+        this.setState({
+            url: FileUrlProvider.getInstantFileUrl(fileId)
+        });
+    },
+
+    render: function() {
+        var src = this.state.url ? this.state.url + '&w=165&h=95&mode=crop' : '';
         return (
-            <FileEditAttribute actions={this.props.actions} params={this.props.params}>
-                <img src={FileUrlProvider.getFileUrl(params.assetTypeId, params.assetId, this.props.params.id)} />
+            <FileEditAttribute actions={this.props.actions} params={this.props.params} onUpload={this.handleUpload}>
+                <img src={src} />
             </FileEditAttribute>
         );
     }
