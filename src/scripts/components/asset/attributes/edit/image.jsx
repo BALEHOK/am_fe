@@ -15,7 +15,7 @@ var ImageEditAttribute = React.createClass({
     getInitialState: function() {
         var params = this.context.router.getCurrentParams();
         var url = this.props.params.value 
-            ? FileUrlProvider.getFileUrl(params.assetTypeId, params.assetId, this.props.params.id)
+            ? FileUrlProvider.getImageUrl(params.assetTypeId, params.assetId, this.props.params.id)
             : '';
         return { 
             url: url
@@ -24,7 +24,7 @@ var ImageEditAttribute = React.createClass({
 
     handleUpload: function(filename, fileId) {
         this.setState({
-            url: FileUrlProvider.getInstantFileUrl(fileId)
+            url: FileUrlProvider.getInstantImageUrl(fileId)
         });
     },
 

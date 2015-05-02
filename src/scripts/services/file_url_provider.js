@@ -4,8 +4,13 @@ module.exports = {
             `/FileHandler.ashx?assetTypeId=${assetTypeId}&assetId=${assetId}&attributeId=${attributeId}`;
     },
 
-    getInstantFileUrl(fileId) {
+    getImageUrl(assetTypeId, assetId, attributeId) {
+        return BASE_URL +
+            `/ImageHandler.ashx?assetTypeId=${assetTypeId}&assetId=${assetId}&attributeId=${attributeId}`;
+    },
+
+    getInstantImageUrl(fileId) {
     	return BASE_URL +
-            `/FileHandler.ashx?fileId=${fileId}`;
+            `/ImageHandler.ashx?fileId=${fileId}`;
     }
 }

@@ -25,7 +25,7 @@ var Attribute = React.createClass({
                             <img src={src} alt={this.props.params.name} />
                         </div>;
             } else {
-                var src = FileUrlProvider.getFileUrl(urlParams.assetTypeId, urlParams.assetId, this.props.params.id);
+                var src = FileUrlProvider.getImageUrl(urlParams.assetTypeId, urlParams.assetId, this.props.params.id);
                 return <a className="image-wrapper__img" href={src}>
                             <img src={src + '&w=165&h=95&mode=crop'} alt={this.props.params.name} />
                         </a>;
