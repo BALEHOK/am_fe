@@ -30,7 +30,7 @@ var File = React.createClass({
             },
             complete: (err, xhr) => {
                 var response = JSON.parse(xhr.responseText);
-                this.props.onUpload(response.filename, response.fileId);
+                this.props.onUpload(response.Filename, response.ImageUrl);
             }
         });
     },

@@ -22,14 +22,14 @@ var ImageEditAttribute = React.createClass({
         };
     },
 
-    handleUpload: function(filename, fileId) {
+    handleUpload: function(filename, imageUrl) {
         this.setState({
-            url: FileUrlProvider.getInstantImageUrl(fileId)
+            url: FileUrlProvider.getInstantImageUrl(imageUrl)
         });
     },
 
     render: function() {
-        var src = this.state.url ? this.state.url + '&w=165&h=95&mode=crop' : '';
+        var src = this.state.url ? this.state.url : '';
         return (
             <FileEditAttribute actions={this.props.actions} params={this.props.params} onUpload={this.handleUpload}>
                 <img src={src} />

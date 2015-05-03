@@ -1,4 +1,6 @@
 module.exports = {
+	imageParams: 'w=165&h=95&mode=crop',
+
     getFileUrl(assetTypeId, assetId, attributeId) {
         return BASE_URL +
             `/FileHandler.ashx?assetTypeId=${assetTypeId}&assetId=${assetId}&attributeId=${attributeId}`;
@@ -6,11 +8,10 @@ module.exports = {
 
     getImageUrl(assetTypeId, assetId, attributeId) {
         return BASE_URL +
-            `/ImageHandler.ashx?assetTypeId=${assetTypeId}&assetId=${assetId}&attributeId=${attributeId}`;
+            `/ImageHandler.ashx?assetTypeId=${assetTypeId}&assetId=${assetId}&attributeId=${attributeId}&${this.imageParams}`;
     },
 
-    getInstantImageUrl(fileId) {
-    	return BASE_URL +
-            `/ImageHandler.ashx?fileId=${fileId}`;
-    }
+    getInstantImageUrl(imageUrl) {
+    	return BASE_URL + imageUrl + '?' + this.imageParams;
+    },
 }
