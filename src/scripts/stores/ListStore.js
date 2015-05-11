@@ -6,13 +6,15 @@ var ListStore = Flux.createStore({
   lists: {
     assets: {},
     dynlists: [],
+    roles: []
   },
 
   actions: {
     'list:dynlists': 'loadDynamicList',
     'list:assets': 'loadAssetsList',
     'list:currentVals': 'saveCurrentValues',
-    'list:asset-values': 'updateAssetValue'
+    'list:asset-values': 'updateAssetValue',
+    'list:roles': 'loadRoles'
   },
 
   initialize() {
@@ -28,12 +30,21 @@ var ListStore = Flux.createStore({
           rowStart: 0,
           rowsNumber: 20
         };
-      } 
+      }
       else if (el.datatype.indexOf('dynlist') == 0) {
         this.lists.dynlists[el.attributeUid] = el.list;
-      }  
+      }
     });
     this.emitChange();
+  },
+
+  loadRoles() {
+    if(this.lists.roles.length === 0) {
+      this.listRepo.loadRoles().then(data => {
+        this.lists.roles = data;
+        this.emitChange();
+      });
+    }
   },
 
   loadDynamicList(params) {

@@ -72,7 +72,7 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
     }
     selectControl.$control.addClass('form-control');
     var initValue = this.props.value;
-    if (initValue) {
+    if (typeof(initValue) !== 'undefined') {
       selectControl.setValue(initValue);
       selectControl.on('load', function(e){
         selectControl.setValue(initValue);
