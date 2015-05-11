@@ -8,6 +8,7 @@ var ControlWrapper = require('./controlWrapper');
 var ValidationMixin = require('../../../../mixins/ValidationMixin');
 var ReactSelectize = require('../../../common/react-selectize');
 var Flux = require('delorean').Flux;
+var cx = require('classnames');
 
 var EditableAttribute = React.createClass({
     mixins: [ValidationMixin, Flux.mixins.storeListener],
@@ -33,9 +34,11 @@ var EditableAttribute = React.createClass({
     },
 
     render: function() {
+        var classes = cx('select', 'select_size_small');
         return (
             <ControlWrapper
                 name={this.props.params.name}
+                className={classes}
                 validationState={this.state.validation}>
                 <ReactSelectize
                     items={this.getItems()}

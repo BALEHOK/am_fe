@@ -3,20 +3,11 @@
  */
 
 var React = require('react');
-var cx = require('classnames');
-var ControlWrapper = require('./controlWrapper');
-var ValidationMixin = require('../../../../mixins/ValidationMixin');
 var ReactSelectize = require('../../../common/react-selectize');
 var Flux = require('delorean').Flux;
 
-const ROW_NUMBER = 10;
-
 var EditableAttribute = React.createClass({
-    mixins: [ValidationMixin, Flux.mixins.storeListener],
-
-    componentWillMount: function() {
-        this.setupValidation(this.props.actions);
-    },
+    mixins: [Flux.mixins.storeListener],
 
     handleChange: function(e) {
         this.props.params.value = e.name;
@@ -42,19 +33,15 @@ var EditableAttribute = React.createClass({
 
     render: function() {
         return (
-            <ControlWrapper
-                name={this.props.params.name}
-                validationState={this.state.validation}>
-                <ReactSelectize
-                    items={this.getItems()}
-                    value={this.id}
-                    onItemsRequest={this.requestItems}
-                    onChange={this.handleChange}
-                    selectId={this.props.name + "-" + this.props.params.id}
-                    placeholder=" "
-                    label=" "
-                />
-            </ControlWrapper>
+            <ReactSelectize
+                  items={this.getItems()}
+                  value={this.id}
+                  onItemsRequest={this.requestItems}
+                  onChange={this.handleChange}
+                  selectId={this.props.name + "-" + this.props.params.id}
+                  placeholder=" "
+                  label=" "
+            />
         );
     }
 });
