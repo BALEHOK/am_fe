@@ -36,6 +36,8 @@ var AttributesFactory = {
         case 'permission':
         case 'barcode':
         case 'role':
+        case 'zipcode':
+        case 'place':
             Component = require("./attributes/edit/" + name + ".jsx");
             break;
         case 'usd':

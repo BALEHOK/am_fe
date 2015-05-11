@@ -9,6 +9,8 @@ var ValidationMixin = require('../../../../mixins/ValidationMixin');
 var ReactSelectize = require('../../../common/react-selectize');
 var Flux = require('delorean').Flux;
 
+const ROW_NUMBER = 10;
+
 var EditableAttribute = React.createClass({
     mixins: [ValidationMixin, Flux.mixins.storeListener],
 
@@ -18,18 +20,24 @@ var EditableAttribute = React.createClass({
 
     handleChange: function(e) {
         this.props.params.value = e.name;
+        this.id = e.id;
     },
 
     getItems: function() {
-        if(this.state.stores.list.roles.length > 0) {
-            return this.state.stores.list.roles;
+        var items = this.state.stores.list[this.props.name][this.props.params.id];
+        if(items) {
+            return items.data.map(this.props.mapper);
         } else {
             return [{name: this.props.params.value, id: 0}];
         }
     },
 
-    requestItems: function() {
-        this.props.actions.loadRoles();
+    requestItems: function(query) {
+        return this.props.actions.loadList({
+          id: this.props.params.id,
+          filter: query || this.props.params.value,
+          name: this.props.name
+        });
     },
 
     render: function() {
@@ -39,10 +47,10 @@ var EditableAttribute = React.createClass({
                 validationState={this.state.validation}>
                 <ReactSelectize
                     items={this.getItems()}
-                    value={0}
+                    value={this.id}
                     onItemsRequest={this.requestItems}
                     onChange={this.handleChange}
-                    selectId={"roles-" + this.props.params.id}
+                    selectId={this.props.name + "-" + this.props.params.id}
                     placeholder=" "
                     label=" "
                 />

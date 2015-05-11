@@ -6,7 +6,9 @@ var ListStore = Flux.createStore({
   lists: {
     assets: {},
     dynlists: [],
-    roles: []
+    roles: [],
+    zips: {},
+    places: {}
   },
 
   actions: {
@@ -14,11 +16,53 @@ var ListStore = Flux.createStore({
     'list:assets': 'loadAssetsList',
     'list:currentVals': 'saveCurrentValues',
     'list:asset-values': 'updateAssetValue',
-    'list:roles': 'loadRoles'
+    'list:roles': 'loadRoles',
+    'list:load': 'loadList'
   },
 
   initialize() {
     this.listRepo = new ListRepository();
+  },
+
+  loadList(params) {
+    var req;
+    const rowsNumber = 20;
+    var val = this.lists[params.name][params.id];
+
+    params.rowsNumber = rowsNumber;
+    if(!val || val.filter !== params.filter) {
+      params.rowStart = 0;
+    } else {
+      params.rowStart = val.rowStart + rowsNumber;
+    }
+    switch(params.name) {
+      case 'zips':
+        req = this.listRepo.loadZipcodes(params)
+        break;
+      case 'places':
+        req = this.listRepo.loadPlaces(params)
+        break;
+    }
+    req.then(this.processAutoList.bind(this, params.name, params));
+  },
+
+  processAutoList(list, params, data) {
+    if(this.lists[list][params.id]) {
+        var val = this.lists[list][params.id];
+        if(val.filter === params.filter) {
+            val.data = _.unique(val.data.concat(data), 'id');
+        } else {
+            val.data = data;
+            val.filter = params.filter;
+        }
+    } else {
+        this.lists[list][params.id] = {
+            data,
+            filter: params.filter
+        };
+    }
+    this.lists[list][params.id].rowStart = params.rowStart;
+    this.emitChange();
   },
 
   saveCurrentValues(assets) {
@@ -63,6 +107,10 @@ var ListStore = Flux.createStore({
 
   loadAssetsList(params) {
     var assetTypeId = params.assetTypeId;
+    if(!this.lists.assets[params.uid]) {
+      this.lists.assets[params.uid] = {};
+
+    }
     var list = this.lists.assets[params.uid];
     if(list.query != params.query) {
       list.query = params.query;
