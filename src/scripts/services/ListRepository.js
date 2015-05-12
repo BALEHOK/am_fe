@@ -8,6 +8,32 @@ class ListRepository {
         });
     }
 
+    loadZipcodes(params) {
+        var url = `/api/zipcodes`;
+        return $.ajax({
+          url: url,
+          contentType: 'application/json',
+          data: {
+            filter: params.filter,
+            rowStart: params.rowStart,
+            rowsNumber: params.rowsNumber
+          }
+        });
+    }
+
+    loadPlaces(params) {
+      var url = `/api/places`;
+      return $.ajax({
+        url: url,
+        contentType: 'application/json',
+        data: {
+          filter: params.filter,
+          rowStart: params.rowStart,
+          rowsNumber: params.rowsNumber
+        }
+      });
+    }
+
     loadAssetsList(params) {
       var rowStart = params.rowStart || 1;
       var rowsNumber = params.rowsNumber || 20;

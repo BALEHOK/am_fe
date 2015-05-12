@@ -20,7 +20,11 @@ class AssetActions extends Actions {
   }
 
   loadRoles() {
-    this._dispatcher.loadRoles();
+    return this._dispatcher.loadRoles();
+  }
+
+  loadList(params) {
+    return this._dispatcher.loadList(params);
   }
 
   updateAssetValue(params) {

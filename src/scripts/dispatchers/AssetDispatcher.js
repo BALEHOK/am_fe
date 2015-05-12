@@ -7,23 +7,27 @@ var HistoryStore = require('../stores/HistoryStore');
 var AssetDispatcher = Flux.createDispatcher({
 
   loadAsset(params) {
-    return this.dispatch("asset:load", params);
+      return this.dispatch("asset:load", params);
   },
 
   loadRelatedAssets(params) {
-    return this.dispatch("asset:load-related", params);
+      return this.dispatch("asset:load-related", params);
   },
 
   loadHistory(params) {
-    return this.dispatch("history:load", params);
+      return this.dispatch("history:load", params);
   },
 
   setListValues(assets) {
-    return this.dispatch('list:currentVals', assets);
+      return this.dispatch('list:currentVals', assets);
   },
 
   generateBarcode(params) {
       return this.dispatch('barcode:generate', params);
+  },
+
+  loadList(params) {
+      return this.dispatch('list:load', params);
   },
 
   updateAssetValue(params) {
