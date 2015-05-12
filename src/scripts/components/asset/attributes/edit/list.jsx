@@ -19,7 +19,7 @@ var EditableAttribute = React.createClass({
     },
 
     handleChange: function(e) {
-        this.props.params.value = e.name;
+        this.props.params.value = e[0];
         this.id = e.id;
     },
 
@@ -28,7 +28,7 @@ var EditableAttribute = React.createClass({
         if(items) {
             return items.data.map(this.props.mapper);
         } else {
-            return [{name: this.props.params.value, id: 0}];
+            return [this.props.params.value];
         }
     },
 
