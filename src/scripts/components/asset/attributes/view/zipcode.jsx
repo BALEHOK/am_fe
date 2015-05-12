@@ -7,7 +7,13 @@ var StringAttribute = require('./string');
 
 var Attribute = React.createClass({
     render: function() {
-        return <StringAttribute params={this.props.params} />;
+    	var params = {
+    		name: this.props.params.name,
+    		value: this.props.params.value 
+    			? this.props.params.value.name
+    			: ''
+    	};
+        return <StringAttribute params={params} />;
     }
 });
 
