@@ -34,7 +34,7 @@ var GoogleMapsComponent = React.createClass({
     },
 
     componentDidMount: function() {
-        if (this.state.markers.length == 0 && navigator.geolocation) {
+        if (this.state.markers.length == 0 && navigator.geolocation && !this.props.viewOnly) {
             navigator.geolocation.getCurrentPosition((position) => {
               this.setState({
                 center: {
