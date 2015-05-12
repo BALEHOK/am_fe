@@ -122,7 +122,7 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
     this.props.items = list;
     var control = this.getSelectizeControl();
     list.map(el => control.addOption(el));
-    control.refreshOptions(false);
+    control.refreshOptions();
   },
 
   shouldComponentUpdate: function(nextProps, nextState) {
