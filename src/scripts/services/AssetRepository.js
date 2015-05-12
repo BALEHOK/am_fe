@@ -72,7 +72,6 @@ class AssetRepository {
             url: url,
             data: JSON.stringify(asset),
             contentType: "application/json; charset=utf-8",
-            dataType: "json",
         });
     }
 
