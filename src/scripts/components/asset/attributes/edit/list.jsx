@@ -47,7 +47,7 @@ var EditableAttribute = React.createClass({
                 validationState={this.state.validation}>
                 <ReactSelectize
                     items={this.getItems()}
-                    value={this.id}
+                  value={this.props.params.value.id}
                     onItemsRequest={this.requestItems}
                     onChange={this.handleChange}
                     selectId={this.props.name + "-" + this.props.params.id}
