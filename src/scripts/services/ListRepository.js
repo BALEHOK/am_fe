@@ -9,50 +9,49 @@ class ListRepository {
     }
 
     loadZipcodes(params) {
-        var url = `/api/zipcodes`;
-        return $.ajax({
-          url: url,
-          contentType: 'application/json',
-          data: {
-            filter: params.filter,
-            rowStart: params.rowStart,
-            rowsNumber: params.rowsNumber
-          }
-        });
+        return this.loadList('/api/zipcodes', params)
     }
 
-    loadPlaces(params) {
-      var url = `/api/places`;
-      return $.ajax({
-        url: url,
-        contentType: 'application/json',
-        data: {
-          filter: params.filter,
-          rowStart: params.rowStart,
-          rowsNumber: params.rowsNumber
-        }
-      });
-    }
-
-    loadAssetsList(params) {
-      var rowStart = params.rowStart || 1;
-      var rowsNumber = params.rowsNumber || 20;
-        var query = params.query || '';
-        var url = `/api/assettype/${params.assetTypeId}/assets/`;
+    loadList(url, params) {
         return $.ajax({
             url: url,
             contentType: 'application/json',
-            type: 'GET',
-            data: params
+            data: {
+                filter: params.filter,
+                rowStart: params.rowStart,
+                rowsNumber: params.rowsNumber,
+                query: params.filter
+            }
         });
     }
 
+    loadDocs(params) {
+        return this.loadList('/api/documents', params);
+    }
+
+    loadPlaces(params) {
+        return this.loadList('/api/places', params);
+    }
+
+    loadAssetsList(params) {
+        var rowStart = params.rowStart || 1;
+        var rowsNumber = params.rowsNumber || 20;
+          var query = params.query || '';
+          var url = `/api/assettype/${params.assetTypeId}/assets/`;
+          return $.ajax({
+              url: url,
+              contentType: 'application/json',
+              type: 'GET',
+              data: params
+          });
+    }
+
     loadRoles() {
-      var url = `/api/roles`;
-      return $.ajax({
-        url: url,
-        contentType: 'application/json',
-      });
+        var url = `/api/roles`;
+        return $.ajax({
+            url: url,
+            contentType: 'application/json',
+        });
     }
 }
 

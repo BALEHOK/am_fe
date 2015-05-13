@@ -8,7 +8,8 @@ var ListStore = Flux.createStore({
     dynlists: [],
     roles: [],
     zips: {},
-    places: {}
+    places: {},
+    docs: {}
   },
 
   actions: {
@@ -38,6 +39,9 @@ var ListStore = Flux.createStore({
     switch(params.name) {
       case 'zips':
         req = this.listRepo.loadZipcodes(params)
+        break;
+      case 'docs':
+        req = this.listRepo.loadDocs(params);
         break;
       case 'places':
         req = this.listRepo.loadPlaces(params)
