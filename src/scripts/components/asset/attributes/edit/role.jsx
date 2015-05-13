@@ -18,14 +18,14 @@ var EditableAttribute = React.createClass({
     },
 
     handleChange: function(e) {
-        this.props.params.value = e.name;
+        this.props.params.value = e[0];
     },
 
     getItems: function() {
         if(this.state.stores.list.roles.length > 0) {
             return this.state.stores.list.roles;
         } else {
-            return [{name: this.props.params.value, id: 0}];
+            return [this.props.params.value];
         }
     },
 
@@ -35,6 +35,9 @@ var EditableAttribute = React.createClass({
 
     render: function() {
         var classes = cx('select', 'select_size_small');
+        var value = this.props.params.value
+            ? this.props.params.value.id
+            : 0;
         return (
             <ControlWrapper
                 name={this.props.params.name}
@@ -42,7 +45,7 @@ var EditableAttribute = React.createClass({
                 validationState={this.state.validation}>
                 <ReactSelectize
                     items={this.getItems()}
-                    value={0}
+                    value={value}
                     onItemsRequest={this.requestItems}
                     onChange={this.handleChange}
                     selectId={"roles-" + this.props.params.id}
