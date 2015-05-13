@@ -22,9 +22,12 @@ var EditableAttribute = React.createClass({
         this.setupValidation(this.props.actions);
     },
 
-
     onUpload: function(docName) {
-      // this.onLoadEnd();
+      this.props.params.value = {
+        id: 0,
+        name : docName
+      };
+      this.onLoadEnd();
     },
 
     render: function() {
