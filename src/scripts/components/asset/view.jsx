@@ -19,11 +19,7 @@ var LoaderMixin = require('../../mixins/LoaderMixin');
 var cx = require('classnames');
 
 var AssetView = React.createClass({
-    mixins:[Router.State, Flux.mixins.storeListener, LoaderMixin],
-
-    contextTypes: {
-        router: React.PropTypes.func
-    },
+    mixins:[Flux.mixins.storeListener, LoaderMixin],
 
     getInitialState: function() {
         return {
@@ -32,16 +28,24 @@ var AssetView = React.createClass({
     },
 
     componentWillMount: function() {
-        var params = _.extend({}, this.context.router.getCurrentParams(), this.context.router.getCurrentQuery());
+        var params = _.extend({}, this.props.params, this.props.query);
         this.waitFor(this.props.actions.loadAsset(params));
     },
 
+    componentWillReceiveProps: function(nextProps) {
+        if (!_.isEqual(this.props.params, nextProps.params)) {
+            this.setState({selectedScreen: undefined});
+            var params = _.extend({}, nextProps.params, nextProps.query);
+            this.waitFor(this.props.actions.loadAsset(params));
+        }
+    },
+
     onAssetDelete: function() {
-        this.props.actions.deleteAsset(this.context.router.getCurrentParams());
+        this.props.actions.deleteAsset(this.props.params);
     },
 
     onAssetRestore: function() {
-        this.props.actions.restoreAsset(this.context.router.getCurrentParams());
+        this.props.actions.restoreAsset(this.props.params);
     },
 
     storeDidChange: function (storeName) {

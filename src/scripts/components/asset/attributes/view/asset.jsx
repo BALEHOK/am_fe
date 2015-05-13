@@ -10,7 +10,7 @@ var Attribute = React.createClass({
     contextTypes: {
         router: React.PropTypes.func
     },
-    render: function() {
+    render: function() {        
         var params = this.props.params;
         var getDisplayValue = () => {            
             if (params.value.id) {
