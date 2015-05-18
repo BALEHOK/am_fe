@@ -1,6 +1,9 @@
 class AssetRepository {
     loadAsset(params) {
-        var url = `/api/assettype/${params.assetTypeId}/asset/${params.assetId}`;
+        var url = `/api/assettype/${params.assetTypeId}/asset`;
+        if (params.assetId) {
+            url += `/${params.assetId}`
+        }
         if (params.revision) {
             url += `/revisions/${params.revision}`;
         } 

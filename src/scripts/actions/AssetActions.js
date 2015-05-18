@@ -52,11 +52,11 @@ class AssetActions extends Actions {
   }
 
   loadBarcode(params) {
-      return this._dispatcher.loadBarcode(params);
+    return this._dispatcher.loadBarcode(params);
   }
 
   generateBarcode(params) {
-      return this._dispatcher.generateBarcode(params);
+    return this._dispatcher.generateBarcode(params);
   }
 
   deleteAsset(params) {
@@ -69,6 +69,10 @@ class AssetActions extends Actions {
 
   validateAttribute(params) {
     this._dispatcher.validateAttribute(params);
+  }
+
+  loadAssetTypes() {
+    return this._dispatcher.loadAssetTypes();
   }
 }
 

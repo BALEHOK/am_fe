@@ -32,7 +32,7 @@ var Layout = React.createClass({
                         </div>
                     </div>
                     <div className="page-header__nav">
-                        <HeaderNav/>
+                        <HeaderNav {...this.props} />
                     </div>
                 </header>
                 <div className="page-content">

@@ -74,6 +74,10 @@ var AssetDispatcher = Flux.createDispatcher({
     return this.dispatch("asset:save", asset);
   },
 
+  loadAssetTypes() {
+    return this.dispatch("list:assettypes");
+  },
+
   getStores() {
     return {
       asset: new AssetStore(),

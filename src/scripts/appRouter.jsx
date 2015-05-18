@@ -13,6 +13,7 @@ var Layout = require('./components/common/layout.jsx');
 var SearchPage = require('./components/search/main.jsx');
 var ResultPage = require('./components/search/results_handler.jsx');
 var LoginPage = require('./components/login/main.jsx');
+var AssetCreatePage = require('./components/asset/create/createHandler.jsx');
 var AssetViewPage = require('./components/asset/viewHandler.jsx');
 var AssetEditPage = require('./components/asset/edit/editHandler.jsx');
 var HistoryHandler = require('./components/history/historyHandler.jsx');
@@ -25,6 +26,9 @@ var routes = (
       path="/search/type/:assetTypeId"
       handler={SearchPage} />
     <Route name="result" path="/search/result/?:searchId?" handler={ResultPage} />
+    <Route name="asset-create"
+      path="/create/?"
+      handler={AssetCreatePage} />
     <Route name="asset-view"
       path="/assettype/:assetTypeId/asset/:assetId"
       handler={AssetViewPage} />
