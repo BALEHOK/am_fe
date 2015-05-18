@@ -38,7 +38,7 @@ var Layout = React.createClass({
                 <div className="page-content">
                     <div className="container" id="content">
                         <Breadcrumbs/>
-                        <RouteHandler app={app} />
+                        <RouteHandler app={app} {...this.props} />
                     </div>
                 </div>
             </div>

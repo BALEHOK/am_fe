@@ -17,7 +17,7 @@ var AssetViewHandler = React.createClass({
     },
 
     render: function() {
-        return <View actions={this.actions} dispatcher={this.dispatcher} />
+        return <View actions={this.actions} dispatcher={this.dispatcher} {...this.props} />
     }
 });
 module.exports = AssetViewHandler;

@@ -9,8 +9,10 @@ var LayoutSwitcher = React.createClass({
 
     onScreenChange: function(val) {
         var screen = this.props.screens.filter((el) => 
-            { return el.id === val[0].id })[0];
-        this.props.onChange(screen);
+            { return el.id === val[0].id });
+        if (screen) {            
+            this.props.onChange(screen[0]);
+        }
     },
 
     render: function() {

@@ -4,26 +4,26 @@
 
 var React = require('react');
 var Router = require('react-router');
+var Link = Router.Link;
 
 var Attribute = React.createClass({
     contextTypes: {
         router: React.PropTypes.func
     },
-    render: function() {
+    render: function() {        
         var params = this.props.params;
         var getDisplayValue = () => {            
             if (params.value.id) {
-                var relHref = this.context.router.makeHref('type-search', 
-                    { assetTypeId: params.relatedAssetTypeId });
-                var assetHref = this.context.router.makeHref('asset-view', 
-                    { 
-                        assetTypeId: params.relatedAssetTypeId, 
-                        assetId: params.value.id 
-                    }); 
+                //var relHref = this.context.router.makeHref('type-search', 
+                //    { assetTypeId: params.relatedAssetTypeId });
+                var assetHref = { 
+                    assetTypeId: params.relatedAssetTypeId, 
+                    assetId: params.value.id 
+                }; 
                 return (
                     <span>
                         <strong>
-                            <a href={assetHref}>{params.value.name}</a>
+                            <Link to="asset-view" params={assetHref}>{params.value.name}</Link>
                         </strong>{/* | <a href={relHref}>Related items</a>*/}
                     </span>
                 );

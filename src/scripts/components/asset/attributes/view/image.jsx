@@ -11,7 +11,7 @@ var Attribute = React.createClass({
         router: React.PropTypes.func
     },
     render: function() {
-        var urlParams = this.context.router.getCurrentParams();
+        var urlParams = this.context.router.getCurrentParams();        
         var file = this.props.params.value;
         if(file.length > 14) {
             file = file.slice(0, 8) + "..." + file.slice(-3);
