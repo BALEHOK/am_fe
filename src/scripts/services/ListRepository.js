@@ -55,7 +55,7 @@ class ListRepository {
     }
 
     loadAssetTypes() {
-        var url = `/api/typesinfo`;
+        var url = `/api/assettype`;
         return $.ajax({
             url: url,
             contentType: 'application/json',

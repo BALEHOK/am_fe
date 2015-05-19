@@ -28,7 +28,7 @@ var routes = (
     <Route name="result" path="/search/result/?:searchId?" handler={ResultPage} />
     <Route name="asset-create"
       path="/create/?"
-      handler={AssetCreatePage} />
+      handler={AssetCreatePage} />    
     <Route name="asset-view"
       path="/assettype/:assetTypeId/asset/:assetId"
       handler={AssetViewPage} />
@@ -36,7 +36,7 @@ var routes = (
       path="/assettype/:assetTypeId/asset/:assetId/revisions/:revision"
       handler={AssetViewPage} />
     <Route name="asset-edit"
-      path="/assettype/:assetTypeId/asset/:assetId/edit"
+      path="/assettype/:assetTypeId/asset/:assetId?/edit"
       handler={AssetEditPage} />
     <Route name="asset-history"
       path="/assettype/:assetTypeId/asset/:assetId/history"

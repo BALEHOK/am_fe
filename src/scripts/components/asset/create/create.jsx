@@ -10,29 +10,35 @@ var LoaderMixin = require('../../../mixins/LoaderMixin');
 var AssetTypeRow = require('./assetTypeRow');
 
 var Create = React.createClass({
-    mixins:[Flux.mixins.storeListener, LoaderMixin],
+    mixins:[Flux.mixins.storeListener, LoaderMixin, Router.Navigation],
 
     componentWillMount: function() {
         this.waitFor(this.props.actions.loadAssetTypes());
+    },
+
+    onAssetTypeClick: function(assettype) {
+        this.transitionTo('asset-edit', {assetTypeId : assettype.id});
     },
 
     render: function() {
         var rows = {};
         var assettypes = this.state.stores.list.assettypes;
         if (assettypes.activeTypes && assettypes.activeTypes.length > 0)
-    	   rows = assettypes.activeTypes.map(type => <AssetTypeRow type={type} />);
+    	   rows = assettypes.activeTypes.map(type => <AssetTypeRow type={type} onClick={this.onAssetTypeClick} />);
     	return (
     		<div>
-                <h1 className="page-title"><span className="icon icon_create"></span>Create Asset</h1>
+                <h1 className="page-title"><span className="icon icon_create"></span>New Asset</h1>
+                <h2>Please select an asset type</h2>
                 <Loader loading={this.state.loading}>
-                    <div className="grid">
+                    <div className="grid asset-create">
                         <div className="grid__item ten-twelfths">
                             <table className="table">
                                 <tr>
                                     <th width="25%">Name</th>
-                                    <th width="50%">Description</th>
+                                    <th width="45%">Description</th>
                                     <th width="12%">Revision</th>
                                     <th width="13%">Date</th>
+                                    <th width="5%">&nbsp;</th>
                                 </tr>
                                 {rows}
                             </table>
