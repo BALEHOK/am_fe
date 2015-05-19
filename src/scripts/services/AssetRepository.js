@@ -69,9 +69,14 @@ class AssetRepository {
     }
 
     saveAsset(asset) {
-        var url = `/api/assettype/${asset.assetTypeId}/asset/${asset.id}`;
+        var url = `/api/assettype/${asset.assetTypeId}/asset`;
+        if (asset.id) 
+            url += `/${asset.id}`;
+
         return $.ajax({
-            type: 'POST',
+            type: asset.id 
+                ? 'POST'
+                : 'PUT',
             url: url,
             data: JSON.stringify(asset),
             contentType: "application/json; charset=utf-8",

@@ -5,7 +5,7 @@
 var React = require('react');
 var Flux = require('delorean').Flux;
 var Router = require('react-router');
-
+var moment = require('moment');
 var TaxonomyPath = require('../taxonomyPath');
 var Panel = require('./panel');
 var RevisionInfo = require('../revisionInfo');
@@ -14,6 +14,7 @@ var LayoutSwitcher = require('../layoutSwitcher');
 var ViewsFactory = require('../viewsFactory');
 var Loader = require('../../common/loader.jsx');
 var LoaderMixin = require('../../../mixins/LoaderMixin');
+var ValueTransformer = require('../../../util/valueTransformer').ValueTransformer;
 
 var Edit = React.createClass({
     mixins:[Flux.mixins.storeListener, LoaderMixin],
@@ -73,8 +74,8 @@ var Edit = React.createClass({
                 self.context.router.transitionTo('asset-view', params)
             })
             .catch(error => {
-                console.log(error);
                 self.stopWaiting();
+                self.forceUpdate();
             });
     },
 
@@ -92,10 +93,13 @@ var Edit = React.createClass({
                           actions={actions}
                           validation={validationData} />
         });
+        var dateTransform = new ValueTransformer(function (date) {
+          return moment(date).format('DD.MM.YYYY HH:mm');
+        });
         return (
             <div>
                 <h1 className="page-title">Edit: <span className="page-title__param">{asset.name}</span></h1>
-                <RevisionInfo asset={asset} />
+                <RevisionInfo asset={asset} dateTransform={dateTransform} />
                 <div className="grid">
                     <div className="grid__item two-twelfths">
                         <LayoutSwitcher

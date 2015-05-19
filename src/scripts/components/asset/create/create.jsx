@@ -17,7 +17,7 @@ var Create = React.createClass({
     },
 
     onAssetTypeClick: function(assettype) {
-        this.transitionTo('asset-edit', {assetTypeId : assettype.id});
+        this.transitionTo('asset-create-from-type', {assetTypeId : assettype.id});
     },
 
     render: function() {
