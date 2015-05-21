@@ -24,7 +24,8 @@ var ValidationMixin = {
                 validationState: undefined,
                 isValid: undefined,
                 groupClasses: 'form-group',
-                feedbackClasses: 'glyphicon form-control-feedback'
+                feedbackClasses: 'glyphicon form-control-feedback',
+                message: undefined,
             }
         };
     },
@@ -32,7 +33,7 @@ var ValidationMixin = {
 	componentWillReceiveProps: function (nextProps) {
         var valResult = nextProps.validation;
         if (valResult) {
-
+            
             var groupClasses = cx({
                 'form-group': true,
                 'has-feedback': true,
@@ -49,7 +50,8 @@ var ValidationMixin = {
                     isValid: valResult.isValid,
                     validationState:  valResult.isValid ? 'success' : 'error',
                     groupClasses: groupClasses,
-                    feedbackClasses: feedbackClasses
+                    feedbackClasses: feedbackClasses,
+                    message: valResult.message,
                 }
             });
         }

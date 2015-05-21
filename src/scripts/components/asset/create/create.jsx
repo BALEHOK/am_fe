@@ -10,14 +10,20 @@ var LoaderMixin = require('../../../mixins/LoaderMixin');
 var AssetTypeRow = require('./assetTypeRow');
 
 var Create = React.createClass({
-    mixins:[Flux.mixins.storeListener, LoaderMixin, Router.Navigation],
+    mixins:[Flux.mixins.storeListener, LoaderMixin],
+
+    contextTypes: {
+        router: React.PropTypes.func
+    },
 
     componentWillMount: function() {
         this.waitFor(this.props.actions.loadAssetTypes());
     },
 
     onAssetTypeClick: function(assettype) {
-        this.transitionTo('asset-create-from-type', {assetTypeId : assettype.id});
+        this.context.router.transitionTo(
+            'asset-create-from-type', 
+            {assetTypeId : assettype.id});
     },
 
     render: function() {
