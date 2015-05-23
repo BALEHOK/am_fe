@@ -18,13 +18,21 @@ class AssetRepository {
     }
 
     loadRelatedAssets(params) {
-        var url = `/api/assettype/${params.assetTypeId}/asset/${params.assetId}/related?`;
+        var url = `/api/assettype/${params.assetTypeId}/asset`;
+
+        if (params.assetId) {
+            url += `/${params.assetId}`;
+        }
+
+        url += '/related?';
+
         if (params.revision) {
             url += `&revision=${params.revision}`;
         }
         else if (params.uid) {
             url += `&uid=${params.uid}`;
         }
+
         return $.ajax({
             url: url,
             contentType: 'application/json',

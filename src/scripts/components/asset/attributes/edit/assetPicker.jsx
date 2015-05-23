@@ -12,7 +12,7 @@ var cx = require('classnames');
 
 var AssetPicker = React.createClass({
     mixins:[Flux.mixins.storeListener, Router.State, ValidationMixin],
-    
+
     componentWillMount: function() {
         this.setupValidation(this.props.actions);
     },
@@ -54,7 +54,7 @@ var AssetPicker = React.createClass({
         var classes = cx('select', 'select_size_small');
         return (
             <ControlWrapper
-                name={this.props.params.name} 
+                name={this.props.params.name}
                 className={classes}
                 validationState={this.state.validation}>
 

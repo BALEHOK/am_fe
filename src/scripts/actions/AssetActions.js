@@ -5,23 +5,21 @@ class AssetActions extends Actions {
   loadAsset(params) {
     return this._dispatcher.loadAsset(params)
       .then(() => {
-        
+
         var asset = this._dispatcher.getStore('asset').getState().asset;
         this._dispatcher.loadTaxonomyPath(asset.assetTypeId);
-        
+
         if (asset.barcode) {
           this._dispatcher.loadBarcode(asset.barcode);
         }
 
-        if (asset.id) {     
-          return this._dispatcher
-            .loadRelatedAssets(params)
-            .then(() => {
-              var assets = this._dispatcher.getStore('asset').getState().relatedAssets;
-              this._dispatcher.setListValues(assets);
-            });
-        }
-        
+        return this._dispatcher
+          .loadRelatedAssets(params)
+          .then(() => {
+            var assets = this._dispatcher.getStore('asset').getState().relatedAssets;
+            this._dispatcher.setListValues(assets);
+          });
+
       });
   }
 

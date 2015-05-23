@@ -39,7 +39,7 @@ var DateTimeAttribute = React.createClass({
     },
 
     formatDate(d) {
-        return d.format('M/D/YYYY HH:mm:ss');
+        return d ? d.format('M/D/YYYY HH:mm:ss') : d;
     },
 
     onChange(e, date) {
@@ -63,11 +63,14 @@ var DateTimeAttribute = React.createClass({
     },
 
     render() {
+        var dateValue = this.props.params.value
+            ? moment(this.props.params.value)
+            : undefined;
         var picker;
         if(this.state.opened) {
             picker = (
                 <div className="asset-date-picker">
-                    <DatePicker onChange={this.onChange} date={moment(this.props.params.value)} />
+                    <DatePicker onChange={this.onChange} date={dateValue} />
                     <TimePicker className="asset-date-picker__time" format="HH:mm" onChange={this.onTimeChange} value={moment(this.props.params.value).format('HH:mm')} />
                 </div>
             )
@@ -80,7 +83,7 @@ var DateTimeAttribute = React.createClass({
                 <input type="text"
                     className="input-txt__field form-control"
                     onClick={this.showDatePicker}
-                    value={this.formatDate(moment(this.props.params.value))} />
+                    value={this.formatDate(dateValue)} />
                 {picker}
 
             </ControlWrapper>
