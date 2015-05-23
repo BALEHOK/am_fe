@@ -6,10 +6,10 @@ class AssetRepository {
         }
         if (params.revision) {
             url += `/revisions/${params.revision}`;
-        } 
+        }
         else if (params.uid) {
             url += `?uid=${params.uid}`;
-        } 
+        }
         return $.ajax({
             url: url,
             contentType: 'application/json',
@@ -21,7 +21,7 @@ class AssetRepository {
         var url = `/api/assettype/${params.assetTypeId}/asset/${params.assetId}/related?`;
         if (params.revision) {
             url += `&revision=${params.revision}`;
-        } 
+        }
         else if (params.uid) {
             url += `&uid=${params.uid}`;
         }
@@ -30,7 +30,7 @@ class AssetRepository {
             contentType: 'application/json',
             type: 'GET'
         });
-    } 
+    }
 
     loadBarcode(barcode) {
         var url = `/api/barcode/${barcode}`;
@@ -48,7 +48,7 @@ class AssetRepository {
             contentType: 'application/json',
             type: 'GET'
         });
-    } 
+    }
 
     deleteAsset(params) {
         var url = `/api/assettype/${params.assetTypeId}/asset/${params.assetId}`;
@@ -70,11 +70,11 @@ class AssetRepository {
 
     saveAsset(asset) {
         var url = `/api/assettype/${asset.assetTypeId}/asset`;
-        if (asset.id) 
+        if (asset.id)
             url += `/${asset.id}`;
 
         return $.ajax({
-            type: asset.id 
+            type: asset.id
                 ? 'POST'
                 : 'PUT',
             url: url,
@@ -84,11 +84,12 @@ class AssetRepository {
     }
 
     validateAttribute(params) {
-        var url = `/api/validation/attribute/${params.attributeId}/?value=${params.value}`;
+        var url = `/api/validation/attribute/${params.attributeId}`;
         return $.ajax({
             url: url,
-            contentType: 'application/json',
-            type: 'GET'
+            contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+            data: '=' + params.value,
+            type: 'POST'
         });
     }
 }
