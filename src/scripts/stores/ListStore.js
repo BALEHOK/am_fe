@@ -9,7 +9,8 @@ var ListStore = Flux.createStore({
     roles: [],
     zips: {},
     places: {},
-    docs: {}
+    docs: {},
+    assettypes: {},
   },
 
   actions: {
@@ -18,7 +19,8 @@ var ListStore = Flux.createStore({
     'list:currentVals': 'saveCurrentValues',
     'list:asset-values': 'updateAssetValue',
     'list:roles': 'loadRoles',
-    'list:load': 'loadList'
+    'list:load': 'loadList',
+    'list:assettypes': 'loadAssetTypes',
   },
 
   initialize() {
@@ -132,6 +134,13 @@ var ListStore = Flux.createStore({
       this.emitChange();
     });
   },
+
+  loadAssetTypes() {
+    this.listRepo.loadAssetTypes().then(data => {
+      this.lists.assettypes = data;
+      this.emitChange();
+    });
+  },  
 
   getState() {
     return this.lists;

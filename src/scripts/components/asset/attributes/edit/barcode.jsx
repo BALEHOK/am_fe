@@ -29,8 +29,13 @@ var BooleanAttribute = React.createClass({
     },
 
     render: function() {
-        var data = this.state.stores.asset.asset.barcode;
-        var src = `data:image/png;base64,${data}`;
+        var renderBarcode = () => {
+            var data = this.state.stores.asset.asset.barcode;
+            if (data) {
+                return <img src={`data:image/png;base64,${data}`} alt="" />
+            }
+            return '';
+        };
         return (
             <ControlWrapper
                 name={this.props.params.name}
@@ -40,7 +45,7 @@ var BooleanAttribute = React.createClass({
                     onClick={this.generate}>
                     <i className="btn__icon btn__icon_history"></i>Generate
                 </button>
-                <img src={src} alt="" />
+                {renderBarcode()}
                 <input
                     type="text"
                     ref="bc"

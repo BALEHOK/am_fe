@@ -5,17 +5,21 @@ class AssetActions extends Actions {
   loadAsset(params) {
     return this._dispatcher.loadAsset(params)
       .then(() => {
+
         var asset = this._dispatcher.getStore('asset').getState().asset;
         this._dispatcher.loadTaxonomyPath(asset.assetTypeId);
+
         if (asset.barcode) {
           this._dispatcher.loadBarcode(asset.barcode);
         }
+
         return this._dispatcher
           .loadRelatedAssets(params)
           .then(() => {
             var assets = this._dispatcher.getStore('asset').getState().relatedAssets;
             this._dispatcher.setListValues(assets);
           });
+
       });
   }
 
@@ -52,11 +56,11 @@ class AssetActions extends Actions {
   }
 
   loadBarcode(params) {
-      return this._dispatcher.loadBarcode(params);
+    return this._dispatcher.loadBarcode(params);
   }
 
   generateBarcode(params) {
-      return this._dispatcher.generateBarcode(params);
+    return this._dispatcher.generateBarcode(params);
   }
 
   deleteAsset(params) {
@@ -69,6 +73,10 @@ class AssetActions extends Actions {
 
   validateAttribute(params) {
     this._dispatcher.validateAttribute(params);
+  }
+
+  loadAssetTypes() {
+    return this._dispatcher.loadAssetTypes();
   }
 }
 

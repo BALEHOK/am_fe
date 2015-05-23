@@ -53,6 +53,14 @@ class ListRepository {
             contentType: 'application/json',
         });
     }
+
+    loadAssetTypes() {
+        var url = `/api/assettype`;
+        return $.ajax({
+            url: url,
+            contentType: 'application/json',
+        });
+    }
 }
 
 module.exports = ListRepository;

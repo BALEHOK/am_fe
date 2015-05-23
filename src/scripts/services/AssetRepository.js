@@ -1,12 +1,15 @@
 class AssetRepository {
     loadAsset(params) {
-        var url = `/api/assettype/${params.assetTypeId}/asset/${params.assetId}`;
+        var url = `/api/assettype/${params.assetTypeId}/asset`;
+        if (params.assetId) {
+            url += `/${params.assetId}`
+        }
         if (params.revision) {
             url += `/revisions/${params.revision}`;
-        } 
+        }
         else if (params.uid) {
             url += `?uid=${params.uid}`;
-        } 
+        }
         return $.ajax({
             url: url,
             contentType: 'application/json',
@@ -15,19 +18,27 @@ class AssetRepository {
     }
 
     loadRelatedAssets(params) {
-        var url = `/api/assettype/${params.assetTypeId}/asset/${params.assetId}/related?`;
+        var url = `/api/assettype/${params.assetTypeId}/asset`;
+
+        if (params.assetId) {
+            url += `/${params.assetId}`;
+        }
+
+        url += '/related?';
+
         if (params.revision) {
             url += `&revision=${params.revision}`;
-        } 
+        }
         else if (params.uid) {
             url += `&uid=${params.uid}`;
         }
+
         return $.ajax({
             url: url,
             contentType: 'application/json',
             type: 'GET'
         });
-    } 
+    }
 
     loadBarcode(barcode) {
         var url = `/api/barcode/${barcode}`;
@@ -45,7 +56,7 @@ class AssetRepository {
             contentType: 'application/json',
             type: 'GET'
         });
-    } 
+    }
 
     deleteAsset(params) {
         var url = `/api/assettype/${params.assetTypeId}/asset/${params.assetId}`;
@@ -66,9 +77,14 @@ class AssetRepository {
     }
 
     saveAsset(asset) {
-        var url = `/api/assettype/${asset.assetTypeId}/asset/${asset.id}`;
+        var url = `/api/assettype/${asset.assetTypeId}/asset`;
+        if (asset.id)
+            url += `/${asset.id}`;
+
         return $.ajax({
-            type: 'POST',
+            type: asset.id
+                ? 'POST'
+                : 'PUT',
             url: url,
             data: JSON.stringify(asset),
             contentType: "application/json; charset=utf-8",
@@ -76,11 +92,12 @@ class AssetRepository {
     }
 
     validateAttribute(params) {
-        var url = `/api/validation/attribute/${params.attributeId}/?value=${params.value}`;
+        var url = `/api/validation/attribute/${params.attributeId}`;
         return $.ajax({
             url: url,
-            contentType: 'application/json',
-            type: 'GET'
+            contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+            data: '=' + params.value,
+            type: 'POST'
         });
     }
 }

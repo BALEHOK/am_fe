@@ -40,6 +40,8 @@ var AssetStore = Flux.createStore({
   loadAsset(params) {
     this.assetRepo.loadAsset(params).then((data) => {
       this.asset = data;
+      this.validation = [];
+      this.isValid = undefined;
       this.emitChange();
     });
   },

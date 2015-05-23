@@ -6,10 +6,15 @@ var React = require('react');
 
 var ValidationResult = React.createClass({
     render: function() {
+    	var messages = _.chain(this.props.validation)
+    		.values()
+    		.pluck('message')
+    		.uniq()
+    		.value();
         return (
             <ul className="validation-summary">
-            {this.props.validation.map((item) => {
-            	return <li key={item.id}>{item.message}</li>;
+            {messages.map((message, key) => {
+            	return <li key={key}>{message}</li>;
         	})}
             </ul> 
         );

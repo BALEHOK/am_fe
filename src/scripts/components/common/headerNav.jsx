@@ -3,6 +3,8 @@
  */
 
 var React = require('react');
+var Router = require('react-router');
+var Link = Router.Link;
 
 var HeaderNav = React.createClass({
     render: function() {
@@ -37,7 +39,7 @@ var HeaderNav = React.createClass({
                             <a className="header-nav__item-link header-nav__item-link_icon_add" href="#" title="Add new reservation"></a>
                         </li>
                         <li className="header-nav__item">
-                            <a className="header-nav__item-link" href="/Asset/New/Step1.aspx">New asset <span className="icon icon_plus"></span></a>
+                            <Link className="header-nav__item-link" to="asset-create">New asset <span className="icon icon_plus"></span></Link>
                         </li>
                     </ul>
                 </div>
