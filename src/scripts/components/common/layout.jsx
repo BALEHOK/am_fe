@@ -5,7 +5,8 @@
 var React = require('react');
 var UserNav = require('./userNav');
 var HeaderNav = require('./headerNav');
-var Breadcrumbs = require('./breadcrumbs');
+//var Breadcrumbs = require('./breadcrumbs');
+var Breadcrumbs = require('react-breadcrumbs');
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
 
@@ -13,12 +14,13 @@ var Layout = React.createClass({
     contextTypes: {
         router: React.PropTypes.func
     },
+    displayName: 'Home',
     handleLogout: function(){
         this.props.app.logout();
         this.context.router.transitionTo('login');
     },
     render: function() {
-        var app = this.props.app;        
+        var app = this.props.app;
         return (
             <div className="page-wrapper">
                 <header className="page-header">

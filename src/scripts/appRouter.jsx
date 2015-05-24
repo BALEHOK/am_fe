@@ -1,6 +1,5 @@
 /**
  * @jsx React.DOM
- * This is our composition root: place where all components get tied together
  */
 
 var React = require('react');
@@ -25,10 +24,12 @@ var routes = (
     <Route name="type-search"
       path="/search/type/:assetTypeId"
       handler={SearchPage} />
-    <Route name="result" path="/search/result/?:searchId?" handler={ResultPage} />
+    <Route name="result"
+      path="/search/result/?:searchId?"
+      handler={ResultPage} />
     <Route name="asset-create"
       path="/create/?"
-      handler={AssetCreatePage} />    
+      handler={AssetCreatePage} />
     <Route name="asset-view"
       path="/assettype/:assetTypeId/asset/:assetId"
       handler={AssetViewPage} />

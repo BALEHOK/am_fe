@@ -11,6 +11,8 @@ var History = require('./history');
 var HistoryHandler = React.createClass({
     mixins:[AuthenticatedRouteMixin],
 
+    displayName: 'Asset history',
+
     componentWillMount: function() {
         this.dispatcher = AssetDispatcher;
         this.actions = new AssetActions(this.dispatcher);

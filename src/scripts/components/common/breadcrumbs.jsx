@@ -4,7 +4,7 @@
 
 var React = require('react');
 
-var Breadcrumbs = React.createClass({
+var Breadcrumbs = React.createClass({z
     render: function() {
         return (
             <nav className="breadcrumbs">
