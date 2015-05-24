@@ -121,9 +121,9 @@ var AssetStore = Flux.createStore({
         if (jqXHR.status == 400) {
           var validationResult = JSON.parse(jqXHR.responseText);
           if (validationResult && validationResult.modelState) {
-            var keys = _.chain(validationResult.modelState)
+            _.chain(validationResult.modelState)
               .keys()
-              .map(k => { return parseInt(k) })
+              .map(k => { return parseInt(k); })
               .filter(k => !_.isNaN(k))
               .each(key => {
                 self.validation[key] = {
@@ -131,7 +131,8 @@ var AssetStore = Flux.createStore({
                   message: validationResult.modelState[key][0],
                   isValid: false
                 };
-              });
+              })
+              .value();
             self.emitChange();
           }
         }
