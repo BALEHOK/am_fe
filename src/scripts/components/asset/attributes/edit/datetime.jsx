@@ -44,9 +44,10 @@ var DateTimeAttribute = React.createClass({
 
     onChange(e, date) {
         this.breaker = true;
-        let cd = moment(this.props.params.value);
+        let cd = this.props.params.value ? moment(this.props.params.value) : moment();
         cd.set({year: date.year(), month: date.month(), date: date.date()});
-        this.props.params.value = this.formatDate(cd)
+        var formattedDate = this.formatDate(cd);
+        this.props.params.value = formattedDate
         this.hideDatePicker();
         this.validate({id: this.props.params.id, value: this.props.params.value});
     },
@@ -56,7 +57,7 @@ var DateTimeAttribute = React.createClass({
     },
 
     onTimeChange(e, time) {
-        let d = moment(this.props.params.value);
+        let d = this.props.params.value ? moment(this.props.params.value) : moment();
         d.set(time);
         this.props.params.value = this.formatDate(d);
         this.forceUpdate();
