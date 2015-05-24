@@ -24,7 +24,6 @@ var BooleanAttribute = React.createClass({
 
     generate: function(e) {
         this.props.actions.generateBarcode({id: this.props.params.id});
-        this.validate({id: this.props.params.id, value: this.props.params.value});
         e.preventDefault();
     },
 
