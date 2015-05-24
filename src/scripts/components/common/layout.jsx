@@ -5,7 +5,6 @@
 var React = require('react');
 var UserNav = require('./userNav');
 var HeaderNav = require('./headerNav');
-//var Breadcrumbs = require('./breadcrumbs');
 var Breadcrumbs = require('react-breadcrumbs');
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
