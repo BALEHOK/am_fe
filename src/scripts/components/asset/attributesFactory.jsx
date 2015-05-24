@@ -16,7 +16,7 @@ var AttributesFactory = {
     return <Component dispatcher={dispatcher} params={params}/>;
   },
 
-  getEditAttribute: function(name, params, actions, dispatcher, validation) {
+  getEditAttribute: function(name, params, actions, dispatcher, validation, selectedScreen) {
     var Component;
     switch(name) {
         case 'asset':
@@ -55,7 +55,11 @@ var AttributesFactory = {
         default:
             Component = require("./attributes/edit/string.jsx");
     }
-    return <Component dispatcher={dispatcher} params={params} actions={actions} validation={validation} />;
+    return <Component dispatcher={dispatcher}
+                      params={params}
+                      actions={actions}
+                      validation={validation}
+                      selectedScreen={selectedScreen} />;
   }
 
 };

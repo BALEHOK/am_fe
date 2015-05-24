@@ -23,7 +23,10 @@ var BooleanAttribute = React.createClass({
     },
 
     generate: function(e) {
-        this.props.actions.generateBarcode({id: this.props.params.id});
+        this.props.actions.generateBarcode({
+            id: this.props.params.id,
+            screenId: this.props.selectedScreen.id
+        });
         e.preventDefault();
     },
 

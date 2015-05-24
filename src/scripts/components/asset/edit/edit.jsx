@@ -91,7 +91,8 @@ var Edit = React.createClass({
                           dispatcher={this.props.dispatcher}
                           title={el.name}
                           actions={actions}
-                          validation={validationData} />
+                          validation={validationData}
+                          selectedScreen={this.state.selectedScreen} />
         });
         var dateTransform = new ValueTransformer(function (date) {
           return moment(date).format('DD.MM.YYYY HH:mm');

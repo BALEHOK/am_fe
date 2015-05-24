@@ -67,8 +67,11 @@ var AssetStore = Flux.createStore({
     });
   },
 
-  getAttribute(id) {
-      return this.asset.screens
+  getAttribute(id, screenId) {
+      var screens = screenId
+        ? this.asset.screens.filter(el => el.id === screenId)
+        : this.asset.screens
+      return screens
         .reduce((acc, el) => acc.concat(el.panels), [])
         .reduce((acc, el) => acc.concat(el.attributes), [])
         .filter(el => el.id === id)[0];
@@ -77,7 +80,7 @@ var AssetStore = Flux.createStore({
   generateBarcode(params) {
       this.barcodeRepo.generate().then((data) => {
           this.asset.barcode = data.base64Image;
-          var attr = this.getAttribute(params.id);
+          var attr = this.getAttribute(params.id, params.screenId);
           attr.value = data.barcode;
           this.emitChange();
       });
