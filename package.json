@@ -20,6 +20,7 @@
     "keymirror": "^0.1.0",
     "moment": "^2.8.3",
     "react": "0.13.x",
+    "react-breadcrumbs": "^0.13.5",
     "react-date-picker": "^2.0.15",
     "react-google-maps": "^1.0.0",
     "react-quill": "0.0.4",

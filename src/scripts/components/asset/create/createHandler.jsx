@@ -11,6 +11,8 @@ var Create = require('./create');
 var AssetCreateHandler = React.createClass({
     mixins:[AuthenticatedRouteMixin],
 
+    displayName: 'Create asset',
+
     componentWillMount: function() {
         this.dispatcher = AssetDispatcher;
         this.actions = new AssetActions(this.dispatcher);

@@ -19,6 +19,8 @@ var SearchPage = React.createClass({
         router: React.PropTypes.func
     },
 
+    displayName: 'Search',
+
     componentWillMount: function() {
         this.dispatcher = SearchDispatcher;
         this.actions = new SearchMainActions(this.dispatcher);

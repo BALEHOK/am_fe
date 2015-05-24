@@ -11,6 +11,8 @@ var Result = require('./result.jsx');
 var AssetViewHandler = React.createClass({
     mixins:[AuthenticatedRouteMixin],
 
+    displayName: 'Search Results',
+
     componentWillMount: function() {
         this.dispatcher = SearchDispatcher;
         this.actions = new SearchActions(this.dispatcher);

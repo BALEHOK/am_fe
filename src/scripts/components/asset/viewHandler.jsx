@@ -11,6 +11,8 @@ var View = require('./view');
 var AssetViewHandler = React.createClass({
     mixins:[AuthenticatedRouteMixin],
 
+    displayName: 'View asset',
+
     componentWillMount: function() {
         this.dispatcher = AssetDispatcher;
         this.actions = new AssetActions(this.dispatcher);
