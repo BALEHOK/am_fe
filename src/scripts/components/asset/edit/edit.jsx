@@ -94,12 +94,36 @@ var Edit = React.createClass({
                           validation={validationData}
                           selectedScreen={this.state.selectedScreen} />
         });
+
         var dateTransform = new ValueTransformer(function (date) {
           return moment(date).format('DD.MM.YYYY HH:mm');
         });
+
+        var getHeader = () => {
+            var getAssetTypeName = (taxonomyPath) => {
+                if (taxonomyPath && taxonomyPath.child)
+                    return getAssetTypeName(taxonomyPath.child);
+                return taxonomyPath && taxonomyPath.assetType
+                    ? taxonomyPath.assetType.displayName
+                    : '';
+            };
+
+            var action = asset.id
+                ? 'Edit'
+                : 'Create';
+
+            var name = asset.id
+                ? asset.name
+                : getAssetTypeName(taxonomyPath);
+
+            return  <h1 className="page-title">
+                        {action}&nbsp;<span className="page-title__param">{name}</span>
+                    </h1>
+        };
+
         return (
             <div>
-                <h1 className="page-title">Edit: <span className="page-title__param">{asset.name}</span></h1>
+                {getHeader()}
                 <RevisionInfo asset={asset} dateTransform={dateTransform} />
                 <div className="grid">
                     <div className="grid__item two-twelfths">
