@@ -139,7 +139,8 @@ var Edit = React.createClass({
                                 {panels}
                             </div>
                         </Loader>
-                        <ValidationResult validation={validationData} />
+                        <ValidationResult validation={validationData}
+                                          selectedScreen={screen} />
                         <div className="inputs-line inputs-line_width_full">
                             <button
                                 disabled={!this.state.isValid || this.state.loading}
