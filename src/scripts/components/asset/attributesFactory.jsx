@@ -8,7 +8,7 @@ var AttributesFactory = {
 
   getViewAttribute: function(name, params, dispatcher) {
     var Component;
-    if(!params.value) {
+    if(!params.value && name != 'currentdate') {
         Component = require('./attributes/view/nodata');
     } else {
         Component = require("./attributes/view/" + name + ".jsx");
