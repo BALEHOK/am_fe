@@ -5,6 +5,7 @@ var BarcodeRepository = require('../services/BarcodeRepository');
 var AssetStore = Flux.createStore({
 
   asset: {
+    id: undefined,
     name: undefined,
     revision: undefined,
     updatedAt: undefined,
@@ -116,7 +117,8 @@ var AssetStore = Flux.createStore({
     var self = this;
     var request = this.assetRepo.saveAsset(asset);
     request
-      .then(() => {
+      .then((id) => {
+        self.asset.id = id;
         self.emitChange();
       })
       .fail((jqXHR, textStatus) => {

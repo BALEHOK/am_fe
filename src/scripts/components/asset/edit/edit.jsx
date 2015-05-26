@@ -71,9 +71,12 @@ var Edit = React.createClass({
         var params = this.context.router.getCurrentParams();
         this.waitFor(this.props.actions.saveAsset(model))
             .then(() => {
-                self.context.router.transitionTo('asset-view', params)
+                console.log(model)
+                self.context.router.transitionTo(
+                    'asset-view', _.extend(params, {assetId: model.id}));
             })
             .catch(error => {
+                console.log(error);
                 self.stopWaiting();
                 self.forceUpdate();
             });
@@ -114,7 +117,7 @@ var Edit = React.createClass({
 
             var name = asset.id
                 ? asset.name
-                : getAssetTypeName(taxonomyPath);
+                : `[${getAssetTypeName(taxonomyPath)}]`;
 
             return  <h1 className="page-title">
                         {action}&nbsp;<span className="page-title__param">{name}</span>
