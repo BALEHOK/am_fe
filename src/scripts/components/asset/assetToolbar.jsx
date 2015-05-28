@@ -70,11 +70,7 @@ var AssetToolbar = React.createClass({
                       </button>
                     : ''
                 }
-                {/*
-                <button className="btn btn_type_second btn_size_small">
-                    <i className="btn__icon btn__icon_docs"></i>Documents
-                </button>
-                */}
+
                 {this.isDeleteButtonVisible()
                     ? <button className='btn btn_type_warning btn_size_small pull-right'
                             onClick={this.handleAssetDeletion}>
