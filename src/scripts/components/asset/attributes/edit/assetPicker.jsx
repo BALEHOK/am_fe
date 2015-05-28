@@ -18,9 +18,11 @@ var AssetPicker = React.createClass({
     },
 
     onChange: function(values) {
+        var value = values[0];
         var uid = this.props.params.uid;
-        this.props.actions.updateAssetValue({values, uid});
-        this.validate({id: this.props.params.id, value: values});
+        this.props.actions.updateAssetValue({value, uid});
+        this.props.params.value = { id: value.id, name: value.name };
+        this.validate({id: this.props.params.id, value: this.props.params.value });
     },
 
     onItemsRequest: function(query, callback) {

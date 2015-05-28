@@ -6,12 +6,14 @@ var React = require('react');
 var ReactSelectize = require('../../../common/react-selectize');
 var Flux = require('delorean').Flux;
 
-var EditableAttribute = React.createClass({
+var SimpleList = React.createClass({
     mixins: [Flux.mixins.storeListener],
 
     handleChange: function(e) {
         this.props.params.value = e[0];
         this.id = e.id;
+        if (this.props.onChange)
+            this.props.onChange(e[0]);
     },
 
     getItems: function() {
@@ -40,10 +42,9 @@ var EditableAttribute = React.createClass({
                   onChange={this.handleChange}
                   selectId={this.props.name + "-" + this.props.params.id}
                   placeholder=" "
-                  label=" "
-            />
+                  label=" " />
         );
     }
 });
 
-module.exports = EditableAttribute;
+module.exports = SimpleList;

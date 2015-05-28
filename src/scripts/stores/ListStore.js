@@ -19,7 +19,7 @@ var ListStore = Flux.createStore({
     'list:currentVals': 'saveCurrentValues',
     'list:asset-values': 'updateAssetValue',
     'list:roles': 'loadRoles',
-    'list:load': 'loadList',
+    'list:load': 'loadSimpleList',
     'list:assettypes': 'loadAssetTypes',
   },
 
@@ -27,7 +27,7 @@ var ListStore = Flux.createStore({
     this.listRepo = new ListRepository();
   },
 
-  loadList(params) {
+  loadSimpleList(params) {
     var req;
     const rowsNumber = 20;
     var val = this.lists[params.name][params.id];
@@ -82,7 +82,7 @@ var ListStore = Flux.createStore({
         };
       }
       else if (el.datatype.indexOf('dynlist') == 0) {
-        this.lists.dynlists[el.attributeUid] = el.list;
+        this.lists.dynlists[el.attributeId] = el.list;
       }
     });
     this.emitChange();
@@ -98,9 +98,8 @@ var ListStore = Flux.createStore({
   },
 
   loadDynamicList(params) {
-    var uid = params.attributeUid;
-    this.listRepo.loadDynamicList(params.dynListUid).then((data) => {
-      this.lists.dynlists[uid] = data;
+    this.listRepo.loadDynamicList(params).then((data) => {
+      this.lists.dynlists[params.attributeId] = data;
       this.emitChange();
     });
   },
@@ -114,8 +113,7 @@ var ListStore = Flux.createStore({
   loadAssetsList(params) {
     var assetTypeId = params.assetTypeId;
     if(!this.lists.assets[params.uid]) {
-      this.lists.assets[params.uid] = {};
-
+      this.lists.assets[params.uid] = { items: [] };
     }
     var list = this.lists.assets[params.uid];
     if(list.query != params.query) {
@@ -140,7 +138,7 @@ var ListStore = Flux.createStore({
       this.lists.assettypes = data;
       this.emitChange();
     });
-  },  
+  },
 
   getState() {
     return this.lists;

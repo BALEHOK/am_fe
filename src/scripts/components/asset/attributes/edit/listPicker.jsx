@@ -22,33 +22,40 @@ var ListPicker = React.createClass({
         this.validate({id: this.props.params.id, value: this.props.params.value});
     },
 
-    render: function() {      
+    onItemsRequest: function() {
+        this.props.actions.loadDynamicList({
+            attributeId: this.props.params.id
+        });
+    },
+
+    render: function() {
         var items = [];
         var value = this.props.params.value.split(',');
-        var attributeUid = this.props.params.uid;
-        var selectId = "attribute-dynlist-" + attributeUid;
-        var listStore = this.state.stores.list.dynlists[attributeUid];
+        var attributeId = this.props.params.id;
+        var selectId = "attribute-dynlist-" + attributeId;
+        var listStore = this.state.stores.list.dynlists[attributeId];
         if (listStore) {
             items = listStore.items || [];
         }
-       
+
         var classes = cx('select', 'select_size_small');
         return (
-           <ControlWrapper 
-                name={this.props.params.name} 
+           <ControlWrapper
+                name={this.props.params.name}
                 className={classes}
                 validationState={this.state.validation}>
 
-                    <ReactSelectize   
-                        multiple={this.props.isMultiple} 
-                        selectId={selectId} 
+                    <ReactSelectize
+                        multiple={this.props.isMultiple}
+                        selectId={selectId}
                         valueField="uid"
-                        labelField="value" 
-                        items={items} 
-                        onChange={this.onChange}    
-                        value={value}                             
+                        labelField="value"
+                        items={items}
+                        onItemsRequest={this.onItemsRequest}
+                        onChange={this.onChange}
+                        value={value}
                         placeholder=" "
-                        label=" " /> 
+                        label=" " />
 
             </ControlWrapper>
         );

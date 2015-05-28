@@ -16,6 +16,10 @@ var EditableAttribute = React.createClass({
         this.setupValidation(this.props.actions);
     },
 
+    handleChange: function(value) {
+        this.validate({id: this.props.params.id, value: value});
+    },
+
     render: function() {
         var classes = cx('select', 'select_size_small');
         return (
@@ -28,6 +32,7 @@ var EditableAttribute = React.createClass({
                     params={this.props.params}
                     name="places"
                     actions={this.props.actions}
+                    onChange={this.handleChange}
                     mapper={(el) => ({id: el.id, name: el.name})}
                     dispatcher={this.props.dispatcher} />
 

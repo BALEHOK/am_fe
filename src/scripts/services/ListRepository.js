@@ -1,6 +1,6 @@
 class ListRepository {
     loadDynamicList(params) {
-        var url = `/api/dynlist/${params.dynamicListUid}`;
+        var url = `/api/dynlist/attribute/${params.attributeId}`;
         return $.ajax({
             url: url,
             contentType: 'application/json',
