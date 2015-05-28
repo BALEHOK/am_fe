@@ -64,11 +64,11 @@ class AssetActions extends Actions {
   }
 
   deleteAsset(params) {
-    this._dispatcher.deleteAsset(params);
+    return this._dispatcher.deleteAsset(params);
   }
 
   restoreAsset(params) {
-    this._dispatcher.restoreAsset(params);
+    return this._dispatcher.restoreAsset(params);
   }
 
   validateAttribute(params) {

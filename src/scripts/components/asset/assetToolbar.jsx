@@ -47,10 +47,11 @@ var AssetToolbar = React.createClass({
     render: function() {
         return (
             <div className="inputs-line inputs-line_width_full">
+                {/*
                 <button className="btn btn_type_second btn_size_small">
                     <i className="btn__icon btn__icon_print"></i>
                 </button>
-
+                 */}
                 {this.props.isHistory
                     ?   <button className="btn btn_type_second btn_size_small"
                                 onClick={this.handleTransition.bind(this, 'asset-view')}>
@@ -69,11 +70,11 @@ var AssetToolbar = React.createClass({
                       </button>
                     : ''
                 }
-
+                {/*
                 <button className="btn btn_type_second btn_size_small">
                     <i className="btn__icon btn__icon_docs"></i>Documents
                 </button>
-
+                */}
                 {this.isDeleteButtonVisible()
                     ? <button className='btn btn_type_warning btn_size_small pull-right'
                             onClick={this.handleAssetDeletion}>

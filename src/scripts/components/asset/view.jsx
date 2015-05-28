@@ -41,11 +41,13 @@ var AssetView = React.createClass({
     },
 
     onAssetDelete: function() {
-        this.props.actions.deleteAsset(this.props.params);
+        this.waitFor(
+            this.props.actions.deleteAsset(this.props.params));
     },
 
     onAssetRestore: function() {
-        this.props.actions.restoreAsset(this.props.params);
+        this.waitFor(
+            this.props.actions.restoreAsset(this.props.params));
     },
 
     storeDidChange: function (storeName) {

@@ -62,7 +62,7 @@ var AssetStore = Flux.createStore({
   },
 
   deleteAsset(params) {
-    this.assetRepo.deleteAsset(params).then(() => {
+    return this.assetRepo.deleteAsset(params).then(() => {
       this.asset.isDeleted = true;
       this.emitChange();
     });
@@ -88,7 +88,7 @@ var AssetStore = Flux.createStore({
   },
 
   restoreAsset(params) {
-    this.assetRepo.restoreAsset(params).then(() => {
+    return this.assetRepo.restoreAsset(params).then(() => {
       this.asset.isDeleted = false;
       this.emitChange();
     });
