@@ -113,8 +113,7 @@ var ListStore = Flux.createStore({
   loadAssetsList(params) {
     var assetTypeId = params.assetTypeId;
     if(!this.lists.assets[params.uid]) {
-      this.lists.assets[params.uid] = {};
-
+      this.lists.assets[params.uid] = { items: [] };
     }
     var list = this.lists.assets[params.uid];
     if(list.query != params.query) {

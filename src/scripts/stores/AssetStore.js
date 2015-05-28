@@ -140,6 +140,8 @@ var AssetStore = Flux.createStore({
               .value();
             self.emitChange();
           }
+        } else {
+            console.log(jqXHR);
         }
       });
     return request;
