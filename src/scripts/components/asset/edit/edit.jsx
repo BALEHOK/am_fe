@@ -38,20 +38,23 @@ var Edit = React.createClass({
     storeDidChange: function (storeName) {
         if (storeName != 'asset') return;
         var store = this.state.stores.asset;
-        this.setState({
-            isValid: store.isValid
-        });
 
-        var asset = store.asset;
-        var defaultScreen = _
-            .chain(asset.screens)
-            .findWhere({isDefault: true})
-            .value();
+        var newState = {
+            isValid: store.isValid
+        };
+
         if (!this.state.selectedScreen) {
-            this.setState({
+            var asset = store.asset;
+            var defaultScreen = _
+                .chain(asset.screens)
+                .findWhere({isDefault: true})
+                .value();
+            newState = _.extend(newState, {
                 selectedScreen: defaultScreen
             });
         }
+
+        this.setState(newState);
     },
 
     handleUndo: function () {
