@@ -24,13 +24,14 @@ var RichtextEdit = React.createClass({
     },
 
     render: function() {
+        var value = this.props.params.value || ' ';
         return (
             <ControlWrapper
                 name={this.props.params.name}
                 className="rich-editor"
                 validationState={this.state.validation}>
 
-                <Quill toolbar={items} onChange={_.debounce(this.onTextChange, 500)} theme="snow" value={this.props.params.value}/>
+                <Quill toolbar={items} onChange={_.debounce(this.onTextChange, 500)} theme="snow" value={value}/>
 
             </ControlWrapper>
         );
