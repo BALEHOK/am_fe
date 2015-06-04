@@ -8,7 +8,7 @@ var AttributesFactory = {
 
   getViewAttribute: function(name, params, dispatcher) {
     var Component;
-    if(!params.value && name != 'currentdate') {
+    if(!params.value || (_.has(params.value, 'id') && !params.value.id)) {
         Component = require('./attributes/view/nodata');
     } else {
         Component = require("./attributes/view/" + name + ".jsx");
@@ -21,7 +21,10 @@ var AttributesFactory = {
     switch(name) {
         case 'asset':
         case 'assets':
-            Component = require("./attributes/edit/assetPicker.jsx");
+            if (params.editable)
+                Component = require("./attributes/edit/assetPicker.jsx");
+            else
+                Component = require("./attributes/view/" + name + ".jsx");
             break;
         case 'dynlist':
         case 'dynlists':
@@ -32,6 +35,7 @@ var AttributesFactory = {
         case 'bool':
         case 'password':
         case 'datetime':
+        case 'currentdate':
         case 'richtext':
         case 'permission':
         case 'barcode':
@@ -47,6 +51,9 @@ var AttributesFactory = {
             break;
         case 'googlemaps':
             Component = require("./attributes/edit/googlemaps.jsx");
+            break;
+        case 'revision':
+            Component = require("./attributes/view/" + name + ".jsx");
             break;
         case 'email':
         case 'money':

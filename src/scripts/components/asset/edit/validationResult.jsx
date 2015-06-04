@@ -17,8 +17,9 @@ var ValidationResult = React.createClass({
                 var attribute = attributes.filter(a => a.id == v.id)[0];
                 if (attribute)
                     message.attributes.push(attribute.name);
-                else
+                else {
                     message.attributes.push(v.id); // some server-side attribute?
+                }
                 messages[v.message] = message;
             });
 
