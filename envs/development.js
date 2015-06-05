@@ -1,4 +1,4 @@
 module.exports = {
-  APIURL: JSON.stringify('http://facilitymanager.facilityflexware.com'),
-  BASE_URL: JSON.stringify('http://facilitymanager.facilityflexware.com'),
+  APIURL: JSON.stringify('http://facilitymanager.fmis.software'),
+  BASE_URL: JSON.stringify('http://facilitymanager.fmis.software'),
 };
