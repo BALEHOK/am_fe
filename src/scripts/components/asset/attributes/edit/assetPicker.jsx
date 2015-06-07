@@ -19,40 +19,28 @@ var AssetPicker = React.createClass({
 
     onChange: function(values) {
         var value = values[0];
-        var uid = this.props.params.uid;
-        this.props.actions.updateAssetValue({value, uid});
         this.props.params.value = { id: value.id, name: value.name };
         this.validate({id: this.props.params.id, value: this.props.params.value });
     },
 
     onItemsRequest: function(query, callback) {
         return this.props.actions.loadAssetsList({
-           assetTypeId: this.getRelatedAttribute().relatedAssetTypeId,
+           assetTypeId: this.props.params.relatedAssetTypeId,
            query: query,
            uid: this.props.params.uid
         });
     },
 
-    getRelatedAttribute: function() {
-        var attributeUid = this.props.params.uid;
-        return _
-            .chain(this.state.stores.asset.relatedAssets)
-            .findWhere({attributeUid: attributeUid})
-            .value();
-    },
-
     render: function() {
-        var items = [];
-        var value = null;
+        var items = this.props.params.value.id
+            ? [this.props.params.value]
+            : [];
+        var value = this.props.params.value.id;
         var attributeUid = this.props.params.uid;
-        var selectId = "attribute-asset-" + attributeUid;
         var listStore = this.state.stores.list.assets[attributeUid];
-        if(listStore) {
-            items = listStore.values || [];
-            items = _.unique(items.concat(listStore.items || []));
-            value = _.pluck(listStore.values, 'id');
+        if(listStore && listStore.items) {
+            items = _.unique(items.concat(listStore.items));
         }
-
         var classes = cx('select', 'select_size_small');
         return (
             <ControlWrapper
@@ -62,7 +50,7 @@ var AssetPicker = React.createClass({
 
                 <ReactSelectize
                     multiple={this.props.isMultiple}
-                    selectId={selectId}
+                    selectId={"attribute-asset-" + attributeUid}
                     valueField="id"
                     labelField="name"
                     sortField="id"

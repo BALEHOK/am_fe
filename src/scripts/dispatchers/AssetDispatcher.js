@@ -30,10 +30,6 @@ var AssetDispatcher = Flux.createDispatcher({
       return this.dispatch('list:load', params);
   },
 
-  updateAssetValue(params) {
-    return this.dispatch('list:asset-values', params);
-  },
-
   loadRoles() {
     return this.dispatch('list:roles');
   },
