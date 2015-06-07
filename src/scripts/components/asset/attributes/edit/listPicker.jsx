@@ -18,7 +18,7 @@ var ListPicker = React.createClass({
     },
 
     onChange: function(values) {
-        this.props.params.value = _.pluck(values, 'id').join(',');
+        this.props.params.value = {id : _.pluck(values, 'id').join(',') };
         this.validate({id: this.props.params.id, value: this.props.params.value});
     },
 
