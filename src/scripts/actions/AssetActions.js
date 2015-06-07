@@ -16,8 +16,8 @@ class AssetActions extends Actions {
         return this._dispatcher
           .loadRelatedAssets(params)
           .then(() => {
-            var assets = this._dispatcher.getStore('asset').getState().relatedAssets;
-            this._dispatcher.setListValues(assets);
+            //var assets = this._dispatcher.getStore('asset').getState().relatedAssets;
+            //this._dispatcher.setListValues(assets);
           });
 
       });
