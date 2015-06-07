@@ -18,7 +18,7 @@ var ListPicker = React.createClass({
     },
 
     onChange: function(values) {
-        this.props.params.value = _.pluck(values, 'uid').join(',');
+        this.props.params.value = _.pluck(values, 'id').join(',');
         this.validate({id: this.props.params.id, value: this.props.params.value});
     },
 
@@ -29,15 +29,16 @@ var ListPicker = React.createClass({
     },
 
     render: function() {
-        var items = [];
-        var value = this.props.params.value.split(',');
+        var items = this.props.params.value.id
+            ? [this.props.params.value]
+            : [];
+        var value = this.props.params.value.id;
         var attributeId = this.props.params.id;
         var selectId = "attribute-dynlist-" + attributeId;
         var listStore = this.state.stores.list.dynlists[attributeId];
         if (listStore) {
-            items = listStore.items || [];
+            items = _.unique(items.concat(listStore.items));
         }
-
         var classes = cx('select', 'select_size_small');
         return (
            <ControlWrapper
@@ -48,7 +49,7 @@ var ListPicker = React.createClass({
                     <ReactSelectize
                         multiple={this.props.isMultiple}
                         selectId={selectId}
-                        valueField="uid"
+                        valueField="id"
                         labelField="value"
                         items={items}
                         onItemsRequest={this.onItemsRequest}
