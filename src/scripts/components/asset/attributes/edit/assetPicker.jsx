@@ -32,6 +32,7 @@ var AssetPicker = React.createClass({
     },
 
     render: function() {
+        console.log(this.props.params.value)
         var items = this.props.params.value.id
             ? [this.props.params.value]
             : [];
@@ -42,6 +43,10 @@ var AssetPicker = React.createClass({
             items = _.unique(items.concat(listStore.items));
         }
         var classes = cx('select', 'select_size_small');
+        var maxItems = undefined;
+        if (this.props.params.datatype == 'assets') {
+            maxItems = 100;
+        }
         return (
             <ControlWrapper
                 name={this.props.params.name}
@@ -49,7 +54,7 @@ var AssetPicker = React.createClass({
                 validationState={this.state.validation}>
 
                 <ReactSelectize
-                    multiple={this.props.isMultiple}
+                    maxItems={maxItems}
                     selectId={"attribute-asset-" + attributeUid}
                     valueField="id"
                     labelField="name"

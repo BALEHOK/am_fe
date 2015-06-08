@@ -6,11 +6,6 @@ var Selectize = require('selectize')
 var $ = require('jquery');
 var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
 
-  isMultiple: function (props) {
-    // Selectize becomes 'multiple' when 'maxItems' is passed via settings
-    return props.multiple || props.maxItems != undefined;
-  },
-
   buildOptions: function () {
     var o = {
       preload: false,
@@ -19,12 +14,9 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
       searchField : this.props.searchField || "name",
       create : this.props.create || false,
       options : this.props.items || [],
-      sortField : this.props.sortField || "name"
+      sortField : this.props.sortField || "name",
+      maxItems : this.props.maxItems,
     };
-
-    if(this.isMultiple(this.props)){
-      o.maxItems = this.props.maxItems || null;
-    }
 
     if (this.props.onItemsRequest) {
       o.load = this.props.onItemsRequest;
@@ -46,7 +38,7 @@ var ReactSelectize = React.createClass({displayName: 'ReactSelectize',
     if(!(e instanceof Array)) {
       e = [e];
     }
-    if(!this.isMultiple(this.props)){
+    if(!this.props.maxItems){
       // THEN blur it before calling onChange to prevent dropdown reopening
       control.blur();
     }
