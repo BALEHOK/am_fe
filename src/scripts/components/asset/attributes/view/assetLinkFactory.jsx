@@ -6,18 +6,18 @@ var Router = require('react-router');
 var Link = Router.Link;
 
 var AssetLinkFactory = {
-    getDisplayValue: function (params) {
-        if (params.value.id) {
+    getDisplayValue: function (relatedAssetTypeId, assetId, assetName) {
+        if (assetId) {
             //var relHref = this.context.router.makeHref('type-search',
             //    { assetTypeId: params.relatedAssetTypeId });
             var assetHref = {
-                assetTypeId: params.relatedAssetTypeId,
-                assetId: params.value.id
+                assetTypeId: relatedAssetTypeId,
+                assetId: assetId
             };
             return (
                 <span>
                     <strong>
-                        <Link to="asset-view" params={assetHref}>{params.value.name}</Link>
+                        <Link to="asset-view" params={assetHref}>{assetName}</Link>
                     </strong>{/* | <a href={relHref}>Related items</a>*/}
                 </span>
             );
