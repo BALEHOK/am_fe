@@ -18,8 +18,11 @@ var AssetPicker = React.createClass({
     },
 
     onChange: function(values) {
-        var value = values[0];
-        this.props.params.value = { id: value.id, name: value.name };
+        if (this.props.params.datatype == 'assets') {
+            this.props.params.value = values;
+        } else {
+            this.props.params.value = values[0];
+        }
         this.validate({id: this.props.params.id, value: this.props.params.value });
     },
 
@@ -32,11 +35,8 @@ var AssetPicker = React.createClass({
     },
 
     render: function() {
-        console.log(this.props.params.value)
-        var items = this.props.params.value.id
-            ? [this.props.params.value]
-            : [];
-        var value = this.props.params.value.id;
+        var items = _.flatten([this.props.params.value]);
+        var value = _.pluck(items, 'id');
         var attributeUid = this.props.params.uid;
         var listStore = this.state.stores.list.assets[attributeUid];
         if(listStore && listStore.items) {
