@@ -18,7 +18,7 @@ var ListPicker = React.createClass({
     },
 
     onChange: function(values) {
-        this.props.params.value = {id : values[0].id };
+        this.props.params.value = values[0];
         this.validate({id: this.props.params.id, value: this.props.params.value});
     },
 
@@ -29,9 +29,7 @@ var ListPicker = React.createClass({
     },
 
     render: function() {
-        var items = this.props.params.value.id
-            ? [this.props.params.value]
-            : [];
+        var items = [this.props.params.value];
         var value = this.props.params.value.id;
         var attributeId = this.props.params.id;
         var selectId = "attribute-dynlist-" + attributeId;

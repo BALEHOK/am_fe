@@ -95,8 +95,8 @@ class AssetRepository {
         var url = `/api/validation/attribute/${params.attributeId}`;
         return $.ajax({
             url: url,
-            contentType: 'application/x-www-form-urlencoded; charset=utf-8',
-            data: '=' + params.value,
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(params.value),
             type: 'POST'
         });
     }

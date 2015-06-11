@@ -24,7 +24,7 @@ var EditableAttribute = React.createClass({
 
     onUpload: function(docName) {
       this.props.params.value = {
-        id: 0,
+        id: null,
         name : docName
       };
       this.onLoadEnd();

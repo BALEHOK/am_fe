@@ -27,9 +27,11 @@ var AttributesFactory = {
                 Component = require("./attributes/view/" + name + ".jsx");
             break;
         case 'dynlist':
-        case 'dynlists':
             Component = require("./attributes/edit/listPicker.jsx");
             break;
+        case 'dynlists':
+            params = _.extend(params, {message: 'Dynlists datatype does not supported'})
+            Component = require('./attributes/view/nodata');
         case 'file':
         case 'image':
         case 'bool':
