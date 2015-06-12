@@ -24,7 +24,7 @@
     "react-date-picker": "^2.0.15",
     "react-google-maps": "^1.0.0",
     "react-quill": "0.0.4",
-    "react-router": "^0.13.2",
+    "react-router": "^0.13.3",
     "react-simpletabs": "^0.6.1",
     "react-time-picker": "^1.0.8",
     "selectize": "0.12.0",
