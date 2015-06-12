@@ -8,7 +8,7 @@ var AttributesFactory = {
 
   getViewAttribute: function(name, params, dispatcher) {
     var Component;
-    if(!params.value || (_.has(params.value, 'id') && !params.value.id)) {
+    if(!params.value || _.isEmpty(params.value) || (_.has(params.value, 'id') && !params.value.id)) {
         Component = require('./attributes/view/nodata');
     } else {
         Component = require("./attributes/view/" + name + ".jsx");
