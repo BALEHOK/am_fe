@@ -16,7 +16,7 @@ var FileEditAttribute = React.createClass({
     componentWillMount: function() {
         this.setupValidation(this.props.actions);
     },
-    
+
     valueChanged: function(filename, imageUrl) {
         this.props.params.value = filename;
         this.setState({
@@ -26,7 +26,7 @@ var FileEditAttribute = React.createClass({
                 })
             }
         });
-        this.validate({id: this.props.params.id, value: this.props.params.value});
+        //this.validate({id: this.props.params.id, value: this.props.params.value});
         if (this.props.onUpload)
             this.props.onUpload(filename, imageUrl);
     },

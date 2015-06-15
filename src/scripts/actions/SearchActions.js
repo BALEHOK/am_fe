@@ -17,7 +17,7 @@ module.exports = class SearchActions extends Actions {
   }
 
   exportSearchResults(params) {
-  	window.location = APIURL + `/v2/export?searchId=${params.searchId}&format=${params.format}`;
+  	window.location = APIURL + `/export?searchId=${params.searchId}&format=${params.format}`;
   }
 
 }

@@ -16,21 +16,17 @@ var File = React.createClass({
         this.props.onStart();
         var files = fileapi.getFiles(evt);
         fileapi.upload({
-            url: APIURL + '/api/uploads',
+            url: APIURL + `/api/uploads?assetTypeId=${this.props.assetTypeId}&attributeId=${this.props.attributeId}&assetId=${this.props.assetId}`,
             headers: {
                 Authorization: 'Bearer ' + app.tokenStore.getToken()
             },
             files: {
                 file: files[0]
             },
-            data: {
-                assetTypeId: this.props.assetTypeId,
-                assetId: this.props.assetId,
-                attributeId: this.props.attributeId
-            },
             complete: (err, xhr) => {
                 var response = JSON.parse(xhr.responseText);
-                this.props.onUpload(response.Filename, response.ImageUrl);
+                if (!err)
+                    this.props.onUpload(response.filename, response.imageUrl);
             }
         });
     },

@@ -14,10 +14,10 @@ var ImageEditAttribute = React.createClass({
 
     getInitialState: function() {
         var params = this.context.router.getCurrentParams();
-        var url = this.props.params.value 
+        var url = this.props.params.value
             ? FileUrlProvider.getImageUrl(params.assetTypeId, params.assetId, this.props.params.id)
-            : '';
-        return { 
+            : undefined;
+        return {
             url: url
         };
     },
@@ -29,10 +29,9 @@ var ImageEditAttribute = React.createClass({
     },
 
     render: function() {
-        var src = this.state.url ? this.state.url : '';
         return (
             <FileEditAttribute actions={this.props.actions} params={this.props.params} onUpload={this.handleUpload}>
-                <img src={src} />
+                {this.state.url ? <img src={this.state.url} /> : '' }
             </FileEditAttribute>
         );
     }

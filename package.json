@@ -19,7 +19,7 @@
     "jquery": "^2.1.1",
     "keymirror": "^0.1.0",
     "moment": "^2.8.3",
-    "react": "0.13.x",
+    "react": "^0.13.3",
     "react-breadcrumbs": "^0.13.5",
     "react-date-picker": "^2.0.15",
     "react-google-maps": "^1.0.0",
