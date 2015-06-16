@@ -13,8 +13,9 @@ var HeaderNav = React.createClass({
                 <div className="container">
                     <ul className="header-nav__list">
                         <li className="header-nav__item header-nav__item_state_active">
-                            <a className="header-nav__item-link" href="#">Search</a>
+                            <Link className="header-nav__item-link" to="search">Search</Link>
                         </li>
+                        {/*
                         <li className="header-nav__item">
                             <a className="header-nav__item-link" href="/TaskView.aspx">Tasks</a>
                         </li>
@@ -38,6 +39,7 @@ var HeaderNav = React.createClass({
                             <a className="header-nav__item-link" href="/Reservations/Overview.aspx">Reservations</a>
                             <a className="header-nav__item-link header-nav__item-link_icon_add" href="#" title="Add new reservation"></a>
                         </li>
+                        */}
                         <li className="header-nav__item">
                             <Link className="header-nav__item-link" to="asset-create">New asset <span className="icon icon_plus"></span></Link>
                         </li>
