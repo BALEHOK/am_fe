@@ -6,12 +6,11 @@ module.exports = {
             `/FileHandler.ashx?assetTypeId=${assetTypeId}&assetId=${assetId}&attributeId=${attributeId}`;
     },
 
-    getImageUrl(assetTypeId, assetId, attributeId) {
-        return APIURL +
-            `/ImageHandler.ashx?assetTypeId=${assetTypeId}&assetId=${assetId}&attributeId=${attributeId}&${this.imageParams}`;
+    getImageUrl(filename) {
+        return `${APIURL}${filename}?${this.imageParams}`;
     },
 
     getInstantImageUrl(imageUrl) {
-    	return APIURL + imageUrl + '?' + this.imageParams;
+        return `${APIURL}${imageUrl}?${this.imageParams}`;
     },
 }

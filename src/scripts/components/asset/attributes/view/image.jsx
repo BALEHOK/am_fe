@@ -11,7 +11,7 @@ var Attribute = React.createClass({
         router: React.PropTypes.func
     },
     render: function() {
-        var urlParams = this.context.router.getCurrentParams();        
+        var urlParams = this.context.router.getCurrentParams();
         var file = this.props.params.value;
         if(file.length > 14) {
             file = file.slice(0, 8) + "..." + file.slice(-3);
@@ -25,9 +25,9 @@ var Attribute = React.createClass({
                             <img src={src} alt={this.props.params.name} />
                         </div>;
             } else {
-                var src = FileUrlProvider.getImageUrl(urlParams.assetTypeId, urlParams.assetId, this.props.params.id);
+                var src = FileUrlProvider.getImageUrl(this.props.params.value);
                 return <a className="image-wrapper__img" href={src}>
-                            <img src={src + '&w=165&h=95&mode=crop'} alt={this.props.params.name} />
+                            <img src={src} alt={this.props.params.name} />
                         </a>;
             }
         };

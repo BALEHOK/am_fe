@@ -13,12 +13,10 @@ var ImageEditAttribute = React.createClass({
     },
 
     getInitialState: function() {
-        var params = this.context.router.getCurrentParams();
-        var url = this.props.params.value
-            ? FileUrlProvider.getImageUrl(params.assetTypeId, params.assetId, this.props.params.id)
-            : undefined;
         return {
-            url: url
+            url: _.startsWith(this.props.params.value, '/')
+            ? FileUrlProvider.getImageUrl(this.props.params.value)
+            : undefined
         };
     },
 
