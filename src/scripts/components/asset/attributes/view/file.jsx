@@ -10,12 +10,27 @@ var Attribute = React.createClass({
     contextTypes: {
         router: React.PropTypes.func
     },
-    render: function() {
+
+    handleDonwload: function() {
         var urlParams = this.context.router.getCurrentParams();
-        var params = this.props.params;
-        var url = FileUrlProvider.getFileUrl(urlParams.assetTypeId, urlParams.assetId, params.id);
-        params = _.extend(params, { url: url });
-        return <Url params={params} />;
+        var url = FileUrlProvider.getFileUrl(
+            urlParams.assetTypeId,
+            urlParams.assetId,
+            this.props.params.id);
+        console.log(url);
+    },
+
+    render: function() {
+        var value = this.props.params.value;
+        if(value.length > 40) {
+            value = value.slice(0, 30) + "..." + value.slice(-7);
+        }
+        return (
+            <div className="asset-data__param">
+                <span className="asset-data__param-title">{this.props.params.name}:</span>
+                <a onClick={this.handleDonwload} target="_blank">{value}</a>
+            </div>
+        );
     }
 });
 
