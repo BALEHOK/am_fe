@@ -15,7 +15,7 @@ module.exports = {
         main: ['./webpack_entries/app.js']
     },
     output: {
-        path: path.join(__dirname, '/dist/Content/assets/js'),
+        path: path.join(__dirname, '/dist/assets/js'),
         filename: 'bundle-main.js'
     },
     plugins: [
@@ -34,7 +34,7 @@ module.exports = {
     },
     module: {
         loaders: [
-            { test: /^(?!.*(bower_components|node_modules))+.+\.js$/, loader: '6to5-loader'},            
+            { test: /^(?!.*(bower_components|node_modules))+.+\.js$/, loader: '6to5-loader'},
             { test: /\.jsx$/, loader: 'jsx-loader!6to5-loader'}
         ],
         noParse: /\.min\.js/

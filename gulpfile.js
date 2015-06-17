@@ -119,7 +119,7 @@ gulp.task("dev-server", function(callback) {
     var middleware = webpackDevMiddleware(compiler, {
         quiet: false,
         noInfo: false,
-        publicPath: '/Content/assets/js',
+        publicPath: '/assets/js',
         contentBase: "./dist",
         watchDelay: 300,
         stats: { colors: true },
