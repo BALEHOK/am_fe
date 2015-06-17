@@ -7,6 +7,8 @@ var React = require('react');
 var AttributesFactory = {
 
   getViewAttribute: function(name, params, dispatcher) {
+    if (name == 'dynlists')
+        return null;
     var Component;
     if(!params.value || _.isEmpty(params.value) || (_.has(params.value, 'id') && !params.value.id)) {
         Component = require('./attributes/view/nodata');

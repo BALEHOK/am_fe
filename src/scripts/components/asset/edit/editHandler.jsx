@@ -11,7 +11,9 @@ var Edit = require('./edit');
 var AssetEditHandler = React.createClass({
     mixins:[AuthenticatedRouteMixin],
 
-    displayName: 'Edit asset',
+    displayName: function() {
+        return 'Edit asset';
+    },
 
     componentWillMount: function() {
         this.dispatcher = AssetDispatcher;
