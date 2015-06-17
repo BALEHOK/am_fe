@@ -20,7 +20,7 @@ var through = require('through2');
 var webpackDevMiddleware = require("webpack-dev-middleware");
 
 var buildDest = 'dist';
-var assetsDest = 'Content/assets';
+var assetsDest = 'assets';
 var jsSrc = 'src/scripts/**/*.*',
     jsDest = path.join(buildDest, assetsDest, 'js');
 var cssSrc = 'src/styles/*',
@@ -108,9 +108,8 @@ gulp.task('watch', function() {
     gulp.watch('src/fonts/*.*', ['fonts', browserSync.reload]);
     gulp.watch('src/images/*.*', ['images', browserSync.reload]);
 });
-gulp.task('replace', ['build'], function() {
-    return gulp.src(path.join(buildDest, 'index.html'))
-        .pipe(replace(/(assets)/g, 'Content/assets'))
+gulp.task('webconfig', function() {
+    return gulp.src('web.config')
         .pipe(gulp.dest(buildDest));
 });
 
@@ -135,7 +134,7 @@ gulp.task("dev-server", function(callback) {
 });
 
 // Production build
-gulp.task('build', ['fonts', 'css:fonts', 'images', 'css', 'webpack:build', 'views']);
+gulp.task('build', ['fonts', 'css:fonts', 'images', 'css', 'webpack:build', 'views', 'webconfig']);
 gulp.task('server', ['fonts', 'css:fonts', 'images', 'css', 'watch', 'dev-server', 'views']);
 gulp.task('default', ['build']);
-gulp.task('deploy', ['replace']);
+gulp.task('deploy', ['build']);
