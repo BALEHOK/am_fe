@@ -43,17 +43,6 @@ var Edit = React.createClass({
             isValid: store.isValid
         };
 
-        if (!this.state.selectedScreen) {
-            var asset = store.asset;
-            var defaultScreen = _
-                .chain(asset.screens)
-                .findWhere({isDefault: true})
-                .value();
-            newState = _.extend(newState, {
-                selectedScreen: defaultScreen
-            });
-        }
-
         this.setState(newState);
     },
 
@@ -72,10 +61,16 @@ var Edit = React.createClass({
         var self = this;
         var model = this.state.stores.asset.asset;
         var params = this.context.router.getCurrentParams();
+        var query = this.context.router.getCurrentQuery();
         this.waitFor(this.props.actions.saveAsset(model))
             .then(() => {
-                self.context.router.transitionTo(
-                    'asset-view', _.extend(params, {assetId: model.id}));
+                if(!query.forAttr) {
+                    self.context.router.transitionTo(
+                        'asset-view', _.extend(params, {assetId: model.id}));
+                } else {
+                    debugger;
+                    this.props.actions.returnToAsset(query.forAttr, params.assetTypeId);
+                }
             })
             .catch(error => {
                 self.stopWaiting();
@@ -89,14 +84,14 @@ var Edit = React.createClass({
         var asset = assetStore.asset;
         var taxonomyPath = assetStore.taxonomyPath;
         var validationData = assetStore.validation;
-        var screen = this.state.selectedScreen || {panels: []};
+        var screen = asset.screens[assetStore.selectedScreen] || {panels: []};
         var panels = screen.panels.map((el) => {
             return <Panel data={el}
                           dispatcher={this.props.dispatcher}
                           title={el.name}
                           actions={actions}
                           validation={validationData}
-                          selectedScreen={this.state.selectedScreen} />
+                          selectedScreen={screen} />
         });
 
         var dateTransform = new ValueTransformer(function (date) {
@@ -124,7 +119,6 @@ var Edit = React.createClass({
                         {action}&nbsp;<span className="page-title__param">{name}</span>
                     </h1>
         };
-
         return (
             <div>
                 {getHeader()}
@@ -133,7 +127,7 @@ var Edit = React.createClass({
                     <div className="grid__item two-twelfths">
                         <LayoutSwitcher
                             screens={asset.screens}
-                            selectedScreen={this.state.selectedScreen}
+                            selectedScreen={screen}
                             onChange={this.onScreenChange} />
                         <TaxonomyPath taxonomyPath={taxonomyPath} />
                     </div>

@@ -34,6 +34,15 @@ var AssetPicker = React.createClass({
         });
     },
 
+    createNew: function() {
+      this.props.actions.pushAsset();
+      this.context.router.transitionTo('asset-create-from-type', {
+        assetTypeId: this.props.params.relatedAssetTypeId
+      }, {
+        forAttr: this.props.params.id
+      });
+    },
+
     render: function() {
         var items = _.flatten([this.props.params.value]);
         var value = _.pluck(items, 'id');
@@ -65,6 +74,11 @@ var AssetPicker = React.createClass({
                     value={value}
                     placeholder=" "
                     label=" " />
+                <div
+                    className="btn btn_type_one btn_size_small asset-data__param-btn"
+                    onClick={this.createNew}>
+                    <i className="btn__icon btn__icon_plus_circle"></i>Add new
+                </div>
 
             </ControlWrapper>
         );

@@ -38,6 +38,18 @@ var AssetDispatcher = Flux.createDispatcher({
     return this.dispatch("list:dynlists", params);
   },
 
+  pushAsset() {
+    return this.dispatch("asset:push");
+  },
+
+  popAsset() {
+    return this.dispatch("asset:pop");
+  },
+
+  setAttribute(id, value) {
+    return this.dispatch("asset:set-attr", {id, value});
+  },
+
   loadAssetsList(params) {
     return this.dispatch("list:assets", params);
   },
