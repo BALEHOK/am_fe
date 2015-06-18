@@ -26,9 +26,24 @@ var ImageEditAttribute = React.createClass({
         });
     },
 
+    remove: function(e) {
+      console.log(e);
+      this.props.params.value = undefined;
+      this.state.url = undefined;
+      this.forceUpdate();
+    },
+
     render: function() {
+        let name = this.props.params.value ?
+          this.props.params.value.split('/').slice(-1)[0] : "";
+        let btn;
+        if(name) {
+          btn = <div className="btn btn_type_one btn_size_small pull-right" onClick={this.remove}>
+              <i className="btn__icon btn__icon_cross"></i>Remove
+          </div>;
+        }
         return (
-            <FileEditAttribute actions={this.props.actions} params={this.props.params} onUpload={this.handleUpload}>
+            <FileEditAttribute remove={this.remove} actions={this.props.actions} params={this.props.params} onUpload={this.handleUpload}>
                 {this.state.url ? <img src={this.state.url} /> : '' }
             </FileEditAttribute>
         );
