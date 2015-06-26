@@ -14,6 +14,10 @@ var AssetDispatcher = Flux.createDispatcher({
       return this.dispatch("asset:load-related", params);
   },
 
+  addAssetItem(asset) {
+    return this.dispatch("list:add-asset", asset);
+  },
+
   loadHistory(params) {
       return this.dispatch("history:load", params);
   },

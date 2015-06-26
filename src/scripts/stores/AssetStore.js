@@ -40,7 +40,8 @@ var AssetStore = Flux.createStore({
     'barcode:generate': 'generateBarcode',
     'asset:push': 'pushAsset',
     'asset:pop': 'popAsset',
-    'asset:set-attr': 'setAttribute'
+    'asset:set-attr': 'setAttribute',
+    'asset:add-related': 'addRelated'
   },
 
   initialize() {
@@ -56,6 +57,10 @@ var AssetStore = Flux.createStore({
       .filter(att => att.id === id)
       .forEach(att => att.value = value);
     this.emitChange();
+  },
+
+  addRelated(asset) {
+
   },
 
   loadAsset(params) {

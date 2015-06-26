@@ -37,9 +37,10 @@ var AssetPicker = React.createClass({
     createNew: function() {
       this.props.actions.pushAsset();
       this.context.router.transitionTo('asset-create-from-type', {
-        assetTypeId: this.props.params.relatedAssetTypeId
+          assetTypeId: this.props.params.relatedAssetTypeId
       }, {
-        forAttr: this.props.params.id
+          forAttr: this.props.params.id,
+          uid: this.props.params.uid
       });
     },
 

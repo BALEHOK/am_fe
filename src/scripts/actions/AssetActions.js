@@ -17,17 +17,23 @@ class AssetActions extends Actions {
       });
   }
 
-  returnToAsset(attrId, assetType) {
+  returnToAsset(attrId, uid, router) {
     let store = this._dispatcher.getStore('asset');
-    let id = store.getState().asset.id;
+    let nwAsset = store.getState().asset;
     this.popAsset();
-    this.setAttribute(attrId, id);
-    let nwId = store.getState().asset.id;
-
-    return this._dispatcher.loadRelatedAssets({
-        assetTypeId: assetType,
-        uid: id
+    nwAsset.name = "Really really testing";
+    this._dispatcher.addAssetItem({
+        asset: nwAsset,
+        uid
     });
+    let olAsset = store.getState().asset;
+    return this.setAttribute(attrId, {id: nwAsset.id, name: nwAsset.name})
+      .then(() => {
+          router.transitionTo('asset-edit', {
+              assetTypeId: olAsset.assetTypeId,
+              assetId: olAsset.id
+          });
+      });
   }
 
   pushAsset() {

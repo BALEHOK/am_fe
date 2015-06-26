@@ -16,8 +16,12 @@ var AssetEditHandler = React.createClass({
 
     statics: {
         willTransitionTo: function(transition, params, query) {
-            var actions = new AssetActions(AssetDispatcher);
-            actions.loadAsset(params);
+            let asset = AssetDispatcher.getStore('asset').getState().asset;
+            if(asset.assetTypeId !== parseInt(params.assetTypeId)
+                || asset.id !== parseInt(params.assetId)) {
+                    var actions = new AssetActions(AssetDispatcher);
+                    actions.loadAsset(params);
+              }
         }
     },
 

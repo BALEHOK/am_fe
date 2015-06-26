@@ -68,8 +68,7 @@ var Edit = React.createClass({
                     self.context.router.transitionTo(
                         'asset-view', _.extend(params, {assetId: model.id}));
                 } else {
-                    debugger;
-                    this.props.actions.returnToAsset(query.forAttr, params.assetTypeId);
+                    this.props.actions.returnToAsset(query.forAttr, query.uid, this.context.router);
                 }
             })
             .catch(error => {
