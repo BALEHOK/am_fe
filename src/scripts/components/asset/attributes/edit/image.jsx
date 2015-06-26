@@ -26,9 +26,15 @@ var ImageEditAttribute = React.createClass({
         });
     },
 
+    remove: function(e) {
+      this.props.params.value = undefined;
+      this.state.url = undefined;
+      this.forceUpdate();
+    },
+
     render: function() {
         return (
-            <FileEditAttribute actions={this.props.actions} params={this.props.params} onUpload={this.handleUpload}>
+            <FileEditAttribute remove={this.remove} actions={this.props.actions} params={this.props.params} onUpload={this.handleUpload}>
                 {this.state.url ? <img src={this.state.url} /> : '' }
             </FileEditAttribute>
         );
