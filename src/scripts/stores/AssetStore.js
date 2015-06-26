@@ -1,17 +1,24 @@
 var Flux = require('delorean').Flux;
 var AssetRepository = require('../services/AssetRepository');
 var BarcodeRepository = require('../services/BarcodeRepository');
+var _ = require('underscore');
+
+var defaultAsset = {
+  id: undefined,
+  name: undefined,
+  revision: undefined,
+  updatedAt: undefined,
+  screens: [],
+  barcode: undefined
+};
 
 var AssetStore = Flux.createStore({
 
-  asset: {
-    id: undefined,
-    name: undefined,
-    revision: undefined,
-    updatedAt: undefined,
-    screens: [],
-    barcode: undefined,
-  },
+  asset: _.extend({}, defaultAsset),
+
+  selectedScreen: 0,
+
+  assetStack: [],
 
   relatedAssets: [],
 
@@ -31,6 +38,10 @@ var AssetStore = Flux.createStore({
     'asset:validate-attribute': 'validateAttribute',
     'asset:save': 'saveAsset',
     'barcode:generate': 'generateBarcode',
+    'asset:push': 'pushAsset',
+    'asset:pop': 'popAsset',
+    'asset:set-attr': 'setAttribute',
+    'asset:add-related': 'addRelated'
   },
 
   initialize() {
@@ -38,13 +49,49 @@ var AssetStore = Flux.createStore({
     this.barcodeRepo = new BarcodeRepository();
   },
 
+  setAttribute({id, value}) {
+    id = parseInt(id);
+    this.asset.screens
+      .reduce(((acc, scrn) => acc.concat(scrn.panels)), [])
+      .reduce(((acc, panel) => acc.concat(panel.attributes)), [])
+      .filter(att => att.id === id)
+      .forEach(att => att.value = value);
+    this.emitChange();
+  },
+
+  addRelated(asset) {
+
+  },
+
   loadAsset(params) {
     this.assetRepo.loadAsset(params).then((data) => {
       this.asset = data;
       this.validation = [];
       this.isValid = undefined;
+      this.selectedScreen = _.chain(data.screens)
+          .findIndex({isDefault: true})
+          .value();
       this.emitChange();
     });
+  },
+
+  pushAsset() {
+    this.assetStack.push({
+      asset: this.asset,
+      selectedScreen: this.selectedScreen,
+      relatedAssets: this.relatedAssets
+    });
+    this.emitChange();
+  },
+
+  popAsset() {
+    let restore = this.assetStack.pop();
+    if(restore) {
+      this.selectedScreen = restore.selectedScreen;
+      this.asset = restore.asset;
+      this.relatedAssets = restore.relatedAssets;
+      this.emitChange();
+    }
   },
 
   loadRelatedAssets(params) {
@@ -153,7 +200,8 @@ var AssetStore = Flux.createStore({
       relatedAssets: this.relatedAssets,
       taxonomyPath: this.taxonomyPath,
       validation: this.validation,
-      isValid: this.getValidationState()
+      isValid: this.getValidationState(),
+      selectedScreen: this.selectedScreen
     };
   }
 });

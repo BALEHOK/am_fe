@@ -19,6 +19,7 @@ var ListStore = Flux.createStore({
     'list:roles': 'loadRoles',
     'list:load': 'loadSimpleList',
     'list:assettypes': 'loadAssetTypes',
+    'list:add-asset': 'addAssetItem'
   },
 
   initialize() {
@@ -83,6 +84,13 @@ var ListStore = Flux.createStore({
       this.lists.dynlists[params.attributeId] = data;
       this.emitChange();
     });
+  },
+
+  addAssetItem({asset, uid}) {
+    if(!this.lists.assets[uid]) {
+      this.lists.assets[uid] = { items: [] };
+    }
+    this.lists.assets[uid].items.push(asset);
   },
 
   loadAssetsList(params) {

@@ -22,7 +22,7 @@ var Create = React.createClass({
 
     onAssetTypeClick: function(assettype) {
         this.context.router.transitionTo(
-            'asset-create-from-type', 
+            'asset-create-from-type',
             {assetTypeId : assettype.id});
     },
 
@@ -30,9 +30,9 @@ var Create = React.createClass({
         var rows = {};
         var assettypes = this.state.stores.list.assettypes;
         if (assettypes.activeTypes && assettypes.activeTypes.length > 0)
-    	   rows = assettypes.activeTypes.map(type => <AssetTypeRow type={type} onClick={this.onAssetTypeClick} />);
-    	return (
-    		<div>
+         rows = assettypes.activeTypes.map(type => <AssetTypeRow type={type} onClick={this.onAssetTypeClick} />);
+      return (
+        <div>
                 <h1 className="page-title"><span className="icon icon_create"></span>New Asset</h1>
                 <h2>Please select an asset type</h2>
                 <Loader loading={this.state.loading}>
@@ -52,7 +52,7 @@ var Create = React.createClass({
                     </div>
                 </Loader>
             </div>
-    	);
+      );
     }
 });
 

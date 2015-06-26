@@ -17,6 +17,37 @@ class AssetActions extends Actions {
       });
   }
 
+  returnToAsset(attrId, uid, router) {
+    let store = this._dispatcher.getStore('asset');
+    let nwAsset = store.getState().asset;
+    this.popAsset();
+    nwAsset.name = "Really really testing";
+    this._dispatcher.addAssetItem({
+        asset: nwAsset,
+        uid
+    });
+    let olAsset = store.getState().asset;
+    return this.setAttribute(attrId, {id: nwAsset.id, name: nwAsset.name})
+      .then(() => {
+          router.transitionTo('asset-edit', {
+              assetTypeId: olAsset.assetTypeId,
+              assetId: olAsset.id
+          });
+      });
+  }
+
+  pushAsset() {
+    return this._dispatcher.pushAsset();
+  }
+
+  popAsset() {
+    return this._dispatcher.popAsset();
+  }
+
+  setAttribute(id, value) {
+    return this._dispatcher.setAttribute(id, value);
+  }
+
   loadRoles() {
     return this._dispatcher.loadRoles();
   }
