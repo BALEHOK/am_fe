@@ -17,14 +17,14 @@ class AssetActions extends Actions {
       });
   }
 
-  returnToAsset(attrId, uid, router) {
+  returnToAsset(attrId, router) {
     let store = this._dispatcher.getStore('asset');
     let nwAsset = store.getState().asset;
     this.popAsset();
     nwAsset.name = "Really really testing";
     this._dispatcher.addAssetItem({
         asset: nwAsset,
-        uid
+        attrId
     });
     let olAsset = store.getState().asset;
     return this.setAttribute(attrId, {id: nwAsset.id, name: nwAsset.name})

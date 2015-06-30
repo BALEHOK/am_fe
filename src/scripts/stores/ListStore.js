@@ -86,19 +86,19 @@ var ListStore = Flux.createStore({
     });
   },
 
-  addAssetItem({asset, uid}) {
-    if(!this.lists.assets[uid]) {
-      this.lists.assets[uid] = { items: [] };
+  addAssetItem({asset, attrId}) {
+    if(!this.lists.assets[attrId]) {
+      this.lists.assets[attrId] = { items: [] };
     }
-    this.lists.assets[uid].items.push(asset);
+    this.lists.assets[attrId].items.push(asset);
   },
 
   loadAssetsList(params) {
     var assetTypeId = params.assetTypeId;
-    if(!this.lists.assets[params.uid]) {
-      this.lists.assets[params.uid] = { items: [] };
+    if(!this.lists.assets[params.id]) {
+      this.lists.assets[params.id] = { items: [] };
     }
-    var list = this.lists.assets[params.uid];
+    var list = this.lists.assets[params.id];
     if(list.query != params.query) {
       list.query = params.query;
       list.items = [];
