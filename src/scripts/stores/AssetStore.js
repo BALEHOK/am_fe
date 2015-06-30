@@ -79,7 +79,9 @@ var AssetStore = Flux.createStore({
     this.assetStack.push({
       asset: this.asset,
       selectedScreen: this.selectedScreen,
-      relatedAssets: this.relatedAssets
+      relatedAssets: this.relatedAssets,
+      taxonomyPath: this.taxonomyPath,
+      validation: this.validation
     });
     this.emitChange();
   },
@@ -90,6 +92,8 @@ var AssetStore = Flux.createStore({
       this.selectedScreen = restore.selectedScreen;
       this.asset = restore.asset;
       this.relatedAssets = restore.relatedAssets;
+      this.taxonomyPath = restore.taxonomyPath;
+      this.validation = restore.validation;
       this.emitChange();
     }
   },
