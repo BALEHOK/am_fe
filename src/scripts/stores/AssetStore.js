@@ -55,7 +55,15 @@ var AssetStore = Flux.createStore({
       .reduce(((acc, scrn) => acc.concat(scrn.panels)), [])
       .reduce(((acc, panel) => acc.concat(panel.attributes)), [])
       .filter(att => att.id === id)
-      .forEach(att => att.value = value);
+      .forEach(att => {
+        if (att.datatype == 'assets') {
+          if (!_.isArray(att.value))
+            att.value = [];
+          att.value.push(value);
+        } else {
+          att.value = value;
+        }
+      });
     this.emitChange();
   },
 
@@ -169,7 +177,6 @@ var AssetStore = Flux.createStore({
     var request = this.assetRepo.saveAsset(asset);
     request
       .then((result) => {
-        console.log(result)
         self.asset.id = result.id;
         self.asset.name = result.name;
         self.emitChange();

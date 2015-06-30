@@ -23,7 +23,6 @@ var AssetPicker = React.createClass({
         } else {
             this.props.params.value = values[0];
         }
-        this.validate({id: this.props.params.id, value: this.props.params.value });
     },
 
     onItemsRequest: function(query, callback) {
