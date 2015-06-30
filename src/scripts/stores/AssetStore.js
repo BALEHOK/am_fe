@@ -168,8 +168,10 @@ var AssetStore = Flux.createStore({
     var self = this;
     var request = this.assetRepo.saveAsset(asset);
     request
-      .then((id) => {
-        self.asset.id = id;
+      .then((result) => {
+        console.log(result)
+        self.asset.id = result.id;
+        self.asset.name = result.name;
         self.emitChange();
       })
       .fail((jqXHR, textStatus) => {

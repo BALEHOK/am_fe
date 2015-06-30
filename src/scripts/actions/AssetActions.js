@@ -29,7 +29,6 @@ class AssetActions extends Actions {
         });
     };
     if (attrId) {
-        nwAsset.name = "Really really testing";
         this._dispatcher.addAssetItem({
             asset: nwAsset,
             attrId
