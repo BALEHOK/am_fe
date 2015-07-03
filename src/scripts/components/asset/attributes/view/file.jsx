@@ -17,7 +17,6 @@ var Attribute = React.createClass({
             urlParams.assetTypeId,
             urlParams.assetId,
             this.props.params.id);
-        console.log(url);
     },
 
     render: function() {

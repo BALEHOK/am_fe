@@ -14,6 +14,10 @@ var AssetDispatcher = Flux.createDispatcher({
       return this.dispatch("asset:load-related", params);
   },
 
+  addAssetItem(asset) {
+    return this.dispatch("list:add-asset", asset);
+  },
+
   loadHistory(params) {
       return this.dispatch("history:load", params);
   },
@@ -36,6 +40,18 @@ var AssetDispatcher = Flux.createDispatcher({
 
   loadDynamicList(params) {
     return this.dispatch("list:dynlists", params);
+  },
+
+  pushAsset() {
+    return this.dispatch("asset:push");
+  },
+
+  popAsset() {
+    return this.dispatch("asset:pop");
+  },
+
+  setAttribute(id, value) {
+    return this.dispatch("asset:set-attr", {id, value});
   },
 
   loadAssetsList(params) {

@@ -9,10 +9,20 @@ var AssetDispatcher = require('../../../dispatchers/AssetDispatcher');
 var Edit = require('./edit');
 
 var AssetEditHandler = React.createClass({
-    mixins:[AuthenticatedRouteMixin],
 
     displayName: function() {
         return 'Edit asset';
+    },
+
+    statics: {
+        willTransitionTo: function(transition, params, query) {
+            let asset = AssetDispatcher.getStore('asset').getState().asset;
+            if(asset.assetTypeId !== parseInt(params.assetTypeId)
+                || asset.id !== parseInt(params.assetId)) {
+                    var actions = new AssetActions(AssetDispatcher);
+                    actions.loadAsset(params);
+              }
+        }
     },
 
     componentWillMount: function() {
