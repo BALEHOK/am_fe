@@ -1,13 +1,6 @@
-﻿var exceptionsModule = require('../exceptions');
-
 class Application  {
     constructor (authService, tokenStore) {
         var self = this;
-        if (authService == null)
-            throw new exceptionsModule.ArgumentNullException('authService is null');
-        if (tokenStore == null)
-            throw new exceptionsModule.ArgumentNullException('tokenStore is null');
-
         this.authService = authService;
         this.tokenStore = tokenStore;
 

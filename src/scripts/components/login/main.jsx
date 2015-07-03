@@ -1,24 +1,18 @@
-﻿/**
- * @jsx React.DOM
- */
+import React from 'react';
+import Router from 'react-router';
 
-var React = require('react');
-var Router = require('react-router');
+export default class Login extends React.Component {
 
-var LoginPage = React.createClass({
-    contextTypes: {
-        router: React.PropTypes.func
-    },
-    statics: {
-        attemptedTransition: null
-    },
-    getInitialState: function() {
-        return {errorMessage: ''};
-    },
-    events : {
-        'click button' : 'submit'
-    },
-    handleSubmit : function(e){
+    constructor() {
+        super();
+        this.state = {
+            errorMessage: '',
+            login: '',
+            password: '',
+        };
+    }
+
+    handleSubmit(e) {
         var nextPath = this.context.router.getCurrentQuery().nextPath;
         var login = this.refs.login.getDOMNode().value.trim();
         var password = this.refs.password.getDOMNode().value.trim();
@@ -38,8 +32,9 @@ var LoginPage = React.createClass({
             .error(function(data) {
                 self.setState({ errorMessage: data.responseJSON.error_description });
             });
-    },
-    render: function() {
+    }
+
+    render() {
         return (
             <form className="form-horizontal">
                 {this.state.errorMessage}
@@ -57,11 +52,11 @@ var LoginPage = React.createClass({
                 </div>
                 <div className="control-group">
                     <div className="controls">
-                        <div className="btn" onClick={this.handleSubmit}>Sign in</div>
+                        <div className="btn" onClick={this.handleSubmit.bind(this)}>Sign in</div>
                     </div>
                 </div>
             </form>
         );
     }
-});
-module.exports = LoginPage;
+}
+
