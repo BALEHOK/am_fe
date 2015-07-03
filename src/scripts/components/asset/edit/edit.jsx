@@ -48,7 +48,12 @@ var Edit = React.createClass({
 
     handleUndo: function () {
         var params = this.context.router.getCurrentParams();
-        this.context.router.transitionTo('asset-view', params);
+        var query = this.context.router.getCurrentQuery();
+        if(!query.forAttr) {
+            this.context.router.transitionTo('asset-view', params);
+        } else {
+            this.props.actions.returnToAsset(null, this.context.router);
+        }
     },
 
     onScreenChange: function(screen) {
@@ -68,7 +73,7 @@ var Edit = React.createClass({
                     self.context.router.transitionTo(
                         'asset-view', _.extend(params, {assetId: model.id}));
                 } else {
-                    this.props.actions.returnToAsset(query.forAttr, query.uid, this.context.router);
+                    this.props.actions.returnToAsset(query.forAttr, this.context.router);
                 }
             })
             .catch(error => {

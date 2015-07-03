@@ -23,14 +23,13 @@ var AssetPicker = React.createClass({
         } else {
             this.props.params.value = values[0];
         }
-        this.validate({id: this.props.params.id, value: this.props.params.value });
     },
 
     onItemsRequest: function(query, callback) {
         return this.props.actions.loadAssetsList({
            assetTypeId: this.props.params.relatedAssetTypeId,
            query: query,
-           uid: this.props.params.uid
+           id: this.props.params.id
         });
     },
 
@@ -39,16 +38,15 @@ var AssetPicker = React.createClass({
       this.context.router.transitionTo('asset-create-from-type', {
           assetTypeId: this.props.params.relatedAssetTypeId
       }, {
-          forAttr: this.props.params.id,
-          uid: this.props.params.uid
+          forAttr: this.props.params.id
       });
     },
 
     render: function() {
         var items = _.flatten([this.props.params.value]);
         var value = _.pluck(items, 'id');
-        var attributeUid = this.props.params.uid;
-        var listStore = this.state.stores.list.assets[attributeUid];
+        var attrId = this.props.params.id;
+        var listStore = this.state.stores.list.assets[attrId];
         if(listStore && listStore.items) {
             items = _.unique(items.concat(listStore.items));
         }
@@ -65,7 +63,7 @@ var AssetPicker = React.createClass({
 
                 <ReactSelectize
                     maxItems={maxItems}
-                    selectId={"attribute-asset-" + attributeUid}
+                    selectId={"attribute-asset-" + attrId}
                     valueField="id"
                     labelField="name"
                     sortField="id"

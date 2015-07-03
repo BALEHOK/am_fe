@@ -17,23 +17,27 @@ class AssetActions extends Actions {
       });
   }
 
-  returnToAsset(attrId, uid, router) {
+  returnToAsset(attrId, router) {
     let store = this._dispatcher.getStore('asset');
     let nwAsset = store.getState().asset;
     this.popAsset();
-    nwAsset.name = "Really really testing";
-    this._dispatcher.addAssetItem({
-        asset: nwAsset,
-        uid
-    });
     let olAsset = store.getState().asset;
-    return this.setAttribute(attrId, {id: nwAsset.id, name: nwAsset.name})
-      .then(() => {
-          router.transitionTo('asset-edit', {
-              assetTypeId: olAsset.assetTypeId,
-              assetId: olAsset.id
-          });
-      });
+    let transition = (assetTypeId, assetId) => {
+        router.transitionTo('asset-edit', {
+          assetTypeId: assetTypeId,
+          assetId: assetId
+        });
+    };
+    if (attrId) {
+        this._dispatcher.addAssetItem({
+            asset: nwAsset,
+            attrId
+        });
+        return this.setAttribute(attrId, {id: nwAsset.id, name: nwAsset.name})
+          .then(() => transition(olAsset.assetTypeId, olAsset.id));
+      } else {
+        transition(olAsset.assetTypeId, olAsset.id);
+      }
   }
 
   pushAsset() {
