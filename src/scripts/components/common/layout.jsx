@@ -8,18 +8,24 @@ var HeaderNav = require('./headerNav');
 var Breadcrumbs = require('react-breadcrumbs');
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
+var AuthService = require('../../services/AuthService');
+var LoginStore = require('../../stores/LoginStore');
 
 var Layout = React.createClass({
+
     contextTypes: {
         router: React.PropTypes.func
     },
+
     displayName: 'Home',
+
     handleLogout: function(){
-        this.props.app.logout();
-        this.context.router.transitionTo('login');
+        Auth.logout();
     },
+
     render: function() {
-        var app = this.props.app;
+        var isLoggedIn = LoginStore.isLoggedIn();
+        var user = LoginStore.user;
         return (
             <div className="page-wrapper">
                 <header className="page-header">
@@ -28,7 +34,7 @@ var Layout = React.createClass({
                             <a className="page-header__logo hide-text" href="/">ACV CSC METEA</a>
                             <span className="page-header__banner hide-text">Asset Management</span>
                             <div className="page-header__user-nav pull-right">
-                                {app.user ? <UserNav user={app.user} onLogout={this.handleLogout} /> : <div />}
+                                {isLoggedIn ? <UserNav user={user} onLogout={this.handleLogout} /> : <div />}
                             </div>
                         </div>
                     </div>
@@ -39,7 +45,7 @@ var Layout = React.createClass({
                 <div className="page-content">
                     <div className="container" id="content">
                         <Breadcrumbs/>
-                        <RouteHandler app={app} {...this.props} />
+                        <RouteHandler {...this.props} />
                     </div>
                 </div>
             </div>

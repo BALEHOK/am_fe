@@ -1,26 +1,33 @@
-﻿/**
+/**
  * @jsx React.DOM
  * This is our composition root: place where all components get tied together
  */
 
-// Components
 var React = require('react');
 var router = require('./appRouter');
-// Services and models
-var TokenStore = require('./models/TokenStore.js').CookieTokenStore;
-var tokenStore = new TokenStore();
-
-var AuthService = require('./services/AuthService.js').AuthService;
-var authService = new AuthService();
-
-var Application = require('./models/Application.js').Application;
-var app = new Application(authService, tokenStore);
-
-// TODO: to use in static AuthenticateRouteMixin
-window.app = app;
+var RouterContainer = require('./services/RouterContainer');
+var LoginActions = require('./actions/LoginActions');
 
 router.run(function (Handler, state) {
-  React.render(<Handler app={app} {...state} />, document.querySelector('.page-container'));
+  React.render(<Handler {...state} />, document.querySelector('.page-container'));
 });
+
+RouterContainer.set(router);
+let token = localStorage.getItem('token');
+if (token) {
+  LoginActions.loginUser(token);
+}
+
+$.ajaxPrefilter(function (options) {
+    options.url = APIURL + options.url;
+    options.crossDomain = true;
+    if (!options.beforeSend) {
+        options.beforeSend = function (xhr) {
+            if (token && options.url != APIURL + '/token')
+                xhr.setRequestHeader('Authorization', 'Bearer ' + token.access_token);
+        };
+    }
+});
+
 // enable react devtools
 typeof window !== "undefined" && (window.React = React)

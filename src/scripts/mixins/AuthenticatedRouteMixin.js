@@ -1,11 +1,11 @@
-var LoginPage = require('../components/login/main.jsx');
 var AuthService = require('../services/AuthService.js');
+var LoginStore = require('../stores/LoginStore.js');
 
 var AuthenticatedRouteMixin = {
     statics: {
         willTransitionTo: function (transition, params, query) {
-            if (!window.app.tokenStore.getToken()) {
-                transition.redirect('login', {}, {'nextPath' : transition.path});
+            if (!LoginStore.isLoggedIn()) {
+               transition.redirect('/login', {}, {'nextPath' : transition.path});
             }
         }
     }
