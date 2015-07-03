@@ -1,6 +1,8 @@
-import React from 'react';
+import React from 'react/addons';
 import Router from 'react-router';
+import reactMixin from "react-mixin";
 
+@reactMixin.decorate(React.addons.LinkedStateMixin)
 export default class Login extends React.Component {
 
     constructor() {
