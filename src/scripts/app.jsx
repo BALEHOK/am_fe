@@ -29,7 +29,11 @@ $.ajaxPrefilter(function (options) {
 $.ajaxSetup({
     statusCode: {
         401: () => {
-            LoginActions.logoutUser({nextPath: RouterContainer.get().getCurrentPath()});
+            if (LoginStore.isLoggedIn()) {
+                LoginActions.logoutUser({
+                    nextPath: RouterContainer.get().getCurrentPath()
+                });
+            }
         }
     }
 });
