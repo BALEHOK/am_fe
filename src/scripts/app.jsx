@@ -15,10 +15,6 @@ if (tokenString) {
   LoginActions.loginUser(tokenString);
 }
 
-router.run(function (Handler, state) {
-  React.render(<Handler {...state} />, document.querySelector('.page-container'));
-});
-
 $.ajaxPrefilter(function (options) {
     options.url = APIURL + options.url;
     options.crossDomain = true;
@@ -33,11 +29,14 @@ $.ajaxPrefilter(function (options) {
 $.ajaxSetup({
     statusCode: {
         401: () => {
-            LoginActions.logoutUser();
+            LoginActions.logoutUser({nextPath: RouterContainer.get().getCurrentPath()});
         }
     }
 });
 
+router.run(function (Handler, state) {
+  React.render(<Handler {...state} />, document.querySelector('.page-container'));
+});
 
 // enable react devtools
 typeof window !== "undefined" && (window.React = React)

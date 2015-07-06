@@ -19,8 +19,8 @@ export default {
     LoginDispatcher.loginUser(JSON.parse(tokenString));
   },
 
-  logoutUser() {
-    RouterContainer.get().transitionTo('/login');
+  logoutUser(params) {
+    RouterContainer.get().transitionTo('/login', params);
     localStorage.removeItem('token');
     LoginDispatcher.logoutUser();
   }
