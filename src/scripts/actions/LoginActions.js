@@ -2,31 +2,27 @@ import Actions from './Actions'
 import RouterContainer from '../services/RouterContainer'
 import LoginDispatcher from '../dispatchers/LoginDispatcher'
 
-class LoginActions {
+export default {
 
-  constructor() {
-    this._dispatcher = new LoginDispatcher();
-  }
-
-  loginUser(token) {
+  loginUser(tokenString) {
     var savedToken = localStorage.getItem('token');
 
-    if (savedToken !== token) {
-      var nextPath = RouterContainer.get().getCurrentQuery().nextPath || '/';
-
+    if (savedToken !== tokenString) {
+      var nextPath = '/';
+      var currentQuery = RouterContainer.get().getCurrentQuery();
+      if (currentQuery && currentQuery.nextPath)
+        nextPath = currentQuery.nextPath;
       RouterContainer.get().transitionTo(nextPath);
-      localStorage.setItem('token', token);
+      localStorage.setItem('token', tokenString);
     }
 
-    this._dispatcher.loginUser(token);
-  }
+    LoginDispatcher.loginUser(JSON.parse(tokenString));
+  },
 
   logoutUser() {
     RouterContainer.get().transitionTo('/login');
     localStorage.removeItem('token');
-    this._dispatcher.logoutUser();
+    LoginDispatcher.logoutUser();
   }
 
 }
-
-export default new LoginActions()

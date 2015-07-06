@@ -4,7 +4,7 @@ var LoginStore = require('../stores/LoginStore.js');
 var AuthenticatedRouteMixin = {
     statics: {
         willTransitionTo: function (transition, params, query) {
-            if (!LoginStore.isLoggedIn()) {
+            if (!LoginStore.store.isLoggedIn()) {
                transition.redirect('/login', {}, {'nextPath' : transition.path});
             }
         }

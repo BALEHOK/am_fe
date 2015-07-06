@@ -3,6 +3,7 @@ var Flux = require('delorean').Flux;
 var LoginStore = Flux.createStore({
 
     user: null,
+    access_token: null,
 
     actions: {
         'login:loginUser': 'loginUser',
@@ -15,6 +16,7 @@ var LoginStore = Flux.createStore({
             lastLogin: token.lastLogin,
             email: token.email
         };
+        this.access_token = token.access_token;
         this.emitChange();
     },
 

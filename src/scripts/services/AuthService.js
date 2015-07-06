@@ -1,19 +1,21 @@
-import LoginActions from '../actions/LoginActions';
+import LoginActions from '../actions/LoginActions'
+import when from 'when';
 
 class AuthService {
 
   login(username, password) {
-    return $.ajax({
+    return when($.ajax({
       url: '/token',
       type: 'POST',
+      contentType: 'application/json',
       data: {
         username: username,
         password: password,
         grant_type: 'password'
       }
-    })
-    .then(function(response) {
-      LoginActions.loginUser(response);
+    }))
+    .then(response => {
+      LoginActions.loginUser(JSON.stringify(response));
       return true;
     });
   }

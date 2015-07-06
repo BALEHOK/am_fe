@@ -1,7 +1,7 @@
-import React from 'react/addons';
-import Router from 'react-router';
-import reactMixin from "react-mixin";
-import Auth from '../../services/AuthService'
+import React from 'react/addons'
+import Router from 'react-router'
+import reactMixin from 'react-mixin'
+import AuthService from '../../services/AuthService'
 
 @reactMixin.decorate(React.addons.LinkedStateMixin)
 export default class Login extends React.Component {
@@ -10,7 +10,7 @@ export default class Login extends React.Component {
         super();
         this.state = {
             errorMessage: '',
-            login: '',
+            username: '',
             password: '',
         };
     }
@@ -18,7 +18,7 @@ export default class Login extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
         var self = this;
-        Auth.login(this.state.user, this.state.password)
+        AuthService.login(this.state.username, this.state.password)
           .catch(function(err) {
             self.setState({ errorMessage: err.responseJSON.error_description });
             console.log("Error logging in", err);
@@ -30,9 +30,9 @@ export default class Login extends React.Component {
             <form className="form-horizontal">
                 {this.state.errorMessage}
                 <div className="control-group">
-                    <label className="control-label" htmlFor="login">Login</label>
+                    <label className="control-label" htmlFor="username">Username</label>
                     <div className="controls">
-                        <input type="text" id="login" valueLink={this.linkState('login')} placeholder="Login" />
+                        <input type="text" id="username" valueLink={this.linkState('username')} placeholder="Username" />
                     </div>
                 </div>
                 <div className="control-group">
