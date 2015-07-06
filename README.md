@@ -1,6 +1,6 @@
 # AssetManagerFrontend
 
-Frontend stack for AssetManagerApp (using webpack, react, backbone, typescript, stylus)
+Frontend stack for AssetManagerApp (using webpack, react, stylus)
 
 ## For start
 install node.js
