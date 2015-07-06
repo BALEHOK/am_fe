@@ -30,5 +30,14 @@ $.ajaxPrefilter(function (options) {
     }
 });
 
+$.ajaxSetup({
+    statusCode: {
+        401: () => {
+            LoginActions.logoutUser();
+        }
+    }
+});
+
+
 // enable react devtools
 typeof window !== "undefined" && (window.React = React)
