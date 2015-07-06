@@ -49,10 +49,12 @@ var Edit = React.createClass({
     handleUndo: function () {
         var params = this.context.router.getCurrentParams();
         var query = this.context.router.getCurrentQuery();
-        if(!query.forAttr) {
+        if(params.assetId && !query.forAttr) {
             this.context.router.transitionTo('asset-view', params);
-        } else {
+        } else if (query.forAttr) {
             this.props.actions.returnToAsset(null, this.context.router);
+        } else {
+            this.context.router.goBack();
         }
     },
 

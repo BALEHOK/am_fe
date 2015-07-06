@@ -13,7 +13,12 @@ var AttributesFactory = {
     if(!params.value || _.isEmpty(params.value) || (_.has(params.value, 'id') && !params.value.id)) {
         Component = require('./attributes/view/nodata');
     } else {
-        Component = require("./attributes/view/" + name + ".jsx");
+        try {
+            Component = require("./attributes/view/" + name + ".jsx");
+        }
+        catch(err) {
+            console.log('Error loading component: ' + name, err);
+        }
     }
     return <Component dispatcher={dispatcher} params={params}/>;
   },
