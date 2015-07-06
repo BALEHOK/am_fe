@@ -1,6 +1,3 @@
-/** @jsx React.DOM */
-
-/* React selectize wrapper */
 var React = require('react');
 var Selectize = require('selectize')
 var $ = require('jquery');

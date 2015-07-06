@@ -34,8 +34,7 @@ module.exports = {
     },
     module: {
         loaders: [
-            { test: /^(?!.*(bower_components|node_modules))+.+\.js$/, loader: '6to5-loader'},
-            { test: /\.jsx$/, loader: 'jsx-loader!6to5-loader'}
+            { test: /\.jsx?$/, exclude: /(node_modules|bower_components)/, loader: 'babel-loader?stage=0'},
         ],
         noParse: /\.min\.js/
     }
