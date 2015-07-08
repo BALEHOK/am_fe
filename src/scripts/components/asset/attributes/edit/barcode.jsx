@@ -7,7 +7,8 @@ var cx = require('classnames');
 var ControlWrapper = require('./controlWrapper');
 var ValidationMixin = require('../../../../mixins/ValidationMixin');
 var Flux = require('delorean').Flux;
-var BooleanAttribute = React.createClass({
+
+var BarcodeAttribute = React.createClass({
     mixins: [ValidationMixin, Flux.mixins.storeListener],
 
     componentWillMount: function() {
@@ -32,7 +33,7 @@ var BooleanAttribute = React.createClass({
 
     render: function() {
         var renderBarcode = () => {
-            var data = this.state.stores.asset.asset.barcode;
+            var data = this.state.stores.asset.barcodeBase64;
             if (data) {
                 return <img src={`data:image/png;base64,${data}`} alt="" />
             }
@@ -54,11 +55,9 @@ var BooleanAttribute = React.createClass({
                     onChange={this.valueChanged}
                     className="input-txt__field form-control"
                     value={this.props.params.value} />
-
-
             </ControlWrapper>
         );
     }
 });
 
-module.exports = BooleanAttribute;
+module.exports = BarcodeAttribute;

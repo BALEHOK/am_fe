@@ -28,6 +28,8 @@ var AssetStore = Flux.createStore({
 
   isValid: undefined,
 
+  barcodeBase64: null,
+
   actions: {
     'asset:load': 'loadAsset',
     'asset:load-related': 'loadRelatedAssets',
@@ -139,7 +141,7 @@ var AssetStore = Flux.createStore({
 
   generateBarcode(params) {
       this.barcodeRepo.generate().then((data) => {
-          this.asset.barcode = data.base64Image;
+          this.barcodeBase64 = data.base64Image;
           var attr = this.getAttribute(params.id, params.screenId);
           attr.value = data.barcode;
           this.emitChange();
@@ -155,7 +157,7 @@ var AssetStore = Flux.createStore({
 
   loadBarcode(barcode) {
     this.assetRepo.loadBarcode(barcode).then((data) => {
-      this.asset.barcode = data;
+      this.barcodeBase64 = data;
       this.emitChange();
     });
   },
@@ -214,7 +216,8 @@ var AssetStore = Flux.createStore({
       taxonomyPath: this.taxonomyPath,
       validation: this.validation,
       isValid: this.getValidationState(),
-      selectedScreen: this.selectedScreen
+      selectedScreen: this.selectedScreen,
+      barcodeBase64: this.barcodeBase64,
     };
   }
 });
