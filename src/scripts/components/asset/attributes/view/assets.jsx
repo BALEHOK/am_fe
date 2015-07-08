@@ -13,8 +13,8 @@ var Attribute = React.createClass({
             <div className="asset-data__param">
                 <span className="asset-data__param-title">{params.name}:</span>
                 {assets.map(asset => {
-                    return linkFactory.getDisplayValue(
-                        params.relatedAssetTypeId, asset.id, asset.name);
+                    var assetLink = linkFactory.getDisplayValue(params.relatedAssetTypeId, asset.id, asset.name);
+                    return <div>{assetLink}</div>;
                 })}
             </div>
         );
