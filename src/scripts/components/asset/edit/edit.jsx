@@ -31,7 +31,7 @@ var Edit = React.createClass({
     getInitialState: function() {
         return {
             isValid: true,
-            selectedScreen: undefined,
+            selectedScreen: undefined
         }
     },
 
@@ -125,6 +125,7 @@ var Edit = React.createClass({
                         {action}&nbsp;<span className="page-title__param">{name}</span>
                     </h1>
         };
+
         return (
             <div>
                 {getHeader()}
@@ -145,22 +146,24 @@ var Edit = React.createClass({
                         </Loader>
                         <ValidationResult validation={validationData}
                                           selectedScreen={screen} />
-                        <div className="inputs-line inputs-line_width_full">
-                            <button
-                                disabled={!this.state.isValid || this.state.loading}
-                                onClick={this.handleSave}
-                                className="btn btn_size_small">Save
-                            </button>
-                            {/*<button
-                                disabled={!this.state.isValid}
-                                className="btn btn_type_second btn_size_small">Save and Add new
-                            </button>*/}
-                            <button
-                                disabled={this.state.loading}
-                                className="btn btn_type_second btn_size_small"
-                                onClick={this.handleUndo}>
-                                <i className="btn__icon btn__icon_undo"></i>Undo
-                            </button>
+                        <div className="inputs-line inputs-line_width_full inputs-line_sliding" ref="slider">
+                            <div className="inputs-line__wrapper">
+                                <button
+                                    disabled={!this.state.isValid || this.state.loading}
+                                    onClick={this.handleSave}
+                                    className="btn btn_size_small">Save
+                                </button>
+                                {/*<button
+                                    disabled={!this.state.isValid}
+                                    className="btn btn_type_second btn_size_small">Save and Add new
+                                </button>*/}
+                                <button
+                                    disabled={this.state.loading}
+                                    className="btn btn_type_second btn_size_small"
+                                    onClick={this.handleUndo}>
+                                    <i className="btn__icon btn__icon_undo"></i>Undo
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
