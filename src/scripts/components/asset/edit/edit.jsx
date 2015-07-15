@@ -144,10 +144,10 @@ var Edit = React.createClass({
                                 {panels}
                             </div>
                         </Loader>
-                        <ValidationResult validation={validationData}
-                                          selectedScreen={screen} />
                         <div className="inputs-line inputs-line_width_full inputs-line_sliding" ref="slider">
                             <div className="inputs-line__wrapper">
+                                <ValidationResult validation={validationData}
+                                                  selectedScreen={screen} />
                                 <button
                                     disabled={!this.state.isValid || this.state.loading}
                                     onClick={this.handleSave}
