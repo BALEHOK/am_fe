@@ -1,5 +1,5 @@
 import LoginActions from '../actions/LoginActions'
-import fetch from "fetchival";
+import fetch from "../util/fetch";
 
 class AuthService {
 

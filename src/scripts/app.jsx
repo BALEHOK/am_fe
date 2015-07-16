@@ -16,17 +16,6 @@ if (tokenString) {
   LoginActions.loginUser(tokenString);
 }
 
-$.ajaxPrefilter(function (options) {
-    options.url = APIURL + options.url;
-    options.crossDomain = true;
-    if (!options.beforeSend) {
-        options.beforeSend = function (xhr) {
-            if (LoginStore.access_token && options.url != APIURL + '/token')
-                xhr.setRequestHeader('Authorization', 'Bearer ' + LoginStore.access_token);
-        };
-    }
-});
-
 $.ajaxSetup({
     statusCode: {
         401: () => {

@@ -1,4 +1,4 @@
-import fetch from "fetchival";
+import fetch from "../util/fetch";
 
 export default class HistoryRepository {
     loadHistory(params) {
