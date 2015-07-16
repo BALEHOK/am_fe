@@ -1,11 +1,9 @@
-class ListRepository {
+import fetch from "fetchival";
+
+export default class ListRepository {
     loadDynamicList(params) {
         var url = `/api/dynlist/attribute/${params.attributeId}`;
-        return $.ajax({
-            url: url,
-            contentType: 'application/json',
-            type: 'GET'
-        });
+        return fetch(url).get();
     }
 
     loadZipcodes(params) {
@@ -13,15 +11,11 @@ class ListRepository {
     }
 
     loadList(url, params) {
-        return $.ajax({
-            url: url,
-            contentType: 'application/json',
-            data: {
-                filter: params.filter,
-                rowStart: params.rowStart,
-                rowsNumber: params.rowsNumber,
-                query: params.filter
-            }
+        return fetch(url).get({
+            filter: params.filter,
+            rowStart: params.rowStart,
+            rowsNumber: params.rowsNumber,
+            query: params.filter
         });
     }
 
@@ -36,31 +30,18 @@ class ListRepository {
     loadAssetsList(params) {
         var rowStart = params.rowStart || 1;
         var rowsNumber = params.rowsNumber || 20;
-          var query = params.query || '';
-          var url = `/api/assettype/${params.assetTypeId}/assets/`;
-          return $.ajax({
-              url: url,
-              contentType: 'application/json',
-              type: 'GET',
-              data: params
-          });
+        var query = params.query || '';
+        var url = `/api/assettype/${params.assetTypeId}/assets/`;
+        return fetch(url).get(params);
     }
 
     loadRoles() {
         var url = `/api/roles`;
-        return $.ajax({
-            url: url,
-            contentType: 'application/json',
-        });
+        return fetch(url).get();
     }
 
     loadAssetTypes() {
         var url = `/api/assettype`;
-        return $.ajax({
-            url: url,
-            contentType: 'application/json',
-        });
+        return fetch(url).get();
     }
 }
-
-module.exports = ListRepository;

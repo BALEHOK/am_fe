@@ -13,7 +13,9 @@
   "dependencies": {
     "classnames": "^1.2.0",
     "delorean": "0.8.7",
+    "element-closest": "^1.0.3",
     "extract-text-webpack-plugin": "^0.3.1",
+    "fetchival": "^0.3.0",
     "fileapi": "^2.0.10",
     "google-maps": "^2.1.1",
     "jquery": "^2.1.1",
@@ -30,6 +32,7 @@
     "react-time-picker": "^1.0.8",
     "selectize": "0.12.0",
     "underscore": "^1.7.0",
+    "whatwg-fetch": "^0.9.0",
     "when": "^3.7.3"
   },
   "devDependencies": {

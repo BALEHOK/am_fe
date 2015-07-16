@@ -1,7 +1,7 @@
-class BarcodeRepository {
+import fetch from "fetchival";
+
+export default class BarcodeRepository {
     generate() {
-        return $.get('/api/barcode');
+        return fetch('/api/barcode').get();
     }
 }
-
-module.exports = BarcodeRepository;

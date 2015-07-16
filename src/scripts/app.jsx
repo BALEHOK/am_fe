@@ -8,6 +8,7 @@ var router = require('./appRouter');
 var RouterContainer = require('./services/RouterContainer');
 var LoginActions = require('./actions/LoginActions');
 var LoginStore = require('./stores/LoginStore').store;
+import {} from "element-closest";
 
 RouterContainer.set(router);
 let tokenString = localStorage.getItem('token');

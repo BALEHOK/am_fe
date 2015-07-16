@@ -15,6 +15,7 @@ var Loader = require('../common/loader.jsx');
 var LoaderMixin = require('../../mixins/LoaderMixin');
 var Flux = require('delorean').Flux;
 var cx = require('classnames');
+import {param} from "../../util/util";
 
 var ResultPage = React.createClass({
     mixins: [Router.Navigation, LoaderMixin, Flux.mixins.storeListener],
@@ -68,7 +69,7 @@ var ResultPage = React.createClass({
             }
             return acc;
         }, {});
-        this.context.router.transitionTo('/search/result?' + $.param(clean));
+        this.context.router.transitionTo('/search/result?' + param(clean));
     },
 
     filterCounters: function(param, counter) {
