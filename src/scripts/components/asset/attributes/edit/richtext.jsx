@@ -7,7 +7,7 @@ var cx = require('classnames');
 var ControlWrapper = require('./controlWrapper');
 var ValidationMixin = require('../../../../mixins/ValidationMixin');
 var Quill = require('react-quill');
-var _ = require('lodash');
+var _ = require('underscore');
 var items = _.extend([], Quill.Toolbar.defaultItems);
 items[0].items.pop();
 
