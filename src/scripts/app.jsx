@@ -17,18 +17,6 @@ if (tokenString) {
   LoginActions.loginUser(tokenString);
 }
 
-$.ajaxSetup({
-    statusCode: {
-        401: () => {
-            if (LoginStore.isLoggedIn()) {
-                LoginActions.logoutUser({
-                    nextPath: RouterContainer.get().getCurrentPath()
-                });
-            }
-        }
-    }
-});
-
 router.run(function (Handler, state) {
   React.render(<Handler {...state} />, document.querySelector('.page-container'));
 });

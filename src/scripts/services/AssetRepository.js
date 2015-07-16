@@ -58,12 +58,16 @@ export default class AssetRepository {
         var url = `/api/assettype/${asset.assetTypeId}/asset`;
         if (asset.id)
             url += `/${asset.id}`;
-        let resp = fetch(url);
-        return asset.id ? resp.post(asset) : respo.put(asset);
+        let resp = fetch(url, {
+          body: JSON.stringify(asset)
+        });
+        return asset.id ? resp.post() : respo.put();
     }
 
     validateAttribute(params) {
         var url = `/api/validation/attribute/${params.attributeId}`;
-        return fetch(url).post(data)
+        return fetch(url, {
+          body: JSON.stringify(params.value)
+        }).post();
     }
 }
