@@ -9,6 +9,7 @@ var RouterContainer = require('./services/RouterContainer');
 var LoginActions = require('./actions/LoginActions');
 var LoginStore = require('./stores/LoginStore').store;
 import {} from "element-closest";
+import {} from "whatwg-fetch";
 
 RouterContainer.set(router);
 let tokenString = localStorage.getItem('token');

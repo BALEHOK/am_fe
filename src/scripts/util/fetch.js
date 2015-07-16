@@ -8,9 +8,10 @@ export default function fetch(url, options = {}) {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      }
+      },
+      mode: 'cors'
   };
-  if (LoginStore.access_token && options.url != APIURL + '/token') {
+  if (LoginStore.access_token && url != '/token') {
       defOptions.headers['Authorization'] = 'Bearer ' + LoginStore.access_token;
   }
   return fetchival(APIURL + url, _.extend(defOptions, options));
