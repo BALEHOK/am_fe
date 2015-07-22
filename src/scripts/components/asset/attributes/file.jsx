@@ -5,6 +5,7 @@
 var React = require('react');
 var cx = require('classnames');
 var fileapi = require('fileapi');
+var LoginStore = require('../../../stores/LoginStore').store;
 
 var File = React.createClass({
 
@@ -21,7 +22,7 @@ var File = React.createClass({
         fileapi.upload({
             url: url,
             headers: {
-                Authorization: 'Bearer ' + app.tokenStore.getToken()
+                Authorization: 'Bearer ' + LoginStore.access_token
             },
             files: {
                 file: files[0]
