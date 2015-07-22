@@ -3,6 +3,7 @@ var AssetStore = require('../stores/AssetStore');
 var ListStore = require('../stores/ListStore');
 var SearchTrackingStore = require('../stores/SearchTrackingStore');
 var HistoryStore = require('../stores/HistoryStore');
+var ReportStore = require('../stores/ReportStore');
 
 var AssetDispatcher = Flux.createDispatcher({
 
@@ -90,12 +91,17 @@ var AssetDispatcher = Flux.createDispatcher({
     return this.dispatch("list:assettypes");
   },
 
+  loadReports(assetTypeId) {
+    return this.dispatch('reports:load', assetTypeId);
+  },
+
   getStores() {
     return {
       asset: new AssetStore(),
       list: new ListStore(),
       search: new SearchTrackingStore(),
-      history: new HistoryStore()
+      history: new HistoryStore(),
+      report: new ReportStore(),
     }
   }
 });

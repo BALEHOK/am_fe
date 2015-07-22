@@ -3,8 +3,8 @@ var ReportStore = require('../stores/ReportStore');
 
 var ReportDispatcher = Flux.createDispatcher({
 
-  loadReports(token) {
-    return this.dispatch('reports:load', token);
+  loadReports() {
+    return this.dispatch('reports:load');
   },
 
   getStores() {

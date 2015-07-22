@@ -22,7 +22,6 @@ var ReportsList = React.createClass({
                                 <th width="20%"></th>
                             </tr>
                             {this.state.stores.report.reports.map(r => {
-                                console.log(r)
                                 var url = APIURL + '/customreports/' + r.id;
                                 return <tr>
                                     <td><a target="_blank" href={url}>{r.name}</a></td>

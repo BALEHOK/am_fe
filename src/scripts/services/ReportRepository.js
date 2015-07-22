@@ -1,8 +1,11 @@
 class ReportRepository {
 
-    loadReports() {
+    loadReports(assetTypeId) {
+        var url = '/api/reports/custom';
+        if (assetTypeId)
+            url = `${url}/${assetTypeId}`;
         return $.ajax({
-            url: '/api/reports/custom',
+            url: url,
             contentType: 'application/json',
             type: 'GET'
         });

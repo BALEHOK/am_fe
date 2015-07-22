@@ -2,8 +2,8 @@ var Actions = require('./Actions');
 
 class ReportActions extends Actions {
 
-  loadReports() {
-    return this._dispatcher.loadReports();
+  loadReports(assetTypeId) {
+    return this._dispatcher.loadReports(assetTypeId);
   }
 
 }

@@ -13,8 +13,8 @@ var ReportStore = Flux.createStore({
         this.reportRepo = new ReportRepository();
     },
 
-    loadReports() {
-        this.reportRepo.loadReports().then((data) => {
+    loadReports(assetTypeId) {
+        this.reportRepo.loadReports(assetTypeId).then((data) => {
             this.reports = data;
             this.emitChange();
         });
