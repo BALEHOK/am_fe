@@ -58,6 +58,7 @@ export default class AssetRepository {
         var url = `/api/assettype/${asset.assetTypeId}/asset`;
         if (asset.id)
             url += `/${asset.id}`;
+
         let resp = fetch(url, {
           body: JSON.stringify(asset)
         });
