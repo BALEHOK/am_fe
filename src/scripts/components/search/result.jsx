@@ -1,4 +1,4 @@
-﻿/**
+/**
  * @jsx React.DOM
  */
 
@@ -11,6 +11,7 @@ var RefinementBlock = require('./refinement_block');
 var ResultItem = require('./result_item');
 var ResultPagination = require('./resultPagination.jsx');
 var ResultHeaderPagination = require('./resultHeaderPagination.jsx');
+var ReportsBlock = require('./reportsBlock');
 var Loader = require('../common/loader.jsx');
 var LoaderMixin = require('../../mixins/LoaderMixin');
 var Flux = require('delorean').Flux;
@@ -228,19 +229,7 @@ var ResultPage = React.createClass({
                                         : {}
                                     }
                                     <nav className={navBlockClasses}>
-                                        <span className="nav-block__title">Reports</span>
-                                        <ul className="nav-block__list">
-                                            <li className="nav-block__item">
-                                                <a className="link link_second">
-                                                    <span className="icon icon_download"></span>Detailed
-                                                </a>
-                                            </li>
-                                            <li className="nav-block__item">
-                                                <a className="link link_second">
-                                                    <span className="icon icon_download"></span>Compact
-                                                </a>
-                                            </li>
-                                        </ul>
+                                        <ReportsBlock searchId={results.searchId} />
                                     </nav>
                                     <nav className={navBlockClasses}>
                                         <span className="nav-block__title">Export</span>
