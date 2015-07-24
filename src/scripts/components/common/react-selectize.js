@@ -69,6 +69,7 @@ export default class Select extends React.Component {
         multi={!!this.props.maxItems}
         name={this.props.selectId}
         placeholder={this.props.placeholder}
+        className="form-control"
         onScroll={this.loadMore.bind(this)}/>
     </label>;
   }
