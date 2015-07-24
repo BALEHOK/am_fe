@@ -11,7 +11,11 @@ export default class Select extends React.Component {
   getValue() {
     let value;
     if(this.props.value instanceof Array) {
-      value = this.props.value[0] || "";
+      if(!!this.props.maxItems) {
+        value = this.props.value.join(',');
+      } else {
+        value = this.props.value[0] || "";
+      }
     } else {
       value = this.props.value || "";
     }
@@ -45,9 +49,10 @@ export default class Select extends React.Component {
   }
 
   onChange(e) {
-    console.log(this.props.items.filter(el => el[this.props.valueField] == e));
     this.props.onChange(
-      this.props.items.filter(el => el[this.props.valueField] == e)
+      e.split(',')
+        .map(e => this.props.items.filter(el => el[this.props.valueField] == e))
+        .reduce((acc, el) => acc.concat(el))
     );
   }
 
@@ -61,6 +66,7 @@ export default class Select extends React.Component {
         onChange={this.onChange.bind(this)}
         onFocus={this.onFocus.bind(this)}
         clearable={false}
+        multi={!!this.props.maxItems}
         name={this.props.selectId}
         placeholder={this.props.placeholder}
         onScroll={this.loadMore.bind(this)}/>
