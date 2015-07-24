@@ -30,6 +30,7 @@ var AssetView = React.createClass({
     componentWillMount: function() {
         var params = _.extend({}, this.props.params, this.props.query);
         this.waitFor(this.props.actions.loadAsset(params));
+        this.props.actions.loadReports(this.props.params.assetTypeId);
     },
 
     componentWillReceiveProps: function(nextProps) {
@@ -78,16 +79,18 @@ var AssetView = React.createClass({
         var linkedAssets = assetStore.relatedAssets;
         var taxonomyPath = assetStore.taxonomyPath;
 
-        var assetLinks = linkedAssets.filter(function(e) { return e.assets != null }).map((entity) => {
-            var links = entity.assets.map(function(asset){
-                return <Link className="nav-block__item-related"
-                             to="asset-view"
-                             params={{assetTypeId: asset.assetTypeId, assetId: asset.id}}>
-                            {asset.name}
-                        </Link>
+        var assetLinks = linkedAssets
+            .filter(e => { return e.assets != null })
+            .map((entity) => {
+                var links = entity.assets.map(asset => {
+                    return <Link className="nav-block__item-related"
+                                 to="asset-view"
+                                 params={{assetTypeId: asset.assetTypeId, assetId: asset.id}}>
+                                {asset.name}
+                            </Link>
+                });
+                return <div><span>{entity.name}: </span>{links}</div>;
             });
-            return <div><span>{entity.name}: </span>{links}</div>;
-        });
 
         var dateTransform = new ValueTransformer(function (date) {
           return moment(date).format('DD.MM.YYYY HH:mm');
@@ -96,6 +99,15 @@ var AssetView = React.createClass({
         var titleClasses = cx({
             'page-title__param': true,
             'light-grey': asset.isDeleted
+        });
+
+        var reports = this.state.stores.report.reports.map(r => {
+            var url = `${APIURL}/customreports/${r.id}?assetId=${asset.id}`;
+            return <li className="nav-block__item">
+                        <a className="link link_second" href={url} target="_blank">
+                            <span className="icon icon_download"></span>{r.name}
+                        </a>
+                    </li>;
         });
 
         var ViewComponent = ViewsFactory.getViewComponent(
@@ -124,18 +136,18 @@ var AssetView = React.createClass({
                                     {assetLinks}
                                 </div>
                             </nav>
+
+                            {!_.isEmpty(reports)
+                                ? <nav className="nav-block">
+                                    <span className="nav-block__title nav-block__title_type_second">Reports</span>
+                                    <ul className="nav-block__list">
+                                        {reports}
+                                    </ul>
+                                  </nav>
+                                : ''
+                            }
+
                             {/*
-                            <nav className="nav-block">
-                                <span className="nav-block__title nav-block__title_type_second">Search result report</span>
-                                <ul className="nav-block__list">
-                                    <li className="nav-block__item">
-                                        <span className="link link_second"><span className="icon icon_download"></span>Default Reports</span>
-                                    </li>
-                                    <li className="nav-block__item">
-                                        <span className="link link_second"><span className="icon icon_download"></span>Report with child assets</span>
-                                    </li>
-                                </ul>
-                            </nav>
                             <nav className="nav-block">
                                 <span className="nav-block__title nav-block__title_type_second">Export</span>
                                 <ul className="nav-block__list">

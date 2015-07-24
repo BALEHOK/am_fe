@@ -103,6 +103,10 @@ class AssetActions extends Actions {
   loadAssetTypes() {
     return this._dispatcher.loadAssetTypes();
   }
+
+  loadReports(assetTypeId) {
+    return this._dispatcher.loadReports(assetTypeId);
+  }
 }
 
 module.exports = AssetActions;
