@@ -1,6 +1,7 @@
 .Select
   border-color #ccc
 
+
 .select
   min-width 140px
   display inline-block
@@ -19,12 +20,22 @@
     .selectize-input > input
       display none
 
-  &_size_small
+  &.select_size_small
+    .Select-arrow
+      top 15px
 
-    .selectize-input
+    .Select
       height 36px
-      padding-top 8px
-      padding-bottom 8px
+
+    .Select-control
+      padding 7px 52px 8px 10px
+
+    .Select-placeholder
+      padding 7px 52px 8px 10px
+
+    .Select.is-multi .Select-control
+      height 36px
+      padding-top 2px
 
   .Select-option.is-focused
     background #eee
