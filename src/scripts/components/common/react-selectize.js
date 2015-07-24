@@ -53,15 +53,18 @@ export default class Select extends React.Component {
 
   render() {
     let items = this.mapValues(this.props.items || []);
-    return <ReactSelect
-      ref={"selector"}
-      value={this.getValue()}
-      options={items}
-      onChange={this.onChange.bind(this)}
-      onFocus={this.onFocus.bind(this)}
-      clearable={false}
-      name={this.props.selectId}
-      onScroll={this.loadMore.bind(this)}/>;
+    return <label className="select" for={this.props.selectId}>
+      <ReactSelect
+        ref={"selector"}
+        value={this.getValue()}
+        options={items}
+        onChange={this.onChange.bind(this)}
+        onFocus={this.onFocus.bind(this)}
+        clearable={false}
+        name={this.props.selectId}
+        placeholder={this.props.placeholder}
+        onScroll={this.loadMore.bind(this)}/>
+    </label>;
   }
 
 }
