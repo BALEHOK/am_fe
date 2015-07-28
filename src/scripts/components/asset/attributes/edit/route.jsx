@@ -45,7 +45,8 @@ export default class RouteEdit extends React.Component {
         }
         if(status === google.maps.DirectionsStatus.ZERO_RESULTS) {
             this.setState({
-                noResults: true
+                noResults: true,
+                directions: null
             })
         }
       });
@@ -74,16 +75,22 @@ export default class RouteEdit extends React.Component {
                     { this.state.noResults ? <div>No results for your query</div> : null }
                     { distance ? <div>Distance: {Math.round(distance/1000)}km</div> : null }
                     <div className="inputs-line inputs-line_float">
-                              <input
-                                  type="text"
-                                  ref="source"
-                                  onChange={_.debounce(this.requestRoute.bind(this), 1000)}
-                                  className="input-txt__field form-control" />
-                              <input
-                                  type="text"
-                                  ref="dest"
-                                  onChange={_.debounce(this.requestRoute.bind(this), 1000)}
-                                  className="input-txt__field form-control" />
+                        <label>
+                            Source:
+                            <input
+                                type="text"
+                                ref="source"
+                                onChange={_.debounce(this.requestRoute.bind(this), 1000)}
+                                className="input-txt__field form-control" />
+                        </label>
+                        <label>
+                            Destination:
+                            <input
+                                type="text"
+                                ref="dest"
+                                onChange={_.debounce(this.requestRoute.bind(this), 1000)}
+                                className="input-txt__field form-control" />
+                        </label>
                     </div>
                 </div>
             );
