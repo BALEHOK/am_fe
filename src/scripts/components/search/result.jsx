@@ -57,7 +57,12 @@ var ResultPage = React.createClass({
         this.waitFor(res);
         if(updateCounters) {
             this.startWaiting('loadingCounters',
-                res.then(() => this.actions.fetchSearchCounters()));
+                res.then(() => {
+                    this.actions.fetchSearchCounters();
+                    if (filters.assetType) {
+                        this.actions.fetchReportsForType(filters.assetType);
+                    }
+                }));
         }
     },
 
@@ -229,7 +234,7 @@ var ResultPage = React.createClass({
                                         : {}
                                     }
                                     <nav className={navBlockClasses}>
-                                        <ReportsBlock searchId={results.searchId} />
+                                        <ReportsBlock searchId={results.searchId} reports={this.state.stores.report.reports} />
                                     </nav>
                                     <nav className={navBlockClasses}>
                                         <span className="nav-block__title">Export</span>

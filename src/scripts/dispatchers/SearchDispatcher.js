@@ -1,5 +1,6 @@
 var Flux = require('delorean').Flux;
 var SearchStore = require('../stores/SearchStore');
+var ReportStore = require('../stores/ReportStore');
 
 var SearchDispatcher = Flux.createDispatcher({
 
@@ -19,9 +20,14 @@ var SearchDispatcher = Flux.createDispatcher({
     });
   },
 
+  loadReports(assetTypeId) {
+    return this.dispatch('reports:load', assetTypeId);
+  },
+
   getStores() {
     return {
-      results: new SearchStore()
+      results: new SearchStore(),
+      report: new ReportStore(),
     }
   }
 });

@@ -20,4 +20,8 @@ module.exports = class SearchActions extends Actions {
   	window.location = APIURL + `/export?searchId=${params.searchId}&format=${params.format}`;
   }
 
+  fetchReportsForType(assetTypeId) {
+    return this._dispatcher.loadReports(assetTypeId);
+  }
+
 }
