@@ -24,6 +24,10 @@ var SearchDispatcher = Flux.createDispatcher({
     return this.dispatch('reports:load', assetTypeId);
   },
 
+  resetCustomReports() {
+    this.dispatch('reports:reset');
+  },
+
   getStores() {
     return {
       results: new SearchStore(),

@@ -60,7 +60,9 @@ var ResultPage = React.createClass({
                 res.then(() => {
                     this.actions.fetchSearchCounters();
                     if (filters.assetType) {
-                        this.actions.fetchReportsForType(filters.assetType);
+                        this.actions.fetchCustomReportsByType(filters.assetType);
+                    } else {
+                        this.actions.resetCustomReports();
                     }
                 }));
         }

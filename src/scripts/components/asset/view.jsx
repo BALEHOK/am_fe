@@ -15,6 +15,7 @@ var ValueTransformer = require('../../util/valueTransformer').ValueTransformer;
 var LayoutSwitcher = require('./layoutSwitcher');
 var ViewsFactory = require('./viewsFactory');
 var Loader = require('../common/loader.jsx');
+var ReportsBlock = require('./reportsBlock');
 var LoaderMixin = require('../../mixins/LoaderMixin');
 var cx = require('classnames');
 
@@ -101,15 +102,6 @@ var AssetView = React.createClass({
             'light-grey': asset.isDeleted
         });
 
-        var reports = this.state.stores.report.reports.map(r => {
-            var url = `${APIURL}/customreports/${r.id}?assetId=${asset.id}`;
-            return <li className="nav-block__item">
-                        <a className="link link_second" href={url} target="_blank">
-                            <span className="icon icon_download"></span>{r.name}
-                        </a>
-                    </li>;
-        });
-
         var ViewComponent = ViewsFactory.getViewComponent(
             asset.screens, this.state.selectedScreen);
 
@@ -137,15 +129,9 @@ var AssetView = React.createClass({
                                 </div>
                             </nav>
 
-                            {!_.isEmpty(reports)
-                                ? <nav className="nav-block">
-                                    <span className="nav-block__title nav-block__title_type_second">Reports</span>
-                                    <ul className="nav-block__list">
-                                        {reports}
-                                    </ul>
-                                  </nav>
-                                : ''
-                            }
+                            <nav className="nav-block">
+                                <ReportsBlock assetId={asset.id} reports={this.state.stores.report.reports} />
+                            </nav>
 
                             {/*
                             <nav className="nav-block">

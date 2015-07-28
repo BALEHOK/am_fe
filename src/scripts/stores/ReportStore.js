@@ -7,6 +7,7 @@ var ReportStore = Flux.createStore({
 
     actions: {
         'reports:load': 'loadReports',
+        'reports:reset': 'resetReports',
     },
 
     initialize() {
@@ -18,6 +19,11 @@ var ReportStore = Flux.createStore({
             this.reports = data;
             this.emitChange();
         });
+    },
+
+    resetReports() {
+        this.reports = [];
+        this.emitChange();
     },
 
     getState() {
