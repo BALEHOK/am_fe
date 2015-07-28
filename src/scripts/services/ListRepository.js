@@ -1,4 +1,5 @@
 import fetch from "../util/fetch";
+import {flatObject} from "../util/util";
 
 export default class ListRepository {
     loadDynamicList(params) {
@@ -11,12 +12,12 @@ export default class ListRepository {
     }
 
     loadList(url, params) {
-        return fetch(url).get({
+        return fetch(url).get(flatObject({
             filter: params.filter,
             rowStart: params.rowStart,
             rowsNumber: params.rowsNumber,
             query: params.filter
-        });
+        }));
     }
 
     loadDocs(params) {

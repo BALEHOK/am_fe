@@ -46,12 +46,16 @@ export default class AssetRepository {
 
     deleteAsset(params) {
         var url = `/api/assettype/${params.assetTypeId}/asset/${params.assetId}`;
-        return fetch(url).delete();
+        return fetch(url, {
+          responseAs: 'text'
+        }).delete();
     }
 
     restoreAsset(params) {
         var url = `/api/assettype/${params.assetTypeId}/asset/${params.assetId}/restore`;
-        return fetch(url).post();
+        return fetch(url, {
+          responseAs: 'text'
+        }).post();
     }
 
     saveAsset(asset) {
