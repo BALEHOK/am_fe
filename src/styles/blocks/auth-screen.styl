@@ -1,0 +1,42 @@
+.auth-screen
+  display block
+  position fixed
+  left 0
+  top 0
+  right 0
+  bottom 0
+  z-index 2000
+  background #e3edf3
+  background radial-gradient(circle, #ffffff 11%, #e3edf3 100%)
+  border-top 40px solid #093351
+
+  &__content
+    display table-cell
+    vertical-align middle
+    text-align center
+    width 100vw
+    height calc(100vh - 40px)
+
+  &__logo
+    display block
+    margin 0 0 60px 0
+
+  &__title
+    display block
+    font-family $Bold
+    font-size 30px
+    line-height 1
+    text-align center
+    font-weight normal
+    margin 0 0 25px 0
+
+  &__form
+    display block
+    width 320px
+    margin 0 auto 90px
+
+    .input-txt
+      margin 0 0 20px 0
+
+  .link
+    color #989797

@@ -27,26 +27,27 @@ export default class Login extends React.Component {
 
     render() {
         return (
-            <form className="form-horizontal">
-                {this.state.errorMessage}
-                <div className="control-group">
-                    <label className="control-label" htmlFor="username">Username</label>
-                    <div className="controls">
-                        <input type="text" id="username" valueLink={this.linkState('username')} placeholder="Username" />
+            <div className="auth-screen">
+                <div className="auth-screen__content">
+                    <span className="auth-screen__logo logo hide-text">ACV CSC METEA</span>
+                    <span className="auth-screen__title">Admin access</span>
+                    <form className="auth-screen__form" onSubmit={this.handleSubmit.bind(this)}>
+                        {this.state.errorMessage}
+                        <label className="input-txt input-txt_width_full">
+                            <input type="text" className="input-txt__field" id="username" valueLink={this.linkState('username')} placeholder="Username" />
+                        </label>
+                        <label className="input-txt input-txt_width_full">
+                            <input type="password" className="input-txt__field" id="password" valueLink={this.linkState('password')} placeholder="Password" />
+                        </label>
+                        <div className="auth-screen__form-controls">
+                            <button className="btn btn_width_full">Login</button>
+                        </div>
+                    </form>
+                    <div className="txt-center">
+                        <a href="#" target="_blank" className="link">Contact suport</a>
                     </div>
                 </div>
-                <div className="control-group">
-                    <label className="control-label" htmlFor="password">Password</label>
-                    <div className="controls">
-                        <input type="password" id="password" valueLink={this.linkState('password')} placeholder="Password" />
-                    </div>
-                </div>
-                <div className="control-group">
-                    <div className="controls">
-                        <div className="btn" onClick={this.handleSubmit.bind(this)}>Sign in</div>
-                    </div>
-                </div>
-            </form>
+            </div>
         );
     }
 }
