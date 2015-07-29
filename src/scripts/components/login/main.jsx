@@ -63,7 +63,7 @@ export default class Login extends React.Component {
                         </div>
                     </form>
                     <div className="txt-center">
-                        <a href="#" target="_blank" className="link">Contact suport</a>
+                        <a href="#" target="_blank" className="link">Contact support</a>
                     </div>
                 </div>
             </div>
