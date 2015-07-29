@@ -21,14 +21,14 @@ var ReportsBlock = React.createClass({
               <span className="nav-block__title">Reports</span>
               <ul className="nav-block__list">
                   <li className="nav-block__item">
-                      <a href={`${APIURL}/standardreports/asset/?assetId=${this.props.assetId}`}
+                      <a href={`${APIURL}/standardreports/asset/?assetTypeId=${this.props.assetTypeId}&assetId=${this.props.assetId}`}
                         className="link link_second"
                         target="_blank">
                           <span className="icon icon_download"></span>Standard
                       </a>
                   </li>
                   <li className="nav-block__item">
-                      <a href={`${APIURL}/standardreports/assetwithchildren/?assetId=${this.props.assetId}`}
+                      <a href={`${APIURL}/standardreports/assetwithchildren/?assetTypeId=${this.props.assetTypeId}&assetId=${this.props.assetId}`}
                         className="link link_second"
                         target="_blank">
                           <span className="icon icon_download"></span>Standard (with Child Assets)
