@@ -45,6 +45,17 @@
       opacity 0.25
       cursor default
 
+  &_type_second &
+
+    &__field
+
+      &:focus
+        border-color #3198e0
+        box-shadow inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(74, 125, 246, 0.6)
+
+      &::placeholder
+        text-align right
+
   &_text
 
     .input-txt__field
@@ -56,6 +67,18 @@
     .input-txt__field
       height 90px
       padding 8px 15px
+
+
+  &_state_error &
+
+    &__field
+      border-color #df3233
+      box-shadow none
+      background #fff8f8
+
+      &:focus
+        border-color #df3233
+        box-shadow inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(223, 50, 51, 0.6)
 
   &_width_475
     width 475px
