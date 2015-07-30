@@ -1,14 +1,12 @@
+import fetch from "../util/fetch";
+
 class ReportRepository {
 
     loadReports(assetTypeId) {
         var url = '/api/reports/custom';
         if (assetTypeId)
             url = `${url}/${assetTypeId}`;
-        return $.ajax({
-            url: url,
-            contentType: 'application/json',
-            type: 'GET'
-        });
+        return fetch(url).get();
     }
 
 }
