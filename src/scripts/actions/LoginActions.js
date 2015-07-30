@@ -16,7 +16,12 @@ export default {
       localStorage.setItem('token', tokenString);
     }
 
-    LoginDispatcher.loginUser(JSON.parse(tokenString));
+    try {
+        LoginDispatcher.loginUser(JSON.parse(tokenString));
+    } catch (e) {
+        localStorage.removeItem('token');
+    }
+
   },
 
   logoutUser(params) {
