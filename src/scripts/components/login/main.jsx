@@ -44,7 +44,7 @@ export default class Login extends React.Component {
             <div className="auth-screen">
                 <div className="auth-screen__content">
                     <span className="auth-screen__logo logo hide-text">ACV CSC METEA</span>
-                    <span className="auth-screen__title">Admin access</span>
+                    <span className="auth-screen__title">FMIS</span>
                     <form className="auth-screen__form" onSubmit={this.handleSubmit.bind(this)}>
                         <label className={inputTxtClasses}>
                             <input type="text" className="input-txt__field" id="username" valueLink={this.linkState('username')} placeholder="Username" />
