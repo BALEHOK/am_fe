@@ -1,38 +1,26 @@
-class SearchRepository {
-    search(params) {        
-        return $.ajax({
-            url: '/api/search',
-            contentType: 'application/json',
-            data: {
-                searchId: params.searchId,
-                query: params.query,
-                page: params.page,
-                assetType: params.assetType,
-                taxonomy: params.taxonomy,
-                sortBy: params.sortBy,
-                context: params.context
-            },
-            type: 'GET'
+import fetch from "../util/fetch";
+
+export default class SearchRepository {
+    search(params) {
+        return fetch('/api/search').get({
+            searchId: params.searchId,
+            query: params.query,
+            page: params.page,
+            assetType: params.assetType,
+            taxonomy: params.taxonomy,
+            sortBy: params.sortBy,
+            context: params.context
         });
     }
 
     counters(search) {
-        return $.ajax({
-            url: '/api/search/counters',
-            contentType: 'application/json',
-            data: { searchId: search.searchId, query: search.query },
-            type: 'GET'
-        })
+        return fetch('/api/search/counters').get({
+          searchId: search.searchId,
+          query: search.query
+        });
     }
 
     tracking(searchId) {
-        return $.ajax({
-            url: '/api/search/tracking',
-            contentType: 'application/json',
-            data: { searchId: searchId },
-            type: 'GET'
-        })
+        return fetch('/api/search/tracking').get({ searchId: searchId });
     }
 }
-
-module.exports = SearchRepository;

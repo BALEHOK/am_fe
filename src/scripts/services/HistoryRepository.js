@@ -1,12 +1,8 @@
-class HistoryRepository {
+import fetch from "../util/fetch";
+
+export default class HistoryRepository {
     loadHistory(params) {
         var url = `/api/assettype/${params.assetTypeId}/asset/${params.assetId}/history`;
-        return $.ajax({
-            url: url,
-            contentType: 'application/json',
-            type: 'GET'
-        });
+        return fetch(url).get();
     }
 }
-
-module.exports = HistoryRepository;

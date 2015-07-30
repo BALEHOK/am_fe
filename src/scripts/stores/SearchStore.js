@@ -1,5 +1,6 @@
 var Flux = require('delorean').Flux;
 var SearchRepository = require('../services/SearchRepository');
+import {always} from "../util/util";
 
 var SearchResultsStore = Flux.createStore({
   models: [],
@@ -40,24 +41,16 @@ var SearchResultsStore = Flux.createStore({
   },
 
   loadResults(filters) {
-    this.searchRepo.search(filters)
-        .done((data) => {
-            this.models = data.entities;
-            this.searchId = data.searchId;
-        })
-        .always((data) => {
-            this.emitChange();
-        })
+    always(this.searchRepo.search(filters).then((data) => {
+      this.models = data.entities;
+      this.searchId = data.searchId;
+    }), () => this.emitChange());
   },
 
   loadSearchCounters(search) {
-    this.searchRepo.counters(search)
-        .done((data) => {
-            this.counters = data;
-        })
-        .always((data) => {
-            this.emitChange();
-        })
+    always(this.searchRepo.counters(search).then((data) => {
+      this.counters = data;
+    }), () => this.emitChange());
   },
 
   applySearchFilter(filter) {

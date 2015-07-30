@@ -18,6 +18,7 @@ var EditableAttribute = React.createClass({
     },
 
     handleChange: function(e) {
+        console.log(e);
         this.props.params.value = e[0];
     },
 

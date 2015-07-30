@@ -1,4 +1,6 @@
-class AssetRepository {
+import fetch from "../util/fetch";
+
+export default class AssetRepository {
     loadAsset(params) {
         var url = `/api/assettype/${params.assetTypeId}/asset`;
         if (params.assetId) {
@@ -10,11 +12,7 @@ class AssetRepository {
         else if (params.uid) {
             url += `?uid=${params.uid}`;
         }
-        return $.ajax({
-            url: url,
-            contentType: 'application/json',
-            type: 'GET'
-        });
+        return fetch(url).get();
     }
 
     loadRelatedAssets(params) {
@@ -33,47 +31,31 @@ class AssetRepository {
             url += `&uid=${params.uid}`;
         }
 
-        return $.ajax({
-            url: url,
-            contentType: 'application/json',
-            type: 'GET'
-        });
+        return fetch(url).get();
     }
 
     loadBarcode(barcode) {
         var url = `/api/barcode/${barcode}`;
-        return $.ajax({
-            url: url,
-            contentType: 'image/png',
-            type: 'GET'
-        });
+        return fetch(url).get();
     }
 
     loadTaxonomyPath(assetTypeId) {
         var url = `/api/assettype/${assetTypeId}/taxonomy`;
-        return $.ajax({
-            url: url,
-            contentType: 'application/json',
-            type: 'GET'
-        });
+        return fetch(url).get();
     }
 
     deleteAsset(params) {
         var url = `/api/assettype/${params.assetTypeId}/asset/${params.assetId}`;
-        return $.ajax({
-            url: url,
-            contentType: 'application/json',
-            type: 'DELETE'
-        });
+        return fetch(url, {
+          responseAs: 'text'
+        }).delete();
     }
 
     restoreAsset(params) {
         var url = `/api/assettype/${params.assetTypeId}/asset/${params.assetId}/restore`;
-        return $.ajax({
-            url: url,
-            contentType: 'application/json',
-            type: 'POST'
-        });
+        return fetch(url, {
+          responseAs: 'text'
+        }).post();
     }
 
     saveAsset(asset) {
@@ -81,25 +63,16 @@ class AssetRepository {
         if (asset.id)
             url += `/${asset.id}`;
 
-        return $.ajax({
-            type: asset.id
-                ? 'POST'
-                : 'PUT',
-            url: url,
-            data: JSON.stringify(asset),
-            contentType: "application/json; charset=utf-8",
+        let resp = fetch(url, {
+          body: JSON.stringify(asset)
         });
+        return asset.id ? resp.post() : respo.put();
     }
 
     validateAttribute(params) {
         var url = `/api/validation/attribute/${params.attributeId}`;
-        return $.ajax({
-            url: url,
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(params.value),
-            type: 'POST'
-        });
+        return fetch(url, {
+          body: JSON.stringify(params.value)
+        }).post();
     }
 }
-
-module.exports = AssetRepository;
