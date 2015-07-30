@@ -36,7 +36,7 @@ function generate(url, options) {
             let request = fetchival(url, options);
             return request[key].apply(request, args)
               .catch((err) => {
-                if(err.response.status === 401) {
+                if(err.response && err.response.status === 401) {
                   if (LoginStore.isLoggedIn()) {
                       return LoginActions.logoutUser({
                           nextPath: RouterContainer.get().getCurrentPath()
