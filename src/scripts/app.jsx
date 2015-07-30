@@ -8,6 +8,7 @@ var router = require('./appRouter');
 var RouterContainer = require('./services/RouterContainer');
 var LoginActions = require('./actions/LoginActions');
 var LoginStore = require('./stores/LoginStore').store;
+require('babel-core/polyfill');
 import {} from "element-closest";
 import {} from "whatwg-fetch";
 
