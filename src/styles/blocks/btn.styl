@@ -38,6 +38,10 @@
   &:focus
     box-shadow inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(76, 159, 34, 0.6)
 
+  &:disabled
+    background-color $btnBgColorDisabled
+    border-color $btnBgColorDisabled
+
   &__icon
     display inline-block
     vertical-align middle
@@ -135,6 +139,27 @@
     &:focus
       box-shadow inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 0, 0, 0.2)
 
+  &_type_third
+    background #4aaff6
+    border-color transparent !important
+    color #ffffff
+    font-size 15px
+    font-family $Bold
+    padding-top 9px
+
+    &:hover
+    &:active
+      background #3198e0
+
+    &:active
+    &:focus
+      box-shadow 0 0 8px rgba(74, 125, 246, 0.6)
+
+    &:disabled
+      opacity 0.5
+      background-color #4aaff6
+      cursor default
+
   &_type_warning
     background $btnSecondaryBgColor
     background-image  linear-gradient(bottom, #f9f9f9 0%, #ffffff 100%)
@@ -161,9 +186,8 @@
     padding 8px 15px
     overflow visible
 
-  &:disabled
-    background-color $btnBgColorDisabled
-    border-color $btnBgColorDisabled
+  &_width_full
+    width 100%
 
 
 .back-btn
