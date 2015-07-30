@@ -56,6 +56,10 @@ export default class Select extends React.Component {
     );
   }
 
+  queryChanged(ev) {
+    this.props.onItemsRequest(ev.target.value);
+  }
+
   render() {
     let items = this.mapValues(this.props.items || []);
     return <label className="select" for={this.props.selectId}>
@@ -69,6 +73,7 @@ export default class Select extends React.Component {
         multi={!!this.props.maxItems}
         name={this.props.selectId}
         placeholder={this.props.placeholder}
+        inputProps={{ onKeyUp: this.queryChanged.bind(this)}}
         className="form-control"
         onScroll={this.loadMore.bind(this)}/>
     </label>;
