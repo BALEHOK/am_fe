@@ -20,8 +20,10 @@ export default class Login extends React.Component {
         var self = this;
         AuthService.login(this.state.username, this.state.password)
           .catch(function(err) {
-            self.setState({ errorMessage: err.responseJSON.error_description });
-            console.log("Error logging in", err);
+            return err.response.json();
+          }).then(({error}) => {
+            self.setState({ errorMessage: error });
+            console.log("Error logging in", error);
           });
     }
 
@@ -50,4 +52,3 @@ export default class Login extends React.Component {
         );
     }
 }
-

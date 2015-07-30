@@ -1,4 +1,4 @@
-﻿/**
+/**
  * @jsx React.DOM
  */
 
@@ -11,10 +11,12 @@ var RefinementBlock = require('./refinement_block');
 var ResultItem = require('./result_item');
 var ResultPagination = require('./resultPagination.jsx');
 var ResultHeaderPagination = require('./resultHeaderPagination.jsx');
+var ReportsBlock = require('./reportsBlock');
 var Loader = require('../common/loader.jsx');
 var LoaderMixin = require('../../mixins/LoaderMixin');
 var Flux = require('delorean').Flux;
 var cx = require('classnames');
+import {param} from "../../util/util";
 
 var ResultPage = React.createClass({
     mixins: [Router.Navigation, LoaderMixin, Flux.mixins.storeListener],
@@ -56,7 +58,14 @@ var ResultPage = React.createClass({
         this.waitFor(res);
         if(updateCounters) {
             this.startWaiting('loadingCounters',
-                res.then(() => this.actions.fetchSearchCounters()));
+                res.then(() => {
+                    this.actions.fetchSearchCounters();
+                    if (filters.assetType) {
+                        this.actions.fetchCustomReportsByType(filters.assetType);
+                    } else {
+                        this.actions.resetCustomReports();
+                    }
+                }));
         }
     },
 
@@ -68,7 +77,7 @@ var ResultPage = React.createClass({
             }
             return acc;
         }, {});
-        this.context.router.transitionTo('/search/result?' + $.param(clean));
+        this.context.router.transitionTo('/search/result?' + param(clean));
     },
 
     filterCounters: function(param, counter) {
@@ -228,19 +237,7 @@ var ResultPage = React.createClass({
                                         : {}
                                     }
                                     <nav className={navBlockClasses}>
-                                        <span className="nav-block__title">Reports</span>
-                                        <ul className="nav-block__list">
-                                            <li className="nav-block__item">
-                                                <a className="link link_second">
-                                                    <span className="icon icon_download"></span>Detailed
-                                                </a>
-                                            </li>
-                                            <li className="nav-block__item">
-                                                <a className="link link_second">
-                                                    <span className="icon icon_download"></span>Compact
-                                                </a>
-                                            </li>
-                                        </ul>
+                                        <ReportsBlock searchId={results.searchId} reports={this.state.stores.report.reports} />
                                     </nav>
                                     <nav className={navBlockClasses}>
                                         <span className="nav-block__title">Export</span>

@@ -39,7 +39,11 @@
   & > .select
 
     &:first-child
-      .selectize-input
+      .is-open > .Select-control
+        border-bottom-right-radius 0
+        border-bottom-left-radius 0
+        
+      .Select-control
         border-radius $br 0 0 $br
 
   & >

@@ -13,10 +13,11 @@
   "dependencies": {
     "classnames": "^1.2.0",
     "delorean": "0.8.7",
+    "element-closest": "^1.0.3",
     "extract-text-webpack-plugin": "^0.3.1",
+    "fetchival": "^0.3.1",
     "fileapi": "^2.0.10",
     "google-maps": "^2.1.1",
-    "jquery": "^2.1.1",
     "keymirror": "^0.1.0",
     "moment": "^2.8.3",
     "react": "^0.13.3",
@@ -26,10 +27,11 @@
     "react-mixin": "^1.5.0",
     "react-quill": "0.0.4",
     "react-router": "^0.13.3",
+    "react-select": "git://github.com/Termina1/react-select.git#add-onscroll",
     "react-simpletabs": "^0.6.1",
     "react-time-picker": "^1.0.8",
-    "selectize": "0.12.0",
     "underscore": "^1.7.0",
+    "whatwg-fetch": "^0.9.0",
     "when": "^3.7.3"
   },
   "devDependencies": {
