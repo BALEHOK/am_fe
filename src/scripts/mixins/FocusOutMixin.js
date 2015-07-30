@@ -1,6 +1,6 @@
 var FocusOutMixin = {
   focusOutHandler: function(e) {
-    if(this.state.opened && $(e.target).closest(this.focusOutCls).length === 0) {
+    if(this.state.opened && e.target.closest(this.focusOutCls).length === 0) {
       this.onClose && this.onClose();
       this.setState({
         opened: false

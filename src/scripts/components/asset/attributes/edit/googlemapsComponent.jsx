@@ -4,7 +4,7 @@
 
 var React = require('react');
 var Google = require('google-maps');
-var {GoogleMaps, Marker} = require("react-google-maps");
+var {GoogleMaps, Marker, DirectionsRenderer} = require("react-google-maps");
 
 var GoogleMapsComponent = React.createClass({
 
@@ -87,6 +87,7 @@ var GoogleMapsComponent = React.createClass({
                     zoom={this.state.zoom}
                     onClick={onClickFunc}>
                 {this.state.markers.map(toMarker, this)}
+                {this.props.directions ? <DirectionsRenderer directions={this.props.directions} /> : null }
                 </GoogleMaps>
                 {/*<div className="googlemaps__inputs">
                     <div className="input-group input-group_block">

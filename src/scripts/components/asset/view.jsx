@@ -130,7 +130,7 @@ var AssetView = React.createClass({
                             </nav>
 
                             <nav className="nav-block">
-                                <ReportsBlock assetId={asset.id} reports={this.state.stores.report.reports} />
+                                <ReportsBlock assetId={asset.id} assetTypeId={asset.assetTypeId} reports={this.state.stores.report.reports} />
                             </nav>
 
                             {/*

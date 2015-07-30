@@ -183,7 +183,7 @@ var AssetStore = Flux.createStore({
         self.asset.name = result.name;
         self.emitChange();
       })
-      .fail((jqXHR, textStatus) => {
+      .catch((jqXHR, textStatus) => {
         self.emitRollback();
         if (jqXHR.status == 400) {
           var validationResult = JSON.parse(jqXHR.responseText);

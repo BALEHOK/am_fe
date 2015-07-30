@@ -39,7 +39,11 @@
   & > .select
 
     &:first-child
-      .selectize-input
+      .is-open > .Select-control
+        border-bottom-right-radius 0
+        border-bottom-left-radius 0
+
+      .Select-control
         border-radius $br 0 0 $br
 
   & >
@@ -65,6 +69,12 @@
   display inline-block
   vertical-align middle
   margin 0
+
+  &_float
+    display flex
+    justify-content space-between
+    >  *
+      flex-basis 48%
 
   &_sliding
     position fixed

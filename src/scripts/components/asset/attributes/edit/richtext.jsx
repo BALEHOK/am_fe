@@ -7,7 +7,8 @@ var cx = require('classnames');
 var ControlWrapper = require('./controlWrapper');
 var ValidationMixin = require('../../../../mixins/ValidationMixin');
 var Quill = require('react-quill');
-var items = $.extend([], Quill.Toolbar.defaultItems);
+var _ = require('underscore');
+var items = _.extend([], Quill.Toolbar.defaultItems);
 items[0].items.pop();
 
 var RichtextEdit = React.createClass({
