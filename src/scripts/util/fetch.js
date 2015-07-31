@@ -41,9 +41,9 @@ function generate(url, options) {
                       return LoginActions.logoutUser({
                           nextPath: RouterContainer.get().getCurrentPath()
                       });
-                  } else {
-                    throw err;
                   }
+                } else {
+                  throw err;
                 }
               });
         }

@@ -66,7 +66,7 @@ export default class AssetRepository {
         let resp = fetch(url, {
           body: JSON.stringify(asset)
         });
-        return asset.id ? resp.post() : respo.put();
+        return asset.id ? resp.post() : resp.put();
     }
 
     validateAttribute(params) {

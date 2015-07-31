@@ -183,27 +183,28 @@ var AssetStore = Flux.createStore({
         self.asset.name = result.name;
         self.emitChange();
       })
-      .catch((jqXHR, textStatus) => {
+      .catch((err) => {
         self.emitRollback();
-        if (jqXHR.status == 400) {
-          var validationResult = JSON.parse(jqXHR.responseText);
-          if (validationResult && validationResult.modelState) {
-            _.chain(validationResult.modelState)
-              .keys()
-              .map(k => { return parseInt(k); })
-              .filter(k => !_.isNaN(k))
-              .each(key => {
-                self.validation[key] = {
-                  id: key,
-                  message: validationResult.modelState[key][0],
-                  isValid: false
-                };
-              })
-              .value();
-            self.emitChange();
-          }
+        if (err.response && err.response.status == 400) {
+          err.response.json().then(validationResult => {
+              if (validationResult && validationResult.modelState) {
+                _.chain(validationResult.modelState)
+                  .keys()
+                  .map(k => { return parseInt(k); })
+                  .filter(k => !_.isNaN(k))
+                  .each(key => {
+                    self.validation[key] = {
+                      id: key,
+                      message: validationResult.modelState[key][0],
+                      isValid: false
+                    };
+                  })
+                  .value();
+                self.emitChange();
+              }
+          });
         } else {
-            console.log(jqXHR);
+          throw err;
         }
       });
     return request;
