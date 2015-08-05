@@ -13,6 +13,8 @@ var cx = require('classnames');
 var AssetPicker = React.createClass({
     mixins:[Flux.mixins.storeListener, Router.State, ValidationMixin],
 
+    watchStores: ['list'],
+
     componentWillMount: function() {
         this.setupValidation(this.props.actions);
     },

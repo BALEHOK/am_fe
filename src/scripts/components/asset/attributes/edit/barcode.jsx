@@ -11,6 +11,8 @@ var Flux = require('delorean').Flux;
 var BarcodeAttribute = React.createClass({
     mixins: [ValidationMixin, Flux.mixins.storeListener],
 
+    watchStores: ['asset'],
+
     componentWillMount: function() {
         this.setupValidation(this.props.actions);
         this.loadBarcodeDebounce = _.debounce(this.props.actions.loadBarcode.bind(this.props.actions), 500);

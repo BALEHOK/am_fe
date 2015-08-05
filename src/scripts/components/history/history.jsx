@@ -15,6 +15,8 @@ var AssetHistoryLayout = React.createClass({
 
     mixins:[Router.State, Flux.mixins.storeListener, LoaderMixin],
 
+    watchStores: ['asset', 'history'],
+
     contextTypes: {
         router: React.PropTypes.func
     },

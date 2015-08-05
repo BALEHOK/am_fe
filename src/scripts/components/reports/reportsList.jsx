@@ -7,6 +7,8 @@ var ReportsList = React.createClass({
 
     mixins: [LoaderMixin, Flux.mixins.storeListener],
 
+    watchStores: ['report'],
+
     componentDidMount: function() {
         this.waitFor(this.props.actions.loadReports());
     },

@@ -9,6 +9,8 @@ var Flux = require('delorean').Flux;
 var SimpleList = React.createClass({
     mixins: [Flux.mixins.storeListener],
 
+    watchStores: ['list'],
+
     handleChange: function(e) {
         this.props.params.value = e[0];
         this.id = e.id;

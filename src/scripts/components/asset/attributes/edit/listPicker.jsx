@@ -13,6 +13,8 @@ var ControlWrapper = require('./controlWrapper');
 var ListPicker = React.createClass({
     mixins:[Flux.mixins.storeListener, ValidationMixin],
 
+    watchStores: ['list'],
+
     componentWillMount: function() {
         this.setupValidation(this.props.actions);
     },

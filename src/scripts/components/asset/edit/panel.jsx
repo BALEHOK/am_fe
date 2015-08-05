@@ -9,7 +9,7 @@ var AttributesFactory = require('../attributesFactory');
 var Panel = React.createClass({
     render: function() {
         var actions = this.props.actions;
-        var attrs = this.props.data.attributes.map((attr) => {
+        var attrs = this.props.data.attributes.map((attr, key) => {
             var validationData = this.props.validation[attr.id];
             return AttributesFactory.getEditAttribute(
                     attr.datatype,

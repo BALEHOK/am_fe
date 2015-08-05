@@ -22,6 +22,8 @@ var cx = require('classnames');
 var AssetView = React.createClass({
     mixins:[Flux.mixins.storeListener, LoaderMixin],
 
+    watchStores: ['asset', 'report'],
+
     getInitialState: function() {
         return {
             selectedScreen: undefined

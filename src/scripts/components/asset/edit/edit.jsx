@@ -19,6 +19,8 @@ var ValueTransformer = require('../../../util/valueTransformer').ValueTransforme
 var Edit = React.createClass({
     mixins:[Flux.mixins.storeListener, LoaderMixin],
 
+    watchStores: ['asset'],
+
     contextTypes: {
         router: React.PropTypes.func
     },
@@ -91,8 +93,9 @@ var Edit = React.createClass({
         var taxonomyPath = assetStore.taxonomyPath;
         var validationData = assetStore.validation;
         var screen = asset.screens[assetStore.selectedScreen] || {panels: []};
-        var panels = screen.panels.map((el) => {
-            return <Panel data={el}
+        var panels = screen.panels.map((el, key) => {
+            return <Panel key={key}
+                          data={el}
                           dispatcher={this.props.dispatcher}
                           title={el.name}
                           actions={actions}

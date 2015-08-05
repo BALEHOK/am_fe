@@ -4,10 +4,8 @@
 
 var React = require('react');
 var ReactSelectize = require('../common/react-selectize');
-var Flux = require('delorean').Flux;
 
 var SearchSimpleForm = React.createClass({
-    mixins: [Flux.mixins.storeListener],
     searchContext: [
         { name: "Active assets", id: 1 },
         { name: "History", id: 2 }
@@ -46,7 +44,7 @@ var SearchSimpleForm = React.createClass({
         return (
             <form className="form">
                 <div className="input-group">
-                
+
                     <ReactSelectize
                         items={this.searchContext}
                         value={this.state.searchContextId}

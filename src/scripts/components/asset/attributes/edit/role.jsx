@@ -13,6 +13,8 @@ var cx = require('classnames');
 var EditableAttribute = React.createClass({
     mixins: [ValidationMixin, Flux.mixins.storeListener],
 
+    watchStores: ['list'],
+
     componentWillMount: function() {
         this.setupValidation(this.props.actions);
     },

@@ -9,6 +9,9 @@ var Link = Router.Link;
 
 var SearchResultsHeader = React.createClass({
 	mixins:[Router.State, Flux.mixins.storeListener],
+
+    watchStores: ['search'],
+
     contextTypes: {
         router: React.PropTypes.func
     },

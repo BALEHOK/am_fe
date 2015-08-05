@@ -12,6 +12,8 @@ var AssetTypeRow = require('./assetTypeRow');
 var Create = React.createClass({
     mixins:[Flux.mixins.storeListener, LoaderMixin],
 
+    watchStores: ['list'],
+
     contextTypes: {
         router: React.PropTypes.func
     },

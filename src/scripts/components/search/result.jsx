@@ -20,6 +20,9 @@ import {param} from "../../util/util";
 
 var ResultPage = React.createClass({
     mixins: [Router.Navigation, LoaderMixin, Flux.mixins.storeListener],
+
+    watchStores: ['results', 'report'],
+
     contextTypes: {
         router: React.PropTypes.func
     },
