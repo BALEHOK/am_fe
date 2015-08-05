@@ -52,7 +52,7 @@
   top: 0;
   left: 0;
   right: -15px;
-  max-width: 100%;
+  max-width: 95%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -107,8 +107,8 @@
   font-size: 16px;
   padding: 6px 10px;
   position: absolute;
-  right: 17px;
-  top: 0;
+  right: 35px;
+  top: -1px;
 }
 .Select-clear:hover {
   color: #c0392b;

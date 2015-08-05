@@ -30,11 +30,13 @@ export default class Select extends React.Component {
   }
 
   mapValues(vls) {
-    return vls.map(el =>
-      ({
-        value: (el[this.props.valueField] || "").toString(),
-        label: el[this.props.labelField]
-      }));
+    return vls
+        .filter(e => !_.isUndefined(e))
+        .map(el =>
+          ({
+            value: (el[this.props.valueField] || "").toString(),
+            label: el[this.props.labelField]
+          }));
   }
 
   loadMore(event) {
@@ -51,7 +53,7 @@ export default class Select extends React.Component {
   onChange(e) {
     this.props.onChange(
       e.split(',')
-        .map(e => this.props.items.filter(el => el[this.props.valueField] == e))
+        .map(e => this.props.items.filter(el => !_.isUndefined(el) && el[this.props.valueField] == e))
         .reduce((acc, el) => acc.concat(el))
     );
   }
@@ -69,7 +71,7 @@ export default class Select extends React.Component {
         options={items}
         onChange={this.onChange.bind(this)}
         onFocus={this.onFocus.bind(this)}
-        clearable={false}
+        clearable={true}
         multi={!!this.props.maxItems}
         name={this.props.selectId}
         placeholder={this.props.placeholder}
