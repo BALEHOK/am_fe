@@ -10,11 +10,11 @@ var FocusOutMixin = {
   },
 
   componentDidUnmount: function() {
-    document.body.removeEventListener('mousedown', this.focusOutHandler.bind(this), true);
+    document.body.removeEventListener('mousedown', this.focusOutHandler, true);
   },
 
   componentDidMount: function() {
-    document.body.addEventListener('mousedown', this.focusOutHandler.bind(this), true);
+    document.body.addEventListener('mousedown', this.focusOutHandler, true);
   }
 };
 

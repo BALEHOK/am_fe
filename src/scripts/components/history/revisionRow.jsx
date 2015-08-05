@@ -11,14 +11,12 @@ var RevisionRow = React.createClass({
 
     render() {
         var revision = this.props.revision;
-        var date = moment(revision.createdAt);
         var cells = revision.changedValues.map(el => <RevisionCell cell={el} />);
         return (
             <tr>
                 <td width="11%">{revision.revisionNumber}</td>
                 <td width="15%">
-                    {date.format("DD.MM.YYYY")} <br/>
-                    {date.format("hh:mm:ss A")} <br/>
+                    {revision.createdAt} <br/>
                     <a href="#">{revision.createdByUser.name}</a>
                 </td>
                 <td width="68%" colSpan="3">
@@ -28,8 +26,8 @@ var RevisionRow = React.createClass({
                     <Link className="link link_second"
                         to="asset-revision"
                         params={{
-                            assetTypeId: revision.assetTypeId, 
-                            assetId: revision.assetId, 
+                            assetTypeId: revision.assetTypeId,
+                            assetId: revision.assetId,
                             revision: revision.revisionNumber
                         }}>
                         <span className="icon icon_eye"></span>

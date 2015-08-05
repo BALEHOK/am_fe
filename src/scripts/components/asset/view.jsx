@@ -37,7 +37,8 @@ var AssetView = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        if (!_.isEqual(this.props.params, nextProps.params)) {
+        if (!_.isEqual(this.props.params, nextProps.params) ||
+            !_.isEqual(this.props.query, nextProps.query)) {
             this.setState({selectedScreen: undefined});
             var params = _.extend({}, nextProps.params, nextProps.query);
             this.waitFor(this.props.actions.loadAsset(params));
