@@ -58,7 +58,7 @@ var DateTimeAttribute = React.createClass({
 
     onTimeChange(e, time) {
         let d = this.props.params.value ? moment(this.props.params.value) : moment();
-        d.set(time);
+        d.set({'hour': time.hour(), 'minute': time.minute()});
         this.props.params.value = this.formatDate(d);
         this.forceUpdate();
     },
