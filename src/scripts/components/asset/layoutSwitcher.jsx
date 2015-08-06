@@ -25,15 +25,17 @@ var LayoutSwitcher = React.createClass({
             .filter(el => el.id === this.props.selectedScreen.id)
             .forEach(el => value = el.id);
       return _.size(screens) > 1
-            ? <ReactSelectize
-                    items={screens}
-                    value={value}
-                    onChange={this.onScreenChange}
-                    selectId="select-screen"
-                    placeholder="Screen:"
-                    label=" "
-                    className="select_width_full" />
-                : false
+            ? <nav className="nav-block">
+                  <ReactSelectize
+                      items={screens}
+                      value={value}
+                      onChange={this.onScreenChange}
+                      selectId="select-screen"
+                      placeholder="Screen:"
+                      label=" "
+                      className="select_width_full" />
+              </nav>
+            : false
     }
 });
 module.exports = LayoutSwitcher;

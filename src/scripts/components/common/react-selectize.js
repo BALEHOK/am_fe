@@ -5,7 +5,8 @@ export default class Select extends React.Component {
 
   static defaultProps = {
     valueField: "id",
-    labelField: "name"
+    labelField: "name",
+    clearable: true,
   }
 
   getValue() {
@@ -71,7 +72,7 @@ export default class Select extends React.Component {
         options={items}
         onChange={this.onChange.bind(this)}
         onFocus={this.onFocus.bind(this)}
-        clearable={true}
+        clearable={this.props.clearable}
         multi={!!this.props.maxItems}
         name={this.props.selectId}
         placeholder={this.props.placeholder}
