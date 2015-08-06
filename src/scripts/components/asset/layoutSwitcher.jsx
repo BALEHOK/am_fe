@@ -33,7 +33,8 @@ var LayoutSwitcher = React.createClass({
                       selectId="select-screen"
                       placeholder="Screen:"
                       label=" "
-                      className="select_width_full" />
+                      className="select_width_full"
+                      clearable={false}/>
               </nav>
             : false
     }
