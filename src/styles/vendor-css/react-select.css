@@ -10,7 +10,7 @@
 }
 
 .Select.is-open {
-    z-index: 3000;
+    z-index: 1500;
 }
 
 .Select-control {

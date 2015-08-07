@@ -23,9 +23,9 @@ var RevisionInfo = React.createClass({
     		? ' (deleted) '
     		: '';
         return (
-				<nav className="back-nav">
+            <div className="revision-info">
                     <span className="light-grey">[rev.{this.props.asset.revision}{deletedText}  &mdash;  {this.getUpdatedAt()}]</span>
-                </nav>
+            </div>
         );
     }
 });

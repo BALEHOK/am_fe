@@ -5,6 +5,7 @@
 var React = require('react');
 var Flux = require('delorean').Flux;
 var Router = require('react-router');
+var Sticky = require('react-sticky');
 var moment = require('moment');
 var TaxonomyPath = require('../taxonomyPath');
 var Panel = require('./panel');
@@ -134,6 +135,35 @@ var Edit = React.createClass({
                 {getHeader()}
                 <RevisionInfo asset={asset} dateTransform={dateTransform} />
                 <div className="grid">
+                    <div className="grid__item one-whole">
+                        <Sticky>
+                            <div className="asset-controls-panel">
+                                <div className="container">
+                                    <div className="inputs-line inputs-line_width_full" ref="slider">
+                                        <ValidationResult validation={validationData}
+                                                          selectedScreen={screen} />
+                                        <div>
+                                            <button
+                                                disabled={!this.state.isValid || this.state.loading}
+                                                onClick={this.handleSave}
+                                                className="btn btn_size_small">Save
+                                            </button>
+                                            {/*<button
+                                             disabled={!this.state.isValid}
+                                             className="btn btn_type_second btn_size_small">Save and Add new
+                                             </button>*/}
+                                            <button
+                                                disabled={this.state.loading}
+                                                className="btn btn_type_second btn_size_small"
+                                                onClick={this.handleUndo}>
+                                                <i className="btn__icon btn__icon_undo"></i>Undo
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </Sticky>
+                    </div>
                     <div className="grid__item two-twelfths">
                         <LayoutSwitcher
                             screens={asset.screens}
@@ -147,27 +177,6 @@ var Edit = React.createClass({
                                 {panels}
                             </div>
                         </Loader>
-                        <div className="inputs-line inputs-line_width_full inputs-line_sliding" ref="slider">
-                            <div className="inputs-line__wrapper">
-                                <ValidationResult validation={validationData}
-                                                  selectedScreen={screen} />
-                                <button
-                                    disabled={!this.state.isValid || this.state.loading}
-                                    onClick={this.handleSave}
-                                    className="btn btn_size_small">Save
-                                </button>
-                                {/*<button
-                                    disabled={!this.state.isValid}
-                                    className="btn btn_type_second btn_size_small">Save and Add new
-                                </button>*/}
-                                <button
-                                    disabled={this.state.loading}
-                                    className="btn btn_type_second btn_size_small"
-                                    onClick={this.handleUndo}>
-                                    <i className="btn__icon btn__icon_undo"></i>Undo
-                                </button>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
