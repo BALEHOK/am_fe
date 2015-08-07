@@ -8,6 +8,11 @@
 .Select {
   position: relative;
 }
+
+.Select.is-open {
+    z-index: 3000;
+}
+
 .Select-control {
   position: relative;
   overflow: hidden;
