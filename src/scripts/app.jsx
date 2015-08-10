@@ -17,8 +17,8 @@ RouterContainer.set(router);
 let tokenString = localStorage.getItem('token');
 if (tokenString) {
     let savedToken = JSON.parse(tokenString);
-    let tokenIssued = moment(savedToken['.issued']);
-    let tokenExpires = moment(savedToken['.issued']).add(savedToken['expires_in'], 'seconds');
+    let tokenIssued = moment(savedToken['.issued'], 'dddd, DD MMM YYYY hh:mm:ss');
+    let tokenExpires = moment(savedToken['.issued'], 'dddd, DD MMM YYYY hh:mm:ss').add(savedToken['expires_in'], 'seconds');
     if (moment().isBetween(tokenIssued, tokenExpires)) {
         LoginActions.loginUser(tokenString);
     } else {
