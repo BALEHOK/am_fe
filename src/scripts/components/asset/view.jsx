@@ -5,6 +5,7 @@
 var React = require('react');
 var moment = require('moment');
 var Router = require('react-router');
+var Sticky = require('react-sticky');
 var Link = Router.Link;
 var Flux = require('delorean').Flux;
 var SearchResultsHeader = require('./searchResultsHeader');
@@ -120,6 +121,16 @@ var AssetView = React.createClass({
                 <RevisionInfo asset={asset} dateTransform={dateTransform} />
                 <Loader loading={this.state.loading}>
                     <div className="grid">
+                        <div className="grid__item one-whole">
+                            <Sticky>
+                                <AssetToolbar isHistory={asset.isHistory}
+                                              isDeleted={asset.isDeleted}
+                                              canEdit={asset.editable}
+                                              canDelete={asset.deletable}
+                                              onAssetDelete={this.onAssetDelete}
+                                              onAssetRestore={this.onAssetRestore} />
+                            </Sticky>
+                        </div>
                         <div className="grid__item two-twelfths">
                             <LayoutSwitcher
                                 screens={asset.screens}
@@ -163,12 +174,6 @@ var AssetView = React.createClass({
                                 actions={this.props.actions}
                                 dispatcher={this.props.dispatcher}
                                 assetTypeId={asset.assetTypeId} />
-                            <AssetToolbar isHistory={asset.isHistory}
-                                          isDeleted={asset.isDeleted}
-                                          canEdit={asset.editable}
-                                          canDelete={asset.deletable}
-                                          onAssetDelete={this.onAssetDelete}
-                                          onAssetRestore={this.onAssetRestore} />
                         </div>
                     </div>
                 </Loader>
