@@ -32,7 +32,7 @@ var RichtextEdit = React.createClass({
                 className="rich-editor"
                 validationState={this.state.validation}>
 
-                <Quill toolbar={items} onChange={_.debounce(this.onTextChange, 500)} theme="snow" value={value}/>
+                <Quill toolbar={items} onChange={_.debounce(this.onTextChange, 500)} theme="snow" defaultValue={value}/>
 
             </ControlWrapper>
         );
