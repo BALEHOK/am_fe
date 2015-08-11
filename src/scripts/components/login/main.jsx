@@ -57,7 +57,7 @@ export default class Login extends React.Component {
                         }
                         <div className="auth-screen__form-controls">
                             <button className="btn btn_type_third btn_width_full" disabled={this.state.isLoading}>
-                                {this.state.isLoading? 'Loging in...' : 'Login'}
+                                {this.state.isLoading? 'Logging in...' : 'Login'}
                             </button>
                         </div>
                     </form>
