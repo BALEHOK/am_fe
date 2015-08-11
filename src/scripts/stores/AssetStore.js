@@ -165,8 +165,7 @@ var AssetStore = Flux.createStore({
 
   validateAttribute(params) {
     this.assetRepo.validateAttribute(params).then((data) => {
-      this.validation[data.id] = data;
-      this.emitChange();
+      this.setValidation(data);
     });
   },
 
