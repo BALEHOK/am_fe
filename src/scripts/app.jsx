@@ -11,11 +11,19 @@ var LoginStore = require('./stores/LoginStore').store;
 require('babel-core/polyfill');
 import {} from "element-closest";
 import {} from "whatwg-fetch";
+import moment from 'moment';
 
 RouterContainer.set(router);
 let tokenString = localStorage.getItem('token');
 if (tokenString) {
-  LoginActions.loginUser(tokenString);
+    let savedToken = JSON.parse(tokenString);
+    let tokenIssued = moment(savedToken['.issued'], 'dddd, DD MMM YYYY hh:mm:ss');
+    let tokenExpires = moment(savedToken['.issued'], 'dddd, DD MMM YYYY hh:mm:ss').add(savedToken['expires_in'], 'seconds');
+    if (moment().isBetween(tokenIssued, tokenExpires)) {
+        LoginActions.loginUser(tokenString);
+    } else {
+        LoginActions.logoutUser();
+    }
 }
 
 router.run(function (Handler, state) {
