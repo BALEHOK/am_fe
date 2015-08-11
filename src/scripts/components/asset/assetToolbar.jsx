@@ -30,6 +30,13 @@ var AssetToolbar = React.createClass({
             deleted: false
         });
     },
+    isCurrentButtonVisible() {
+        return this.props.isHistory;
+    },
+    isHistoryButtonVisible() {
+        return !this.props.isHistory
+            && !this.props.isDeleted;
+    },
     isEditButtonVisible() {
         return !this.props.isHistory
             && !this.props.isDeleted
@@ -56,15 +63,20 @@ var AssetToolbar = React.createClass({
                                  <i className="btn__icon btn__icon_print"></i>
                                  </button>
                                  */}
-                                {this.props.isHistory
+                                {this.isCurrentButtonVisible()
                                     ?   <button className="btn btn_type_second btn_size_small"
                                                 onClick={this.handleTransition.bind(this, 'asset-view')}>
                                     <i className="btn__icon btn__icon_history"></i>Current version
                                 </button>
-                                    :   <button className="btn btn_type_second btn_size_small"
+                                    : ''
+                                }
+
+                                {this.isHistoryButtonVisible()
+                                    ?   <button className="btn btn_type_second btn_size_small"
                                                 onClick={this.handleTransition.bind(this, 'asset-history')}>
                                     <i className="btn__icon btn__icon_history"></i>History
                                 </button>
+                                    : ''
                                 }
 
                                 {this.isEditButtonVisible()
