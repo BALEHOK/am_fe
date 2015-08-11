@@ -31,7 +31,7 @@ var Create = React.createClass({
     render: function() {
         var rows = {};
         var assettypes = this.state.stores.list.assettypes;
-        if (assettypes.activeTypes && assettypes.activeTypes.length > 0)
+        if (assettypes && assettypes.activeTypes && assettypes.activeTypes.length > 0)
          rows = assettypes.activeTypes.map(type => <AssetTypeRow type={type} onClick={this.onAssetTypeClick} />);
       return (
         <div>

@@ -43,7 +43,8 @@ var AssetStore = Flux.createStore({
     'asset:push': 'pushAsset',
     'asset:pop': 'popAsset',
     'asset:set-attr': 'setAttribute',
-    'asset:add-related': 'addRelated'
+    'asset:add-related': 'addRelated',
+    'asset:set-validation': 'setValidation',
   },
 
   initialize() {
@@ -167,6 +168,11 @@ var AssetStore = Flux.createStore({
       this.validation[data.id] = data;
       this.emitChange();
     });
+  },
+
+  setValidation(result) {
+    this.validation[result.id] = result;
+    this.emitChange();
   },
 
   getValidationState() {

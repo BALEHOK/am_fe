@@ -10,15 +10,21 @@ var ValidationMixin = require('../../../../mixins/ValidationMixin');
 
 var FileEditAttribute = React.createClass({
     mixins: [ValidationMixin],
+
     contextTypes: {
         router: React.PropTypes.func
     },
+
     componentWillMount: function() {
         this.setupValidation(this.props.actions);
     },
 
-    valueChanged: function(filename, imageUrl) {
+    onUploadSuccess: function(filename, imageUrl) {
         this.props.params.value = filename;
+        this.props.actions.setValidationResult({
+            id: this.props.params.id,
+            isValid: true
+        });
         this.setState({
             validation: {
                 feedbackClasses: cx(this.state.validation.feedbackClasses, {
@@ -26,9 +32,23 @@ var FileEditAttribute = React.createClass({
                 })
             }
         });
-        //this.validate({id: this.props.params.id, value: this.props.params.value});
         if (this.props.onUpload)
             this.props.onUpload(filename, imageUrl);
+    },
+
+    onUploadFail: function(errorMessage) {
+        this.props.actions.setValidationResult({
+            id: this.props.params.id,
+            message: errorMessage,
+            isValid: false
+        });
+        this.setState({
+            validation: {
+                feedbackClasses: cx(this.state.validation.feedbackClasses, {
+                    'form-control-feedback_loading': false
+                })
+            }
+        });
     },
 
     onStart: function() {
@@ -62,8 +82,9 @@ var FileEditAttribute = React.createClass({
             </div>
           );
         } else {
-          cnt = <File onUpload={this.valueChanged}
+          cnt = <File onUpload={this.onUploadSuccess}
               onStart={this.onStart}
+              onUploadFail={this.onUploadFail}
               attributeId={this.props.params.id}
               assetId={params.assetId}
               assetTypeId={params.assetTypeId} />;
