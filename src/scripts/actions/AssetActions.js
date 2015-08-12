@@ -107,6 +107,10 @@ class AssetActions extends Actions {
   loadReports(assetTypeId) {
     return this._dispatcher.loadReports(assetTypeId);
   }
+
+  setValidationResult(result) {
+    this._dispatcher.setValidationResult(result);
+  }
 }
 
 module.exports = AssetActions;
