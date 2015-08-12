@@ -95,6 +95,10 @@ var AssetDispatcher = Flux.createDispatcher({
     return this.dispatch('reports:load', assetTypeId);
   },
 
+  setValidationResult(result) {
+    return this.dispatch('asset:set-validation', result);
+  },
+
   getStores() {
     return {
       asset: new AssetStore(),

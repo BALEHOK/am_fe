@@ -33,29 +33,33 @@ var ValidationMixin = {
 	componentWillReceiveProps: function (nextProps) {
         var valResult = nextProps.validation;
         if (valResult) {
-            
-            var groupClasses = cx({
-                'form-group': true,
-                'has-feedback': true,
-                'has-error': !_.isUndefined(valResult.isValid) && !valResult.isValid,
-                'has-success': valResult.isValid
-            });
-
-            var feedbackClasses = cx('glyphicon', 'form-control-feedback', 
-                'glyphicon' + (valResult.isValid ? '-ok' : '-remove'));
-
-            this.setState({
-                validation: {
-                    hasFeedback: true,
-                    isValid: valResult.isValid,
-                    validationState:  valResult.isValid ? 'success' : 'error',
-                    groupClasses: groupClasses,
-                    feedbackClasses: feedbackClasses,
-                    message: valResult.message,
-                }
-            });
+            let isError = !_.isUndefined(valResult.isValid) && !valResult.isValid;
+            this.setValidationResult(!isError, valResult.message);
         }
     },
+
+    setValidationResult(isValid, message) {
+        var groupClasses = cx({
+            'form-group': true,
+            'has-feedback': true,
+            'has-error': !isValid,
+            'has-success': isValid
+        });
+
+        var feedbackClasses = cx('glyphicon', 'form-control-feedback',
+            'glyphicon' + (isValid ? '-ok' : '-remove'));
+
+        this.setState({
+            validation: {
+                hasFeedback: true,
+                isValid: isValid,
+                validationState:  isValid ? 'success' : 'error',
+                groupClasses: groupClasses,
+                feedbackClasses: feedbackClasses,
+                message: message,
+            }
+        });
+    }
 
 };
 
