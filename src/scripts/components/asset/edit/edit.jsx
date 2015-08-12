@@ -131,7 +131,7 @@ var Edit = React.createClass({
         };
 
         return (
-            <div>
+            <div className="asset-page">
                 {getHeader()}
                 <RevisionInfo asset={asset} dateTransform={dateTransform} />
                 <div className="grid">

@@ -111,7 +111,7 @@ var AssetView = React.createClass({
             asset.screens, this.state.selectedScreen);
 
         return (
-            <div>
+            <div className="asset-page">
                 <SearchResultsHeader actions={this.props.actions} dispatcher={this.props.dispatcher} />
                 <h1 className="page-title">
                     <span className={titleClasses}>
