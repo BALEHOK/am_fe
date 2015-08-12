@@ -14,7 +14,7 @@ var filter = require('gulp-filter');
 //var clean = require('gulp-clean');
 var gulpif = require('gulp-if');
 //var uglify = require('gulp-uglify');
-var browserSync = require('browser-sync');
+var browserSync = require('browser-sync').create();
 var replace = require('gulp-replace');
 var through = require('through2');
 var webpackDevMiddleware = require("webpack-dev-middleware");
@@ -124,7 +124,7 @@ gulp.task("dev-server", function(callback) {
         watchDelay: 300,
         stats: { colors: true },
     });
-    browserSync({
+    browserSync.init({
         server: {
             baseDir: 'dist/',
             proxy: 'local.dev',
