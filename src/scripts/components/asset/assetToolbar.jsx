@@ -31,7 +31,8 @@ var AssetToolbar = React.createClass({
         });
     },
     isCurrentButtonVisible() {
-        return this.props.isHistory;
+        return this.props.isHistory
+            && !this.props.isDeleted;
     },
     isHistoryButtonVisible() {
         return !this.props.isHistory
