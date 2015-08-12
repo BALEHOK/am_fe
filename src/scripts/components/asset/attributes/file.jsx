@@ -29,14 +29,14 @@ var File = React.createClass({
             },
             complete: (err, xhr) => {
                 var response = JSON.parse(xhr.responseText);
-                if (!err)
+                if (!err) {
                     this.props.onUpload(response.filename, response.imageUrl);
+                }
+                else if (err && xhr.status == 400 && _.isFunction(this.props.onUploadFail)) {
+                    this.props.onUploadFail(response.message);
+                }
             }
         });
-    },
-
-    valueChanged: function(event) {
-        // this.validate({id: this.props.params.id, value: this.props.params.value});
     },
 
     render: function() {
