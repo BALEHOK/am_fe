@@ -135,12 +135,19 @@ var Edit = React.createClass({
                 {getHeader()}
                 <RevisionInfo asset={asset} dateTransform={dateTransform} />
                 <div className="grid">
-                    <div className="grid__item one-whole">
-                        <Sticky>
-                            <div className="asset-controls-panel">
-                                <div className="container">
-                                    <div className="grid grid_right">
-                                        <div className="grid__item ten-twelfths">
+                    <div className="grid__item two-twelfths">
+                        <LayoutSwitcher
+                            screens={asset.screens}
+                            selectedScreen={screen}
+                            onChange={this.onScreenChange} />
+                        <TaxonomyPath taxonomyPath={taxonomyPath} />
+                    </div>
+                    <div className="grid__item ten-twelfths">
+                        <Loader loading={this.state.loading}>
+                            <div>
+                                <Sticky>
+                                    <div className="asset-controls-panel-wrapper">
+                                        <div className="asset-controls-panel">
                                             <div className="inputs-line inputs-line_width_full" ref="slider">
                                                 <ValidationResult validation={validationData}
                                                                   selectedScreen={screen} />
@@ -164,20 +171,7 @@ var Edit = React.createClass({
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </Sticky>
-                    </div>
-                    <div className="grid__item two-twelfths">
-                        <LayoutSwitcher
-                            screens={asset.screens}
-                            selectedScreen={screen}
-                            onChange={this.onScreenChange} />
-                        <TaxonomyPath taxonomyPath={taxonomyPath} />
-                    </div>
-                    <div className="grid__item ten-twelfths">
-                        <Loader loading={this.state.loading}>
-                            <div>
+                                </Sticky>
                                 {panels}
                             </div>
                         </Loader>

@@ -121,16 +121,6 @@ var AssetView = React.createClass({
                 <RevisionInfo asset={asset} dateTransform={dateTransform} />
                 <Loader loading={this.state.loading}>
                     <div className="grid">
-                        <div className="grid__item one-whole">
-                            <Sticky>
-                                <AssetToolbar isHistory={asset.isHistory}
-                                              isDeleted={asset.isDeleted}
-                                              canEdit={asset.editable}
-                                              canDelete={asset.deletable}
-                                              onAssetDelete={this.onAssetDelete}
-                                              onAssetRestore={this.onAssetRestore} />
-                            </Sticky>
-                        </div>
                         <div className="grid__item two-twelfths">
                             <LayoutSwitcher
                                 screens={asset.screens}
@@ -169,6 +159,14 @@ var AssetView = React.createClass({
                             */}
                         </div>
                         <div className="grid__item ten-twelfths">
+                            <Sticky>
+                                <AssetToolbar isHistory={asset.isHistory}
+                                              isDeleted={asset.isDeleted}
+                                              canEdit={asset.editable}
+                                              canDelete={asset.deletable}
+                                              onAssetDelete={this.onAssetDelete}
+                                              onAssetRestore={this.onAssetRestore} />
+                            </Sticky>
                             <ViewComponent
                                 screen={this.state.selectedScreen || {panels: []}}
                                 actions={this.props.actions}
