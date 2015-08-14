@@ -52,6 +52,7 @@ var SearchSimpleForm = React.createClass({
                         selectId="search-type"
                         placeholder=" "
                         clearable={false}
+                        searchable={false}
                         label=" " />
 
                     <label className="input-txt input-txt_width_475">

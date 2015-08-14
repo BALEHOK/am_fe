@@ -4,11 +4,11 @@
 
 var React = require('react');
 var cx = require('classnames');
-var ControlWrapper = require('./controlWrapper');
+//var ControlWrapper = require('./controlWrapper');
+var SelectWrapper = require('./selectWrapper');
 var ValidationMixin = require('../../../../mixins/ValidationMixin');
 var ReactSelectize = require('../../../common/react-selectize');
 var Flux = require('delorean').Flux;
-var cx = require('classnames');
 
 var EditableAttribute = React.createClass({
     mixins: [ValidationMixin, Flux.mixins.storeListener],
@@ -42,7 +42,7 @@ var EditableAttribute = React.createClass({
             ? this.props.params.value.id
             : 0;
         return (
-            <ControlWrapper
+            <SelectWrapper
                 name={this.props.params.name}
                 className={classes}
                 validationState={this.state.validation}>
@@ -55,7 +55,7 @@ var EditableAttribute = React.createClass({
                     placeholder=" "
                     label=" "
                 />
-            </ControlWrapper>
+            </SelectWrapper>
         );
     }
 });

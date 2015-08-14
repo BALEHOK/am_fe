@@ -6,7 +6,8 @@ var React = require('react');
 var Router = require('react-router');
 var Flux = require('delorean').Flux;
 var ReactSelectize = require('../../../common/react-selectize');
-var ControlWrapper = require('./controlWrapper');
+//var ControlWrapper = require('./controlWrapper');
+var SelectWrapper = require('./selectWrapper');
 var ValidationMixin = require('../../../../mixins/ValidationMixin');
 var cx = require('classnames');
 
@@ -59,7 +60,7 @@ var AssetPicker = React.createClass({
             maxItems = 100;
         }
         return (
-            <ControlWrapper
+            <SelectWrapper
                 name={this.props.params.name}
                 className={classes}
                 validationState={this.state.validation}>
@@ -82,7 +83,7 @@ var AssetPicker = React.createClass({
                     <i className="btn__icon btn__icon_plus_circle"></i>Add new
                 </div>
 
-            </ControlWrapper>
+            </SelectWrapper>
         );
     }
 });

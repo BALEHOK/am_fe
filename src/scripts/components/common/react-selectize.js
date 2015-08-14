@@ -7,7 +7,8 @@ export default class Select extends React.Component {
     valueField: "id",
     labelField: "name",
     clearable: true,
-  }
+    searchable: true
+  };
 
   getValue() {
     let value;
@@ -65,7 +66,7 @@ export default class Select extends React.Component {
 
   render() {
     let items = this.mapValues(this.props.items || []);
-    return <label className="select" for={this.props.selectId}>
+    return <span className="select" for={this.props.selectId}>
       <ReactSelect
         ref={"selector"}
         value={this.getValue()}
@@ -79,7 +80,7 @@ export default class Select extends React.Component {
         inputProps={{ onKeyUp: this.queryChanged.bind(this)}}
         className="form-control"
         onScroll={this.loadMore.bind(this)}/>
-    </label>;
+    </span>;
   }
 
 }
