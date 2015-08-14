@@ -59,11 +59,16 @@ gulp.task('css:fonts', function () {
 });
 
 gulp.task('css', function () {
-    var styl = filter('**/*.styl');
-    return gulp.src([cssSrc, cssVendorSrc])
+    var styl = filter('styles.styl');
+    return gulp.src(cssSrc)
         .pipe(styl)
-        .pipe(stylus())
-        .pipe(styl.restore())
+        .pipe(stylus({
+            url: {
+                name: 'url64',
+                limit: false
+            },
+            'include css': true
+        }))
         .on('error', handleError)
         .pipe(concat('style.css'))
         .pipe(autoprefixer({
