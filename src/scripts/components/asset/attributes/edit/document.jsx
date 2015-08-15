@@ -6,7 +6,7 @@ var React = require('react');
 var List = require('./list');
 var File = require('../file');
 var ValidationMixin = require('../../../../mixins/ValidationMixin');
-var ControlWrapper = require('./controlWrapper');
+var SelectWrapper = require('./selectWrapper');
 var LoadingFormMixin = require('../../../../mixins/LoadingFormMixin.js');
 var cx = require('classnames');
 
@@ -34,7 +34,7 @@ var EditableAttribute = React.createClass({
         var params = this.context.router.getCurrentParams();
         var classes = cx('select', 'select_size_small', 'form-group');
         return (
-          <ControlWrapper
+          <SelectWrapper
               name={this.props.params.name}
               className={classes}
               validationState={this.state.validation}>
@@ -55,7 +55,7 @@ var EditableAttribute = React.createClass({
                 mapper={(el) => ({id: el.id, name: el.name})}
                 dispatcher={this.props.dispatcher}>
                 </List>
-            </ControlWrapper>
+            </SelectWrapper>
         );
     }
 });
