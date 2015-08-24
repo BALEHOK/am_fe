@@ -17,7 +17,7 @@ var ControlWrapper = React.createClass({
                         ? <span className={this.props.validationState.feedbackClasses}></span>
                         : ''
                     }
-                </label>
+                </label>                         
             </div>
         );
     }
