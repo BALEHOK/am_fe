@@ -17,7 +17,11 @@ var ControlWrapper = React.createClass({
                         ? <span className={this.props.validationState.feedbackClasses}></span>
                         : ''
                     }
-                </label>                         
+                    {this.props.hasFormula
+                        ? <span className="glyphicon form-control-feedback icon_asterisk"></span>
+                        : ''
+                    }
+                </label>
             </div>
         );
     }

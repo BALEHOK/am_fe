@@ -103,16 +103,20 @@ gulp.task('fonts', function() {
     return gulp.src(['src/fonts/**/*', 'src/scripts/libs/bootstrap-stylus/fonts/*'])
         .pipe(gulp.dest(path.join(buildDest, assetsDest, 'fonts')));
 });
+
 gulp.task('images', function() {
     return gulp.src('src/images/**/*')
         .pipe(gulp.dest(path.join(buildDest, assetsDest, 'images')));
 });
+
+gulp.task('scripts-watch', ['webpack:build'], browserSync.reload);
+
 gulp.task('watch', function() {
     gulp.watch('src/**/*.html', ['views', browserSync.reload]);
+    gulp.watch('src/scripts/*.*', ['scripts-watch']);
     gulp.watch('src/**/*.{styl,css}', ['css', 'css:fonts', browserSync.reload]);
-    gulp.watch('src/fonts/*.*', ['fonts', browserSync.reload]);
-    gulp.watch('src/images/*.*', ['images', browserSync.reload]);
 });
+
 gulp.task('webconfig', function() {
     return gulp.src('web.config')
         .pipe(gulp.dest(buildDest));

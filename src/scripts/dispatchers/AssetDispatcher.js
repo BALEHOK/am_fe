@@ -83,8 +83,8 @@ var AssetDispatcher = Flux.createDispatcher({
     return this.dispatch("asset:validate-attribute", params);
   },
 
-  saveAsset(asset) {
-    return this.dispatch("asset:save", asset);
+  saveAsset() {
+    return this.dispatch("asset:save");
   },
 
   loadAssetTypes() {

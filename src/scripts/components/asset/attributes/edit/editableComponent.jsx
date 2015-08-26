@@ -1,48 +1,35 @@
 import React from 'react'
-import reactMixin from 'react-mixin'
 import cx from 'classnames'
 import ControlWrapper from './controlWrapper'
+import reactMixin from 'react-mixin'
 import ValidationMixin from '../../../../mixins/ValidationMixin'
 
-@reactMixin.decorate(ValidationMixin)
-export default class EditableComponent extends React.Component {
-    
-    componentWillMount() {
-        this.setupValidation(this.props.actions);
+export default function editableComponent(Component) {
+
+    @reactMixin.decorate(ValidationMixin)
+    class ComponentWrapper extends React.Component {
+
+        constructor() {
+            super();
+            this.valueChanged = this.valueChanged.bind(this);
+        }
+
+        componentWillMount() {
+            this.setupValidation(this.props.actions);
+        }
+
+        valueChanged(value) {
+            this.actions.setAttribute(this.props.params.id, value);
+            this.forceUpdate();
+        }
+
+        render() {
+            return <Component {...this.props} {...this.state}
+                    onValueChanged={this.valueChanged}
+                    validation={this.state.validation} />;
+        }
+
     }
 
-    valueChanged(event) {
-        var value = event.target.value;
-        this.props.params.value = value;
-        this.validate({id: this.props.params.id, value: this.props.params.value});
-        this.forceUpdate();
-    }
-
-    render() {
-        var isMultiline =  this.props.params.datatype == 'text';
-        var classes = cx('input-txt', 'input-txt_' + (isMultiline ? 'textarea' : 'text'));
-        return (
-            <ControlWrapper
-                name={this.props.params.name}
-                className={classes}
-                validationState={this.state.validation}>
-
-                {isMultiline
-                    ? <textarea
-                        onChange={this.valueChanged}
-                        className="input-txt__field form-control"
-                        value={this.props.params.value}></textarea>
-                    : <input
-                        type="text"
-                        onChange={this.valueChanged}
-                        className="input-txt__field form-control"
-                        value={this.props.params.value} />
-                }
-                {this.props.params.hasFormula 
-                    ? <span className="glyphicon form-control-feedback icon_asterisk"></span>
-                    : ''
-                }
-            </ControlWrapper>
-        );
-    }
+    return ComponentWrapper;
 }

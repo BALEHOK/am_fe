@@ -76,8 +76,8 @@ class AssetActions extends Actions {
     return this._dispatcher.loadSearchTracking(searchId);
   }
 
-  saveAsset(asset) {
-    return this._dispatcher.getStore('asset').saveAsset(asset);
+  saveAsset() {
+    return this._dispatcher.getStore('asset').saveAsset();
   }
 
   loadBarcode(params) {

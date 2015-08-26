@@ -72,7 +72,7 @@ var Edit = React.createClass({
         var model = this.state.stores.asset.asset;
         var params = this.context.router.getCurrentParams();
         var query = this.context.router.getCurrentQuery();
-        this.waitFor(this.props.actions.saveAsset(model))
+        this.waitFor(this.props.actions.saveAsset())
             .then(() => {
                 if(!query.forAttr) {
                     self.context.router.transitionTo(
