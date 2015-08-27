@@ -3,12 +3,13 @@ import { OidcClient , OidcTokenManager } from '../libs/oidc/oidc';
 let _lastError = null;
 class AuthService {
   constructor() {
+    let domain = window.location.protocol + "//" + window.location.host;
     let config = {
       // Auth server settings
       authority: 'http://auth.am.local/core',
       client_id: 'AMSPA',
-      redirect_uri: 'http://localhost:3000/authCallback.html',
-      post_logout_redirect_uri: 'http://localhost:3000/',
+      redirect_uri: domain + '/authCallback.html',
+      post_logout_redirect_uri: domain + '/',
       scope: 'openid profile webApi',
       response_type: 'id_token token',
 
