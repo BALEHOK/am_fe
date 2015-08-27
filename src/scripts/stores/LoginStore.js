@@ -1,7 +1,7 @@
-var Flux = require('delorean').Flux;
+import { Flux }  from 'delorean'
+import AuthService from '../services/AuthService'
 
 var LoginStore = Flux.createStore({
-
     user: null,
     access_token: null,
 
@@ -10,13 +10,15 @@ var LoginStore = Flux.createStore({
         'login:logoutUser': 'logoutUser'
     },
 
-    loginUser(token) {
+    loginUser() {
+        let profile = AuthService.profile;
+
         this.user = {
-            userName: token.userName,
-            lastLogin: token.lastLogin,
-            email: token.email
+            userName: profile.userName,
+            lastLogin: profile.lastLogin,
+            email: profile.email
         };
-        this.access_token = token.access_token;
+
         this.emitChange();
     },
 
