@@ -19,11 +19,14 @@ var LoginStore = Flux.createStore({
             email: profile.email
         };
 
+        this.access_token = AuthService.accessToken;
+
         this.emitChange();
     },
 
     logoutUser() {
         this.user = null;
+        this.access_token = null;
         this.emitChange();
     },
 
