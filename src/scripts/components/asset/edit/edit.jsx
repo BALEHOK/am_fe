@@ -72,7 +72,7 @@ var Edit = React.createClass({
         var model = this.state.stores.asset.asset;
         var params = this.context.router.getCurrentParams();
         var query = this.context.router.getCurrentQuery();
-        this.waitFor(this.props.actions.saveAsset(model))
+        this.waitFor(this.props.actions.saveAsset())
             .then(() => {
                 if(!query.forAttr) {
                     self.context.router.transitionTo(
@@ -129,7 +129,7 @@ var Edit = React.createClass({
                         {action}&nbsp;<span className="page-title__param">{name}</span>
                     </h1>
         };
-
+        var loading = this.state.loading || assetStore.calculating;
         return (
             <div className="asset-page">
                 {getHeader()}
@@ -143,7 +143,7 @@ var Edit = React.createClass({
                         <TaxonomyPath taxonomyPath={taxonomyPath} />
                     </div>
                     <div className="grid__item ten-twelfths">
-                        <Loader loading={this.state.loading}>
+                        <Loader loading={loading}>
                             <div>
                                 <Sticky>
                                     <div className="asset-controls-panel-wrapper">

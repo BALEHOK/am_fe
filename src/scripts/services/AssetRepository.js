@@ -58,10 +58,11 @@ export default class AssetRepository {
         }).post();
     }
 
-    saveAsset(asset) {
+    saveAsset(asset, screenId) {
         var url = `/api/assettype/${asset.assetTypeId}/asset`;
         if (asset.id)
             url += `/${asset.id}`;
+        url += `?screenId=${screenId}`;
 
         let resp = fetch(url, {
           body: JSON.stringify(asset)
@@ -74,5 +75,20 @@ export default class AssetRepository {
         return fetch(url, {
           body: JSON.stringify(params.value)
         }).post();
+    }
+
+    calculateAsset(asset, screenId, forceRecalc) {
+        var url = `/api/assettype/${asset.assetTypeId}/asset`;
+        if (asset.id)
+            url += `/${asset.id}`;
+        url += '/calculate';
+        url += `?screenId=${screenId}`;
+        if (forceRecalc)
+            url += '&forceRecalc=true'
+
+        let resp = fetch(url, {
+          body: JSON.stringify(asset)
+        });
+        return resp.post();
     }
 }
