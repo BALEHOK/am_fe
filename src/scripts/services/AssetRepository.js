@@ -77,12 +77,14 @@ export default class AssetRepository {
         }).post();
     }
 
-    calculateAsset(asset, screenId) {
+    calculateAsset(asset, screenId, forceRecalc) {
         var url = `/api/assettype/${asset.assetTypeId}/asset`;
         if (asset.id)
             url += `/${asset.id}`;
         url += '/calculate';
         url += `?screenId=${screenId}`;
+        if (forceRecalc)
+            url += '&forceRecalc=true'
 
         let resp = fetch(url, {
           body: JSON.stringify(asset)

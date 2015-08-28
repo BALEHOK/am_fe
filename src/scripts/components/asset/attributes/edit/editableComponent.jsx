@@ -18,8 +18,8 @@ export default function editableComponent(Component) {
             this.setupValidation(this.props.actions);
         }
 
-        valueChanged(value) {
-            this.actions.setAttribute(this.props.params.id, value);
+        valueChanged(value, force) {
+            this.actions.setAttribute(this.props.params.id, value, force);
             this.forceUpdate();
         }
 

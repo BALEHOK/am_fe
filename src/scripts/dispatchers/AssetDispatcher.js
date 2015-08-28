@@ -51,8 +51,8 @@ var AssetDispatcher = Flux.createDispatcher({
     return this.dispatch("asset:pop");
   },
 
-  setAttribute(id, value) {
-    return this.dispatch("asset:set-attr", {id, value});
+  setAttribute(id, value, forceRecalc) {
+    return this.dispatch("asset:set-attr", {id, value, forceRecalc});
   },
 
   loadAssetsList(params) {

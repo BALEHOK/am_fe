@@ -48,8 +48,8 @@ class AssetActions extends Actions {
     return this._dispatcher.popAsset();
   }
 
-  setAttribute(id, value) {
-    return this._dispatcher.setAttribute(id, value);
+  setAttribute(id, value, forceRecalc) {
+    return this._dispatcher.setAttribute(id, value, forceRecalc);
   }
 
   loadRoles() {

@@ -28,6 +28,8 @@ var AssetStore = Flux.createStore({
 
   isValid: undefined,
 
+  calculating: false,
+
   barcodeBase64: null,
 
   actions: {
@@ -51,8 +53,8 @@ var AssetStore = Flux.createStore({
     this.assetRepo = new AssetRepository();
     this.barcodeRepo = new BarcodeRepository();
     var self = this;
-    this.delayedCalculation = _.debounce(() => {
-        self.calculateAsset();
+    this.delayedCalculation = _.debounce((forceRecalc) => {
+        self.calculateAsset(forceRecalc);
     }, 500);
     this.delayedValidation = _.debounce((params) => {
         self.validateAttribute({
@@ -62,7 +64,7 @@ var AssetStore = Flux.createStore({
     }, 500);
   },
 
-  setAttribute({id, value}) {
+  setAttribute({id, value, forceRecalc}) {
     id = parseInt(id);
     var attributes = this.asset.screens
       .reduce(((acc, scrn) => acc.concat(scrn.panels)), [])
@@ -80,8 +82,8 @@ var AssetStore = Flux.createStore({
         }
       });
 
-    if (_.any(attributes, a => a.hasFormula)) {
-        this.delayedCalculation(this.asset);
+    if (_.any(attributes, a => a.hasFormula && !a.value) || forceRecalc) {
+        this.delayedCalculation(this.asset, forceRecalc);
     } else {
         this.delayedValidation({id, value});
     }
@@ -224,15 +226,23 @@ var AssetStore = Flux.createStore({
     return request;
   },
 
-  calculateAsset() {
+  calculateAsset(forceRecalc) {
     var self = this;
+    self.calculating = true;
+    self.emitChange();
     var screenId = this.asset.screens[this.selectedScreen].id;
-    var request = this.assetRepo.calculateAsset(this.asset, screenId);
+    var request = this.assetRepo.calculateAsset(this.asset, screenId, forceRecalc);
     request
       .then((result) => {
-        console.log('there should be screen formula support', result)
+        self.calculating = false;
+        self.asset = result;
+        self.validation.forEach((o,i) => {
+            self.validation[i] = {isValid:true, id: i};
+        })
+        self.emitChange();
       })
       .catch((err) => {
+        self.calculating = false;
         self.emitRollback();
         if (err.response && err.response.status == 400) {
           err.response.json().then(validationResult => {
@@ -270,6 +280,7 @@ var AssetStore = Flux.createStore({
       isValid: this.getValidationState(),
       selectedScreen: this.selectedScreen,
       barcodeBase64: this.barcodeBase64,
+      calculating: this.calculating,
     };
   }
 });
