@@ -6,7 +6,7 @@ class AuthService {
     let domain = window.location.protocol + "//" + window.location.host;
     let config = {
       // Auth server settings
-      authority: 'http://auth.am.local/core',
+      authority: AUTHURL,
       client_id: 'AMSPA',
       redirect_uri: domain + '/authCallback.html',
       post_logout_redirect_uri: domain + '/',
