@@ -18,6 +18,14 @@ var ControlWrapper = React.createClass({
                         : ''
                     }
                 </label>
+                {this.props.hasFormula
+                    ? <button className="btn btn_type_first pull-right btn_size_small"
+                        onClick={this.props.onRecalc}>
+                        <i className="btn__icon btn__icon_refresh"></i>
+                        <span>Recalc</span>
+                      </button>
+                    : ''
+                }
             </div>
         );
     }

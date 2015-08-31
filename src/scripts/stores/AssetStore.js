@@ -28,6 +28,8 @@ var AssetStore = Flux.createStore({
 
   isValid: undefined,
 
+  calculating: false,
+
   barcodeBase64: null,
 
   actions: {
@@ -50,13 +52,25 @@ var AssetStore = Flux.createStore({
   initialize() {
     this.assetRepo = new AssetRepository();
     this.barcodeRepo = new BarcodeRepository();
+    var self = this;
+    this.delayedCalculation = _.debounce((forceRecalc) => {
+        self.calculateAsset(forceRecalc);
+    }, 500);
+    this.delayedValidation = _.debounce((params) => {
+        self.validateAttribute({
+            attributeId: params.id,
+            value: params.value
+        });
+    }, 500);
   },
 
-  setAttribute({id, value}) {
+  setAttribute({id, value, forceRecalc}) {
     id = parseInt(id);
-    this.asset.screens
+    var attributes = this.asset.screens
       .reduce(((acc, scrn) => acc.concat(scrn.panels)), [])
-      .reduce(((acc, panel) => acc.concat(panel.attributes)), [])
+      .reduce(((acc, panel) => acc.concat(panel.attributes)), []);
+
+    attributes
       .filter(att => att.id === id)
       .forEach(att => {
         if (att.datatype == 'assets') {
@@ -67,6 +81,13 @@ var AssetStore = Flux.createStore({
           att.value = value;
         }
       });
+
+    if (_.any(attributes, a => a.hasFormula && !a.value) || forceRecalc) {
+        this.delayedCalculation(this.asset, forceRecalc);
+    } else {
+        this.delayedValidation({id, value});
+    }
+
     this.emitChange();
   },
 
@@ -179,9 +200,10 @@ var AssetStore = Flux.createStore({
     return _.size(valResults) == 0;
   },
 
-  saveAsset(asset) {
+  saveAsset() {
     var self = this;
-    var request = this.assetRepo.saveAsset(asset);
+    var screenId = this.asset.screens[this.selectedScreen].id;
+    var request = this.assetRepo.saveAsset(this.asset, screenId);
     request
       .then((result) => {
         self.asset.id = result.id;
@@ -192,27 +214,61 @@ var AssetStore = Flux.createStore({
         self.emitRollback();
         if (err.response && err.response.status == 400) {
           err.response.json().then(validationResult => {
-              if (validationResult && validationResult.modelState) {
-                _.chain(validationResult.modelState)
-                  .keys()
-                  .map(k => { return parseInt(k); })
-                  .filter(k => !_.isNaN(k))
-                  .each(key => {
-                    self.validation[key] = {
-                      id: key,
-                      message: validationResult.modelState[key][0],
-                      isValid: false
-                    };
-                  })
-                  .value();
+            if (validationResult && validationResult.modelState) {
+                self._setValidationResult(validationResult);
                 self.emitChange();
-              }
+            }
           });
         } else {
           throw err;
         }
       });
     return request;
+  },
+
+  calculateAsset(forceRecalc) {
+    var self = this;
+    self.calculating = true;
+    self.emitChange();
+    var screenId = this.asset.screens[this.selectedScreen].id;
+    var request = this.assetRepo.calculateAsset(this.asset, screenId, forceRecalc);
+    request
+      .then((result) => {
+        self.calculating = false;
+        self.asset = result;
+        self.validation.forEach((o,i) => {
+            self.validation[i] = {isValid:true, id: i};
+        })
+        self.emitChange();
+      })
+      .catch((err) => {
+        self.calculating = false;
+        self.emitRollback();
+        if (err.response && err.response.status == 400) {
+          err.response.json().then(validationResult => {
+            if (validationResult && validationResult.modelState) {
+                self._setValidationResult(validationResult);
+                self.emitChange();
+            }
+          });
+        } else {
+          throw err;
+        }
+      });
+  },
+
+  _setValidationResult(validationResult) {
+    _.chain(validationResult.modelState)
+      .keys()
+      .map(k => { return parseInt(k); })
+      .filter(k => !_.isNaN(k))
+      .each(key => {
+        this.validation[key] = {
+          id: key,
+          message: validationResult.modelState[key][0],
+          isValid: false
+        };
+      });
   },
 
   getState() {
@@ -224,6 +280,7 @@ var AssetStore = Flux.createStore({
       isValid: this.getValidationState(),
       selectedScreen: this.selectedScreen,
       barcodeBase64: this.barcodeBase64,
+      calculating: this.calculating,
     };
   }
 });
