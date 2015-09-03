@@ -98,6 +98,7 @@ var AssetToolbar = React.createClass({
                                 </button>
                             :   null
                         }
+
                     </div>
                 </div>
             </div>

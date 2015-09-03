@@ -111,6 +111,10 @@ class AssetActions extends Actions {
   setValidationResult(result) {
     this._dispatcher.setValidationResult(result);
   }
+
+  recalculate() {
+    return this._dispatcher.recalculate();
+  }
 }
 
 module.exports = AssetActions;

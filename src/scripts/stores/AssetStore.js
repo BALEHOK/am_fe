@@ -32,6 +32,8 @@ var AssetStore = Flux.createStore({
 
   barcodeBase64: null,
 
+  isEdited: false,
+
   actions: {
     'asset:load': 'loadAsset',
     'asset:load-related': 'loadRelatedAssets',
@@ -47,6 +49,7 @@ var AssetStore = Flux.createStore({
     'asset:set-attr': 'setAttribute',
     'asset:add-related': 'addRelated',
     'asset:set-validation': 'setValidation',
+    'asset:recalc': 'recalc',
   },
 
   initialize() {
@@ -62,6 +65,10 @@ var AssetStore = Flux.createStore({
             value: params.value
         });
     }, 500);
+  },
+
+  recalc() {
+    this.delayedCalculation(this.asset, true);
   },
 
   setAttribute({id, value, forceRecalc}) {
@@ -88,6 +95,7 @@ var AssetStore = Flux.createStore({
         this.delayedValidation({id, value});
     }
 
+    this.isEdited = true;
     this.emitChange();
   },
 
@@ -278,6 +286,7 @@ var AssetStore = Flux.createStore({
       taxonomyPath: this.taxonomyPath,
       validation: this.validation,
       isValid: this.getValidationState(),
+      isEdited: this.isEdited,
       selectedScreen: this.selectedScreen,
       barcodeBase64: this.barcodeBase64,
       calculating: this.calculating,
