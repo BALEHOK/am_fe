@@ -63,6 +63,13 @@ var DateTimeAttribute = React.createClass({
         this.forceUpdate();
     },
 
+    clearValue(e) {
+        e.preventDefault();
+        this.props.params.value = null;
+        this.resetValidation({id: this.props.params.id});
+        this.forceUpdate();
+    },
+
     render() {
         var dateValue = this.props.params.value
             ? moment(this.props.params.value)
@@ -76,6 +83,14 @@ var DateTimeAttribute = React.createClass({
                 </div>
             )
         }
+        var validation = {
+                feedbackClasses: "glyphicon form-control-feedback",
+                groupClasses: "form-group",
+                hasFeedback: false,
+                isValid: undefined,
+                message: undefined,
+                validationState: undefined
+            };
         return (
             <ControlWrapper
                 name={this.props.params.name}
@@ -86,6 +101,11 @@ var DateTimeAttribute = React.createClass({
                     onClick={this.showDatePicker}
                     value={this.formatDate(dateValue)} />
                 {picker}
+                {dateValue
+                    ? <span className="" onClick={this.clearValue}>Очистить</span>
+                    : null
+                }
+
 
             </ControlWrapper>
         );
