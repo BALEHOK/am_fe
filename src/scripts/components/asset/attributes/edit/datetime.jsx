@@ -101,8 +101,8 @@ var DateTimeAttribute = React.createClass({
                     onClick={this.showDatePicker}
                     value={this.formatDate(dateValue)} />
                 {picker}
-                {dateValue
-                    ? <span className="" onClick={this.clearValue}>Очистить</span>
+                {dateValue && !this.state.opened
+                    ? <span className="input-txt__clear" onClick={this.clearValue}>×</span>
                     : null
                 }
 
