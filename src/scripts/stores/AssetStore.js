@@ -50,6 +50,7 @@ var AssetStore = Flux.createStore({
     'asset:add-related': 'addRelated',
     'asset:set-validation': 'setValidation',
     'asset:recalc': 'recalc',
+    'asset:clear-attribute-validation': 'clearAttributeValidation',
   },
 
   initialize() {
@@ -196,6 +197,17 @@ var AssetStore = Flux.createStore({
     this.assetRepo.validateAttribute(params).then((data) => {
       this.setValidation(data);
     });
+  },
+
+  clearAttributeValidation(params) {
+    var data = {
+        $id: "1",
+        id: params.attributeId,
+        isValid: true,
+        message: "",
+        clearState: true,
+    };
+    this.setValidation(data);
   },
 
   setValidation(result) {

@@ -100,6 +100,10 @@ class AssetActions extends Actions {
     this._dispatcher.validateAttribute(params);
   }
 
+  clearAttributeValidation(params) {
+    this._dispatcher.clearAttributeValidation(params);
+  }
+
   loadAssetTypes() {
     return this._dispatcher.loadAssetTypes();
   }
