@@ -87,13 +87,17 @@ var Edit = React.createClass({
             });
     },
 
+    onRecalc: function() {
+        this.waitFor(this.props.actions.recalculate());
+    },
+
     render: function() {
         var actions = this.props.actions;
         var assetStore = this.state.stores.asset;
         var asset = assetStore.asset;
         var taxonomyPath = assetStore.taxonomyPath;
         var validationData = assetStore.validation;
-        var screen = asset.screens[assetStore.selectedScreen] || {panels: []};
+        var screen = asset.screens[assetStore.selectedScreen] || {panels: [], hasFormula:false};
         var panels = screen.panels.map((el, key) => {
             return <Panel key={key}
                           data={el}
@@ -167,6 +171,17 @@ var Edit = React.createClass({
                                                         onClick={this.handleUndo}>
                                                         <i className="btn__icon btn__icon_undo"></i>Undo
                                                     </button>
+
+                                                    {screen.hasFormula && assetStore.isEdited
+                                                        ? <button
+                                                            type="button"
+                                                            className="btn btn_type_second btn_size_small"
+                                                            onClick={this.onRecalc}>
+                                                                <i className="btn__icon btn__icon_refresh"></i>
+                                                                <span>Recalc</span>
+                                                          </button>
+                                                        : ''
+                                                    }
                                                 </div>
                                             </div>
                                         </div>

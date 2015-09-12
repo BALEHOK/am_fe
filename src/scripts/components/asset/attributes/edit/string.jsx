@@ -10,16 +10,11 @@ class StringAttribute extends React.Component {
     constructor() {
         super();
         this.valueChanged = this.valueChanged.bind(this);
-        this.handleRecalc = this.handleRecalc.bind(this);
     }
 
     valueChanged(event) {
         var value = event.target.value;
         this.props.onValueChanged(value);
-    }
-
-    handleRecalc() {
-        this.props.onValueChanged(this.props.params.value, true);
     }
 
     render() {
@@ -28,10 +23,8 @@ class StringAttribute extends React.Component {
 
         return <ControlWrapper
                         name={this.props.params.name}
-                        hasFormula={this.props.params.hasFormula}
                         className={classes}
-                        validationState={this.props.validation}
-                        onRecalc={this.handleRecalc}>
+                        validationState={this.props.validation}>
 
                     {isMultiline
                         ? <textarea

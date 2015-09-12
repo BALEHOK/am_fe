@@ -11,11 +11,20 @@ var ValidationMixin = {
                 value: params.value
             });
         }, 500);
+        this.clearValidation = _.debounce((params) => {
+            self.actions.clearAttributeValidation({
+                attributeId: params.id
+            });
+        }, 500);
 	},
 
 	validate: function (params) {
 		this.delayedValidation(params);
 	},
+
+  resetValidation: function (params) {
+    this.clearValidation(params);
+  },
 
 	getInitialState: function() {
         return {
@@ -34,7 +43,9 @@ var ValidationMixin = {
         var valResult = nextProps.validation;
         if (valResult) {
             let isError = !_.isUndefined(valResult.isValid) && !valResult.isValid;
-            this.setValidationResult(!isError, valResult.message);
+            valResult.clearState
+                ? this.resetValidationResult()
+                : this.setValidationResult(!isError, valResult.message);
         }
     },
 
@@ -57,6 +68,19 @@ var ValidationMixin = {
                 groupClasses: groupClasses,
                 feedbackClasses: feedbackClasses,
                 message: message,
+            }
+        });
+    },
+
+    resetValidationResult() {
+        this.setState({
+            validation : {
+                hasFeedback: false,
+                validationState: undefined,
+                isValid: undefined,
+                groupClasses: 'form-group',
+                feedbackClasses: 'glyphicon form-control-feedback',
+                message: undefined,
             }
         });
     }
