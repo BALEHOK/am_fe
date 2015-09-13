@@ -25,12 +25,6 @@ var AssetView = React.createClass({
 
     watchStores: ['asset', 'report'],
 
-    getInitialState: function() {
-        return {
-            selectedScreen: undefined
-        };
-    },
-
     componentWillMount: function() {
         var params = _.extend({}, this.props.params, this.props.query);
         this.waitFor(this.props.actions.loadAsset(params));
@@ -40,7 +34,6 @@ var AssetView = React.createClass({
     componentWillReceiveProps: function(nextProps) {
         if (!_.isEqual(this.props.params, nextProps.params) ||
             !_.isEqual(this.props.query, nextProps.query)) {
-            this.setState({selectedScreen: undefined});
             var params = _.extend({}, nextProps.params, nextProps.query);
             this.waitFor(this.props.actions.loadAsset(params));
         }
@@ -56,26 +49,8 @@ var AssetView = React.createClass({
             this.props.actions.restoreAsset(this.props.params));
     },
 
-    storeDidChange: function (storeName) {
-        if (storeName != 'asset') return;
-
-        var asset = this.state.stores.asset.asset;
-        var defaultScreen = _
-            .chain(asset.screens)
-            .findWhere({isDefault: true})
-            .value();
-
-        if (!this.state.selectedScreen) {
-            this.setState({
-                selectedScreen: defaultScreen
-            });
-        }
-    },
-
-    onScreenChange: function(screen) {
-        this.setState({
-            selectedScreen: screen
-        });
+    onScreenChange: function(screenIndex) {
+        this.props.actions.changeScreen(screenIndex);
     },
 
     render: function() {
@@ -108,7 +83,7 @@ var AssetView = React.createClass({
         });
 
         var ViewComponent = ViewsFactory.getViewComponent(
-            asset.screens, this.state.selectedScreen);
+            asset.screens, assetStore.currentScreen);
 
         return (
             <div className="asset-page">
@@ -124,7 +99,7 @@ var AssetView = React.createClass({
                         <div className="grid__item two-twelfths">
                             <LayoutSwitcher
                                 screens={asset.screens}
-                                selectedScreen={this.state.selectedScreen}
+                                selectedScreen={assetStore.currentScreen}
                                 onChange={this.onScreenChange} />
                             <TaxonomyPath taxonomyPath={taxonomyPath} />
                             <nav className="nav-block">
@@ -168,7 +143,7 @@ var AssetView = React.createClass({
                                               onAssetRestore={this.onAssetRestore} />
                             </Sticky>
                             <ViewComponent
-                                screen={this.state.selectedScreen || {panels: []}}
+                                screen={assetStore.currentScreen}
                                 actions={this.props.actions}
                                 dispatcher={this.props.dispatcher}
                                 assetTypeId={asset.assetTypeId} />

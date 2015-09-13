@@ -8,11 +8,10 @@ var ReactSelectize = require('../common/react-selectize');
 var LayoutSwitcher = React.createClass({
 
     onScreenChange: function(val) {
-        var screen = this.props.screens.filter((el) =>
-            { return el.id === val[0].id });
-        if (screen) {
-            this.props.onChange(screen[0]);
-        }
+        var screenIndex = _.chain(this.props.screens)
+          .findIndex({id: val[0].id})
+          .value();
+        this.props.onChange(screenIndex);
     },
 
     render: function() {
@@ -24,7 +23,7 @@ var LayoutSwitcher = React.createClass({
           screens
             .filter(el => el.id === this.props.selectedScreen.id)
             .forEach(el => value = el.id);
-      return _.size(screens) > 1
+        return _.size(screens) > 1
             ? <nav className="nav-block">
                   <ReactSelectize
                       items={screens}
@@ -34,7 +33,8 @@ var LayoutSwitcher = React.createClass({
                       placeholder="Screen:"
                       label=" "
                       className="select_width_full"
-                      clearable={false}/>
+                      clearable={false}
+                      searchable={false} />
               </nav>
             : false
     }

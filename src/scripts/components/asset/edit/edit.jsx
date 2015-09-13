@@ -31,24 +31,6 @@ var Edit = React.createClass({
         this.waitFor(this.props.actions.loadAsset(params));
     },
 
-    getInitialState: function() {
-        return {
-            isValid: true,
-            selectedScreen: undefined
-        }
-    },
-
-    storeDidChange: function (storeName) {
-        if (storeName != 'asset') return;
-        var store = this.state.stores.asset;
-
-        var newState = {
-            isValid: store.isValid
-        };
-
-        this.setState(newState);
-    },
-
     handleUndo: function () {
         var params = this.context.router.getCurrentParams();
         var query = this.context.router.getCurrentQuery();
@@ -61,10 +43,8 @@ var Edit = React.createClass({
         }
     },
 
-    onScreenChange: function(screen) {
-        this.setState({
-            selectedScreen: screen
-        });
+    onScreenChange: function(screenIndex) {
+        this.props.actions.changeScreen(screenIndex);
     },
 
     handleSave: function() {
@@ -97,15 +77,14 @@ var Edit = React.createClass({
         var asset = assetStore.asset;
         var taxonomyPath = assetStore.taxonomyPath;
         var validationData = assetStore.validation;
-        var screen = asset.screens[assetStore.selectedScreen] || {panels: [], hasFormula:false};
-        var panels = screen.panels.map((el, key) => {
+        var panels = assetStore.currentScreen.panels.map((el, key) => {
             return <Panel key={key}
                           data={el}
                           dispatcher={this.props.dispatcher}
                           title={el.name}
                           actions={actions}
                           validation={validationData}
-                          selectedScreen={screen} />
+                          selectedScreen={assetStore.currentScreen} />
         });
 
         var dateTransform = new ValueTransformer(function (date) {
@@ -142,7 +121,7 @@ var Edit = React.createClass({
                     <div className="grid__item two-twelfths">
                         <LayoutSwitcher
                             screens={asset.screens}
-                            selectedScreen={screen}
+                            selectedScreen={assetStore.currentScreen}
                             onChange={this.onScreenChange} />
                         <TaxonomyPath taxonomyPath={taxonomyPath} />
                     </div>
@@ -154,10 +133,10 @@ var Edit = React.createClass({
                                         <div className="asset-controls-panel">
                                             <div className="inputs-line inputs-line_width_full" ref="slider">
                                                 <ValidationResult validation={validationData}
-                                                                  selectedScreen={screen} />
+                                                                  selectedScreen={assetStore.currentScreen} />
                                                 <div>
                                                     <button
-                                                        disabled={!this.state.isValid || this.state.loading}
+                                                        disabled={!assetStore.isValid || this.state.loading}
                                                         onClick={this.handleSave}
                                                         className="btn btn_size_small">Save
                                                     </button>
@@ -172,7 +151,7 @@ var Edit = React.createClass({
                                                         <i className="btn__icon btn__icon_undo"></i>Undo
                                                     </button>
 
-                                                    {screen.hasFormula && assetStore.isEdited
+                                                    {assetStore.currentScreen.hasFormula && assetStore.isEdited
                                                         ? <button
                                                             type="button"
                                                             className="btn btn_type_second btn_size_small"

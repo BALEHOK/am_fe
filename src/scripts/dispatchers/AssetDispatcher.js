@@ -107,6 +107,10 @@ var AssetDispatcher = Flux.createDispatcher({
     return this.dispatch('asset:recalc');
   },
 
+  changeScreen(screenIndex) {
+    return this.dispatch('asset:change-screen', screenIndex);
+  },
+
   getStores() {
     return {
       asset: new AssetStore(),

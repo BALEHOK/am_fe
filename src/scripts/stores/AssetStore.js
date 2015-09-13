@@ -16,7 +16,7 @@ var AssetStore = Flux.createStore({
 
   asset: _.extend({}, defaultAsset),
 
-  selectedScreen: 0,
+  screenIndex: 0,
 
   assetStack: [],
 
@@ -51,6 +51,7 @@ var AssetStore = Flux.createStore({
     'asset:set-validation': 'setValidation',
     'asset:recalc': 'recalc',
     'asset:clear-attribute-validation': 'clearAttributeValidation',
+    'asset:change-screen': 'changeScreen',
   },
 
   initialize() {
@@ -66,6 +67,11 @@ var AssetStore = Flux.createStore({
             value: params.value
         });
     }, 500);
+  },
+
+  changeScreen(screenIndex) {
+    this.screenIndex = screenIndex;
+    this.emitChange();
   },
 
   recalc() {
@@ -109,7 +115,7 @@ var AssetStore = Flux.createStore({
       this.asset = data;
       this.validation = [];
       this.isValid = undefined;
-      this.selectedScreen = _.chain(data.screens)
+      this.screenIndex = _.chain(data.screens)
           .findIndex({isDefault: true})
           .value();
       this.emitChange();
@@ -119,7 +125,7 @@ var AssetStore = Flux.createStore({
   pushAsset() {
     this.assetStack.push({
       asset: this.asset,
-      selectedScreen: this.selectedScreen,
+      screenIndex: this.screenIndex,
       relatedAssets: this.relatedAssets,
       taxonomyPath: this.taxonomyPath,
       validation: this.validation
@@ -130,7 +136,7 @@ var AssetStore = Flux.createStore({
   popAsset() {
     let restore = this.assetStack.pop();
     if(restore) {
-      this.selectedScreen = restore.selectedScreen;
+      this.screenIndex = restore.screenIndex;
       this.asset = restore.asset;
       this.relatedAssets = restore.relatedAssets;
       this.taxonomyPath = restore.taxonomyPath;
@@ -222,7 +228,7 @@ var AssetStore = Flux.createStore({
 
   saveAsset() {
     var self = this;
-    var screenId = this.asset.screens[this.selectedScreen].id;
+    var screenId = this.asset.screens[this.screenIndex].id;
     var request = this.assetRepo.saveAsset(this.asset, screenId);
     request
       .then((result) => {
@@ -250,7 +256,7 @@ var AssetStore = Flux.createStore({
     var self = this;
     self.calculating = true;
     self.emitChange();
-    var screenId = this.asset.screens[this.selectedScreen].id;
+    var screenId = this.asset.screens[this.screenIndex].id;
     var request = this.assetRepo.calculateAsset(this.asset, screenId, forceRecalc);
     request
       .then((result) => {
@@ -299,9 +305,11 @@ var AssetStore = Flux.createStore({
       validation: this.validation,
       isValid: this.getValidationState(),
       isEdited: this.isEdited,
-      selectedScreen: this.selectedScreen,
       barcodeBase64: this.barcodeBase64,
       calculating: this.calculating,
+      currentScreen: () => {
+        return this.asset.screens[this.screenIndex] || {panels: [], hasFormula:false}
+      }(),
     };
   }
 });
