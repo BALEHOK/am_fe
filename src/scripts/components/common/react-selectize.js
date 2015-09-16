@@ -27,7 +27,8 @@ export default class Select extends React.Component {
   onFocus() {
     if(!this.initialLoad) {
       this.initialLoad = true;
-      this.props.onItemsRequest("");
+      if (this.props.onItemsRequest)
+        this.props.onItemsRequest("");
     }
   }
 

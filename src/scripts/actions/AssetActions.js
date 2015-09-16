@@ -119,6 +119,10 @@ class AssetActions extends Actions {
   recalculate() {
     return this._dispatcher.recalculate();
   }
+
+  changeScreen(screenIndex) {
+    return this._dispatcher.changeScreen(screenIndex);
+  }
 }
 
 module.exports = AssetActions;
