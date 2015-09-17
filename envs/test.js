@@ -1,4 +1,4 @@
 module.exports = {
- APIURL: JSON.stringify('http://10.170.0.128:8080'),
+  APIURL: JSON.stringify('http://apitest.facilitymanager.fmis.software'),
  AUTHURL: JSON.stringify('http://auth.facilitymanager.fmis.software/core'),
 };

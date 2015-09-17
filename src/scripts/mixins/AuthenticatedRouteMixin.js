@@ -1,4 +1,3 @@
-var AuthService = require('../services/AuthService.js');
 var LoginStore = require('../stores/LoginStore.js');
 
 var AuthenticatedRouteMixin = {

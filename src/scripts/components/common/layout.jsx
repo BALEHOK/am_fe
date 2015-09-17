@@ -8,8 +8,8 @@ var HeaderNav = require('./headerNav');
 var Breadcrumbs = require('react-breadcrumbs');
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
-var AuthService = require('../../services/AuthService');
 var LoginStore = require('../../stores/LoginStore').store;
+var LoginActions = require('../../actions/LoginActions');
 
 var Layout = React.createClass({
 
@@ -20,7 +20,7 @@ var Layout = React.createClass({
     displayName: 'Home',
 
     handleLogout: function(){
-        AuthService.logout();
+        LoginActions.logoutUser();
     },
 
     render: function() {

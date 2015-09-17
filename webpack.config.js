@@ -12,11 +12,12 @@ module.exports = {
         reasons: false
     },
     entry: {
-        main: ['./webpack_entries/app.js']
+        main: ['./webpack_entries/app.js'],
+        authCallback: ['./webpack_entries/authCallback.js']
     },
     output: {
         path: path.join(__dirname, '/dist/assets/js'),
-        filename: 'bundle-main.js'
+        filename: 'bundle-[name].js'
     },
     plugins: [
         new webpack.DefinePlugin(constants)

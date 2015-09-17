@@ -13,7 +13,7 @@ export default function fetch(url, options = {}) {
         },
         mode: 'cors'
     };
-    if (LoginStore.access_token && url != '/token') {
+    if (LoginStore.access_token) {
         defOptions.headers['Authorization'] = 'Bearer ' + LoginStore.access_token;
     }
     return generate(APIURL + url, _.extend(defOptions, options));
