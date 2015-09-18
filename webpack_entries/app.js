@@ -1,4 +1,5 @@
 /// libraries
+require('es6-promise');
 var _ = require('script!underscore');
 var React = require('react');
 

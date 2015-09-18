@@ -1,6 +1,4 @@
-﻿import ES6Promise from 'es6-promise';
-
-// globals
+﻿// globals
 var _promiseFactory;
 var _httpRequest;
 var KJUR;
