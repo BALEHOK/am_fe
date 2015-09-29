@@ -96,7 +96,7 @@ var AssetView = React.createClass({
                 <RevisionInfo asset={asset} dateTransform={dateTransform} />
                 <Loader loading={this.state.loading}>
                     <div className="grid">
-                        <div className="grid__item two-twelfths">
+                        <div className="grid__item two-twelfths asset-page__aside">
                             <LayoutSwitcher
                                 screens={asset.screens}
                                 selectedScreen={assetStore.currentScreen}
@@ -133,7 +133,7 @@ var AssetView = React.createClass({
                             </nav>
                             */}
                         </div>
-                        <div className="grid__item ten-twelfths">
+                        <div className="grid__item ten-twelfths asset-page__content">
                             <Sticky>
                                 <AssetToolbar isHistory={asset.isHistory}
                                               isDeleted={asset.isDeleted}
