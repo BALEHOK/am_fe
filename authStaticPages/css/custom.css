@@ -4,6 +4,10 @@ body {
     background: radial-gradient(circle, #fff 11%, #e3edf3 100%);
 }
 
+.hide {
+    display: none;
+}
+
 .navbar {
     background: #093351;
     min-height: 40px;
@@ -43,7 +47,16 @@ body {
     box-shadow: none;
 }
 
-.panel-heading {
+.panel  > .panel-heading {
+    background: none;
+    border: none;
+}
+
+.panel .list-group-item {
+    background: none;
+}
+
+.page-login .panel-heading {
     display: none;
 }
 
@@ -170,6 +183,13 @@ input[type="password"]:focus {
     opacity: 0.5;
     background-color: #4aaff6;
     cursor: default;
+}
+
+
+.page-consent .col-sm-10,
+.page-consent .col-sm-8 {
+    float: none;
+    margin: 0 auto;
 }
 
 
