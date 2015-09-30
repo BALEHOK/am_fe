@@ -4,7 +4,12 @@ var AuthenticatedRouteMixin = {
     statics: {
         willTransitionTo: function (transition, params, query) {
             if (!LoginStore.store.isLoggedIn()) {
-               transition.redirect('/login', {}, {'nextPath' : transition.path});
+              localStorage['nextPath'] = transition.path;
+              transition.redirect('/login', {});
+            } else if (localStorage['nextPath']) {
+              let nextPath = localStorage['nextPath'];
+              localStorage['nextPath'] = '';
+              transition.redirect(nextPath, {});
             }
         }
     }
