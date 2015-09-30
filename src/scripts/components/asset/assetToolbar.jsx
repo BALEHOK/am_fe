@@ -57,6 +57,10 @@ var AssetToolbar = React.createClass({
             <div className="asset-controls-panel-wrapper">
                 <div className="asset-controls-panel">
                     <div className="inputs-line inputs-line_width_full">
+                        <button className="btn btn_type_second btn_size_small"
+                                onClick={window.print}>
+                            <i className="btn__icon btn__icon_print"></i>Print
+                        </button>
                         {this.isCurrentButtonVisible()
                             ?   <button className="btn btn_type_second btn_size_small"
                                                 onClick={this.handleTransition.bind(this, 'asset-view')}>
