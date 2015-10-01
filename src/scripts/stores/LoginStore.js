@@ -1,5 +1,6 @@
-import { Flux }  from 'delorean'
-import AuthService from '../services/AuthService'
+import { Flux }  from 'delorean';
+import AuthService from '../services/AuthService';
+import moment from 'moment';
 
 var LoginStore = Flux.createStore({
     user: null,
@@ -15,7 +16,7 @@ var LoginStore = Flux.createStore({
 
         this.user = {
             userName: profile.userName,
-            lastLogin: profile.lastLogin,
+            lastLogin:  moment(profile.lastLogin),
             email: profile.email
         };
 

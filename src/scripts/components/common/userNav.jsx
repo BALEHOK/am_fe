@@ -2,7 +2,7 @@
  * @jsx React.DOM
  */
 
-var React = require('react');
+import React from 'react';
 
 var UserNav = React.createClass({
     render: function() {
@@ -16,10 +16,10 @@ var UserNav = React.createClass({
                     <a className="user-nav__actions-item user-nav__actions-item_icon_settings" href="/admin" title="Dashboard"></a>
                     <a className="user-nav__actions-item user-nav__actions-item_icon_logout" onClick={this.props.onLogout} title="Logout"></a>
                 </span>
-                <span className="user-nav__login-date">Last login: {this.props.user.lastLogin}</span>
+                <span className="user-nav__login-date">Last login: {this.props.user.lastLogin.format('dddd, DD MMMM YYYY HH:mm:ss')}</span>
             </div>
         );
     }
 });
 
-module.exports = UserNav;
+export default UserNav;
