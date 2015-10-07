@@ -135,18 +135,18 @@ var AssetView = React.createClass({
                         </div>
                         <div className="grid__item ten-twelfths asset-page__content">
                             <Sticky>
-                                <AssetToolbar isHistory={asset.isHistory}
+                                <AssetToolbar actions={this.props.actions}
+                                              isHistory={asset.isHistory}
                                               isDeleted={asset.isDeleted}
                                               canEdit={asset.editable}
                                               canDelete={asset.deletable}
                                               onAssetDelete={this.onAssetDelete}
                                               onAssetRestore={this.onAssetRestore} />
                             </Sticky>
-                            <ViewComponent
-                                screen={assetStore.currentScreen}
-                                actions={this.props.actions}
-                                dispatcher={this.props.dispatcher}
-                                assetTypeId={asset.assetTypeId} />
+                            <ViewComponent screen={assetStore.currentScreen}
+                                           actions={this.props.actions}
+                                           dispatcher={this.props.dispatcher}
+                                           assetTypeId={asset.assetTypeId} />
                         </div>
                     </div>
                 </Loader>

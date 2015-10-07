@@ -123,6 +123,10 @@ class AssetActions extends Actions {
   changeScreen(screenIndex) {
     return this._dispatcher.changeScreen(screenIndex);
   }
+
+  saveTopElemPos(dataParamId) {
+    return this._dispatcher.saveTopElemPos(dataParamId);
+  }
 }
 
 module.exports = AssetActions;

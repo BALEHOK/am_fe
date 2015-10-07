@@ -34,6 +34,8 @@ var AssetStore = Flux.createStore({
 
   isEdited: false,
 
+  topElemDataParamId: null,
+
   actions: {
     'asset:load': 'loadAsset',
     'asset:load-related': 'loadRelatedAssets',
@@ -52,6 +54,7 @@ var AssetStore = Flux.createStore({
     'asset:recalc': 'recalc',
     'asset:clear-attribute-validation': 'clearAttributeValidation',
     'asset:change-screen': 'changeScreen',
+    'asset:save-position': 'saveTopElemPos',
   },
 
   initialize() {
@@ -283,6 +286,11 @@ var AssetStore = Flux.createStore({
       });
   },
 
+  saveTopElemPos(dataParamId) {
+    this.topElemDataParamId = parseInt(dataParamId);
+    this.emitChange();
+  },
+
   _setValidationResult(validationResult) {
     _.chain(validationResult.modelState)
       .keys()
@@ -307,6 +315,7 @@ var AssetStore = Flux.createStore({
       isEdited: this.isEdited,
       barcodeBase64: this.barcodeBase64,
       calculating: this.calculating,
+      topElemDataParamId: this.topElemDataParamId,
       currentScreen: () => {
         return this.asset.screens[this.screenIndex] || {panels: [], hasFormula:false}
       }(),

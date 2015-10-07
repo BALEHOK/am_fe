@@ -111,6 +111,10 @@ var AssetDispatcher = Flux.createDispatcher({
     return this.dispatch('asset:change-screen', screenIndex);
   },
 
+  saveTopElemPos(dataParamId) {
+    return this.dispatch('asset:save-position', dataParamId);
+  },
+
   getStores() {
     return {
       asset: new AssetStore(),
