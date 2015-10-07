@@ -23,6 +23,7 @@ var PasswordEdit = React.createClass({
     render: function() {
         return (
             <ControlWrapper
+                id={this.props.params.id}
                 name={this.props.params.name}
                 className="input-txt input-txt_size_small"
                 validationState={this.state.validation}>

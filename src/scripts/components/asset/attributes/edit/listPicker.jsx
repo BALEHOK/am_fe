@@ -43,6 +43,7 @@ var ListPicker = React.createClass({
         var classes = cx('select', 'select_size_small');
         return (
            <SelectWrapper
+                id={this.props.params.id}
                 name={this.props.params.name}
                 className={classes}
                 validationState={this.state.validation}>

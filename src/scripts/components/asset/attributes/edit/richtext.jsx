@@ -28,6 +28,7 @@ var RichtextEdit = React.createClass({
         var value = this.props.params.value || ' ';
         return (
             <ControlWrapper
+                id={this.props.params.id}
                 name={this.props.params.name}
                 className="rich-editor"
                 validationState={this.state.validation}>

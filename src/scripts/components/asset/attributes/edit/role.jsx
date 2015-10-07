@@ -43,6 +43,7 @@ var EditableAttribute = React.createClass({
             : 0;
         return (
             <SelectWrapper
+                id={this.props.params.id}
                 name={this.props.params.name}
                 className={classes}
                 validationState={this.state.validation}>

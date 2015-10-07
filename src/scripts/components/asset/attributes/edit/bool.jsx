@@ -14,8 +14,8 @@ var BooleanAttribute = React.createClass({
         this.setupValidation(this.props.actions);
     },
 
-	getInitialState: function() { 
-		return { isChecked: this.props.params.value ? true : false }; 
+	getInitialState: function() {
+		return { isChecked: this.props.params.value ? true : false };
 	},
 
     valueChanged: function(event) {
@@ -26,8 +26,9 @@ var BooleanAttribute = React.createClass({
 
     render: function() {
         return (
-            <ControlWrapper 
-                name={this.props.params.name} 
+            <ControlWrapper
+                id={this.props.params.id}
+                name={this.props.params.name}
                 className="input-txt input-txt_size_small"
                 validationState={this.state.validation}>
 

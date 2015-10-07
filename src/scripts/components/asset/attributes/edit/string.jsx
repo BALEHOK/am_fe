@@ -22,6 +22,7 @@ class StringAttribute extends React.Component {
         var classes = cx('input-txt', 'input-txt_' + (isMultiline ? 'textarea' : 'text'));
 
         return <ControlWrapper
+                        id={this.props.params.id}
                         name={this.props.params.name}
                         className={classes}
                         validationState={this.props.validation}>

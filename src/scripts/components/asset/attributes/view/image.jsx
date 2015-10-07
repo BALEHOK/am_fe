@@ -11,6 +11,7 @@ var Attribute = React.createClass({
         router: React.PropTypes.func
     },
     render: function() {
+        var params = this.props.params;
         var urlParams = this.context.router.getCurrentParams();
         var file = this.props.params.value;
         if(file.length > 14) {
@@ -33,8 +34,8 @@ var Attribute = React.createClass({
         };
 
         return (
-            <div className="asset-data__param">
-                <span className="asset-data__param-title">{this.props.params.name}:</span>
+            <div className="asset-data__param" data-param-id={params.id}>
+                <span className="asset-data__param-title">{params.name}:</span>
                 <div className="image-wrapper">
                     <div className="image-wrapper__subwrapper">
                         {component()}

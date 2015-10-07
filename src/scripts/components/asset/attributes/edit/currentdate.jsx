@@ -25,7 +25,7 @@ var Attribute = React.createClass({
 
     render: function() {
         return (
-            <div className="asset-data__param">
+            <div className="asset-data__param" data-param-id={this.props.params.id}>
                 <span className="asset-data__param-title">{this.props.params.name}:</span>
                 {this.state.currentdate.format('DD-MM-YYYY HH:mm:ss')}
             </div>

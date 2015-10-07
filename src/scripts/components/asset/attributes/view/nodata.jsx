@@ -9,9 +9,10 @@ var Attribute = React.createClass({
         var message = _.has(this.props.params, 'message')
             ? this.props.params.message
             : 'No data';
+        var params = this.props.params;
         return (
-            <div className="asset-data__param">
-                <span className="asset-data__param-title">{this.props.params.name}:</span>
+            <div className="asset-data__param" data-param-id={params.id}>
+                <span className="asset-data__param-title">{params.name}:</span>
                 <span className="no-data">{message}</span>
             </div>
         );

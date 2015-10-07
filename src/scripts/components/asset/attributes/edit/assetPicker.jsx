@@ -61,6 +61,7 @@ var AssetPicker = React.createClass({
         }
         return (
             <SelectWrapper
+                id={this.props.params.id}
                 name={this.props.params.name}
                 className={classes}
                 validationState={this.state.validation}>

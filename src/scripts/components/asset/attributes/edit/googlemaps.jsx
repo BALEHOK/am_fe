@@ -23,15 +23,15 @@ var GoogleMapsAttributeWrapper = React.createClass({
     render: function() {
         if(this.google) {
 
-            var points = this.props.params.value 
+            var points = this.props.params.value
                 ? this.props.params.value.split(';')
                 : [];
-          
+
             return (
-                <div className="asset-data__param">
+                <div className="asset-data__param" data-param-id={this.props.params.id}>
                     <span className="asset-data__param-title">{this.props.params.name}:</span>
-                    <GoogleMapsComponent 
-                        googleMapsApi={this.google.maps} 
+                    <GoogleMapsComponent
+                        googleMapsApi={this.google.maps}
                         points={points}
                         viewOnly={this.props.viewOnly}
                         onChange={this.handleMapChange} />
