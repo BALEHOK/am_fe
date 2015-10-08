@@ -197,3 +197,17 @@ input[type="password"]:focus {
     padding: 15px 0 0 0;
 }
 
+.page-recover-password .col-md-6.col-sm-6 {
+    float: none;
+    margin: auto;
+    padding: 0;
+}
+
+.page-recover-password .form-group:last-child {
+    text-align: center;
+}
+
+.page-recover-password .form-group .btn {
+    min-width: 140px;
+}
+
