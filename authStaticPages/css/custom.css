@@ -192,4 +192,8 @@ input[type="password"]:focus {
     margin: 0 auto;
 }
 
+.consent-remember {
+    border-top: 1px solid #ccc;
+    padding: 15px 0 0 0;
+}
 
