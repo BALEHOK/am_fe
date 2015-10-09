@@ -37,11 +37,13 @@ function generate(url, options) {
             return request[key].apply(request, args)
               .catch((err) => {
                 if(err.response && err.response.status === 401) {
+                  LoginActions.authorize();
+                  /*
                   if (LoginStore.isLoggedIn()) {
                       return LoginActions.logoutUser({
                           nextPath: RouterContainer.get().getCurrentPath()
                       });
-                  }
+                  }*/
                 } else {
                   throw err;
                 }
