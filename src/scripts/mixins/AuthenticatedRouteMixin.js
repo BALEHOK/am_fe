@@ -5,10 +5,9 @@ var AuthenticatedRouteMixin = {
         willTransitionTo: function (transition, params, query) {
             if (!LoginStore.store.isLoggedIn()) {
               localStorage['nextPath'] = transition.path;
-              // transition.redirect('/login', {});
             } else if (localStorage['nextPath']) {
               if (transition.path != '/'){
-                // something interesting is happening. don't interrupt it
+                // something interesting is happening. don't interrupt
                 localStorage['nextPath'] = '';
                 return;
               }

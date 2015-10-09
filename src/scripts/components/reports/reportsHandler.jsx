@@ -1,22 +1,23 @@
 import React from 'react/addons'
 import reactMixin from 'react-mixin'
-import AuthenticatedMixin from '../../mixins/AuthenticatedRouteMixin'
+import AuthenticatedRouteMixin from '../../mixins/AuthenticatedRouteMixin'
 import ReportsList from './reportsList'
 import ReportActions from '../../actions/ReportActions'
 import ReportDispatcher from '../../dispatchers/ReportDispatcher'
 
-@reactMixin.decorate(AuthenticatedMixin)
-export default class ReportsHandler extends React.Component {
+var ReportsHandler = React.createClass({
+    mixins: [AuthenticatedRouteMixin],
 
-    constructor(){
-        super();
+    componentWillMount: function() {
         this.dispatcher = ReportDispatcher;
         this.actions = new ReportActions(this.dispatcher);
-    }
+    },
 
-    render() {
+    render: function() {
         return (
-                <ReportsList actions={this.actions} dispatcher={this.dispatcher} />
-            );
+            <ReportsList actions={this.actions} dispatcher={this.dispatcher} />
+        );
     }
-}
+});
+
+export default ReportsHandler;
