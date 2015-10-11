@@ -6,8 +6,8 @@ var React = require('react');
 var Router = require('react-router');
 var AuthenticatedRouteMixin = require('../../mixins/AuthenticatedRouteMixin');
 var Tabs = require('react-simpletabs');
-var SearchSimpleForm = require('./searchSimpleForm');
-var SearchComplexForm = require('./searchComplexForm.jsx');
+var SearchSimpleForm = require('./simpleForm/searchSimpleForm');
+var SearchComplexForm = require('./complexForm/searchComplexForm.jsx');
 
 var SearchDispatcher = require('../../dispatchers/SearchDispatcher');
 var SearchMainActions = require('../../actions/SearchMainActions');
@@ -38,8 +38,7 @@ var SearchPage = React.createClass({
                         <SearchSimpleForm changeFilter={this.actions.changeSearchFilter.bind(this.actions)} dispatcher={this.dispatcher} />
                     </Tabs.Panel>
                     <Tabs.Panel eventKey={2} title="By type">
-                        New version of Type Search is under development.
-                        Please use the <a href="/Search/SearchByType.aspx">old version</a>.
+                        <SearchComplexForm />
                     </Tabs.Panel>
                 </Tabs>
             </div>
