@@ -2,6 +2,9 @@ import React from 'react'
 import ReactSelectize from '../../common/react-selectize'
 import Tabs from 'react-simpletabs'
 
+import SearchComplexFormDispatcher from '../../../dispatchers/SearchComplexFormDispatcher';
+import SearchComplexFormActions from '../../../actions/SearchComplexFormActions';
+
 var SearchSelectValues = {
     getSelectList: function () {
         return [
@@ -25,7 +28,6 @@ var assetState = {
 };
 
 export default class SearchComplexForm extends React.Component {
-    
 
     state = {
         searchModel: {
@@ -37,8 +39,8 @@ export default class SearchComplexForm extends React.Component {
 
     constructor(){
         super();
-        // this.dispatcher = ReportDispatcher;
-        // this.actions = new ReportActions(this.dispatcher);
+        this.dispatcher = SearchComplexFormDispatcher;
+        this.actions = new SearchComplexFormActions(this.dispatcher);
     }
 
     getInitialState() {
