@@ -1,56 +1,41 @@
-import React from 'react'
-import ReactSelectize from '../../common/react-selectize'
-import Tabs from 'react-simpletabs'
-
-import SearchComplexFormDispatcher from '../../../dispatchers/SearchComplexFormDispatcher';
-import SearchComplexFormActions from '../../../actions/SearchComplexFormActions';
-
-var SearchSelectValues = {
-    getSelectList: function () {
-        return [
-            { name: 'Manager', id: 1},
-            { name: 'Name', id: 2},
-            { name: 'District', id: 3},
-            { name: 'Department', id: 4},
-            { name: 'Update User', id: 5},
-            { name: 'Update Date', id: 6},
-            { name: 'Password', id: 7},
-            { name: 'Email', id: 8},
-            { name: 'User', id: 9},
-            { name: 'Permissions', id: 10}
-        ];
-    }
-};
+import React from 'react';
+import reactMixin from 'react-mixin';
+import {Flux} from 'delorean';
+import ReactSelectize from '../../common/react-selectize';
+import Tabs from 'react-simpletabs';
 
 var assetState = {
     active: "active",
     history: "history"
 };
 
+@reactMixin.decorate(Flux.mixins.storeListener)
 export default class SearchComplexForm extends React.Component {
+
+    watchStores = ['searchComplexForm']
+
+    _isMounted = false
+
+    isMounted(){
+        return this._isMounted;
+    }
+
+    componentDidMount(){
+        this._isMounted = true;
+    }
 
     state = {
         searchModel: {
-            typeId: 1,
+            typeId: 0,
             assetState: assetState.active
         },
-        assetTypes: SearchSelectValues.getSelectList()
-    };
-
-    constructor(){
-        super();
-        this.dispatcher = SearchComplexFormDispatcher;
-        this.actions = new SearchComplexFormActions(this.dispatcher);
+        assetTypes: []
     }
 
-    getInitialState() {
-        return {
-            searchModel: {
-                typeId: 1,
-                assetState: assetState.active
-            },
-            assetTypes: SearchSelectValues.getSelectList()
-        }
+    constructor(props){
+        super(props);
+
+        this.props.actions.loadAssetTypes()
     }
 
     handleAssetTypeChanged = (value) => {
@@ -93,7 +78,7 @@ export default class SearchComplexForm extends React.Component {
                                 Asset type
                             </span>
                             <ReactSelectize
-                                items={this.state.assetTypes}
+                                items={this.state.stores.searchComplexForm.assetTypes}
                                 value={this.state.searchModel.typeId}
                                 onChange={this.handleAssetTypeChanged}
                                 selectId="asset-type"

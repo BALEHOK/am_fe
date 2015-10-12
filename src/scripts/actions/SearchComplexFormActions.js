@@ -1,7 +1,7 @@
 import Actions from './Actions';
 
 export default class SearchComplexFormActions extends Actions {
-  fetchAssetTypes() {
+  loadAssetTypes() {
     this._dispatcher.loadAssetTypes();
   }
 }
