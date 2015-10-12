@@ -5,11 +5,20 @@ var AuthenticatedRouteMixin = {
         willTransitionTo: function (transition, params, query) {
             if (!LoginStore.store.isLoggedIn()) {
               localStorage['nextPath'] = transition.path;
-              transition.redirect('/login', {});
             } else if (localStorage['nextPath']) {
+              if (transition.path != '/'){
+                // something interesting is happening. don't interrupt
+                localStorage['nextPath'] = '';
+                return;
+              }
+
               let nextPath = localStorage['nextPath'];
               localStorage['nextPath'] = '';
-              transition.redirect(nextPath, {});
+              if (nextPath != '/')
+              {
+                // do not redirect to root from root :-/
+                transition.redirect(nextPath, {});
+              }
             }
         }
     }

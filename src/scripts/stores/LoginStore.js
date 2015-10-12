@@ -7,11 +7,23 @@ var LoginStore = Flux.createStore({
     access_token: null,
 
     actions: {
+        'login:authorize': 'authorize',
         'login:loginUser': 'loginUser',
         'login:logoutUser': 'logoutUser'
     },
 
+    authorize(){
+        this.user = null;
+        this.access_token = null;
+        AuthService.authorize();
+    },
+
     loginUser() {
+        if (!AuthService.isLoggedIn()){
+            this.authorize();
+            return;
+        }
+
         let profile = AuthService.profile;
 
         this.user = {
@@ -28,7 +40,7 @@ var LoginStore = Flux.createStore({
     logoutUser() {
         this.user = null;
         this.access_token = null;
-        this.emitChange();
+        AuthService.logout();
     },
 
     isLoggedIn() {
