@@ -37,11 +37,7 @@ function generate(url, options) {
             return request[key].apply(request, args)
               .catch((err) => {
                 if(err.response && err.response.status === 401) {
-                  if (LoginStore.isLoggedIn()) {
-                      return LoginActions.logoutUser({
-                          nextPath: RouterContainer.get().getCurrentPath()
-                      });
-                  }
+                  LoginActions.authorize();
                 } else {
                   throw err;
                 }

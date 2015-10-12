@@ -1,14 +1,17 @@
 import Actions from './Actions'
 import RouterContainer from '../services/RouterContainer'
 import LoginDispatcher from '../dispatchers/LoginDispatcher'
-import AuthService from '../services/AuthService'
 
 export default {
+  authorize() {
+    LoginDispatcher.authorize();
+  },
+
   loginUser() {
     LoginDispatcher.loginUser();
   },
 
-  logoutUser(params) {
-    AuthService.logout();
+  logoutUser() {
+    LoginDispatcher.logoutUser();
   }
 }
