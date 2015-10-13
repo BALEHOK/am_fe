@@ -6,14 +6,14 @@ var React = require('react');
 var Router = require('react-router');
 var AuthenticatedRouteMixin = require('../../mixins/AuthenticatedRouteMixin');
 var Tabs = require('react-simpletabs');
-var SearchSimpleForm = require('./simpleForm/searchSimpleForm');
-var SearchComplexForm = require('./complexForm/searchComplexForm.jsx');
+var SearchSimpleForm = require('./simple/searchSimpleForm');
+var SearchByTypeForm = require('./byType/searchByTypeForm.jsx');
 
 var SearchDispatcher = require('../../dispatchers/SearchDispatcher');
 var SearchMainActions = require('../../actions/SearchMainActions');
 
-import SearchComplexFormDispatcher from '../../dispatchers/SearchComplexFormDispatcher';
-import SearchComplexFormActions from '../../actions/SearchComplexFormActions';
+import SearchByTypeDispatcher from '../../dispatchers/SearchByTypeDispatcher';
+import SearchByTypeActions from '../../actions/SearchByTypeActions';
 
 var SearchPage = React.createClass({
     mixins: [AuthenticatedRouteMixin],
@@ -28,8 +28,8 @@ var SearchPage = React.createClass({
         this.dispatcher = SearchDispatcher;
         this.actions = new SearchMainActions(this.dispatcher);
 
-        this.complexDispatcher = SearchComplexFormDispatcher;
-        this.complexActions = new SearchComplexFormActions(this.complexDispatcher);
+        this.byTypeDispatcher = SearchByTypeDispatcher;
+        this.byTypeActions = new SearchByTypeActions(this.byTypeDispatcher);
     },
 
     render: function() {
@@ -41,7 +41,7 @@ var SearchPage = React.createClass({
                         <SearchSimpleForm changeFilter={this.actions.changeSearchFilter.bind(this.actions)} dispatcher={this.dispatcher} />
                     </Tabs.Panel>
                     <Tabs.Panel eventKey={2} title="By type">
-                        <SearchComplexForm actions={this.complexActions} dispatcher={this.complexDispatcher} />
+                        <SearchByTypeForm actions={this.byTypeActions} dispatcher={this.byTypeDispatcher} />
                     </Tabs.Panel>
                 </Tabs>
             </div>

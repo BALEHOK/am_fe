@@ -7,7 +7,7 @@ export default Flux.createStore({
   assetTypes: [],
 
   actions: {
-    'searchComplexForm:assetTypes': 'loadAssetTypes'
+    'searchByType:assetTypes': 'loadAssetTypes'
   },
 
   initialize() {

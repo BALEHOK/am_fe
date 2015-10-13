@@ -10,9 +10,9 @@ var assetTypeContext = {
 };
 
 @reactMixin.decorate(Flux.mixins.storeListener)
-export default class SearchComplexForm extends React.Component {
+export default class SearchByTypeForm extends React.Component {
 
-    watchStores = ['searchComplexForm']
+    watchStores = ['searchByType']
 
     _isMounted = false
 
@@ -82,7 +82,7 @@ export default class SearchComplexForm extends React.Component {
                                 Asset type
                             </span>
                             <ReactSelectize
-                                items={this.state.stores.searchComplexForm.assetTypes}
+                                items={this.state.stores.searchByType.assetTypes}
                                 value={this.state.searchModel.typeId}
                                 onChange={this.handleAssetTypeChanged}
                                 selectId="asset-type"
@@ -97,14 +97,16 @@ export default class SearchComplexForm extends React.Component {
                             </span>
                             <span className="radio-group">
                                 <label className="radio-btn">
-                                    <input type="radio" className="radio-btn__input" name="assetTypeState" value={assetTypeContext.active}
+                                    <input type="radio" className="radio-btn__input" name="assetTypeState"
+                                        value={assetTypeContext.active}
                                         checked={this.state.searchModel.assetTypeContext == assetTypeContext.active}
                                         onChange={this.onAssetTypeContextChanged} />
                                     <span className="radio-btn__icon"></span>
                                     Active assets
                                 </label>
                                 <label className="radio-btn">
-                                    <input type="radio" className="radio-btn__input" name="assetTypeState" value={assetTypeContext.history}
+                                    <input type="radio" className="radio-btn__input" name="assetTypeState"
+                                        value={assetTypeContext.history}
                                         checked={this.state.searchModel.assetTypeContext == assetTypeContext.history}
                                         onChange={this.onAssetTypeContextChanged} />
                                     <span className="radio-btn__icon"></span>
