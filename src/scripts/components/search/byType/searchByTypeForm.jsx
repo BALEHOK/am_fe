@@ -1,8 +1,11 @@
+/**
+ * @jsx React.DOM
+ */
+
 import React from 'react';
 import reactMixin from 'react-mixin';
 import {Flux} from 'delorean';
 import ReactSelectize from '../../common/react-selectize';
-import Tabs from 'react-simpletabs';
 
 var assetTypeContext = {
     active: 1,
@@ -57,7 +60,8 @@ export default class SearchByTypeForm extends React.Component {
         });
     }
 
-    doSearch() {
+    doSearch(e) {
+        e.preventDefault && e.preventDefault();
         this.props.actions.doSearch(this.state.searchModel);
     }
 
