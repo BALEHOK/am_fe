@@ -123,6 +123,7 @@ export default class SearchByTypeForm extends React.Component {
 
                 <div className="table-search">
                     <footer className="table-search__footer">
+                        <span className="table-search__add-row">Add a new row</span>
                         <div className="table-search__footer-actions clearfix">
                             <button className="btn pull-right"
                                 disabled={!this.state.searchModel.typeId}
