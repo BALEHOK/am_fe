@@ -7,6 +7,6 @@ export default class SearchByTypeActions extends Actions {
 
   doSearch(searchModel) {
     var appRouter = require('../appRouter');
-    appRouter.transitionTo(`/search/result?query=&assetType=${searchModel.typeId}&context=${searchModel.assetTypeContext}`);
+    appRouter.transitionTo(`/search/result?assetType=${searchModel.typeId}&context=${searchModel.assetTypeContext}`);
   }
 }
