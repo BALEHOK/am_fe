@@ -1,0 +1,93 @@
+.accordion
+  display block
+  backface-visibility hidden
+  font-family $Regular
+  font-size 16px
+  line-height 1.5
+  border 1px solid #f4f2f2
+  border-top none
+  padding 0 0 1px 0
+  border-radius $br
+
+  &__title
+    display block
+    font-weight 200
+    font-size 30px
+    line-height 1
+    padding 30px 30px 22px 30px
+    background #ffffff
+    border-radius $br $br 0 0
+
+  &__item
+    position relative
+    perspective 500
+    transition all 500ms $cubic-bezier
+    border-top 1px solid #f4f2f2
+
+    &-title
+      position relative
+      display block
+      font-size 20px
+      line-height 28px
+      font-weight 700
+      color $colorGreen
+      cursor pointer
+      background #fff
+      user-select none
+      padding 15px 60px 11px 30px
+      transition all 500ms $cubic-bezier
+
+      &::after
+        content '\f107'
+        display inline-block
+        font-family $FontAwesome
+        font-style normal
+        font-weight normal
+        line-height 1
+        font-size 1.4em
+        vertical-align top
+        width 12px
+        height 20px
+        position absolute
+        right 25px
+        top 50%
+        margin -12px 0 0 0
+        transform rotate(0)
+        transition all 700ms $cubic-bezier
+
+    &-content
+      display none
+      background #fff
+      opacity 0
+      padding 0 60px 15px 30px
+      transform rotateX(-90deg)
+      transform-origin 50% 0
+      transition all 500ms $cubic-bezier
+
+    &_inited
+      .accordion__item-content
+        display block
+
+    &:first-child
+      border-radius $br $br 0 0
+
+    &:last-child
+      .accordion__item-title
+        border-radius 0 0 $br $br
+
+    &_state_expanded
+      .accordion__item-title
+        color $colorGray
+        &::after
+          transform: rotate(-180deg)
+      .accordion__item-content
+        display block
+        opacity 1
+        transform rotateX(0)
+      &:last-child
+        .accordion__item-title
+          border-radius 0
+        .accordion__item-content
+          border-radius 0 0 $br $br
+
+
