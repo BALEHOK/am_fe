@@ -32,9 +32,6 @@ var SearchPage = React.createClass({
         this.complexActions = new SearchComplexFormActions(this.complexDispatcher);
     },
 
-    handleSimpleSearch: function(query) {
-        this.context.router.transitionTo('/search/result', {}, {'query' : query});
-    },
     render: function() {
         return (
             <div>

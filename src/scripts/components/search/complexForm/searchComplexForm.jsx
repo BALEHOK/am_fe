@@ -4,9 +4,9 @@ import {Flux} from 'delorean';
 import ReactSelectize from '../../common/react-selectize';
 import Tabs from 'react-simpletabs';
 
-var assetState = {
-    active: "active",
-    history: "history"
+var assetTypeContext = {
+    active: 1,
+    history: 2
 };
 
 @reactMixin.decorate(Flux.mixins.storeListener)
@@ -27,7 +27,7 @@ export default class SearchComplexForm extends React.Component {
     state = {
         searchModel: {
             typeId: 0,
-            assetState: assetState.active
+            assetTypeContext: assetTypeContext.active
         },
         assetTypes: []
     }
@@ -51,10 +51,14 @@ export default class SearchComplexForm extends React.Component {
         });
     }
 
-    onAssetStateChanged = (e) => {
+    onAssetTypeContextChanged = (e) => {
         this.setSearchModel({
-            assetState: e.currentTarget.name
+            assetTypeContext: e.currentTarget.value
         });
+    }
+
+    doSearch() {
+        this.props.actions.doSearch(this.state.searchModel);
     }
 
     setSearchModel(o){
@@ -93,16 +97,16 @@ export default class SearchComplexForm extends React.Component {
                             </span>
                             <span className="radio-group">
                                 <label className="radio-btn">
-                                    <input type="radio" className="radio-btn__input" name={assetState.active}
-                                        checked={this.state.searchModel.assetState === assetState.active}
-                                        onChange={this.onAssetStateChanged} />
+                                    <input type="radio" className="radio-btn__input" name="assetTypeState" value={assetTypeContext.active}
+                                        checked={this.state.searchModel.assetTypeContext == assetTypeContext.active}
+                                        onChange={this.onAssetTypeContextChanged} />
                                     <span className="radio-btn__icon"></span>
                                     Active assets
                                 </label>
                                 <label className="radio-btn">
-                                    <input type="radio" className="radio-btn__input" name={assetState.history}
-                                        checked={this.state.searchModel.assetState === assetState.history}
-                                        onChange={this.onAssetStateChanged} />
+                                    <input type="radio" className="radio-btn__input" name="assetTypeState" value={assetTypeContext.history}
+                                        checked={this.state.searchModel.assetTypeContext == assetTypeContext.history}
+                                        onChange={this.onAssetTypeContextChanged} />
                                     <span className="radio-btn__icon"></span>
                                     History
                                 </label>
@@ -114,7 +118,11 @@ export default class SearchComplexForm extends React.Component {
                 <div className="table-search">
                     <footer className="table-search__footer">
                         <div className="table-search__footer-actions clearfix">
-                            <button className="btn pull-right"><i className="btn__icon btn__icon_search"></i>Start search</button>
+                            <button className="btn pull-right"
+                                disabled={!this.state.searchModel.typeId}
+                                onClick={this.doSearch.bind(this)}>
+                                <i className="btn__icon btn__icon_search"></i>Start search
+                            </button>
                         </div>
                     </footer>
                 </div>
