@@ -3,8 +3,10 @@
  */
 
 import React from 'react';
+import DeloreanComponent from '../../common/DeloreanComponent';
 import reactMixin from 'react-mixin';
 import {Flux} from 'delorean';
+import Loader from'../../common/loader.jsx';
 import ReactSelectize from '../../common/react-selectize';
 
 var assetTypeContext = {
@@ -13,19 +15,9 @@ var assetTypeContext = {
 };
 
 @reactMixin.decorate(Flux.mixins.storeListener)
-export default class SearchByTypeForm extends React.Component {
+export default class SearchByTypeForm extends DeloreanComponent {
 
     watchStores = ['searchByType']
-
-    _isMounted = false
-
-    isMounted(){
-        return this._isMounted;
-    }
-
-    componentDidMount(){
-        this._isMounted = true;
-    }
 
     state = {
         searchModel: {
@@ -38,7 +30,7 @@ export default class SearchByTypeForm extends React.Component {
     constructor(props){
         super(props);
 
-        this.props.actions.loadAssetTypes()
+        this.props.actions.loadAssetTypes();
     }
 
     handleAssetTypeChanged = (value) => {

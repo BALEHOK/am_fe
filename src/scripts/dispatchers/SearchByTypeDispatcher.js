@@ -4,7 +4,7 @@ import SearchByTypeStore from '../stores/SearchByTypeStore';
 export default Flux.createDispatcher ({
   
   loadAssetTypes() {
-      return this.dispatch('searchByType:assetTypes');
+    return this.dispatch('searchByType:assetTypes');
   },
 
   getStores() {
