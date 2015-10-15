@@ -8,6 +8,7 @@ import reactMixin from 'react-mixin';
 import {Flux} from 'delorean';
 import Loader from'../../common/loader.jsx';
 import ReactSelectize from '../../common/react-selectize';
+import AttributeRow from './attributeRow';
 
 var assetTypeContext = {
     active: 1,
@@ -22,7 +23,8 @@ export default class SearchByTypeForm extends DeloreanComponent {
     state = {
         searchModel: {
             typeId: 0,
-            assetTypeContext: assetTypeContext.active
+            assetTypeContext: assetTypeContext.active,
+            attributes: []
         },
         assetTypes: []
     }
@@ -41,15 +43,32 @@ export default class SearchByTypeForm extends DeloreanComponent {
             return;
         }
 
+        var typeId = value[0].id;
         this.setSearchModel({
-            typeId: value[0].id
+            typeId: typeId
         });
+
+        this.props.actions.loadAssetAttributes(typeId);
     }
 
     onAssetTypeContextChanged = (e) => {
         this.setSearchModel({
             assetTypeContext: e.currentTarget.value
         });
+    }
+
+    addRow() {
+        if (!this.state.searchModel.typeId){
+            return;
+        }
+
+        this.state.searchModel.attributes.push({
+            id: 0,
+            operator: null,
+            value: null
+        });
+
+        this.setState();
     }
 
     doSearch(e) {
@@ -68,7 +87,28 @@ export default class SearchByTypeForm extends DeloreanComponent {
         });
     }
 
+    componentWillUpdate(){
+        console.log(this.state);
+    }
+
+    componentDidUpdate(){
+        console.log(this.state);
+    }
+
     render() {
+        var attributeRows = [];
+        var selectedType = this.state.searchModel.typeId;
+        var selectedAttributes = this.state.searchModel.attributes;
+        if (!!selectedType && selectedAttributes.length)
+        {
+            var allAttribs = this.state.stores.searchByType.assetAttributes[selectedType];
+            for (var i = 0; i < selectedAttributes.length; i++) {
+                attributeRows.push(
+                    <AttributeRow attributes={allAttribs}
+                        selected={selectedAttributes[i]} />);
+            };
+        }
+
         return (
             <form className="form advanced-search">
                 <header className="advanced-search__header">
@@ -112,10 +152,10 @@ export default class SearchByTypeForm extends DeloreanComponent {
                         </span>
                     </div>
                 </header>
-
+                {attributeRows}
                 <div className="table-search">
                     <footer className="table-search__footer">
-                        <span className="table-search__add-row">Add a new row</span>
+                        <span className="table-search__add-row" onClick={this.addRow.bind(this)}>Add a new row</span>
                         <div className="table-search__footer-actions clearfix">
                             <button className="btn pull-right"
                                 disabled={!this.state.searchModel.typeId}
