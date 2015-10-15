@@ -3,7 +3,7 @@
  */
 
 var React = require('react');
-var ReactSelectize = require('../common/react-selectize');
+var ReactSelectize = require('../../common/react-selectize');
 
 var SearchSimpleForm = React.createClass({
     searchContext: [
