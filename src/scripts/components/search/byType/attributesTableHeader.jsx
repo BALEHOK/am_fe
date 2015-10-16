@@ -17,7 +17,7 @@ export default class AttributesTableHeader extends React.Component {
           Search value
         </div>
         <div className="table-search__row-item table-search__row-item_type_additional">
-          And / or
+          And / Or
         </div>
       </div>
     );

@@ -31,6 +31,10 @@ export default class AttributeRow extends React.Component {
     }
 
     onAttrChange = (values) => {
+        if (!values || !values.length){
+            return;
+        }
+
         var newAttr = this.createNewAttr({
             id: values[0].id
         });
@@ -39,6 +43,10 @@ export default class AttributeRow extends React.Component {
     }
 
     onOperChange = (values) => {
+        if (!values || !values.length){
+            return;
+        }
+
         var newAttr = this.createNewAttr({
             operator: values[0].id
         });
@@ -76,6 +84,7 @@ export default class AttributeRow extends React.Component {
                         selectId="selectAttr"
                         placeholder="Select asset"
                         label=" "
+                        clearable={false}
                     />
                 </div>
                 <div className="table-search__row-item table-search__row-item_type_oper">
@@ -86,6 +95,7 @@ export default class AttributeRow extends React.Component {
                         selectId="selectOperator"
                         placeholder="Select asset"
                         label=" "
+                        clearable={false}
                     />
                 </div>
                 <div className="table-search__row-item table-search__row-item_type_value">
