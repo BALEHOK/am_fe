@@ -42,6 +42,10 @@ export default class SearchByTypeForm extends DeloreanComponent {
         this.props.actions.loadAssetTypes();
     }
 
+    getOperators = (dataType) => {
+        return this.props.actions.loadDataTypeOperators(dataType);
+    }
+
     handleAssetTypeChanged = (value) => {
         if (!value || !value.length){
             this.setSearchModel({
@@ -182,6 +186,7 @@ export default class SearchByTypeForm extends DeloreanComponent {
             for (var i = 0; i < selectedAttributes.length; i++) {
                 attributeRows.push(
                     <AttributeRow attributes={allTypeAttribs}
+                        operators={this.getOperators}
                         selected={selectedAttributes[i]}
                         onChange={this.rowChanged}
                         onDelete={this.rowDeleted}

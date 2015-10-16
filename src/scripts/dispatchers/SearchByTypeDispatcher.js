@@ -10,6 +10,10 @@ export default Flux.createDispatcher ({
   loadAssetAttributes(typeId) {
     return this.dispatch('searchByType:assetAttributes', typeId);
   },
+  
+  loadDataTypeOperators(dataType) {
+    return this.dispatch('searchByType:dataTypeOperators', dataType);
+  },
 
   getStores() {
     return {

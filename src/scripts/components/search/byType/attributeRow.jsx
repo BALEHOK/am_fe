@@ -12,16 +12,27 @@ export default class AttributeRow extends React.Component {
         { name: 'Or', id: 2}
     ]
 
-    constructor(props){
-        super(props);
+    state = {
+        operators: []
     }
 
-    getTypeOperators(){
-        return [
-            { name: 'LIKE', id: 1},
-            { name: 'EQUAL', id: 2},
-            { name: 'OPTION', id: 3}
-        ];
+    constructor(props){
+        super(props);
+
+        this.willUpdateOperators(props);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.willUpdateOperators(nextProps);
+    }
+
+    willUpdateOperators(props) {
+        var attr = props.attributes.find(a => a.id === props.selected.id);
+        attr && props.operators(attr.dataType).then((ops) => {
+            this.setState({
+                operators: ops
+            });
+        });
     }
 
     onMoveUp = () => {
@@ -101,15 +112,15 @@ export default class AttributeRow extends React.Component {
                         value={this.props.selected.id}
                         onChange={this.onAttrChange}
                         selectId="selectAttr"
-                        placeholder="Select asset"
+                        placeholder="Select attribute"
                         label=" "
                         clearable={false}
                     />
                 </div>
                 <div className="table-search__row-item table-search__row-item_type_oper">
                     <ReactSelectize
-                        items={this.getTypeOperators()}
-                        value={this.props.selected.operator || 1}
+                        items={this.state.operators}
+                        value={this.props.selected.operator || 0}
                         onChange={this.onOperChange}
                         selectId="selectOperator"
                         placeholder="Select operator"

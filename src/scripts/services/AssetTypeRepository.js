@@ -10,4 +10,9 @@ export default class AssetRepository {
         var url = `/api/assettype/${typeId}`;
         return fetch(url).get();
     }
+
+    loadDataTypeOperators(dataType){
+      var url = `/api/datatype/${dataType}`;
+      return fetch(url).get();
+    }
 }
