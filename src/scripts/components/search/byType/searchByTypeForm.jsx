@@ -8,6 +8,7 @@ import reactMixin from 'react-mixin';
 import {Flux} from 'delorean';
 import Loader from'../../common/loader.jsx';
 import ReactSelectize from '../../common/react-selectize';
+import AttributesTableHeader from './attributesTableHeader';
 import AttributeRow from './attributeRow';
 
 var assetTypeContext = {
@@ -51,24 +52,32 @@ export default class SearchByTypeForm extends DeloreanComponent {
         this.props.actions.loadAssetAttributes(typeId);
     }
 
-    onAssetTypeContextChanged = (e) => {
+    onContextChanged = (e) => {
         this.setSearchModel({
             assetTypeContext: e.currentTarget.value
         });
     }
 
-    addRow() {
-        if (!this.state.searchModel.typeId){
+    addRow = () => {
+        var selectedType = this.state.searchModel.typeId;
+        var allAttribs = this.state.stores.searchByType.assetAttributes;
+        if (!selectedType || !allAttribs[selectedType]){
             return;
         }
 
         this.state.searchModel.attributes.push({
-            id: 0,
+            index: this.state.searchModel.attributes.length,
+            id: allAttribs[selectedType][0].id,
             operator: null,
             value: null
         });
 
-        this.setState();
+        this.forceUpdate();
+    }
+
+    rowChanged(attribute){
+        this.state.searchModel.attributes[attribute.index] = attribute;
+        this.forceUpdate();
     }
 
     doSearch(e) {
@@ -87,25 +96,18 @@ export default class SearchByTypeForm extends DeloreanComponent {
         });
     }
 
-    componentWillUpdate(){
-        console.log(this.state);
-    }
-
-    componentDidUpdate(){
-        console.log(this.state);
-    }
-
     render() {
         var attributeRows = [];
         var selectedType = this.state.searchModel.typeId;
         var selectedAttributes = this.state.searchModel.attributes;
         if (!!selectedType && selectedAttributes.length)
         {
-            var allAttribs = this.state.stores.searchByType.assetAttributes[selectedType];
+            var allTypeAttribs = this.state.stores.searchByType.assetAttributes[selectedType];
             for (var i = 0; i < selectedAttributes.length; i++) {
                 attributeRows.push(
-                    <AttributeRow attributes={allAttribs}
-                        selected={selectedAttributes[i]} />);
+                    <AttributeRow attributes={allTypeAttribs}
+                        selected={selectedAttributes[i]}
+                        onChange={this.rowChanged.bind(this)} />);
             };
         }
 
@@ -136,7 +138,7 @@ export default class SearchByTypeForm extends DeloreanComponent {
                                     <input type="radio" className="radio-btn__input" name="assetTypeState"
                                         value={assetTypeContext.active}
                                         checked={this.state.searchModel.assetTypeContext == assetTypeContext.active}
-                                        onChange={this.onAssetTypeContextChanged} />
+                                        onChange={this.onContextChanged} />
                                     <span className="radio-btn__icon"></span>
                                     Active assets
                                 </label>
@@ -144,7 +146,7 @@ export default class SearchByTypeForm extends DeloreanComponent {
                                     <input type="radio" className="radio-btn__input" name="assetTypeState"
                                         value={assetTypeContext.history}
                                         checked={this.state.searchModel.assetTypeContext == assetTypeContext.history}
-                                        onChange={this.onAssetTypeContextChanged} />
+                                        onChange={this.onContextChanged} />
                                     <span className="radio-btn__icon"></span>
                                     History
                                 </label>
@@ -152,10 +154,16 @@ export default class SearchByTypeForm extends DeloreanComponent {
                         </span>
                     </div>
                 </header>
-                {attributeRows}
+
                 <div className="table-search">
+                    <div className={!selectedAttributes.length?'hide':''}>
+                        <AttributesTableHeader />
+                        <div className="table-search__content">
+                            {attributeRows}
+                        </div>
+                    </div>
                     <footer className="table-search__footer">
-                        <span className="table-search__add-row" onClick={this.addRow.bind(this)}>Add a new row</span>
+                        <span className="table-search__add-row" onClick={this.addRow}>Add a new row</span>
                         <div className="table-search__footer-actions clearfix">
                             <button className="btn pull-right"
                                 disabled={!this.state.searchModel.typeId}

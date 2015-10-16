@@ -5,7 +5,7 @@ import AssetTypeRepository from '../services/AssetTypeRepository';
 
 export default Flux.createStore({
   assetTypes: [],
-  assetAttributes: [],
+  assetAttributes: {},
 
   actions: {
     'searchByType:assetTypes': 'loadAssetTypes',
