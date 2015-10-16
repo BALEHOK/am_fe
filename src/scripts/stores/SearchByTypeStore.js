@@ -10,7 +10,7 @@ export default Flux.createStore({
 
   actions: {
     'searchByType:assetTypes': 'loadAssetTypes',
-    'searchByType:assetAttributes': 'loadAssetAttributes'
+    'searchByType:assetAttributes': 'loadAssetAttributes',
     'searchByType:dataTypeOperators': 'loadDataTypeOperators'
   },
 

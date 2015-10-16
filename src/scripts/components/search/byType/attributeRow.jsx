@@ -4,6 +4,7 @@
 
 import React from 'react';
 import ReactSelectize from '../../common/react-selectize';
+import _ from 'underscore';
 
 export default class AttributeRow extends React.Component {
 
@@ -12,27 +13,14 @@ export default class AttributeRow extends React.Component {
         { name: 'Or', id: 2}
     ]
 
-    state = {
-        operators: []
-    }
+    txtValue = null
 
     constructor(props){
         super(props);
-
-        this.willUpdateOperators(props);
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.willUpdateOperators(nextProps);
-    }
-
-    willUpdateOperators(props) {
-        var attr = props.attributes.find(a => a.id === props.selected.id);
-        attr && props.operators(attr.dataType).then((ops) => {
-            this.setState({
-                operators: ops
-            });
-        });
+    componentDidMount(){
+        this.txtValue = this.refs.txtValue.getDOMNode();
     }
 
     onMoveUp = () => {
@@ -53,7 +41,9 @@ export default class AttributeRow extends React.Component {
         }
 
         var newAttr = this.createNewAttr({
-            id: values[0].id
+            id: values[0].id,
+            operators: [],
+            operator: null
         });
         
         this.props.onChange(newAttr);
@@ -66,6 +56,14 @@ export default class AttributeRow extends React.Component {
 
         var newAttr = this.createNewAttr({
             operator: values[0].id
+        });
+
+        this.props.onChange(newAttr);
+    }
+
+    onTextValueChange = (e) => {
+        var newAttr = this.createNewAttr({
+            value: this.txtValue.value
         });
 
         this.props.onChange(newAttr);
@@ -84,15 +82,7 @@ export default class AttributeRow extends React.Component {
     }
 
     createNewAttr = (diff) => {
-        var newAttr = {
-            index: this.props.selected.index,
-            id: this.props.selected.id,
-            operator: null,
-            value: null,
-            lo: this.props.selected.lo
-        };
-
-        return Object.assign(newAttr, diff);
+        return Object.assign({}, this.props.selected, diff);
     }
 
     render(){
@@ -119,7 +109,7 @@ export default class AttributeRow extends React.Component {
                 </div>
                 <div className="table-search__row-item table-search__row-item_type_oper">
                     <ReactSelectize
-                        items={this.state.operators}
+                        items={this.props.selected.operators}
                         value={this.props.selected.operator || 0}
                         onChange={this.onOperChange}
                         selectId="selectOperator"
@@ -131,7 +121,7 @@ export default class AttributeRow extends React.Component {
                 <div className="table-search__row-item table-search__row-item_type_value">
                     <label className="input-txt input-txt_width_full">
                         <input type="text" className="input-txt__field" placeholder="Type search value"
-                            name="txtValue"/>
+                            name="txtValue" ref="txtValue" onChange={_.debounce(this.onTextValueChange, 500)}/>
                     </label>
                 </div>
                 <div className="table-search__row-item table-search__row-item_type_additional">

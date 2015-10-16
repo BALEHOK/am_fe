@@ -42,14 +42,11 @@ export default class SearchByTypeForm extends DeloreanComponent {
         this.props.actions.loadAssetTypes();
     }
 
-    getOperators = (dataType) => {
-        return this.props.actions.loadDataTypeOperators(dataType);
-    }
-
     handleAssetTypeChanged = (value) => {
         if (!value || !value.length){
             this.setSearchModel({
-                typeId: 0
+                typeId: 0,
+                attributes: []
             });
             return;
         }
@@ -80,13 +77,20 @@ export default class SearchByTypeForm extends DeloreanComponent {
             this.state.searchModel.attributes[index - 1].lo = SearchByTypeForm.logicalOperators.and;
         }
 
-        this.state.searchModel.attributes.push({
+        var attributeData = allAttribs[selectedType][0];
+
+        var selectedAttribute = {
             index: index,
-            id: allAttribs[selectedType][0].id,
+            id: attributeData.id,
+            operators: [],
             operator: null,
             value: null,
             lo: SearchByTypeForm.logicalOperators.none
-        });
+        };
+
+        this.setOperators(selectedAttribute, attributeData);
+
+        this.state.searchModel.attributes.push(selectedAttribute);
 
         this.forceUpdate();
     }
@@ -94,7 +98,33 @@ export default class SearchByTypeForm extends DeloreanComponent {
     rowChanged = (attribute) => {
         this.state.searchModel.attributes[attribute.index] = attribute;
 
+        if (!attribute.operators.length){
+            var attributeData = this.state.stores.searchByType.assetAttributes[this.state.searchModel.typeId].find(a => a.id === attribute.id);
+            this.setOperators(attribute, attributeData);
+        }
+
         this.forceUpdate();
+    }
+
+    setOperators(selectedAttribute, attributeData) {
+        var dataTypeOperators = this.state.stores.searchByType.dataTypeOperators;
+        if (!loadFromStore())
+        {
+            this.props.actions.loadDataTypeOperators(attributeData.dataType).then(() => {
+                loadFromStore();
+                this.forceUpdate();
+            });
+        }
+
+        function loadFromStore() {
+            var ops = dataTypeOperators[attributeData.dataType];
+            if (ops && ops.length){
+                selectedAttribute.operators = ops;
+                selectedAttribute.operator = ops[0].id;
+                return true;
+            }
+            return false;
+        }
     }
 
     rowDeleted = (index) => {
@@ -186,7 +216,6 @@ export default class SearchByTypeForm extends DeloreanComponent {
             for (var i = 0; i < selectedAttributes.length; i++) {
                 attributeRows.push(
                     <AttributeRow attributes={allTypeAttribs}
-                        operators={this.getOperators}
                         selected={selectedAttributes[i]}
                         onChange={this.rowChanged}
                         onDelete={this.rowDeleted}
