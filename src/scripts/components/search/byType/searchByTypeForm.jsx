@@ -75,9 +75,57 @@ export default class SearchByTypeForm extends DeloreanComponent {
         this.forceUpdate();
     }
 
-    rowChanged(attribute){
+    rowChanged = (attribute) => {
         this.state.searchModel.attributes[attribute.index] = attribute;
+
         this.forceUpdate();
+    }
+
+    rowDeleted = (index) => {
+        this.state.searchModel.attributes.splice(index, 1);
+
+        this.updateRowIndexes(index);
+
+        this.forceUpdate();
+    }
+
+    rowMoveUp = (index) => {
+        if (index === 0){
+            return;
+        }
+
+        var attribs = this.state.searchModel.attributes;
+        var prev = index - 1;
+        var a = attribs[prev];
+        attribs[prev] = attribs[index];
+        attribs[index] = a;
+
+        this.updateRowIndexes(prev);
+
+        this.forceUpdate();
+    }
+
+    rowMoveDown = (index) => {
+        var attribs = this.state.searchModel.attributes;
+
+        if (index === attribs.length - 1){
+            return;
+        }
+
+        var a = attribs[index + 1];
+        attribs[index + 1] = attribs[index];
+        attribs[index] = a;
+
+        this.updateRowIndexes(index);
+
+        this.forceUpdate();
+    }
+
+    updateRowIndexes(startFrom){
+        var attribs = this.state.searchModel.attributes;
+        for (var i = startFrom; i != attribs.length; i++){
+            attribs[i].index = i;
+        }
     }
 
     doSearch(e) {
@@ -85,14 +133,9 @@ export default class SearchByTypeForm extends DeloreanComponent {
         this.props.actions.doSearch(this.state.searchModel);
     }
 
-    setSearchModel(o){
-        var searchModel = this.state.searchModel;
-        for (var prop in o){
-            searchModel[prop] = o[prop];
-        }
-
+    setSearchModel(diff){
         this.setState({
-            searchModel: searchModel
+            searchModel: Object.assign(this.state.searchModel, diff)
         });
     }
 
@@ -107,7 +150,10 @@ export default class SearchByTypeForm extends DeloreanComponent {
                 attributeRows.push(
                     <AttributeRow attributes={allTypeAttribs}
                         selected={selectedAttributes[i]}
-                        onChange={this.rowChanged.bind(this)} />);
+                        onChange={this.rowChanged}
+                        onDelete={this.rowDeleted}
+                        onMoveUp={this.rowMoveUp}
+                        onMoveDown={this.rowMoveDown} />);
             };
         }
 

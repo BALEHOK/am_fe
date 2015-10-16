@@ -18,6 +18,18 @@ export default class AttributeRow extends React.Component {
         ];
     }
 
+    onMoveUp = () => {
+        this.props.onMoveUp(this.props.selected.index);
+    }
+
+    onMoveDown = () => {
+        this.props.onMoveDown(this.props.selected.index);
+    }
+
+    onDelete = () => {
+        this.props.onDelete(this.props.selected.index);
+    }
+
     onAttrChange = (values) => {
         var newAttr = this.createNewAttr({
             id: values[0].id
@@ -49,9 +61,12 @@ export default class AttributeRow extends React.Component {
         return (
             <div className="table-search__row">
                 <div className="table-search__row-item table-search__row-item_type_actions">
-                    <span className="table-search__row-action table-search__row-action_delete" title="Delete"></span>
-                    <span className="table-search__row-action table-search__row-action_up" title="Mover up"></span>
-                    <span className="table-search__row-action table-search__row-action_down" title="Move down"></span>
+                    <span className="table-search__row-action table-search__row-action_delete" title="Delete"
+                        onClick={this.onDelete}></span>
+                    <span className="table-search__row-action table-search__row-action_up" title="Mover up"
+                        onClick={this.onMoveUp}></span>
+                    <span className="table-search__row-action table-search__row-action_down" title="Move down"
+                        onClick={this.onMoveDown}></span>
                 </div>
                 <div className="table-search__row-item table-search__row-item_type_attr">
                     <ReactSelectize
