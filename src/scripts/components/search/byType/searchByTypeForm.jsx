@@ -19,6 +19,12 @@ var assetTypeContext = {
 @reactMixin.decorate(Flux.mixins.storeListener)
 export default class SearchByTypeForm extends DeloreanComponent {
 
+    static logicalOperators = {
+        none: 0,
+        and: 1,
+        or: 2
+    }
+
     watchStores = ['searchByType']
 
     state = {
@@ -65,11 +71,17 @@ export default class SearchByTypeForm extends DeloreanComponent {
             return;
         }
 
+        var index = this.state.searchModel.attributes.length;
+        if (index != 0){
+            this.state.searchModel.attributes[index - 1].lo = SearchByTypeForm.logicalOperators.and;
+        }
+
         this.state.searchModel.attributes.push({
-            index: this.state.searchModel.attributes.length,
+            index: index,
             id: allAttribs[selectedType][0].id,
             operator: null,
-            value: null
+            value: null,
+            lo: SearchByTypeForm.logicalOperators.none
         });
 
         this.forceUpdate();
@@ -84,7 +96,15 @@ export default class SearchByTypeForm extends DeloreanComponent {
     rowDeleted = (index) => {
         this.state.searchModel.attributes.splice(index, 1);
 
-        this.updateRowIndexes(index);
+        if (this.state.searchModel.attributes.length !== 0){
+
+            this.updateRowIndexes(index);
+
+            // fix logical operator
+            if (index === this.state.searchModel.attributes.length){
+                this.state.searchModel.attributes[index - 1].lo = SearchByTypeForm.logicalOperators.none;
+            }
+        }
 
         this.forceUpdate();
     }
@@ -95,12 +115,18 @@ export default class SearchByTypeForm extends DeloreanComponent {
         }
 
         var attribs = this.state.searchModel.attributes;
-        var prev = index - 1;
-        var a = attribs[prev];
-        attribs[prev] = attribs[index];
-        attribs[index] = a;
+        var prevIndex = index - 1;
+        var prev = attribs[prevIndex];
+        attribs[prevIndex] = attribs[index];
+        attribs[index] = prev;
 
-        this.updateRowIndexes(prev);
+        this.updateRowIndexes(prevIndex);
+
+        // fix logical operator
+        if (index === this.state.searchModel.attributes.length - 1){
+            attribs[prevIndex].lo = SearchByTypeForm.logicalOperators.and;
+            attribs[index].lo = SearchByTypeForm.logicalOperators.none;
+        }
 
         this.forceUpdate();
     }
@@ -112,11 +138,18 @@ export default class SearchByTypeForm extends DeloreanComponent {
             return;
         }
 
-        var a = attribs[index + 1];
-        attribs[index + 1] = attribs[index];
-        attribs[index] = a;
+        var nextIndex = index + 1;
+        var next = attribs[nextIndex];
+        attribs[nextIndex] = attribs[index];
+        attribs[index] = next;
 
         this.updateRowIndexes(index);
+
+        // fix logical operator
+        if (index === attribs.length - 2){
+            attribs[index].lo = SearchByTypeForm.logicalOperators.and;
+            attribs[nextIndex].lo = SearchByTypeForm.logicalOperators.none;
+        }
 
         this.forceUpdate();
     }

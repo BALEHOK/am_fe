@@ -6,11 +6,17 @@ import React from 'react';
 import ReactSelectize from '../../common/react-selectize';
 
 export default class AttributeRow extends React.Component {
+
+    logicalOperators = [
+        { name: 'And', id: 1},
+        { name: 'Or', id: 2}
+    ]
+
     constructor(props){
         super(props);
     }
 
-    getOperators(){
+    getTypeOperators(){
         return [
             { name: 'LIKE', id: 1},
             { name: 'EQUAL', id: 2},
@@ -54,12 +60,25 @@ export default class AttributeRow extends React.Component {
         this.props.onChange(newAttr);
     }
 
+    onLoChange = (values) => {
+        if (!values || !values.length){
+            return;
+        }
+
+        var newAttr = this.createNewAttr({
+            lo: values[0].id
+        });
+
+        this.props.onChange(newAttr);
+    }
+
     createNewAttr = (diff) => {
         var newAttr = {
             index: this.props.selected.index,
             id: this.props.selected.id,
             operator: null,
-            value: null
+            value: null,
+            lo: this.props.selected.lo
         };
 
         return Object.assign(newAttr, diff);
@@ -89,11 +108,11 @@ export default class AttributeRow extends React.Component {
                 </div>
                 <div className="table-search__row-item table-search__row-item_type_oper">
                     <ReactSelectize
-                        items={this.getOperators()}
+                        items={this.getTypeOperators()}
                         value={this.props.selected.operator || 1}
                         onChange={this.onOperChange}
                         selectId="selectOperator"
-                        placeholder="Select asset"
+                        placeholder="Select operator"
                         label=" "
                         clearable={false}
                     />
@@ -105,7 +124,19 @@ export default class AttributeRow extends React.Component {
                     </label>
                 </div>
                 <div className="table-search__row-item table-search__row-item_type_additional">
-
+                    <div className={'connector-container ' + (!this.props.selected.lo ? 'hide' : '')}>
+                        <div className="connector">
+                           <ReactSelectize
+                                items={this.logicalOperators}
+                                value={this.props.selected.lo || 1}
+                                onChange={this.onLoChange}
+                                selectId="logicalOperator"
+                                placeholder="Select operator"
+                                label=" "
+                                clearable={false}
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
         );
