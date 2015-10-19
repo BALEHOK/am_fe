@@ -5,7 +5,7 @@
 import React from 'react';
 import _ from 'underscore';
 
-export default class AttributeRow extends React.Component {
+export default class ValueSelectorText extends React.Component {
     txtValue = null
 
     componentDidMount(){

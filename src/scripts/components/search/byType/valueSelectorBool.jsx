@@ -5,7 +5,7 @@
 import React from 'react';
 import ReactSelectize from '../../common/react-selectize';
 
-export default class AttributeRow extends React.Component {
+export default class ValueSelectorBool extends React.Component {
     items = [
         { name: 'True', id: 1, value: true},
         { name: 'False', id: 2, value: false}

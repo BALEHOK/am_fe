@@ -3,9 +3,7 @@
  */
 
 import React from 'react';
-import DeloreanComponent from '../../common/DeloreanComponent';
-import reactMixin from 'react-mixin';
-import {Flux} from 'delorean';
+import StoreWatchComponent from '../../common/StoreWatchComponent';
 import Loader from'../../common/loader.jsx';
 import ReactSelectize from '../../common/react-selectize';
 import AttributesTableHeader from './attributesTableHeader';
@@ -16,8 +14,7 @@ var assetTypeContext = {
     history: 2
 };
 
-@reactMixin.decorate(Flux.mixins.storeListener)
-export default class SearchByTypeForm extends DeloreanComponent {
+export default class SearchByTypeForm extends StoreWatchComponent {
 
     static logicalOperators = {
         none: 0,

@@ -12,7 +12,12 @@ export default class AssetRepository {
     }
 
     loadDataTypeOperators(dataType){
-      var url = `/api/datatype/${dataType}`;
+      var url = `/api/datatype/${dataType}/operators`;
+      return fetch(url).get();
+    }
+
+    loadDynamicValueList(listId){
+      var url = `/api/datatype/listitems/${listId}`;
       return fetch(url).get();
     }
 }

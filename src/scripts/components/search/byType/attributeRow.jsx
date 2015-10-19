@@ -5,6 +5,7 @@
 import React from 'react';
 import ReactSelectize from '../../common/react-selectize';
 import ValueSelectorBool from './valueSelectorBool';
+import ValueSelectorDynList from './valueSelectorDynList';
 import ValueSelectorText from './valueSelectorText';
 
 export default class AttributeRow extends React.Component {
@@ -86,6 +87,12 @@ export default class AttributeRow extends React.Component {
             case 'bool':
                 valueSelector = <ValueSelectorBool value={this.props.selected.value}
                     onValueChange={this.onValueChange} />;
+                break;
+            case 'dynlist':
+            case 'dynlists':
+                valueSelector = <ValueSelectorDynList value={this.props.selected.value}
+                    onValueChange={this.onValueChange}
+                    listId={this.props.selected.referenceAttrib.dynListId} />;
                 break;
             default:
                 valueSelector = <ValueSelectorText value={this.props.selected.value}

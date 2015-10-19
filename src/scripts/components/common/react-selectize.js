@@ -62,7 +62,7 @@ export default class Select extends React.Component {
   }
 
   queryChanged(ev) {
-    this.props.onItemsRequest(ev.target.value);
+    this.props.onItemsRequest && this.props.onItemsRequest(ev.target.value);
   }
 
   render() {
