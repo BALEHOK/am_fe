@@ -4,7 +4,8 @@
 
 import React from 'react';
 import ReactSelectize from '../../common/react-selectize';
-import _ from 'underscore';
+import ValueSelectorBool from './valueSelectorBool';
+import ValueSelectorText from './valueSelectorText';
 
 export default class AttributeRow extends React.Component {
 
@@ -13,14 +14,8 @@ export default class AttributeRow extends React.Component {
         { name: 'Or', id: 2}
     ]
 
-    txtValue = null
-
     constructor(props){
         super(props);
-    }
-
-    componentDidMount(){
-        this.txtValue = this.refs.txtValue.getDOMNode();
     }
 
     onMoveUp = () => {
@@ -41,7 +36,7 @@ export default class AttributeRow extends React.Component {
         }
 
         var newAttr = this.createNewAttr({
-            id: values[0].id,
+            referenceAttrib: values[0],
             operators: [],
             operator: null
         });
@@ -61,9 +56,9 @@ export default class AttributeRow extends React.Component {
         this.props.onChange(newAttr);
     }
 
-    onTextValueChange = (e) => {
+    onValueChange = (value) => {
         var newAttr = this.createNewAttr({
-            value: this.txtValue.value
+            value: value
         });
 
         this.props.onChange(newAttr);
@@ -86,6 +81,17 @@ export default class AttributeRow extends React.Component {
     }
 
     render(){
+        var valueSelector;
+        switch(this.props.selected.referenceAttrib.dataType){
+            case 'bool':
+                valueSelector = <ValueSelectorBool value={this.props.selected.value}
+                    onValueChange={this.onValueChange} />;
+                break;
+            default:
+                valueSelector = <ValueSelectorText value={this.props.selected.value}
+                    onValueChange={this.onValueChange} />;
+        }      
+
         return (
             <div className="table-search__row">
                 <div className="table-search__row-item table-search__row-item_type_actions">
@@ -99,7 +105,7 @@ export default class AttributeRow extends React.Component {
                 <div className="table-search__row-item table-search__row-item_type_attr">
                     <ReactSelectize
                         items={this.props.attributes}
-                        value={this.props.selected.id}
+                        value={this.props.selected.referenceAttrib.id}
                         onChange={this.onAttrChange}
                         selectId="selectAttr"
                         placeholder="Select attribute"
@@ -119,10 +125,7 @@ export default class AttributeRow extends React.Component {
                     />
                 </div>
                 <div className="table-search__row-item table-search__row-item_type_value">
-                    <label className="input-txt input-txt_width_full">
-                        <input type="text" className="input-txt__field" placeholder="Type search value"
-                            name="txtValue" ref="txtValue" onChange={_.debounce(this.onTextValueChange, 500)}/>
-                    </label>
+                    {valueSelector}
                 </div>
                 <div className="table-search__row-item table-search__row-item_type_additional">
                     <div className={'connector-container ' + (!this.props.selected.lo ? 'hide' : '')}>

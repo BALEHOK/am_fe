@@ -42,8 +42,8 @@ export default class SearchByTypeForm extends DeloreanComponent {
         this.props.actions.loadAssetTypes();
     }
 
-    handleAssetTypeChanged = (value) => {
-        if (!value || !value.length){
+    handleAssetTypeChanged = (values) => {
+        if (!values || !values.length){
             this.setSearchModel({
                 typeId: 0,
                 attributes: []
@@ -51,12 +51,12 @@ export default class SearchByTypeForm extends DeloreanComponent {
             return;
         }
 
-        var typeId = value[0].id;
-        this.setSearchModel({
-            typeId: typeId
-        });
-
+        var typeId = values[0].id;
         this.props.actions.loadAssetAttributes(typeId);
+        this.setSearchModel({
+            typeId: typeId,
+            attributes: []
+        });
     }
 
     onContextChanged = (e) => {
@@ -66,9 +66,9 @@ export default class SearchByTypeForm extends DeloreanComponent {
     }
 
     addRow = () => {
-        var selectedType = this.state.searchModel.typeId;
+        var assetType = this.state.searchModel.typeId;
         var allAttribs = this.state.stores.searchByType.assetAttributes;
-        if (!selectedType || !allAttribs[selectedType]){
+        if (!assetType || !allAttribs[assetType]){
             return;
         }
 
@@ -77,20 +77,21 @@ export default class SearchByTypeForm extends DeloreanComponent {
             this.state.searchModel.attributes[index - 1].lo = SearchByTypeForm.logicalOperators.and;
         }
 
-        var attributeData = allAttribs[selectedType][0];
+        var attribute = allAttribs[assetType][0];
 
-        var selectedAttribute = {
+        var selectedAttribModel = {
             index: index,
-            id: attributeData.id,
+            referenceAttrib: attribute,
             operators: [],
             operator: null,
             value: null,
+            // logical operator
             lo: SearchByTypeForm.logicalOperators.none
         };
 
-        this.setOperators(selectedAttribute, attributeData);
+        this.setOperators(selectedAttribModel);
 
-        this.state.searchModel.attributes.push(selectedAttribute);
+        this.state.searchModel.attributes.push(selectedAttribModel);
 
         this.forceUpdate();
     }
@@ -99,25 +100,25 @@ export default class SearchByTypeForm extends DeloreanComponent {
         this.state.searchModel.attributes[attribute.index] = attribute;
 
         if (!attribute.operators.length){
-            var attributeData = this.state.stores.searchByType.assetAttributes[this.state.searchModel.typeId].find(a => a.id === attribute.id);
-            this.setOperators(attribute, attributeData);
+            this.setOperators(attribute);
         }
 
         this.forceUpdate();
     }
 
-    setOperators(selectedAttribute, attributeData) {
+    setOperators(selectedAttribute) {
         var dataTypeOperators = this.state.stores.searchByType.dataTypeOperators;
+        var datatype = selectedAttribute.referenceAttrib.dataType;
         if (!loadFromStore())
         {
-            this.props.actions.loadDataTypeOperators(attributeData.dataType).then(() => {
+            this.props.actions.loadDataTypeOperators(datatype).then(() => {
                 loadFromStore();
                 this.forceUpdate();
             });
         }
 
         function loadFromStore() {
-            var ops = dataTypeOperators[attributeData.dataType];
+            var ops = dataTypeOperators[datatype];
             if (ops && ops.length){
                 selectedAttribute.operators = ops;
                 selectedAttribute.operator = ops[0].id;
@@ -208,11 +209,11 @@ export default class SearchByTypeForm extends DeloreanComponent {
 
     render() {
         var attributeRows = [];
-        var selectedType = this.state.searchModel.typeId;
+        var assetType = this.state.searchModel.typeId;
         var selectedAttributes = this.state.searchModel.attributes;
-        if (!!selectedType && selectedAttributes.length)
+        if (!!assetType && selectedAttributes.length)
         {
-            var allTypeAttribs = this.state.stores.searchByType.assetAttributes[selectedType];
+            var allTypeAttribs = this.state.stores.searchByType.assetAttributes[assetType];
             for (var i = 0; i < selectedAttributes.length; i++) {
                 attributeRows.push(
                     <AttributeRow attributes={allTypeAttribs}
