@@ -7,6 +7,11 @@ class TaskRepository {
         return fetch(url).get();
     }
 
+    executeTask(taskId) {
+        var url = `/api/tasks/${taskId}/execute`;
+        return fetch(url).post();
+    }
+
 }
 
 module.exports = TaskRepository;

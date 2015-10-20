@@ -55,6 +55,10 @@ var AssetView = React.createClass({
         this.props.actions.changeScreen(screenIndex);
     },
 
+    onTaskExecution: function(taskId) {
+        this.props.actions.executeTask(taskId);
+    },
+
     render: function() {
         var assetStore = this.state.stores.asset;
         var asset = assetStore.asset;
@@ -116,7 +120,11 @@ var AssetView = React.createClass({
                                 <ReportsBlock assetId={asset.id} assetTypeId={asset.assetTypeId} reports={reports} />
                             </nav>
 
-                            <TasksSidebar assetId={asset.id} assetTypeId={asset.assetTypeId} tasks={tasks} />
+                            <TasksSidebar
+                                assetId={asset.id}
+                                assetTypeId={asset.assetTypeId}
+                                tasks={tasks}
+                                onExecution={this.onTaskExecution} />
 
                             {/*
                             <nav className="nav-block">

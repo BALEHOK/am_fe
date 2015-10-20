@@ -7,6 +7,7 @@ var TaskStore = Flux.createStore({
 
     actions: {
         'tasks:load': 'loadTasks',
+        'tasks:exec': 'executeTask',
     },
 
     initialize() {
@@ -17,6 +18,12 @@ var TaskStore = Flux.createStore({
         this.taskRepo.loadTasks(assetTypeId).then((data) => {
             this.tasks = data;
             this.emitChange();
+        });
+    },
+
+    executeTask(taskId) {
+        this.taskRepo.executeTask(taskId).then((data) => {
+            console.log('task result', data);
         });
     },
 

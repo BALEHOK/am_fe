@@ -104,6 +104,10 @@ var AssetDispatcher = Flux.createDispatcher({
     return this.dispatch('tasks:load', assetTypeId);
   },
 
+  executeTask(taskId) {
+    return this.dispatch('tasks:exec', taskId);
+  },
+
   setValidationResult(result) {
     return this.dispatch('asset:set-validation', result);
   },

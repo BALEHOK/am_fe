@@ -116,6 +116,10 @@ class AssetActions extends Actions {
     return this._dispatcher.loadTasks(assetTypeId);
   }
 
+  executeTask(taskId) {
+    return this._dispatcher.executeTask(taskId);
+  }
+
   setValidationResult(result) {
     this._dispatcher.setValidationResult(result);
   }
