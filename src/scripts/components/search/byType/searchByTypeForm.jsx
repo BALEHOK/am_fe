@@ -7,11 +7,18 @@ import DeloreanComponent from '../../common/DeloreanComponent';
 import Loader from'../../common/loader.jsx';
 import ReactSelectize from '../../common/react-selectize';
 import AttributesTableHeader from './attributesTableHeader';
+import ParenthesisRow from './parenthesisRow';
 import AttributeRow from './attributeRow';
 
 var assetTypeContext = {
     active: 1,
     history: 2
+};
+
+var parenthesisType = {
+    none: 0,
+    open: 1,
+    closing: 2
 };
 
 import reactMixin from 'react-mixin';
@@ -82,6 +89,7 @@ export default class SearchByTypeForm extends DeloreanComponent {
 
         var selectedAttribModel = {
             index: index,
+            parenthesis: parenthesisType.none,
             referenceAttrib: attribute,
             operators: [],
             operator: null,
@@ -97,10 +105,63 @@ export default class SearchByTypeForm extends DeloreanComponent {
         this.forceUpdate();
     }
 
+    addOpenParenthesis = () => {
+        var assetType = this.state.searchModel.typeId;
+        var allAttribs = this.state.stores.searchByType.assetAttributes;
+        if (!assetType || !allAttribs[assetType]){
+            return;
+        }
+
+        var index = this.state.searchModel.attributes.length;
+        if (index != 0){
+            this.state.searchModel.attributes[index - 1].lo = SearchByTypeForm.logicalOperators.and;
+        }
+
+        var selectedAttribModel = {
+            index: index,
+            parenthesis: parenthesisType.open,
+            referenceAttrib: null,
+            operators: null,
+            operator: null,
+            value: null,
+            // logical operator
+            lo: SearchByTypeForm.logicalOperators.none
+        };
+
+        this.state.searchModel.attributes.push(selectedAttribModel);
+
+        this.forceUpdate();
+    }
+
+    addClosingParenthesis = () => {
+        var assetType = this.state.searchModel.typeId;
+        var allAttribs = this.state.stores.searchByType.assetAttributes;
+        if (!assetType || !allAttribs[assetType]){
+            return;
+        }
+
+        var index = this.state.searchModel.attributes.length;
+
+        var selectedAttribModel = {
+            index: index,
+            parenthesis: parenthesisType.closing,
+            referenceAttrib: null,
+            operators: null,
+            operator: null,
+            value: null,
+            // logical operator
+            lo: SearchByTypeForm.logicalOperators.none
+        };
+
+        this.state.searchModel.attributes.push(selectedAttribModel);
+
+        this.forceUpdate();
+    }
+
     rowChanged = (attribute) => {
         this.state.searchModel.attributes[attribute.index] = attribute;
 
-        if (!attribute.operators.length){
+        if (attribute.parenthesis === parenthesisType.none && !attribute.operators.length){
             this.setOperators(attribute);
         }
 
@@ -216,13 +277,24 @@ export default class SearchByTypeForm extends DeloreanComponent {
         {
             var allTypeAttribs = this.state.stores.searchByType.assetAttributes[assetType];
             for (var i = 0; i < selectedAttributes.length; i++) {
-                attributeRows.push(
-                    <AttributeRow attributes={allTypeAttribs}
-                        selected={selectedAttributes[i]}
-                        onChange={this.rowChanged}
-                        onDelete={this.rowDeleted}
-                        onMoveUp={this.rowMoveUp}
-                        onMoveDown={this.rowMoveDown} />);
+                var attr = selectedAttributes[i];
+                if (attr.parenthesis > parenthesisType.none){
+                    attributeRows.push(
+                        <ParenthesisRow
+                            selected={attr}
+                            onChange={this.rowChanged}
+                            onDelete={this.rowDeleted}
+                            onMoveUp={this.rowMoveUp}
+                            onMoveDown={this.rowMoveDown} />);
+                } else {
+                    attributeRows.push(
+                        <AttributeRow attributes={allTypeAttribs}
+                            selected={attr}
+                            onChange={this.rowChanged}
+                            onDelete={this.rowDeleted}
+                            onMoveUp={this.rowMoveUp}
+                            onMoveDown={this.rowMoveDown} />);
+                }
             };
         }
 
@@ -278,7 +350,18 @@ export default class SearchByTypeForm extends DeloreanComponent {
                         </div>
                     </div>
                     <footer className="table-search__footer">
-                        <span className="table-search__add-row" onClick={this.addRow}>Add a new row</span>
+                        <span className="table-search__add-row" onClick={this.addRow}>
+                            <i className="icon icon-plus"></i>
+                            Add a new row
+                        </span>
+                        <span className="table-search__add-row icon-stack" onClick={this.addOpenParenthesis}>
+                            <i className="icon icon-openpar icon-circle"></i>
+                            Add open parenthesis
+                        </span>
+                        <span className="table-search__add-row closepar" onClick={this.addClosingParenthesis}>
+                            <i className="icon icon-closepar icon-circle"></i>
+                            Add closing parenthesis
+                        </span>
                         <div className="table-search__footer-actions clearfix">
                             <button className="btn pull-right"
                                 disabled={!this.state.searchModel.typeId}
