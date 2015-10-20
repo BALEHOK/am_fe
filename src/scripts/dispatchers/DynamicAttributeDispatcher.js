@@ -3,7 +3,7 @@ import DynamicAttributeStore from '../stores/DynamicAttributeStore';
 
 export default Flux.createDispatcher ({
   
-  loadAsdf(listId) {
+  loadDynList(listId) {
     return this.dispatch('DynamicAttributeStore:dynList', listId);
   },
 

@@ -43,11 +43,12 @@ export default class Select extends React.Component {
   }
 
   loadMore(event) {
-    if(this.loading) {
+    if (!this.props.onItemsRequest || this.loading) {
       return;
     }
+    
     let left = event.target.scrollTop + event.target.getBoundingClientRect().height;
-    if(event.target.scrollHeight - left < 50) {
+    if (event.target.scrollHeight - left < 50) {
       this.loading = true;
       this.props.onItemsRequest("").then(() => this.loading = false);
     }

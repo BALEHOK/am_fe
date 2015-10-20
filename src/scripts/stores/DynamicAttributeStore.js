@@ -4,7 +4,7 @@ import {always} from '../util/util';
 import AssetTypeRepository from '../services/AssetTypeRepository';
 
 export default Flux.createStore({
-  dynLists: {}
+  dynLists: {},
 
   actions: {
     'DynamicAttributeStore:dynList': 'loadDynList'
@@ -15,6 +15,11 @@ export default Flux.createStore({
   },
 
   loadDynList(listId) {
+    // do not reload existing list
+    if (!!this.dynLists[listId]){
+      return;
+    }
+
     always(
       this.assetTypeRepo.loadDynamicValueList(listId).then(
         (data) => {
@@ -28,7 +33,8 @@ export default Flux.createStore({
           this.dynLists[listId] = [];
         }
       ),
-      () => this.emitChange());
+      () => this.emitChange()
+    );
   },
 
   getState() {

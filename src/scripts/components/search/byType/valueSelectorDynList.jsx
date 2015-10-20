@@ -3,17 +3,25 @@
  */
 
 import React from 'react';
-import StoreWatchComponent from '../../common/StoreWatchComponent';
+import DeloreanComponent from '../../common/DeloreanComponent';
 import ReactSelectize from '../../common/react-selectize';
 
-export default class ValueSelectorDynList extends StoreWatchComponent {
+import reactMixin from 'react-mixin';
+import {Flux} from 'delorean';
+
+@reactMixin.decorate(Flux.mixins.storeListener)
+export default class ValueSelectorDynList extends DeloreanComponent {
 
     watchStores = ['dynamicAttributeStore']
 
-    componentDidMount(){
-        if (!this.state.stores.dynamicAttributeStore.dynLists[this.props.listId]){
-            this.props.actions.loadDynList(loadDynList);
-        }
+    constructor(props) {
+        super(props);
+        
+        this.props.actions.loadDynList(this.props.listId);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.props.actions.loadDynList(nextProps.listId);
     }
 
     onValueChange = (items) => {
@@ -21,7 +29,7 @@ export default class ValueSelectorDynList extends StoreWatchComponent {
             this.props.onValueChange(false);
         }
 
-        this.props.onValueChange(items[0].value);
+        this.props.onValueChange(items[0].id);
     }
 
     render() {

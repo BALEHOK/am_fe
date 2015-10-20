@@ -8,6 +8,9 @@ import ValueSelectorBool from './valueSelectorBool';
 import ValueSelectorDynList from './valueSelectorDynList';
 import ValueSelectorText from './valueSelectorText';
 
+import DynamicAttributeDispatcher from '../../../dispatchers/DynamicAttributeDispatcher';
+import DynamicAttributeActions from '../../../actions/DynamicAttributeActions';
+
 export default class AttributeRow extends React.Component {
 
     logicalOperators = [
@@ -17,6 +20,9 @@ export default class AttributeRow extends React.Component {
 
     constructor(props){
         super(props);
+
+        this.dynamicAttributeDispatcher = DynamicAttributeDispatcher;
+        this.dynamicAttributeActions = new DynamicAttributeActions(this.dynamicAttributeDispatcher);
     }
 
     onMoveUp = () => {
@@ -39,7 +45,8 @@ export default class AttributeRow extends React.Component {
         var newAttr = this.createNewAttr({
             referenceAttrib: values[0],
             operators: [],
-            operator: null
+            operator: null,
+            value: null
         });
         
         this.props.onChange(newAttr);
@@ -92,7 +99,9 @@ export default class AttributeRow extends React.Component {
             case 'dynlists':
                 valueSelector = <ValueSelectorDynList value={this.props.selected.value}
                     onValueChange={this.onValueChange}
-                    listId={this.props.selected.referenceAttrib.dynListId} />;
+                    listId={this.props.selected.referenceAttrib.dynListId}
+                    actions={this.dynamicAttributeActions}
+                    dispatcher={this.dynamicAttributeDispatcher} />;
                 break;
             default:
                 valueSelector = <ValueSelectorText value={this.props.selected.value}
