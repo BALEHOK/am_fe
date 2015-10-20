@@ -4,6 +4,7 @@ var ListStore = require('../stores/ListStore');
 var SearchTrackingStore = require('../stores/SearchTrackingStore');
 var HistoryStore = require('../stores/HistoryStore');
 var ReportStore = require('../stores/ReportStore');
+var TaskStore = require('../stores/TaskStore');
 
 var AssetDispatcher = Flux.createDispatcher({
 
@@ -99,6 +100,10 @@ var AssetDispatcher = Flux.createDispatcher({
     return this.dispatch('reports:load', assetTypeId);
   },
 
+  loadTasks(assetTypeId) {
+    return this.dispatch('tasks:load', assetTypeId);
+  },
+
   setValidationResult(result) {
     return this.dispatch('asset:set-validation', result);
   },
@@ -122,6 +127,7 @@ var AssetDispatcher = Flux.createDispatcher({
       search: new SearchTrackingStore(),
       history: new HistoryStore(),
       report: new ReportStore(),
+      task: new TaskStore(),
     }
   }
 });
