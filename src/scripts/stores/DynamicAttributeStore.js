@@ -5,9 +5,11 @@ import AssetTypeRepository from '../services/AssetTypeRepository';
 
 export default Flux.createStore({
   dynLists: {},
+  relatedAssets: {},
 
   actions: {
-    'DynamicAttributeStore:dynList': 'loadDynList'
+    'DynamicAttributeStore:dynList': 'loadDynList',
+    'DynamicAttributeStore:relatedAssets': 'loadRelated'
   },
 
   initialize() {
@@ -15,22 +17,30 @@ export default Flux.createStore({
   },
 
   loadDynList(listId) {
+    this.loadDataIfNeeded('dynLists', listId, 'loadDynamicValueList');
+  },
+
+  loadRelated(attributeId) {
+    this.loadDataIfNeeded('relatedAssets', attributeId, 'loadRelatedAssets');
+  },
+
+  loadDataIfNeeded(name, id, repoAction) {
     // do not reload existing list
-    if (!!this.dynLists[listId]){
+    if (!!this[name][id]){
       return;
     }
 
     always(
-      this.assetTypeRepo.loadDynamicValueList(listId).then(
+      this.assetTypeRepo[repoAction](id).then(
         (data) => {
           if (!data || !data.length){
-            this.dynLists[listId] = [];
+            this[name][id] = [];
           } else {
-            this.dynLists[listId] = data;
+            this[name][id] = data;
           }
         },
         () => {
-          this.dynLists[listId] = [];
+          this[name][id] = [];
         }
       ),
       () => this.emitChange()
@@ -40,6 +50,7 @@ export default Flux.createStore({
   getState() {
     return {
       dynLists: this.dynLists,
+      relatedAssets: this.relatedAssets
     };
   }
 });

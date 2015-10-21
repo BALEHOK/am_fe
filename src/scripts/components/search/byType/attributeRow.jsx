@@ -6,6 +6,7 @@ import React from 'react';
 import ReactSelectize from '../../common/react-selectize';
 import ValueSelectorBool from './valueSelectorBool';
 import ValueSelectorDynList from './valueSelectorDynList';
+import ValueSelectorRelatedAsset from './valueSelectorRelatedAsset';
 import ValueSelectorText from './valueSelectorText';
 
 import DynamicAttributeDispatcher from '../../../dispatchers/DynamicAttributeDispatcher';
@@ -95,6 +96,7 @@ export default class AttributeRow extends React.Component {
                 valueSelector = <ValueSelectorBool value={this.props.selected.value}
                     onValueChange={this.onValueChange} />;
                 break;
+
             case 'dynlist':
             case 'dynlists':
                 valueSelector = <ValueSelectorDynList value={this.props.selected.value}
@@ -103,6 +105,16 @@ export default class AttributeRow extends React.Component {
                     actions={this.dynamicAttributeActions}
                     dispatcher={this.dynamicAttributeDispatcher} />;
                 break;
+
+            case 'asset':
+            case 'assets':
+                valueSelector = <ValueSelectorRelatedAsset value={this.props.selected.value}
+                    onValueChange={this.onValueChange}
+                    attributeId={this.props.selected.referenceAttrib.id}
+                    actions={this.dynamicAttributeActions}
+                    dispatcher={this.dynamicAttributeDispatcher} />;
+                break;
+
             default:
                 valueSelector = <ValueSelectorText value={this.props.selected.value}
                     onValueChange={this.onValueChange} />;
