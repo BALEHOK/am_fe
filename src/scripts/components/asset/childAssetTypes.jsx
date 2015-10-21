@@ -1,11 +1,8 @@
 import React from 'react/addons'
 import Router from 'react-router'
+import {_} from 'underscore'
 
-class ChildAssetTypes extends React.Component {
-
-    constructor() {
-        super();
-    }
+export default class ChildAssetTypes extends React.Component {
 
     render() {
         var currentParams = this.context.router.getCurrentParams();
@@ -33,5 +30,3 @@ class ChildAssetTypes extends React.Component {
 ChildAssetTypes.contextTypes = {
     router: React.PropTypes.func.isRequired
 }
-
-export default ChildAssetTypes;
