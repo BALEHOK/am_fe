@@ -54,10 +54,6 @@ var AssetView = React.createClass({
         this.props.actions.changeScreen(screenIndex);
     },
 
-    onChildAssetTypeClick: function(assetType) {
-        console.log(assetType);
-    },
-
     render: function() {
         var assetStore = this.state.stores.asset;
         var asset = assetStore.asset;
@@ -118,7 +114,7 @@ var AssetView = React.createClass({
                                 </div>
                             </nav>
 
-                            <Childs childAssetTypes={childAssetTypes} onClick={this.onChildAssetTypeClick} />
+                            <Childs childAssetTypes={childAssetTypes} />
 
                             <nav className="nav-block">
                                 <ReportsBlock assetId={asset.id} assetTypeId={asset.assetTypeId} reports={reports} />

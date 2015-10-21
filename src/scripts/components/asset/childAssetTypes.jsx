@@ -1,15 +1,22 @@
 import React from 'react/addons'
+import Router from 'react-router'
 
-export default class ChildAssetTypesSidebar extends React.Component {
+class ChildAssetTypes extends React.Component {
 
     constructor() {
         super();
     }
 
     render() {
+        var currentParams = this.context.router.getCurrentParams();
         var items = this.props.childAssetTypes.map((g, i) => {
+            var params = {
+                assetType: g.dynEntityConfigId,
+                attributeId: g.dynEntityAttribConfigId,
+                assetId: currentParams.assetId
+            };
             return <li key={i} className="nav-block__item">
-                <a onClick={this.props.onClick.bind(this, g)} className="link link_second">{g.assetTypeName} {g.attributeName}</a>
+                <Router.Link to="result" query={params}>{g.assetTypeName} ({g.attributeName})</Router.Link>
             </li>
         });
         return _.size(items) > 0
@@ -22,3 +29,9 @@ export default class ChildAssetTypesSidebar extends React.Component {
             : false;
     }
 }
+
+ChildAssetTypes.contextTypes = {
+    router: React.PropTypes.func.isRequired
+}
+
+export default ChildAssetTypes;
