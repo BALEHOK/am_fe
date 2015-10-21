@@ -12,7 +12,7 @@ export default class TasksSidebar extends React.Component {
                 <a onClick={this.props.onExecution.bind(this, t.id)} className="link link_second">{t.name}</a>
             </li>
         });
-    	return  _.size(this.props.tasks) > 1
+    	return  _.size(this.props.tasks) > 0
             ? <nav className="nav-block">
     			<span className="nav-block__title nav-block__title_type_second">Tasks</span>
                 <ul className="nav-block__list">
