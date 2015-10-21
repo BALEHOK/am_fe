@@ -191,19 +191,38 @@ export default class SearchByTypeForm extends DeloreanComponent {
     }
 
     rowDeleted = (index) => {
-        this.state.searchModel.attributes.splice(index, 1);
+        var attribs = this.state.searchModel.attributes;
+        attribs.splice(index, 1);
 
-        if (this.state.searchModel.attributes.length !== 0){
+        if (attribs.length !== 0){
 
             this.updateRowIndexes(index);
 
-            // fix logical operator
-            if (index === this.state.searchModel.attributes.length){
-                this.state.searchModel.attributes[index - 1].lo = SearchByTypeForm.logicalOperators.none;
-            }
+            fixLogicalOperator(index - 1);
         }
 
         this.forceUpdate();
+    }
+
+    fixLogicalOperator(index){
+        var attribs = this.state.searchModel.attributes;
+        var curAttrib = attribs[index];
+        // last row has no LO
+        if (index === attribs.length - 1){
+            curAttrib.lo = SearchByTypeForm.logicalOperators.none;
+        }
+
+        // open parenthesis never has LO, skip it
+        else if (curAttrib.parenthesis !== parenthesisType.open){
+            // no LO before closing parenthesis
+            if (attribs[index + 1].parenthesis === parenthesisType.closing){
+                curAttrib.lo = SearchByTypeForm.logicalOperators.none;
+            }
+            // ensure there is LO before not closing parenthesis
+            else if (curAttrib.lo === SearchByTypeForm.logicalOperators.none){
+                curAttrib.lo = SearchByTypeForm.logicalOperators.and;
+            }
+        }
     }
 
     rowMoveUp = (index) => {
@@ -219,11 +238,11 @@ export default class SearchByTypeForm extends DeloreanComponent {
 
         this.updateRowIndexes(prevIndex);
 
-        // fix logical operator
-        if (index === this.state.searchModel.attributes.length - 1){
-            attribs[prevIndex].lo = SearchByTypeForm.logicalOperators.and;
-            attribs[index].lo = SearchByTypeForm.logicalOperators.none;
+        if (index > 1){
+            this.fixLogicalOperator(index - 2);
         }
+        this.fixLogicalOperator(index - 1);
+        this.fixLogicalOperator(index);
 
         this.forceUpdate();
     }
@@ -242,11 +261,11 @@ export default class SearchByTypeForm extends DeloreanComponent {
 
         this.updateRowIndexes(index);
 
-        // fix logical operator
-        if (index === attribs.length - 2){
-            attribs[index].lo = SearchByTypeForm.logicalOperators.and;
-            attribs[nextIndex].lo = SearchByTypeForm.logicalOperators.none;
+        if (index > 0){
+            this.fixLogicalOperator(index - 1);
         }
+        this.fixLogicalOperator(index);
+        this.fixLogicalOperator(index + 1);
 
         this.forceUpdate();
     }

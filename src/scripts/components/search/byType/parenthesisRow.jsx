@@ -36,6 +36,10 @@ export default class ParenthesisRow extends React.Component {
         this.props.onChange(newAttr);
     }
 
+    createNewAttr = (diff) => {
+        return Object.assign({}, this.props.selected, diff);
+    }
+
     render(){
         var showLo = this.props.selected.lo && this.props.selected.parenthesis > 1;
 
