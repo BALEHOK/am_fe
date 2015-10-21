@@ -17,6 +17,7 @@ var LayoutSwitcher = require('./layoutSwitcher');
 var ViewsFactory = require('./viewsFactory');
 var Loader = require('../common/loader.jsx');
 var ReportsBlock = require('./reportsBlock');
+var Childs = require('./childAssetTypes');
 var LoaderMixin = require('../../mixins/LoaderMixin');
 var cx = require('classnames');
 
@@ -53,12 +54,17 @@ var AssetView = React.createClass({
         this.props.actions.changeScreen(screenIndex);
     },
 
+    onChildAssetTypeClick: function(assetType) {
+        console.log(assetType);
+    },
+
     render: function() {
         var assetStore = this.state.stores.asset;
         var asset = assetStore.asset;
         var linkedAssets = assetStore.relatedAssets;
         var taxonomyPath = assetStore.taxonomyPath;
         var reports = this.state.stores.report.reports || [];
+        var childAssetTypes = asset.childAssetTypes || [];
 
         var assetLinks = linkedAssets
             .filter(e => { return e.assets != null })
@@ -97,17 +103,22 @@ var AssetView = React.createClass({
                 <Loader loading={this.state.loading}>
                     <div className="grid">
                         <div className="grid__item two-twelfths asset-page__aside">
+
                             <LayoutSwitcher
                                 screens={asset.screens}
                                 selectedScreen={assetStore.currentScreen}
                                 onChange={this.onScreenChange} />
+
                             <TaxonomyPath taxonomyPath={taxonomyPath} />
+
                             <nav className="nav-block">
                                 <span className="nav-block__title nav-block__title_type_second">Linked assets</span>
                                 <div className="nav-block__item">
                                     {assetLinks}
                                 </div>
                             </nav>
+
+                            <Childs childAssetTypes={childAssetTypes} onClick={this.onChildAssetTypeClick} />
 
                             <nav className="nav-block">
                                 <ReportsBlock assetId={asset.id} assetTypeId={asset.assetTypeId} reports={reports} />
