@@ -62,7 +62,6 @@ export default class ValueSelectorRelatedAsset extends DeloreanComponent {
         var attrId = this.props.params.id;
         var itemsStore = this.state.stores.list.assets[attrId];
         var items = (itemsStore && itemsStore.items) ? itemsStore.items : [];
-        var value = this.props.params.values;
         var maxItems = undefined;
         if (this.props.params.datatype == 'assets') {
             maxItems = 100;
@@ -78,7 +77,7 @@ export default class ValueSelectorRelatedAsset extends DeloreanComponent {
                     items={items}
                     onItemsRequest={this.onItemsRequest}
                     onChange={this.onValueChange}
-                    value={value}
+                    value={this.props.params.value}
                     placeholder=" "
                     label=" " />
                 <a className="btn btn_type_one btn_size_small asset-data__param-btn"

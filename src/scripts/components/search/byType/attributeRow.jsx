@@ -6,6 +6,7 @@ import React from 'react';
 import ReactSelectize from '../../common/react-selectize';
 import ValueSelectorBool from './valueSelectorBool';
 import ValueSelectorDynList from './valueSelectorDynList';
+import ValueSelectorPlace from './valueSelectorPlace';
 import ValueSelectorRelatedAsset from './valueSelectorRelatedAsset';
 import ValueSelectorText from './valueSelectorText';
 
@@ -91,14 +92,18 @@ export default class AttributeRow extends React.Component {
 
     render(){
         var valueSelector;
-        switch(this.props.selected.referenceAttrib.dataType){
+        var params;
+        var dataType = this.props.selected.referenceAttrib.dataType.toLowerCase();
+        switch(dataType){
             case 'bool':
-                valueSelector = <ValueSelectorBool value={this.props.selected.value}
+                valueSelector = <ValueSelectorBool
+                    value={this.props.selected.value}
                     onValueChange={this.onValueChange} />;
                 break;
 
             case 'dynlist':
-                valueSelector = <ValueSelectorDynList value={this.props.selected.value}
+                valueSelector = <ValueSelectorDynList
+                    value={this.props.selected.value}
                     onValueChange={this.onValueChange}
                     attrId={this.props.selected.referenceAttrib.id}
                     dispatcher={this.assetDispatcher}
@@ -107,18 +112,26 @@ export default class AttributeRow extends React.Component {
 
             case 'asset':
             case 'assets':
-                let params = {
+                params = {
                     id: this.props.selected.referenceAttrib.id,
                     relatedAssetTypeId: this.props.selected.referenceAttrib.relationId,
                     datatype: this.props.selected.referenceAttrib.dataType,
-                    values: this.props.selected.value || [],
-                    validate: () => true
+                    value: this.props.selected.value || []
                 };
                 valueSelector = <ValueSelectorRelatedAsset
-                    dispatcher={this.assetDispatcher}
-                    actions={this.assetActions}
+                    onValueChange={this.onValueChange}
                     params={params}
-                    onValueChange={this.onValueChange} />
+                    dispatcher={this.assetDispatcher}
+                    actions={this.assetActions} />
+                break;
+
+            case 'place':
+                valueSelector = <ValueSelectorPlace
+                    value={this.props.selected.value}
+                    onValueChange={this.onValueChange}
+                    attrId={this.props.selected.referenceAttrib.id}
+                    dispatcher={this.assetDispatcher}
+                    actions={this.assetActions} />
                 break;
 
             default:
