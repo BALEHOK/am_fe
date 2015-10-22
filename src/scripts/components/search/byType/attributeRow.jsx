@@ -9,8 +9,6 @@ import ValueSelectorDynList from './valueSelectorDynList';
 import ValueSelectorRelatedAsset from './valueSelectorRelatedAsset';
 import ValueSelectorText from './valueSelectorText';
 
-import DynamicAttributeDispatcher from '../../../dispatchers/DynamicAttributeDispatcher';
-import DynamicAttributeActions from '../../../actions/DynamicAttributeActions';
 import AssetDispatcher from '../../../dispatchers/AssetDispatcher';
 import AssetActions from '../../../actions/AssetActions';
 
@@ -23,9 +21,6 @@ export default class AttributeRow extends React.Component {
 
     constructor(props){
         super(props);
-
-        this.dynamicAttributeDispatcher = DynamicAttributeDispatcher;
-        this.dynamicAttributeActions = new DynamicAttributeActions(this.dynamicAttributeDispatcher);
 
         this.assetDispatcher = AssetDispatcher;
         this.assetActions = new AssetActions(this.assetDispatcher);
@@ -103,12 +98,11 @@ export default class AttributeRow extends React.Component {
                 break;
 
             case 'dynlist':
-            case 'dynlists':
                 valueSelector = <ValueSelectorDynList value={this.props.selected.value}
                     onValueChange={this.onValueChange}
-                    listId={this.props.selected.referenceAttrib.dynListId}
-                    actions={this.dynamicAttributeActions}
-                    dispatcher={this.dynamicAttributeDispatcher} />;
+                    attrId={this.props.selected.referenceAttrib.id}
+                    dispatcher={this.assetDispatcher}
+                    actions={this.assetActions} />;
                 break;
 
             case 'asset':

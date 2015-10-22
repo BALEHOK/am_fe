@@ -55,23 +55,8 @@ export default Flux.createStore({
             this.assetAttributes[typeId] = [];
             return;
           }
-
-          var attributes = [];
-          for (var i = 0; i < data.attributes.length; i++) {
-            var attribute = data.attributes[i];
-
-            var attributeModel = {
-              id: attribute.id,
-              displayName: attribute.displayName,
-              dataType: attribute.dataType,
-              dynListId: attribute.dynListId,
-              relationId: attribute.relationId
-            }
-
-            attributes.push(attributeModel);
-          };
           
-          this.assetAttributes[typeId] = attributes;
+          this.assetAttributes[typeId] = data.attributes;
         },
         () => {
           this.assetAttributes[typeId] = [];

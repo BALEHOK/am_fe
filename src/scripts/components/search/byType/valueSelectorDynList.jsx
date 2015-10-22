@@ -12,16 +12,25 @@ import {Flux} from 'delorean';
 @reactMixin.decorate(Flux.mixins.storeListener)
 export default class ValueSelectorDynList extends DeloreanComponent {
 
-    watchStores = ['dynamicAttributeStore']
+    watchStores = ['list']
 
     constructor(props) {
         super(props);
         
-        this.props.actions.loadDynList(this.props.listId);
+        this.props.actions.loadDynamicList({
+            attributeId: this.props.attrId
+        });
     }
 
     componentWillReceiveProps(nextProps) {
-        this.props.actions.loadDynList(nextProps.listId);
+        var items = this.getItems(nextProps.attrId);
+        if (items && items.length){
+            return;
+        }
+
+        this.props.actions.loadDynamicList({
+            attributeId: nextProps.attrId
+        });
     }
 
     onValueChange = (items) => {
@@ -32,16 +41,23 @@ export default class ValueSelectorDynList extends DeloreanComponent {
         this.props.onValueChange(items[0].id);
     }
 
+    getItems = (attrId) => {
+        var itemsStore = this.state.stores.list.dynlists[attrId];
+        return (itemsStore && itemsStore.items) ? itemsStore.items : [];
+    }
+
     render() {
         return (
             <ReactSelectize
-                items={this.state.stores.dynamicAttributeStore.dynLists[this.props.listId]}
+                items={this.getItems(this.props.attrId)}
                 value={this.props.value}
                 onChange={this.onValueChange}
                 selectId="selectDynListValue"
                 placeholder="Select value"
                 label=" "
                 clearable={false}
+                valueField="id"
+                labelField="value"
             />
         );
     }
