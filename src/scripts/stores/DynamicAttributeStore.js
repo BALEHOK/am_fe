@@ -17,30 +17,22 @@ export default Flux.createStore({
   },
 
   loadDynList(listId) {
-    this.loadDataIfNeeded('dynLists', listId, 'loadDynamicValueList');
-  },
-
-  loadRelated(attributeId) {
-    this.loadDataIfNeeded('relatedAssets', attributeId, 'loadRelatedAssets');
-  },
-
-  loadDataIfNeeded(name, id, repoAction) {
     // do not reload existing list
-    if (!!this[name][id]){
+    if (!!this.dynLists[listId]){
       return;
     }
 
     always(
-      this.assetTypeRepo[repoAction](id).then(
+      this.assetTypeRepo.loadDynamicValueList(listId).then(
         (data) => {
           if (!data || !data.length){
-            this[name][id] = [];
+            this.dynLists[listId] = [];
           } else {
-            this[name][id] = data;
+            this.dynLists[listId] = data;
           }
         },
         () => {
-          this[name][id] = [];
+          this.dynLists[listId] = [];
         }
       ),
       () => this.emitChange()

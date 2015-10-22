@@ -11,6 +11,8 @@ import ValueSelectorText from './valueSelectorText';
 
 import DynamicAttributeDispatcher from '../../../dispatchers/DynamicAttributeDispatcher';
 import DynamicAttributeActions from '../../../actions/DynamicAttributeActions';
+import AssetDispatcher from '../../../dispatchers/AssetDispatcher';
+import AssetActions from '../../../actions/AssetActions';
 
 export default class AttributeRow extends React.Component {
 
@@ -24,6 +26,9 @@ export default class AttributeRow extends React.Component {
 
         this.dynamicAttributeDispatcher = DynamicAttributeDispatcher;
         this.dynamicAttributeActions = new DynamicAttributeActions(this.dynamicAttributeDispatcher);
+
+        this.assetDispatcher = AssetDispatcher;
+        this.assetActions = new AssetActions(this.assetDispatcher);
     }
 
     onMoveUp = () => {
@@ -108,11 +113,18 @@ export default class AttributeRow extends React.Component {
 
             case 'asset':
             case 'assets':
-                valueSelector = <ValueSelectorRelatedAsset value={this.props.selected.value}
-                    onValueChange={this.onValueChange}
-                    attributeId={this.props.selected.referenceAttrib.id}
-                    actions={this.dynamicAttributeActions}
-                    dispatcher={this.dynamicAttributeDispatcher} />;
+                let params = {
+                    id: this.props.selected.referenceAttrib.id,
+                    relatedAssetTypeId: this.props.selected.referenceAttrib.relationId,
+                    datatype: this.props.selected.referenceAttrib.dataType,
+                    values: this.props.selected.value || [],
+                    validate: () => true
+                };
+                valueSelector = <ValueSelectorRelatedAsset
+                    dispatcher={this.assetDispatcher}
+                    actions={this.assetActions}
+                    params={params}
+                    onValueChange={this.onValueChange} />
                 break;
 
             default:
@@ -139,6 +151,7 @@ export default class AttributeRow extends React.Component {
                         placeholder="Select attribute"
                         label=" "
                         clearable={false}
+                        labelField={'displayName'}
                     />
                 </div>
                 <div className="table-search__row-item table-search__row-item_type_oper">

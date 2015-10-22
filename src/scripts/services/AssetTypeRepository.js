@@ -20,9 +20,4 @@ export default class AssetRepository {
       var url = `/api/datatype/listitems/${listId}`;
       return fetch(url).get();
     }
-
-    loadRelatedAssets(attributeId){
-      var url = `/api/datatype/relateditems/${attributeId}`;
-      return fetch(url).get();
-    }
 }

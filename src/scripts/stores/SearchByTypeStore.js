@@ -62,9 +62,10 @@ export default Flux.createStore({
 
             var attributeModel = {
               id: attribute.id,
-              name: attribute.displayName,
+              displayName: attribute.displayName,
               dataType: attribute.dataType,
-              dynListId: attribute.dynListId
+              dynListId: attribute.dynListId,
+              relationId: attribute.relationId
             }
 
             attributes.push(attributeModel);
