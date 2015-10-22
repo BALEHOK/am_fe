@@ -3,6 +3,7 @@
  */
 
 import React from 'react';
+import Router from 'react-router';
 import DeloreanComponent from '../../common/DeloreanComponent';
 import ReactSelectize from '../../common/react-selectize';
 
@@ -11,6 +12,10 @@ import {Flux} from 'delorean';
 
 @reactMixin.decorate(Flux.mixins.storeListener)
 export default class ValueSelectorRelatedAsset extends DeloreanComponent {
+
+    static contextTypes = {
+        router: React.PropTypes.func.isRequired
+    }
 
     watchStores = ['list']
 
@@ -36,6 +41,14 @@ export default class ValueSelectorRelatedAsset extends DeloreanComponent {
         this.props.onValueChange(value);
     }
 
+    getUrlForNew = () => {
+        return this.context.router.makeHref('asset-create-from-type', {
+            assetTypeId: this.props.params.relatedAssetTypeId
+        }, {
+            forAttr: this.props.params.id
+        });
+    }
+
     createNew = () => {
         this.props.actions.pushAsset();
         this.context.router.transitionTo('asset-create-from-type', {
@@ -56,7 +69,7 @@ export default class ValueSelectorRelatedAsset extends DeloreanComponent {
         }
 
         return (
-            <div>
+            <div className="with-action_wrapper">
                 <ReactSelectize
                     maxItems={maxItems}
                     valueField="id"
@@ -68,11 +81,11 @@ export default class ValueSelectorRelatedAsset extends DeloreanComponent {
                     value={value}
                     placeholder=" "
                     label=" " />
-                <div
-                    className="btn btn_type_one btn_size_small asset-data__param-btn"
-                    onClick={this.createNew}>
+                <a className="btn btn_type_one btn_size_small asset-data__param-btn"
+                    href={this.getUrlForNew()}
+                    target="_blank">
                     <i className="btn__icon btn__icon_plus_circle"></i>
-                </div>
+                </a>
             </div>
         );
     }

@@ -5,11 +5,9 @@ import AssetTypeRepository from '../services/AssetTypeRepository';
 
 export default Flux.createStore({
   dynLists: {},
-  relatedAssets: {},
 
   actions: {
-    'DynamicAttributeStore:dynList': 'loadDynList',
-    'DynamicAttributeStore:relatedAssets': 'loadRelated'
+    'DynamicAttributeStore:dynList': 'loadDynList'
   },
 
   initialize() {
@@ -41,8 +39,7 @@ export default Flux.createStore({
 
   getState() {
     return {
-      dynLists: this.dynLists,
-      relatedAssets: this.relatedAssets
+      dynLists: this.dynLists
     };
   }
 });
