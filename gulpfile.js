@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var fs = require('fs');
 var path = require('path');
 var gutil = require('gulp-util');
 var concat = require('gulp-concat');
@@ -18,6 +19,7 @@ var browserSync = require('browser-sync').create();
 var replace = require('gulp-replace');
 var through = require('through2');
 var webpackDevMiddleware = require("webpack-dev-middleware");
+var merge = require('merge-stream');
 
 var buildDest = 'dist';
 var assetsDest = 'assets';
@@ -27,11 +29,20 @@ var cssSrc = 'src/styles/*',
     cssVendorSrc = 'src/styles/vendor-css/*',
     fontsCss = 'src/styles/fonts/*',
     cssDest = path.join(buildDest, assetsDest, 'css');
+var localesSrc = 'src/locales',
+    localesDest = path.join(buildDest, assetsDest, 'locales');
 
 /*gulp.task('clean', function () {
     return gulp.src(buildDest)
         .pipe(clean());
 });*/
+
+function getFolders(dir) {
+    return fs.readdirSync(dir)
+      .filter(function(file) {
+        return fs.statSync(path.join(dir, file)).isDirectory();
+      });
+}
 
 function handleError(err) {
     console.log(err.toString());
@@ -84,6 +95,24 @@ gulp.task('css', function () {
 gulp.task('views', function() {
     return gulp.src('src/*.html')
         .pipe(gulp.dest(buildDest));
+});
+
+gulp.task('L20n', function() {
+    var script = gulp.src('src/scripts/l20n.min.js')
+        .pipe(gulp.dest(jsDest));
+
+    var manifest = gulp.src('src/locales/browser.json')
+        .pipe(gulp.dest(buildDest));
+
+    var folders = getFolders('src/locales');
+
+    var locales = folders.map(function(folder) {
+      return gulp.src(path.join(localesSrc, folder, '/**/*.l20n'))
+        .pipe(concat('website.' + folder + '.l20n'))
+        .pipe(gulp.dest(localesDest))
+   });
+
+    return merge(script, manifest, locales);
 });
 
 gulp.task('browser-sync', function() {
@@ -143,7 +172,7 @@ gulp.task("dev-server", function(callback) {
 });
 
 // Production build
-gulp.task('build', ['fonts', 'css:fonts', 'images', 'css', 'webpack:build', 'views', 'webconfig']);
-gulp.task('server', ['fonts', 'css:fonts', 'images', 'css', 'watch', 'dev-server', 'views']);
+gulp.task('build', ['fonts', 'css:fonts', 'L20n', 'images', 'css', 'webpack:build', 'views', 'webconfig']);
+gulp.task('server', ['fonts', 'css:fonts', 'L20n', 'images', 'css', 'watch', 'dev-server', 'views']);
 gulp.task('default', ['build']);
 gulp.task('deploy', ['build']);
