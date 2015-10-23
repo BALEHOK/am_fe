@@ -194,7 +194,7 @@ export default class SearchByTypeForm extends DeloreanComponent {
 
             this.updateRowIndexes(index);
 
-            fixLogicalOperator(index - 1);
+            this.fixLogicalOperator(index - 1);
         }
 
         this.forceUpdate();
