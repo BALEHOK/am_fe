@@ -5,6 +5,7 @@
 import React from 'react';
 import ReactSelectize from '../../common/react-selectize';
 import ValueSelectorBool from './valueSelectorBool';
+import ValueSelectorDate from './valueSelectorDate';
 import ValueSelectorDynList from './valueSelectorDynList';
 import ValueSelectorPlace from './valueSelectorPlace';
 import ValueSelectorRelatedAsset from './valueSelectorRelatedAsset';
@@ -97,6 +98,13 @@ export default class AttributeRow extends React.Component {
         switch(dataType){
             case 'bool':
                 valueSelector = <ValueSelectorBool
+                    value={this.props.selected.value}
+                    onValueChange={this.onValueChange} />;
+                break;
+
+            case 'currentdate':
+            case 'datetime':
+                valueSelector = <ValueSelectorDate
                     value={this.props.selected.value}
                     onValueChange={this.onValueChange} />;
                 break;
