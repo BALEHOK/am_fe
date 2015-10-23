@@ -1,6 +1,7 @@
 import React from 'react';
 import DeloreanComponent from '../../common/DeloreanComponent';
 import Loader from'../../common/loader.jsx';
+import LoaderMixin from'../../../mixins/LoaderMixin';
 import ReactSelectize from '../../common/react-selectize';
 import AttributesTableHeader from './attributesTableHeader';
 import ParenthesisRow from './parenthesisRow';
@@ -21,6 +22,7 @@ import reactMixin from 'react-mixin';
 import {Flux} from 'delorean';
 
 @reactMixin.decorate(Flux.mixins.storeListener)
+@reactMixin.decorate(LoaderMixin)
 export default class SearchByTypeForm extends DeloreanComponent {
 
     static logicalOperators = {
@@ -37,13 +39,16 @@ export default class SearchByTypeForm extends DeloreanComponent {
             assetTypeContext: assetTypeContext.active,
             attributes: []
         },
-        assetTypes: []
+        assetTypes: [],
+        loading: true
     }
 
     constructor(props){
         super(props);
 
-        this.props.actions.loadAssetTypes();
+        this.waitFor(
+            this.props.actions.loadAssetTypes()
+        );
     }
 
     handleAssetTypeChanged = (values) => {
@@ -56,7 +61,9 @@ export default class SearchByTypeForm extends DeloreanComponent {
         }
 
         var typeId = values[0].id;
-        this.props.actions.loadAssetAttributes(typeId);
+        this.waitFor(
+            this.props.actions.loadAssetAttributes(typeId)
+        )
         this.setSearchModel({
             typeId: typeId,
             attributes: []
@@ -169,10 +176,13 @@ export default class SearchByTypeForm extends DeloreanComponent {
         var datatype = selectedAttribute.referenceAttrib.dataType;
         if (!loadFromStore())
         {
-            this.props.actions.loadDataTypeOperators(datatype).then(() => {
-                loadFromStore();
-                this.forceUpdate();
-            });
+            // rerender required after call to loadFromStore()
+            // this.waitFor() does it implicitly
+            // otherwise call this.forceUpdate()
+            this.waitFor(
+                this.props.actions.loadDataTypeOperators(datatype)
+                    .then(() => loadFromStore())
+            );
         }
 
         function loadFromStore() {
@@ -314,6 +324,7 @@ export default class SearchByTypeForm extends DeloreanComponent {
         }
 
         return (
+            <Loader  loading={this.state.loading}>
             <form className="form advanced-search">
                 <header className="advanced-search__header">
                     <div className="input-group">
@@ -387,6 +398,7 @@ export default class SearchByTypeForm extends DeloreanComponent {
                     </footer>
                 </div>
             </form>
+            </Loader>
         );
     }
 }
