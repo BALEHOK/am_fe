@@ -1,9 +1,10 @@
 var Flux = require('delorean').Flux;
+var LocalesManifest = require('json!../../locales/browser.json');
 
 var LocaleStore = Flux.createStore({
 
-    locale: '',
-    ctx: document.l10n,//L20n.getContext(),
+    currentLocale: LocalesManifest.default_locale,
+    ctx: document.l10n,
     ready: false,
 
     actions: {
@@ -14,8 +15,8 @@ var LocaleStore = Flux.createStore({
         let self = this;
         this.ctx.addEventListener('ready', function() {
             self.ready = true;
+            self.currentLocale = self.ctx.supportedLocales[0];
             self.emitChange();
-            console.log(self.ctx.supportedLocales);
         });
     },
 
@@ -25,7 +26,7 @@ var LocaleStore = Flux.createStore({
 
     getState() {
         return {
-            locale: this.locale,
+            currentLocale: this.currentLocale,
             ctx: this.ctx,
             ready: this.ready
         };

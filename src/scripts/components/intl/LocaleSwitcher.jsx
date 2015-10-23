@@ -3,6 +3,7 @@ var PropTypes = React.PropTypes;
 var Flux = require('delorean').Flux;
 var LocaleDispatcher = require('../../dispatchers/LocaleDispatcher');
 var LocaleActions = require('../../actions/LocaleActions');
+var LocalesManifest = require('json!../../../locales/browser.json');
 
 var LocaleSwitcher = React.createClass({
     mixins: [Flux.mixins.storeListener],
@@ -13,11 +14,7 @@ var LocaleSwitcher = React.createClass({
         return {
             dispatcher: LocaleDispatcher,
             actions: new LocaleActions(LocaleDispatcher),
-            locales: [
-                'en-GB',
-                'fr-BE',
-                'nl-BE',
-            ]
+            locales: LocalesManifest.locales
         };
     },
 
@@ -30,7 +27,11 @@ var LocaleSwitcher = React.createClass({
             <ul className="locale-switcher">
                 {this.props.locales.map(
                     (locale, index) =>
-                        <li className="locale-switcher__item" onClick={this.handleClick.bind(this, locale)} key={index}>
+                        <li
+                            className={locale === this.state.stores.locale.currentLocale ? 'locale-switcher__item locale-switcher__item_active' : 'locale-switcher__item'}
+                            onClick={this.handleClick.bind(this, locale)}
+                            key={index}
+                        >
                             <span className={'icon icon_locale_' + locale}></span>
                         </li>
                 )}
