@@ -3,8 +3,8 @@ var LocaleStore = require('../stores/LocaleStore');
 
 var LocaleDispatcher = Flux.createDispatcher({
 
-    getLocale() {
-        return this.dispatch("locale:get");
+    changeLocale(locale) {
+        return this.dispatch("locale:change", locale);
     },
 
     getStores() {

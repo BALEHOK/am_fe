@@ -1,10 +1,13 @@
 {
   "locales": [
-    "en",
-    "ru"
+    "en-GB",
+    "fr-BE",
+    "nl-BE"
   ],
+
+  "default_locale": "en-GB",
+
   "resources": [
-    "./assets/locales/website.en.l20n",
-    "./assets/locales/website.ru.l20n"
+    "/assets/locales/locale.{{locale}}.l20n"
   ]
 }

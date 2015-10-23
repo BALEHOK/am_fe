@@ -2,8 +2,8 @@ var Actions = require('./Actions');
 
 class LocaleActions extends Actions {
 
-    getLocale() {
-        return this._dispatcher.getLocale();
+    changeLocale(locale) {
+        return this._dispatcher.changeLocale(locale);
     }
 
 }

@@ -3,13 +3,14 @@
  */
 
 var React = require('react');
-var UserNav = require('./userNav');
-var HeaderNav = require('./headerNav');
-var Breadcrumbs = require('react-breadcrumbs');
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
 var LoginStore = require('../../stores/LoginStore').store;
 var LoginActions = require('../../actions/LoginActions');
+var UserNav = require('./userNav');
+var HeaderNav = require('./headerNav');
+var Breadcrumbs = require('react-breadcrumbs');
+var LocaleSwitcher = require('../intl/LocaleSwitcher');
 
 var Layout = React.createClass({
 
@@ -35,6 +36,7 @@ var Layout = React.createClass({
                             <span className="page-header__banner hide-text">Asset Management</span>
                             <div className="page-header__user-nav pull-right">
                                 {isLoggedIn ? <UserNav user={user} onLogout={this.handleLogout} /> : <div />}
+                                <LocaleSwitcher/>
                             </div>
                         </div>
                     </div>

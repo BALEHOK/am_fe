@@ -108,7 +108,7 @@ gulp.task('L20n', function() {
 
     var locales = folders.map(function(folder) {
       return gulp.src(path.join(localesSrc, folder, '/**/*.l20n'))
-        .pipe(concat('website.' + folder + '.l20n'))
+        .pipe(concat('locale.' + folder + '.l20n'))
         .pipe(gulp.dest(localesDest))
    });
 
