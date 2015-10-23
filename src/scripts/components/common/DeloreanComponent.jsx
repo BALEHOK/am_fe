@@ -1,5 +1,4 @@
 import React from 'react';
-
 export default class DeloreanComponent extends React.Component {
   _isMounted = false
 
