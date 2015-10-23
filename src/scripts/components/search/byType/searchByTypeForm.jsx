@@ -7,8 +7,8 @@ import ParenthesisRow from './parenthesisRow';
 import AttributeRow from './attributeRow';
 
 var assetTypeContext = {
-    active: 1,
-    history: 2
+    history: 0,
+    active: 1
 };
 
 var parenthesisType = {
