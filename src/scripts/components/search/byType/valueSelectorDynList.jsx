@@ -1,7 +1,3 @@
-/**
- * @jsx React.DOM
- */
-
 import React from 'react';
 import DeloreanComponent from '../../common/DeloreanComponent';
 import ReactSelectize from '../../common/react-selectize';

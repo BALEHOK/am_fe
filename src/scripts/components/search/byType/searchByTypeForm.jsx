@@ -1,7 +1,3 @@
-/**
- * @jsx React.DOM
- */
-
 import React from 'react';
 import DeloreanComponent from '../../common/DeloreanComponent';
 import Loader from'../../common/loader.jsx';

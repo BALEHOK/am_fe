@@ -1,7 +1,3 @@
-/**
- * @jsx React.DOM
- */
-
 import React from 'react';
 import ReactSelectize from '../../common/react-selectize';
 
