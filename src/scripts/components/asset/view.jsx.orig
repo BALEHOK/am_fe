@@ -17,11 +17,13 @@ var LayoutSwitcher = require('./layoutSwitcher');
 var ViewsFactory = require('./viewsFactory');
 var Loader = require('../common/loader.jsx');
 var ReportsBlock = require('./reportsBlock');
+<<<<<<< HEAD
 var TasksSidebar = require('./tasksSidebar');
+=======
 var Childs = require('./childAssetTypes');
+>>>>>>> 378e9fcb03b50fc82b55e44e59be7aed430f77de
 var LoaderMixin = require('../../mixins/LoaderMixin');
 var cx = require('classnames');
-var NotFound = require('../errorPages/notFound.jsx');
 
 var AssetView = React.createClass({
     mixins:[Flux.mixins.storeListener, LoaderMixin],
@@ -64,16 +66,14 @@ var AssetView = React.createClass({
     render: function() {
         var assetStore = this.state.stores.asset;
         var asset = assetStore.asset;
-
-        if (asset === null) {
-            return <NotFound />;
-        }
-
         var linkedAssets = assetStore.relatedAssets;
         var taxonomyPath = assetStore.taxonomyPath;
         var reports = this.state.stores.report.reports || [];
+<<<<<<< HEAD
         var tasks = this.state.stores.task.tasks || [];
+=======
         var childAssetTypes = asset.childAssetTypes || [];
+>>>>>>> 378e9fcb03b50fc82b55e44e59be7aed430f77de
 
         var assetLinks = linkedAssets
             .filter(e => { return e.assets != null })
