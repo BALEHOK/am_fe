@@ -18,7 +18,8 @@ var SearchResultsStore = Flux.createStore({
     assetType: undefined,
     taxonomy: undefined,
     page: undefined,
-    context: 1
+    context: 1,
+    attribs: null
   },
 
   actions: {

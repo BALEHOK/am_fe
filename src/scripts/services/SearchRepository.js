@@ -2,11 +2,27 @@ import fetch from "../util/fetch";
 
 export default class SearchRepository {
     search(params) {
-        var searchUrl;
         if (!params.query && params.assetType){
-            searchUrl = '/api/search/bytype';
+            return fetch('/api/search/bytype').post({
+                searchId: params.searchId,
+                query: params.query,
+                page: params.page,
+                assetType: params.assetType,
+                taxonomy: params.taxonomy,
+                sortBy: params.sortBy,
+                context: params.context,
+                attribs: params.attribs
+            });
         } else {
-            searchUrl = '/api/search';
+            return fetch('/api/search').get({
+                searchId: params.searchId,
+                query: params.query,
+                page: params.page,
+                assetType: params.assetType,
+                taxonomy: params.taxonomy,
+                sortBy: params.sortBy,
+                context: params.context
+            });
         }
         
         return fetch(searchUrl).get({
@@ -16,7 +32,8 @@ export default class SearchRepository {
             assetType: params.assetType,
             taxonomy: params.taxonomy,
             sortBy: params.sortBy,
-            context: params.context
+            context: params.context,
+            attribs: params.attribs
         });
     }
 
