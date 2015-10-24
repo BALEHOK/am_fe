@@ -18,6 +18,7 @@ var ViewsFactory = require('./viewsFactory');
 var Loader = require('../common/loader.jsx');
 var ReportsBlock = require('./reportsBlock');
 var TasksSidebar = require('./tasksSidebar');
+var Childs = require('./childAssetTypes');
 var LoaderMixin = require('../../mixins/LoaderMixin');
 var cx = require('classnames');
 
@@ -66,6 +67,7 @@ var AssetView = React.createClass({
         var taxonomyPath = assetStore.taxonomyPath;
         var reports = this.state.stores.report.reports || [];
         var tasks = this.state.stores.task.tasks || [];
+        var childAssetTypes = asset.childAssetTypes || [];
 
         var assetLinks = linkedAssets
             .filter(e => { return e.assets != null })
@@ -104,17 +106,22 @@ var AssetView = React.createClass({
                 <Loader loading={this.state.loading}>
                     <div className="grid">
                         <div className="grid__item two-twelfths asset-page__aside">
+
                             <LayoutSwitcher
                                 screens={asset.screens}
                                 selectedScreen={assetStore.currentScreen}
                                 onChange={this.onScreenChange} />
+
                             <TaxonomyPath taxonomyPath={taxonomyPath} />
+
                             <nav className="nav-block">
                                 <span className="nav-block__title nav-block__title_type_second">Linked assets</span>
                                 <div className="nav-block__item">
                                     {assetLinks}
                                 </div>
                             </nav>
+
+                            <Childs childAssetTypes={childAssetTypes} />
 
                             <nav className="nav-block">
                                 <ReportsBlock assetId={asset.id} assetTypeId={asset.assetTypeId} reports={reports} />
