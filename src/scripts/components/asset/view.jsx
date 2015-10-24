@@ -17,6 +17,7 @@ var LayoutSwitcher = require('./layoutSwitcher');
 var ViewsFactory = require('./viewsFactory');
 var Loader = require('../common/loader.jsx');
 var ReportsBlock = require('./reportsBlock');
+var TasksSidebar = require('./tasksSidebar');
 var Childs = require('./childAssetTypes');
 var LoaderMixin = require('../../mixins/LoaderMixin');
 var cx = require('classnames');
@@ -24,12 +25,13 @@ var cx = require('classnames');
 var AssetView = React.createClass({
     mixins:[Flux.mixins.storeListener, LoaderMixin],
 
-    watchStores: ['asset', 'report'],
+    watchStores: ['asset', 'report', 'task'],
 
     componentWillMount: function() {
         var params = _.extend({}, this.props.params, this.props.query);
         this.waitFor(this.props.actions.loadAsset(params));
         this.props.actions.loadReports(this.props.params.assetTypeId);
+        this.props.actions.loadTasks(this.props.params.assetTypeId);
     },
 
     componentWillReceiveProps: function(nextProps) {
@@ -54,12 +56,17 @@ var AssetView = React.createClass({
         this.props.actions.changeScreen(screenIndex);
     },
 
+    onTaskExecution: function(taskId) {
+        this.props.actions.executeTask(taskId);
+    },
+
     render: function() {
         var assetStore = this.state.stores.asset;
         var asset = assetStore.asset;
         var linkedAssets = assetStore.relatedAssets;
         var taxonomyPath = assetStore.taxonomyPath;
         var reports = this.state.stores.report.reports || [];
+        var tasks = this.state.stores.task.tasks || [];
         var childAssetTypes = asset.childAssetTypes || [];
 
         var assetLinks = linkedAssets
@@ -119,6 +126,12 @@ var AssetView = React.createClass({
                             <nav className="nav-block">
                                 <ReportsBlock assetId={asset.id} assetTypeId={asset.assetTypeId} reports={reports} />
                             </nav>
+
+                            <TasksSidebar
+                                assetId={asset.id}
+                                assetTypeId={asset.assetTypeId}
+                                tasks={tasks}
+                                onExecution={this.onTaskExecution} />
 
                             {/*
                             <nav className="nav-block">
