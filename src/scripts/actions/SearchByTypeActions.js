@@ -14,7 +14,8 @@ export default class SearchByTypeActions extends Actions {
   }
 
   doSearch(searchModel) {
-    localStorage.as = JSON.stringify(searchModel.attributes);
+    this._dispatcher.saveTypeSearchModel(searchModel);
+
     var appRouter = require('../appRouter');
     appRouter.transitionTo(`/search/result?assetType=${searchModel.typeId}&context=${searchModel.assetTypeContext}`);
   }

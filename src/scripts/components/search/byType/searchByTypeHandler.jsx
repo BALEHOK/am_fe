@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router';
 
 import SearchByTypeForm from './searchByTypeForm.jsx';
-import SearchByTypeDispatcher from '../../../dispatchers/SearchByTypeDispatcher';
+import SearchDispatcher from '../../../dispatchers/SearchDispatcher';
 import SearchByTypeActions from '../../../actions/SearchByTypeActions';
 
 export default class SearchByTypePage extends React.Component {
@@ -11,8 +11,8 @@ export default class SearchByTypePage extends React.Component {
     constructor(props) {
         super();
 
-        this.byTypeDispatcher = SearchByTypeDispatcher;
-        this.byTypeActions = new SearchByTypeActions(this.byTypeDispatcher);
+        this.dispatcher = SearchDispatcher;
+        this.byTypeActions = new SearchByTypeActions(this.dispatcher);
     }
 
     render() {
@@ -31,7 +31,7 @@ export default class SearchByTypePage extends React.Component {
                         </ul>
                     </nav>
                     <article className='tab-panel'>
-                        <SearchByTypeForm actions={this.byTypeActions} dispatcher={this.byTypeDispatcher} />
+                        <SearchByTypeForm actions={this.byTypeActions} dispatcher={this.dispatcher} />
                     </article>
                 </div>
             </div>
