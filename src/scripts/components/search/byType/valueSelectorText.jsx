@@ -17,7 +17,7 @@ export default class ValueSelectorText extends React.Component {
             <label className="input-txt input-txt_width_full">
                 <input type="text" className="input-txt__field" placeholder="Type search value"
                     name="txtValue" ref="txtValue"
-                    value={this.props.value} onChange={_.debounce(this.onValueChange, 500)}/>
+                    defaultValue={this.props.value} onChange={_.debounce(this.onValueChange, 500)}/>
             </label>
         );
     }
