@@ -19,10 +19,14 @@ var AssetViewPage = require('./components/asset/viewHandler.jsx');
 var AssetEditPage = require('./components/asset/edit/editHandler.jsx');
 var HistoryHandler = require('./components/history/historyHandler.jsx');
 var ReportsHandler = require('./components/reports/reportsHandler.jsx');
+var ContactHandler = require('./components/contact/contactHandler.jsx');
+var FaqHandler = require('./components/faq/faqHandler.jsx');
 
 var routes = (
   <Route name="app" path="/" handler={Layout}>
     <Route name="login" handler={LoginPage}/>
+    <Route name="contact" handler={ContactHandler} />
+    <Route name="faq" handler={FaqHandler}/>
     <Route name="search" handler={SearchPage}>
       <Route name="simple-search"
         path="/search"
