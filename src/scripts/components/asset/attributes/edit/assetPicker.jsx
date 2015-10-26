@@ -59,13 +59,15 @@ var AssetPicker = React.createClass({
         if (this.props.params.datatype == 'assets') {
             maxItems = 100;
         }
+        var isRequired = this.props.params.required;
         return (
             <SelectWrapper
                 id={this.props.params.id}
                 name={this.props.params.name}
                 className={classes}
-                validationState={this.state.validation}>
-
+                validationState={this.state.validation}
+                isRequired={isRequired}
+            >
                 <ReactSelectize
                     maxItems={maxItems}
                     selectId={"attribute-asset-" + attrId}
