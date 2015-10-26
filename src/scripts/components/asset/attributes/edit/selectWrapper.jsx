@@ -22,6 +22,10 @@ var SelectWrapper = React.createClass({
                         : ''
                     }
                 </span>
+                {this.props.isRequired
+                    ? <span className="asset-data__param-required">*</span>
+                    : null
+                }
             </div>
         );
     }
