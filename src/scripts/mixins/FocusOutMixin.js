@@ -1,7 +1,13 @@
 var FocusOutMixin = {
+  handleEvent: function(event) {
+    if (event.type === 'click'){
+      this.focusOutHandler(event);
+    }
+  },
+
   focusOutHandler: function(e) {
     var closest = e.target.closest(this.focusOutCls);
-    if(this.state.opened && closest && closest.length === 0) {
+    if(this.state.opened && !closest) {
       this.onClose && this.onClose();
       this.setState({
         opened: false
@@ -9,12 +15,12 @@ var FocusOutMixin = {
     }
   },
 
-  componentDidUnmount: function() {
-    document.body.removeEventListener('mousedown', this.focusOutHandler, true);
+  componentDidMount: function() {
+    document.body.addEventListener('click', this, false);
   },
 
-  componentDidMount: function() {
-    document.body.addEventListener('mousedown', this.focusOutHandler, true);
+  componentWillUnmount: function() {
+    document.body.removeEventListener('click', this, false);
   }
 };
 

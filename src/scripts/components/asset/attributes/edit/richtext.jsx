@@ -26,15 +26,16 @@ var RichtextEdit = React.createClass({
 
     render: function() {
         var value = this.props.params.value || ' ';
+        var isRequired = this.props.params.required;
         return (
             <ControlWrapper
                 id={this.props.params.id}
                 name={this.props.params.name}
                 className="rich-editor"
-                validationState={this.state.validation}>
-
+                validationState={this.state.validation}
+                isRequired={isRequired}
+            >
                 <Quill toolbar={items} onChange={_.debounce(this.onTextChange, 500)} theme="snow" defaultValue={value}/>
-
             </ControlWrapper>
         );
     }

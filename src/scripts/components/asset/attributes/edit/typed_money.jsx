@@ -26,19 +26,21 @@ var TypedMoney = React.createClass({
     },
 
     render: function() {
+        var isRequired = this.props.params.required;
         return (
             <ControlWrapper
                 id={this.props.params.id}
                 name={this.props.params.name}
                 className="input-txt input-txt_size_small"
-                validationState={this.state.validation}>
-
+                validationState={this.state.validation}
+                isRequired={isRequired}
+            >
                 <input
                     type="text"
                     onChange={this.valueChanged}
                     className="input-txt__field form-control"
-                    value={ this.getSign() + this.props.params.value} />
-
+                    value={ this.getSign() + this.props.params.value}
+                />
             </ControlWrapper>
         );
     }

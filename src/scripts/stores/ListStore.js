@@ -5,7 +5,7 @@ var ListStore = Flux.createStore({
 
   lists: {
     assets: {},
-    dynlists: [],
+    dynlists: {},
     roles: [],
     zips: {},
     places: {},

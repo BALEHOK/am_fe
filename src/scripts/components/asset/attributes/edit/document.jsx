@@ -33,13 +33,15 @@ var EditableAttribute = React.createClass({
     render: function() {
         var params = this.context.router.getCurrentParams();
         var classes = cx('select', 'select_size_small', 'form-group');
+        var isRequired = this.props.params.required;
         return (
           <SelectWrapper
               id={this.props.params.id}
               name={this.props.params.name}
               className={classes}
-              validationState={this.state.validation}>
-
+              validationState={this.state.validation}
+              isRequired={isRequired}
+          >
               <div className="asset-data__document">
                   <File
                       onUpload={this.onUpload}
