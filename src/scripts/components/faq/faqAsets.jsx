@@ -1,4 +1,6 @@
 var React = require('react');
+var Router = require('react-router');
+var Link = Router.Link;
 var Flux = require('delorean').Flux;
 var cx = require('classnames');
 var FaqItem = require('./faqItem.jsx');
@@ -28,7 +30,13 @@ var FaqAssets = React.createClass({
                 <Loader loading={this.state.loading}>
                     <div className="grid">
                         <div className="grid__item two-twelfths">
-                            <button className="btn" href="#">Add FAQ item</button>
+                            <Link
+                                className="btn"
+                                to="asset-create-from-type"
+                                params={{assetTypeId: 93}}
+                            >
+                                Add FAQ item
+                            </Link>
                         </div>
                         <div className="grid__item ten-twelfths">
                             <div className="accordion">

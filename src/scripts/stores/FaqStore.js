@@ -16,7 +16,6 @@ var FaqStore = Flux.createStore({
     loadFaq() {
         this.faqRepo.loadFaq().then((data) => {
           this.list = data;
-          console.log(data);
           this.emitChange();
         });
     },
