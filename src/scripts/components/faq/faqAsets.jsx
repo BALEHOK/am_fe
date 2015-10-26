@@ -1,13 +1,17 @@
 var React = require('react');
+var Flux = require('delorean').Flux;
 var cx = require('classnames');
 var FaqItem = require('./faqItem.jsx');
+var LoaderMixin = require('../../mixins/LoaderMixin');
+var Loader = require('../common/loader.jsx');
 
 var FaqAssets = React.createClass({
+    mixins:[Flux.mixins.storeListener, LoaderMixin],
 
-    getDefaultProps: function() {
-        return {
-            list: []
-        };
+    watchStores: ['faq'],
+
+    componentDidMount: function() {
+        this.waitFor(this.props.actions.loadFaq());
     },
 
     renderItem: function(item, index) {
@@ -19,9 +23,22 @@ var FaqAssets = React.createClass({
 
     render: function() {
         return (
-            <div className="accordion">
-                {this.props.list.map(this.renderItem)}
+            <div>
+                <h1 className="page-title">FAQ</h1>
+                <Loader loading={this.state.loading}>
+                    <div className="grid">
+                        <div className="grid__item two-twelfths">
+                            <button className="btn" href="#">Add FAQ item</button>
+                        </div>
+                        <div className="grid__item ten-twelfths">
+                            <div className="accordion">
+                                {this.state.stores.faq.list.map(this.renderItem)}
+                            </div>
+                        </div>
+                    </div>
+                </Loader>
             </div>
+
         );
     }
 
