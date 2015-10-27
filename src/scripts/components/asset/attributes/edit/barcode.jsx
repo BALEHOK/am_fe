@@ -41,12 +41,16 @@ var BarcodeAttribute = React.createClass({
             }
             return '';
         };
+        var isRequired = this.props.params.required;
+        
         return (
             <ControlWrapper
                 id={this.props.params.id}
                 name={this.props.params.name}
                 className="input-txt input-txt_size_small"
-                validationState={this.state.validation}>
+                validationState={this.state.validation}
+                isRequired={isRequired}
+            >
                 <button className="btn btn_type_first pull-right btn_size_small"
                     onClick={this.generate}>
                     <i className="btn__icon btn__icon_history"></i>Generate

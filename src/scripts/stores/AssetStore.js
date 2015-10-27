@@ -122,6 +122,13 @@ var AssetStore = Flux.createStore({
           .findIndex({isDefault: true})
           .value();
       this.emitChange();
+    }).catch(err => {
+        if (err.response && err.response.status === 404) {
+            this.asset = null;
+            this.emitChange();
+        } else {
+            throw err;
+        }
     });
   },
 
@@ -317,7 +324,9 @@ var AssetStore = Flux.createStore({
       calculating: this.calculating,
       topElemDataParamId: this.topElemDataParamId,
       currentScreen: () => {
-        return this.asset.screens[this.screenIndex] || {panels: [], hasFormula:false}
+        return this.asset
+            ? this.asset.screens[this.screenIndex] || {panels: [], hasFormula:false}
+            : null;
       }(),
     };
   }
