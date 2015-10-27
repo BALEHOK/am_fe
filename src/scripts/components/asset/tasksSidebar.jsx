@@ -9,7 +9,7 @@ export default class TasksSidebar extends React.Component {
     render() {
         var tasks = this.props.tasks.map(t => {
             return <li key={t.id} className="nav-block__item">
-                <a onClick={this.props.onExecution.bind(this, t.id)} className="link link_second">{t.name}</a>
+                <a onClick={this.props.onExecution.bind(null, t.id)} className="link link_second">{t.name}</a>
             </li>
         });
     	return  _.size(this.props.tasks) > 0
