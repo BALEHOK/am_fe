@@ -44,17 +44,26 @@ var AssetView = React.createClass({
     },
 
     componentWillUpdate: function(nextProps, nextState) {
-        if (!_.isEqual(this.state.stores.task.response, nextState.stores.task.response)) {
+        if (!_.isEqual(this.state.stores.task.response, nextState.stores.task.response) && nextState.stores.task.response.status) {
             let response = nextState.stores.task.response;
-            if (response.status === 'ERROR') {
-                let params = {
-                    type: '',
-                    msg: ''
-                };
-                params.type = 'error';
-                params.msg = response.errors.join(' ');
-                this.props.notifications.show(params);
+            let params = {
+                type: '',
+                msg: ''
+            };
+            switch (response.status) {
+                case 'ERROR':
+                    params.type = 'error';
+                    params.msg = response.errors.join(' ');
+                    break;
+                case 'SUCCESS':
+                    params.type = 'success';
+                    params.msg = '';
+                    break;
+                default:
+                    params.type = '';
+                    params.msg = '';
             }
+            this.props.notifications.show(params);
             this.props.actions.clearTaskResponse();
         }
     },

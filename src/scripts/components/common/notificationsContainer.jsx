@@ -23,6 +23,16 @@ var NotificationsContainer = React.createClass({
                     }
                 );
             }
+            if (notification.type === 'success') {
+                this.refs.toastr.success(
+                    notification.msg,
+                    'Success', {
+                        timeOut: 5000,
+                        extendedTimeOut: 8000,
+                        closeButton: true
+                    }
+                );
+            }
             this.props.actions.clear();
         }
     },
