@@ -21,6 +21,7 @@ var TasksSidebar = require('./tasksSidebar');
 var Childs = require('./childAssetTypes');
 var LoaderMixin = require('../../mixins/LoaderMixin');
 var cx = require('classnames');
+var NotFound = require('../errorPages/notFound.jsx');
 
 var AssetView = React.createClass({
     mixins:[Flux.mixins.storeListener, LoaderMixin],
@@ -63,6 +64,11 @@ var AssetView = React.createClass({
     render: function() {
         var assetStore = this.state.stores.asset;
         var asset = assetStore.asset;
+
+        if (asset === null) {
+            return <NotFound />;
+        }
+
         var linkedAssets = assetStore.relatedAssets;
         var taxonomyPath = assetStore.taxonomyPath;
         var reports = this.state.stores.report.reports || [];
