@@ -42,6 +42,22 @@ var AssetView = React.createClass({
         }
     },
 
+    componentWillUpdate: function(nextProps, nextState) {
+        if (!_.isEqual(this.state.stores.task.response, nextState.stores.task.response)) {
+            let response = nextState.stores.task.response;
+            if (response.status === 'ERROR') {
+                let params = {
+                    type: '',
+                    msg: ''
+                };
+                params.type = 'error';
+                params.msg = response.errors.join(' ');
+                this.props.notifications.show(params);
+            }
+            this.props.actions.clearTaskResponse();
+        }
+    },
+
     onAssetDelete: function() {
         this.waitFor(
             this.props.actions.deleteAsset(this.props.params));
@@ -132,26 +148,6 @@ var AssetView = React.createClass({
                                 assetTypeId={asset.assetTypeId}
                                 tasks={tasks}
                                 onExecution={this.onTaskExecution} />
-
-                            {/*
-                            <nav className="nav-block">
-                                <span className="nav-block__title nav-block__title_type_second">Export</span>
-                                <ul className="nav-block__list">
-                                    <li className="nav-block__item">
-                                        <span className="link link_second"><span className="icon icon_download"></span>.txt</span>
-                                    </li>
-                                    <li className="nav-block__item">
-                                        <span className="link link_second"><span className="icon icon_download"></span>.xml</span>
-                                    </li>
-                                    <li className="nav-block__item">
-                                        <span className="link link_second"><span className="icon icon_download"></span>.doc</span>
-                                    </li>
-                                    <li className="nav-block__item">
-                                        <span className="link link_second"><span className="icon icon_download"></span>.zip all</span>
-                                    </li>
-                                </ul>
-                            </nav>
-                            */}
                         </div>
                         <div className="grid__item ten-twelfths asset-page__content">
                             <Sticky>

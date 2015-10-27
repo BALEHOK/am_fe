@@ -120,6 +120,10 @@ class AssetActions extends Actions {
     return this._dispatcher.executeTask(taskId);
   }
 
+  clearTaskResponse() {
+    return this._dispatcher.clearTaskResponse();
+  }
+
   setValidationResult(result) {
     this._dispatcher.setValidationResult(result);
   }
