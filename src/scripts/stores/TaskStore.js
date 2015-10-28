@@ -10,7 +10,8 @@ var TaskStore = Flux.createStore({
         result: null,
         errors: [],
         shouldRedirectOnComplete: false,
-        taskFunctionType: null
+        taskFunctionType: null,
+        taskName: null,
     },
 
     actions: {
@@ -37,7 +38,8 @@ var TaskStore = Flux.createStore({
                 result: data.result,
                 errors: data.errors,
                 shouldRedirectOnComplete: data.shouldRedirectOnComplete,
-                taskFunctionType: data.taskFunctionType
+                taskFunctionType: data.taskFunctionType,
+                taskName: data.taskName,
             };
             this.emitChange();
         });
@@ -49,7 +51,8 @@ var TaskStore = Flux.createStore({
             result: null,
             errors: [],
             shouldRedirectOnComplete: false,
-            taskFunctionType: null
+            taskFunctionType: null,
+            taskName: null,
         };
         this.emitChange();
     },

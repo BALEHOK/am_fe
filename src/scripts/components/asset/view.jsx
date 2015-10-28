@@ -53,11 +53,11 @@ var AssetView = React.createClass({
             switch (response.status) {
                 case 'ERROR':
                     params.type = 'error';
-                    params.msg = response.errors.join(' ');
+                    params.msg = 'Job "' + response.taskName +'" failed. \n' + response.errors.join(' ');
                     break;
                 case 'SUCCESS':
                     params.type = 'success';
-                    params.msg = '';
+                    params.msg = 'Job "' + response.taskName +'" completed';
                     break;
             }
             this.props.notifications.show(params);
