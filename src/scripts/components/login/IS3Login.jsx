@@ -8,12 +8,7 @@ export default class Login extends React.Component {
     }
 
     componentDidMount() {
-        if (window.location.hash && window.location.hash.indexOf('access_token') != -1) {
-            AuthService.handleCallback()
-                .then(() => LoginActions.loginUser());
-        } else {
-            AuthService.authorize();
-        }
+       AuthService.authorize();
     }
 
     render() {

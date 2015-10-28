@@ -1,21 +1,34 @@
-import { Flux }  from 'delorean'
-import AuthService from '../services/AuthService'
+import { Flux }  from 'delorean';
+import AuthService from '../services/AuthService';
+import moment from 'moment';
 
 var LoginStore = Flux.createStore({
     user: null,
     access_token: null,
 
     actions: {
+        'login:authorize': 'authorize',
         'login:loginUser': 'loginUser',
         'login:logoutUser': 'logoutUser'
     },
 
+    authorize(){
+        this.user = null;
+        this.access_token = null;
+        AuthService.authorize();
+    },
+
     loginUser() {
+        if (!AuthService.isLoggedIn()){
+            this.authorize();
+            return;
+        }
+
         let profile = AuthService.profile;
 
         this.user = {
             userName: profile.userName,
-            lastLogin: profile.lastLogin,
+            lastLogin:  moment(profile.lastLogin),
             email: profile.email
         };
 
@@ -27,7 +40,7 @@ var LoginStore = Flux.createStore({
     logoutUser() {
         this.user = null;
         this.access_token = null;
-        this.emitChange();
+        AuthService.logout();
     },
 
     isLoggedIn() {

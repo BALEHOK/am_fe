@@ -17,8 +17,6 @@ class AuthService {
       //silent_redirect_uri: window.location.protocol + "//" + window.location.host + "/silent_renew.html",
       //silent_renew: true,
 
-      // this will allow all the OIDC protocol claims to vbe visible in the window. normally a client app 
-      // wouldn't care about them or want them taking up space
       filter_protocol_claims: true
     };
 

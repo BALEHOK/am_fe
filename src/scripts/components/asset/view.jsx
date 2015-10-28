@@ -17,18 +17,22 @@ var LayoutSwitcher = require('./layoutSwitcher');
 var ViewsFactory = require('./viewsFactory');
 var Loader = require('../common/loader.jsx');
 var ReportsBlock = require('./reportsBlock');
+var TasksSidebar = require('./tasksSidebar');
+var Childs = require('./childAssetTypes');
 var LoaderMixin = require('../../mixins/LoaderMixin');
 var cx = require('classnames');
+var NotFound = require('../errorPages/notFound.jsx');
 
 var AssetView = React.createClass({
     mixins:[Flux.mixins.storeListener, LoaderMixin],
 
-    watchStores: ['asset', 'report'],
+    watchStores: ['asset', 'report', 'task'],
 
     componentWillMount: function() {
         var params = _.extend({}, this.props.params, this.props.query);
         this.waitFor(this.props.actions.loadAsset(params));
         this.props.actions.loadReports(this.props.params.assetTypeId);
+        this.props.actions.loadTasks(this.props.params.assetTypeId);
     },
 
     componentWillReceiveProps: function(nextProps) {
@@ -53,12 +57,23 @@ var AssetView = React.createClass({
         this.props.actions.changeScreen(screenIndex);
     },
 
+    onTaskExecution: function(taskId) {
+        this.props.actions.executeTask(taskId);
+    },
+
     render: function() {
         var assetStore = this.state.stores.asset;
         var asset = assetStore.asset;
+
+        if (asset === null) {
+            return <NotFound />;
+        }
+
         var linkedAssets = assetStore.relatedAssets;
         var taxonomyPath = assetStore.taxonomyPath;
         var reports = this.state.stores.report.reports || [];
+        var tasks = this.state.stores.task.tasks || [];
+        var childAssetTypes = asset.childAssetTypes || [];
 
         var assetLinks = linkedAssets
             .filter(e => { return e.assets != null })
@@ -97,11 +112,14 @@ var AssetView = React.createClass({
                 <Loader loading={this.state.loading}>
                     <div className="grid">
                         <div className="grid__item two-twelfths asset-page__aside">
+
                             <LayoutSwitcher
                                 screens={asset.screens}
                                 selectedScreen={assetStore.currentScreen}
                                 onChange={this.onScreenChange} />
+
                             <TaxonomyPath taxonomyPath={taxonomyPath} />
+
                             <nav className="nav-block">
                                 <span className="nav-block__title nav-block__title_type_second">Linked assets</span>
                                 <div className="nav-block__item">
@@ -109,9 +127,17 @@ var AssetView = React.createClass({
                                 </div>
                             </nav>
 
+                            <Childs childAssetTypes={childAssetTypes} />
+
                             <nav className="nav-block">
                                 <ReportsBlock assetId={asset.id} assetTypeId={asset.assetTypeId} reports={reports} />
                             </nav>
+
+                            <TasksSidebar
+                                assetId={asset.id}
+                                assetTypeId={asset.assetTypeId}
+                                tasks={tasks}
+                                onExecution={this.onTaskExecution} />
 
                             {/*
                             <nav className="nav-block">
@@ -135,18 +161,18 @@ var AssetView = React.createClass({
                         </div>
                         <div className="grid__item ten-twelfths asset-page__content">
                             <Sticky>
-                                <AssetToolbar isHistory={asset.isHistory}
+                                <AssetToolbar actions={this.props.actions}
+                                              isHistory={asset.isHistory}
                                               isDeleted={asset.isDeleted}
                                               canEdit={asset.editable}
                                               canDelete={asset.deletable}
                                               onAssetDelete={this.onAssetDelete}
                                               onAssetRestore={this.onAssetRestore} />
                             </Sticky>
-                            <ViewComponent
-                                screen={assetStore.currentScreen}
-                                actions={this.props.actions}
-                                dispatcher={this.props.dispatcher}
-                                assetTypeId={asset.assetTypeId} />
+                            <ViewComponent screen={assetStore.currentScreen}
+                                           actions={this.props.actions}
+                                           dispatcher={this.props.dispatcher}
+                                           assetTypeId={asset.assetTypeId} />
                         </div>
                     </div>
                 </Loader>

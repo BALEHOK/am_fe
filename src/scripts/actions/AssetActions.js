@@ -112,6 +112,14 @@ class AssetActions extends Actions {
     return this._dispatcher.loadReports(assetTypeId);
   }
 
+  loadTasks(assetTypeId) {
+    return this._dispatcher.loadTasks(assetTypeId);
+  }
+
+  executeTask(taskId) {
+    return this._dispatcher.executeTask(taskId);
+  }
+
   setValidationResult(result) {
     this._dispatcher.setValidationResult(result);
   }
@@ -122,6 +130,10 @@ class AssetActions extends Actions {
 
   changeScreen(screenIndex) {
     return this._dispatcher.changeScreen(screenIndex);
+  }
+
+  saveTopElemPos(dataParamId) {
+    return this._dispatcher.saveTopElemPos(dataParamId);
   }
 }
 

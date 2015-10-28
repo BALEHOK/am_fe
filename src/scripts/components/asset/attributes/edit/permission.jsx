@@ -28,11 +28,15 @@ var PermissionEdit = React.createClass({
     },
 
     render: function() {
+        var isRequired = this.props.params.required;
         return (
             <ControlWrapper
+                id={this.props.params.id}
                 name={this.props.params.name}
                 className="input-txt input-txt_size_small"
-                validationState={this.state.validation}>
+                validationState={this.state.validation}
+                isRequired={isRequired}
+            >
                 <Permission editable={true}
                     onChange={this.valueChanged}
                     params={this.props.params} />

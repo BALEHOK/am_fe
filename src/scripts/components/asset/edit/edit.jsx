@@ -31,6 +31,18 @@ var Edit = React.createClass({
         this.waitFor(this.props.actions.loadAsset(params));
     },
 
+    componentDidUpdate:function(prevProps, prevState) {
+        if (prevState.loading && !this.state.loading) {
+            let paramId = this.state.stores.asset.topElemDataParamId;
+            let elem = document.querySelector('[data-param-id="'+paramId+'"]');
+            if (paramId && elem) {
+                let elemTop = elem.getBoundingClientRect().top;
+                let offsetTop = document.querySelector('.asset-controls-panel').offsetHeight;
+                window.scrollTo(0,  elemTop - offsetTop*2 - 40);
+            }
+        }
+    },
+
     handleUndo: function () {
         var params = this.context.router.getCurrentParams();
         var query = this.context.router.getCurrentQuery();

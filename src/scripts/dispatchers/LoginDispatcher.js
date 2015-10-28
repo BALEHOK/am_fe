@@ -2,6 +2,10 @@ var Flux = require('delorean').Flux;
 var LoginStore = require('../stores/LoginStore');
 
 var LoginDispatcher = Flux.createDispatcher({
+  
+  authorize(token) {
+    return this.dispatch('login:authorize', token);
+  },
 
   loginUser(token) {
     return this.dispatch('login:loginUser', token);

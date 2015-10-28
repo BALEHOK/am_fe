@@ -72,6 +72,16 @@
       margin-bottom 0
       position: relative
 
+    &-required
+      display inline-block
+      vertical-align top
+      color red
+      margin 0 0 0 20px
+
+    .has-error ~ &-required
+    .has-success ~ &-required
+      opacity 0
+
   &__aside
     background #fafafa
     border-left 1px solid #e2e2e2

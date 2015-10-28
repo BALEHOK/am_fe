@@ -41,12 +41,15 @@ var ListPicker = React.createClass({
             items = _.unique(items.concat(listStore.items));
         }
         var classes = cx('select', 'select_size_small');
+        var isRequired = this.props.params.required;
         return (
            <SelectWrapper
+                id={this.props.params.id}
                 name={this.props.params.name}
                 className={classes}
-                validationState={this.state.validation}>
-
+                validationState={this.state.validation}
+                isRequired={isRequired}
+            >
                     <ReactSelectize
                         multiple={this.props.isMultiple}
                         selectId={selectId}

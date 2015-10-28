@@ -2,7 +2,14 @@ import fetch from "../util/fetch";
 
 export default class SearchRepository {
     search(params) {
-        return fetch('/api/search').get({
+        var searchUrl;
+        if (!params.query && params.assetType){
+            searchUrl = '/api/search/bytype';
+        } else {
+            searchUrl = '/api/search';
+        }
+        
+        return fetch(searchUrl).get({
             searchId: params.searchId,
             query: params.query,
             page: params.page,

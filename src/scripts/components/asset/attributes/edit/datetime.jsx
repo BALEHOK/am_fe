@@ -91,11 +91,15 @@ var DateTimeAttribute = React.createClass({
                 message: undefined,
                 validationState: undefined
             };
+        var isRequired = this.props.params.required;
         return (
             <ControlWrapper
+                id={this.props.params.id}
                 name={this.props.params.name}
                 className="input-txt input-txt_size_small"
-                validationState={this.state.validation}>
+                validationState={this.state.validation}
+                isRequired={isRequired}
+            >
                 <input type="text"
                     className="input-txt__field form-control"
                     onClick={this.showDatePicker}

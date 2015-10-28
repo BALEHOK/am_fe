@@ -18,19 +18,22 @@ var EditableAttribute = React.createClass({
 
     render: function() {
         var classes = cx('select', 'select_size_small');
+        var isRequired = this.props.params.required;
         return (
             <ControlWrapper
+                id={this.props.params.id}
                 name={this.props.params.name}
                 className={classes}
-                validationState={this.state.validation}>
-
+                validationState={this.state.validation}
+                isRequired={isRequired}
+            >
                 <List
                     params={this.props.params}
                     name="zips"
                     actions={this.props.actions}
                     mapper={(el) => ({id: el.id, name: el.code})}
-                    dispatcher={this.props.dispatcher} />
-
+                    dispatcher={this.props.dispatcher}
+                />
             </ControlWrapper>
         );
     }
