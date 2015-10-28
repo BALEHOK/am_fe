@@ -8,6 +8,7 @@ var Router = require('react-router');
 var Sticky = require('react-sticky');
 var Link = Router.Link;
 var Flux = require('delorean').Flux;
+var cx = require('classnames');
 var SearchResultsHeader = require('./searchResultsHeader');
 var TaxonomyPath = require('./taxonomyPath');
 var AssetToolbar = require('./assetToolbar');
@@ -20,8 +21,8 @@ var ReportsBlock = require('./reportsBlock');
 var TasksSidebar = require('./tasksSidebar');
 var Childs = require('./childAssetTypes');
 var LoaderMixin = require('../../mixins/LoaderMixin');
-var cx = require('classnames');
 var NotFound = require('../errorPages/notFound.jsx');
+var TaskRepository = require('../../services/TaskRepository');
 
 var AssetView = React.createClass({
     mixins:[Flux.mixins.storeListener, LoaderMixin],
@@ -33,6 +34,7 @@ var AssetView = React.createClass({
         this.waitFor(this.props.actions.loadAsset(params));
         this.props.actions.loadReports(this.props.params.assetTypeId);
         this.props.actions.loadTasks(this.props.params.assetTypeId);
+        this.taskRepo = new TaskRepository();
     },
 
     componentWillReceiveProps: function(nextProps) {
@@ -61,6 +63,9 @@ var AssetView = React.createClass({
                     break;
             }
             this.props.notifications.show(params);
+            if(response.shouldRedirectOnComplete) {
+                this.taskRepo.redirectOnComlete(response.taskFunctionType, response.result);
+            }
             this.props.actions.clearTaskResponse();
         }
     },
