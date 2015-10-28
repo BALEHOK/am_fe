@@ -31,6 +31,12 @@ var ValidationResult = React.createClass({
             })
             .value();
 
+        if (this.props.validation[""]) {
+            this.props.validation[""].map((e, i) => {
+                items.push(<li key={i}>{e}</li>);
+            });
+        }
+
         return (
             <ul className="validation-summary">
                 {items}
