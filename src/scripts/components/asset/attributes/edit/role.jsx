@@ -41,12 +41,15 @@ var EditableAttribute = React.createClass({
         var value = this.props.params.value
             ? this.props.params.value.id
             : 0;
+        var isRequired = this.props.params.required;
         return (
             <SelectWrapper
                 id={this.props.params.id}
                 name={this.props.params.name}
                 className={classes}
-                validationState={this.state.validation}>
+                validationState={this.state.validation}
+                isRequired={isRequired}
+            >
                 <ReactSelectize
                     items={this.getItems()}
                     value={value}

@@ -17,8 +17,8 @@ var ReportsBlock = React.createClass({
                    </li>;
         });
         return (
-            <div>
-              <span className="nav-block__title">Reports</span>
+            <nav className="nav-block">
+              <span className="nav-block__title nav-block__title_type_second">Reports</span>
               <ul className="nav-block__list">
                   <li className="nav-block__item">
                       <a href={`${APIURL}/standardreports/asset/?assetTypeId=${this.props.assetTypeId}&assetId=${this.props.assetId}`}
@@ -36,7 +36,7 @@ var ReportsBlock = React.createClass({
                   </li>
                   {customReports}
               </ul>
-            </div>
+            </nav>
         );
     }
 });

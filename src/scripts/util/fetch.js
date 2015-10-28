@@ -2,7 +2,6 @@ import fetchival from "fetchival";
 import _ from "underscore";
 import LoginActions from "../actions/LoginActions";
 import {store as LoginStore} from "../stores/LoginStore";
-import RouterContainer from '../services/RouterContainer';
 
 export default function fetch(url, options = {}) {
     let defOptions = {
@@ -35,11 +34,19 @@ function generate(url, options) {
             let request = fetchival(url, options);
             return request[key].apply(request, args)
               .catch((err) => {
-                if(err.response && err.response.status === 401) {
+
+                var status = err.response
+                    ? err.response.status
+                    : null;
+
+               if (status === 401) {
                   LoginActions.authorize();
-                } else {
+                }
+
+                else {
                   throw err;
                 }
+
               });
         }
     });

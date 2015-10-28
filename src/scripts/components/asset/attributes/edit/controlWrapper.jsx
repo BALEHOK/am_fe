@@ -18,6 +18,10 @@ var ControlWrapper = React.createClass({
                         : ''
                     }
                 </label>
+                {this.props.isRequired
+                    ? <span className="asset-data__param-required">*</span>
+                    : null
+                }
             </div>
         );
     }
