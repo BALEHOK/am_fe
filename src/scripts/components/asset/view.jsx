@@ -8,6 +8,7 @@ var Router = require('react-router');
 var Sticky = require('react-sticky');
 var Link = Router.Link;
 var Flux = require('delorean').Flux;
+var cx = require('classnames');
 var SearchResultsHeader = require('./searchResultsHeader');
 var TaxonomyPath = require('./taxonomyPath');
 var AssetToolbar = require('./assetToolbar');
@@ -20,8 +21,8 @@ var ReportsBlock = require('./reportsBlock');
 var TasksSidebar = require('./tasksSidebar');
 var Childs = require('./childAssetTypes');
 var LoaderMixin = require('../../mixins/LoaderMixin');
-var cx = require('classnames');
 var NotFound = require('../errorPages/notFound.jsx');
+var TaskRepository = require('../../services/TaskRepository');
 
 var AssetView = React.createClass({
     mixins:[Flux.mixins.storeListener, LoaderMixin],
@@ -33,6 +34,7 @@ var AssetView = React.createClass({
         this.waitFor(this.props.actions.loadAsset(params));
         this.props.actions.loadReports(this.props.params.assetTypeId);
         this.props.actions.loadTasks(this.props.params.assetTypeId);
+        this.taskRepo = new TaskRepository();
     },
 
     componentWillReceiveProps: function(nextProps) {
@@ -40,6 +42,31 @@ var AssetView = React.createClass({
             !_.isEqual(this.props.query, nextProps.query)) {
             var params = _.extend({}, nextProps.params, nextProps.query);
             this.waitFor(this.props.actions.loadAsset(params));
+        }
+    },
+
+    componentWillUpdate: function(nextProps, nextState) {
+        if (!_.isEqual(this.state.stores.task.response, nextState.stores.task.response) && nextState.stores.task.response.status) {
+            let response = nextState.stores.task.response;
+            let params = {
+                type: '',
+                msg: ''
+            };
+            switch (response.status) {
+                case 'ERROR':
+                    params.type = 'error';
+                    params.msg = 'Job "' + response.taskName +'" failed. \n' + response.errors.join(' ');
+                    break;
+                case 'SUCCESS':
+                    params.type = 'success';
+                    params.msg = 'Job "' + response.taskName +'" completed';
+                    break;
+            }
+            this.props.notifications.show(params);
+            if(response.shouldRedirectOnComplete) {
+                this.taskRepo.redirectOnComlete(response.taskFunctionType, response.result);
+            }
+            this.props.actions.clearTaskResponse();
         }
     },
 
@@ -138,26 +165,6 @@ var AssetView = React.createClass({
                                 assetTypeId={asset.assetTypeId}
                                 tasks={tasks}
                                 onExecution={this.onTaskExecution} />
-
-                            {/*
-                            <nav className="nav-block">
-                                <span className="nav-block__title nav-block__title_type_second">Export</span>
-                                <ul className="nav-block__list">
-                                    <li className="nav-block__item">
-                                        <span className="link link_second"><span className="icon icon_download"></span>.txt</span>
-                                    </li>
-                                    <li className="nav-block__item">
-                                        <span className="link link_second"><span className="icon icon_download"></span>.xml</span>
-                                    </li>
-                                    <li className="nav-block__item">
-                                        <span className="link link_second"><span className="icon icon_download"></span>.doc</span>
-                                    </li>
-                                    <li className="nav-block__item">
-                                        <span className="link link_second"><span className="icon icon_download"></span>.zip all</span>
-                                    </li>
-                                </ul>
-                            </nav>
-                            */}
                         </div>
                         <div className="grid__item ten-twelfths asset-page__content">
                             <Sticky>
