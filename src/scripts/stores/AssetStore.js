@@ -310,6 +310,17 @@ var AssetStore = Flux.createStore({
           isValid: false
         };
       });
+
+    // general errors (which aren't related to any attribute)
+    if(validationResult.modelState[""]) {
+        this.validation[""] = [];
+        validationResult.modelState[""].map(e => {
+            this.validation[""].push({
+              message: e,
+              isValid: false
+            });
+        });
+    }
   },
 
   getState() {
