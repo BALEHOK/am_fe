@@ -59,9 +59,6 @@ var AssetView = React.createClass({
                     params.type = 'success';
                     params.msg = '';
                     break;
-                default:
-                    params.type = '';
-                    params.msg = '';
             }
             this.props.notifications.show(params);
             this.props.actions.clearTaskResponse();
