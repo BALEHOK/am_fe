@@ -392,9 +392,8 @@ export default class SearchByTypeForm extends DeloreanComponent {
                                 </button>
 
                                 <SearchQueryDisplay
-                                    typeName={null}
-                                    attributes={selectedAttributes}
-                                    searchModel={this.state.searchModel} />
+                                    assettype={null}
+                                    attributes={selectedAttributes} />
                             </div>
                         </footer>
                     </div>

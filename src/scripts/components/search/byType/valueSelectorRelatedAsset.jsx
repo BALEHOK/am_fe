@@ -25,13 +25,13 @@ export default class ValueSelectorRelatedAsset extends DeloreanComponent {
 
     onValueChange = (items) => {
         if (!items || !items.length){
-            this.props.onValueChange(false);
+            this.props.onValueChange(null);
         }
         var value;
         if (this.props.params.datatype == 'assets') {
-            value = items.map(i => i.id);
+            value = items;
         } else {
-            value = [items[0].id];
+            value = [items[0]];
         }
 
         this.props.onValueChange(value);
@@ -73,7 +73,7 @@ export default class ValueSelectorRelatedAsset extends DeloreanComponent {
                     items={items}
                     onItemsRequest={this.onItemsRequest}
                     onChange={this.onValueChange}
-                    value={this.props.params.value}
+                    value={this.props.params.value.map(i => i.id)}
                     placeholder=" "
                     label=" " />
                 <a className="btn btn_type_one btn_size_small asset-data__param-btn"

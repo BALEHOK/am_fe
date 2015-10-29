@@ -12,7 +12,7 @@ export default class ValueSelectorBool extends React.Component {
             this.props.onValueChange(false);
         }
 
-        this.props.onValueChange(items[0].value);
+        this.props.onValueChange(items[0]);
     }
 
     render() {

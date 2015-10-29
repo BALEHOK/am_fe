@@ -64,7 +64,17 @@ export default class SearchQueryDisplay extends React.Component {
                 var operator = a.operators && a.operators.length
                     ? a.operators.find((o) => o.id === a.operator).name
                     : '';
-                var value = a.value || '';
+                var value;
+                if (!!a.value){
+                    if (a.value instanceof Array){
+                        value = a.value.map(v => v.name).join('; ');
+                    } else {
+                        value = a.value.name;
+                    }
+                }
+                else {
+                    value = '';
+                }
 
                 var Condition = SearchQueryDisplay.queryComponents.condition;
                 query.push(<Condition field={name} operator={operator} value={value}/>);
@@ -81,7 +91,7 @@ export default class SearchQueryDisplay extends React.Component {
 
     render() {
         return (
-            <div className={'type-searh-query ' + this.props.className}>
+            <div className="type-searh-query">
                 <span className="type-name">{this.props.typeName}</span>
                 <span className="attributes-query">{this.displayQuery(this.props)}</span>
             </div>
