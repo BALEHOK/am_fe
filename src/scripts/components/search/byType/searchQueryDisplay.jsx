@@ -92,7 +92,10 @@ export default class SearchQueryDisplay extends React.Component {
     render() {
         return (
             <div className="type-searh-query">
-                <span className="type-name">{this.props.typeName}</span>
+                {!!this.props.typeName
+                    ? <span className="type-name">Find {this.props.typeName} where:</span>
+                    : {}
+                }
                 <span className="attributes-query">{this.displayQuery(this.props)}</span>
             </div>
         );
