@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import DeloreanComponent from '../../common/DeloreanComponent';
 import Loader from'../../common/loader.jsx';
 import LoaderMixin from'../../../mixins/LoaderMixin';
@@ -26,7 +27,7 @@ export default class SearchByTypeForm extends DeloreanComponent {
 
     state = {
         searchModel: {
-            typeId: 0,
+            assetType: null,
             assetTypeContext: Consts.assetTypeContext.active,
             attributes: []
         },
@@ -45,18 +46,17 @@ export default class SearchByTypeForm extends DeloreanComponent {
     handleAssetTypeChanged = (values) => {
         if (!values || !values.length){
             this.setSearchModel({
-                typeId: 0,
+                assetType: null,
                 attributes: []
             });
             return;
         }
 
-        var typeId = values[0].id;
         this.waitFor(
-            this.props.actions.loadAssetAttributes(typeId)
+            this.props.actions.loadAssetAttributes(values[0].id)
         )
         this.setSearchModel({
-            typeId: typeId,
+            assetType: values[0],
             attributes: []
         });
     }
@@ -68,9 +68,9 @@ export default class SearchByTypeForm extends DeloreanComponent {
     }
 
     addRow = () => {
-        var assetType = this.state.searchModel.typeId;
+        var assetType = this.state.searchModel.assetType;
         var allAttribs = this.state.stores.searchByType.assetAttributes;
-        if (!assetType || !allAttribs[assetType]){
+        if (!assetType || !allAttribs[assetType.id]){
             return;
         }
 
@@ -80,7 +80,7 @@ export default class SearchByTypeForm extends DeloreanComponent {
             selectedAttribs[index - 1].lo = Consts.logicalOperators.and;
         }
 
-        var attribute = allAttribs[assetType][0];
+        var attribute = allAttribs[assetType.id][0];
 
         var selectedAttribModel = {
             index: index,
@@ -101,9 +101,9 @@ export default class SearchByTypeForm extends DeloreanComponent {
     }
 
     addOpenParenthesis = () => {
-        var assetType = this.state.searchModel.typeId;
+        var assetType = this.state.searchModel.assetType;
         var allAttribs = this.state.stores.searchByType.assetAttributes;
-        if (!assetType || !allAttribs[assetType]){
+        if (!assetType || !allAttribs[assetType.id]){
             return;
         }
 
@@ -131,9 +131,9 @@ export default class SearchByTypeForm extends DeloreanComponent {
     }
 
     addClosingParenthesis = () => {
-        var assetType = this.state.searchModel.typeId;
+        var assetType = this.state.searchModel.assetType;
         var allAttribs = this.state.stores.searchByType.assetAttributes;
-        if (!assetType || !allAttribs[assetType]){
+        if (!assetType || !allAttribs[assetType.id]){
             return;
         }
 
@@ -290,11 +290,13 @@ export default class SearchByTypeForm extends DeloreanComponent {
 
     render() {
         var attributeRows = [];
-        var assetType = this.state.searchModel.typeId;
+        var assetType = this.state.searchModel.assetType;
+        var assetTypeId = assetType ? assetType.id : 0;
         var selectedAttributes = this.state.searchModel.attributes;
         if (!!assetType && selectedAttributes.length)
         {
-            var allTypeAttribs = this.state.stores.searchByType.assetAttributes[assetType];
+            assetTypeId = assetType.id;
+            var allTypeAttribs = this.state.stores.searchByType.assetAttributes[assetTypeId];
             for (var i = 0; i < selectedAttributes.length; i++) {
                 var attr = selectedAttributes[i];
                 if (attr.parenthesis > Consts.parenthesisType.none){
@@ -328,7 +330,7 @@ export default class SearchByTypeForm extends DeloreanComponent {
                                 </span>
                                 <ReactSelectize
                                     items={this.state.stores.searchByType.assetTypes}
-                                    value={this.state.searchModel.typeId}
+                                    value={assetTypeId}
                                     onChange={this.handleAssetTypeChanged}
                                     selectId="asset-type"
                                     placeholder="Select asset"
@@ -362,8 +364,8 @@ export default class SearchByTypeForm extends DeloreanComponent {
                         </div>
                     </header>
 
-                    <div className="table-search">
-                        <div className={!selectedAttributes.length?'hide':''}>
+                    <div className={classNames('table-search', { hide: !assetTypeId })}>
+                        <div className={classNames({ hide: !selectedAttributes.length })}>
                             <AttributesTableHeader />
                             <div className="table-search__content">
                                 {attributeRows}
@@ -383,16 +385,16 @@ export default class SearchByTypeForm extends DeloreanComponent {
                                 Add closing parenthesis
                             </span>
                             <div className="table-search__footer-actions clearfix">
-
                                 <button className="btn pull-right"
-                                    disabled={!this.state.searchModel.typeId}
+                                    disabled={!this.state.searchModel.assetType}
                                     onClick={this.doSearch.bind(this)}>
                                     <i className="btn__icon btn__icon_search"></i>Start search
                                 </button>
-                                
-                                <SearchQueryDisplay className="pull-left"
+
+                                <SearchQueryDisplay
                                     typeName={null}
-                                    attributes={selectedAttributes} />
+                                    attributes={selectedAttributes}
+                                    searchModel={this.state.searchModel} />
                             </div>
                         </footer>
                     </div>
