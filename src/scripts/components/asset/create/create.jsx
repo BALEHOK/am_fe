@@ -5,7 +5,6 @@ var Router = require('react-router');
 var moment = require('moment');
 var Loader = require('../../common/loader.jsx');
 var LoaderMixin = require('../../../mixins/LoaderMixin');
-var AssetTypeRow = require('./assetTypeRow');
 
 var Table = FixedDataTable.Table;
 var Column = FixedDataTable.Column;
