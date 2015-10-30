@@ -8,14 +8,14 @@ export default class SearchQueryDisplay extends React.Component {
         parenthesis:    class Parenthesis extends React.Component {
                             render(){
                                 return (
-                                    <span className="parenthesis">{this.props.parenthesis}</span>
+                                    <span className="attributes-query_parenthesis">{this.props.parenthesis}</span>
                                 );}
                             },
 
         lo:             class Lo extends React.Component {
                             render(){
                                 return (
-                                    <span className="lo">
+                                    <span className="attributes-query_lo">
                                         {this.props.lo === Consts.logicalOperators.and
                                             ? ' AND '
                                             : ' OR '}
@@ -26,10 +26,10 @@ export default class SearchQueryDisplay extends React.Component {
         condition:      class Condition extends React.Component {
                             render(){
                                 return (
-                                    <span className="condition">
-                                        <span className="field">{this.props.field}</span>
-                                        <span className="operator">{this.props.operator}</span>
-                                        <span className="value">{this.props.value}</span>
+                                    <span className="attributes-query_condition">
+                                        <span className="attributes-query_condition_field">{this.props.field}</span>
+                                        <span className="attributes-query_condition_operator">{this.props.operator}</span>
+                                        <span className="attributes-query_condition_value">{this.props.value}</span>
                                     </span>
                                 );}
                             }

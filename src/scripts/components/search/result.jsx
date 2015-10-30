@@ -167,7 +167,7 @@ var ResultPage = React.createClass({
 
         return (
             <div>
-                <div className="grid">
+                <div className="grid results-grid">
                     <div className="grid__item two-twelfths">
                         <h1 className="page-title page-title_small">Search results</h1>
                     </div>
