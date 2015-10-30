@@ -35,17 +35,29 @@ export default class SearchQueryDisplay extends React.Component {
                             }
     }
 
+    state = {
+        query: null
+    }
+
     constructor(props){
         super(props);
 
-        //this.displayQuery(props);
+        this.state.query = this.displayQuery(props);
     }
 
-    componentWillReceiveProps(nextProps) {
-        //this.displayQuery(nextProps);
+    componentWillReceiveProps(nextProps){
+        this.updateQuery(nextProps);
     }
+
+    updateQuery = _.debounce(props => {
+        this.setState({
+            query: this.displayQuery(props)
+        });
+    }, 1000)
 
     displayQuery(props) {
+        console.log('displayQuery');
+
         var attributes = props.attributes;
         var query = [];
 
@@ -96,7 +108,7 @@ export default class SearchQueryDisplay extends React.Component {
                     ? <span className="type-name">Find {this.props.typeName} where:</span>
                     : {}
                 }
-                <span className="attributes-query">{this.displayQuery(this.props)}</span>
+                <span className="attributes-query">{this.state.query}</span>
             </div>
         );
     }
