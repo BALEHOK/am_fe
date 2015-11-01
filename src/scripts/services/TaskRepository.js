@@ -21,7 +21,7 @@ export default class TaskRepository {
                 redirectUrl = `/search/result?` + param(params);
                 break;
             case 'CREATEASSET':
-                redirectUrl = `/assettype/${params.assetTypeId}/asset`;
+                redirectUrl = `/assettype/${params.dynEntityConfigId}/asset`;
                 break;
             default:
                 console.log(params);
