@@ -13,13 +13,13 @@ export default class ValueSelectorDynList extends DeloreanComponent {
     watchStores = ['list']
 
     onValueChange = (value) => {
-        this.props.onValueChange(!value ? null : value.id);
+        this.props.onValueChange(!value ? null : value);
     }
 
     render() {
         var params = {
             id: this.props.attrId,
-            value: {id: this.props.value}
+            value: {id: this.props.value ? this.props.value.id : 0}
         };
 
         return (
