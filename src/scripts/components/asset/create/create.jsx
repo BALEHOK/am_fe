@@ -20,12 +20,23 @@ var Create = React.createClass({
 
     getInitialState: function() {
         return {
-            gridMaxHeight: 600
+            gridMaxHeight: 600,
+            gridMaxWidth: 1200,
         };
     },
 
     componentWillMount: function() {
         this.waitFor(this.props.actions.loadAssetTypes());
+    },
+
+    componentDidMount: function() {
+        window.addEventListener("resize", this.onResize);
+        this.setState({
+            gridMaxWidth: document.querySelector('.container').offsetWidth
+        });
+    },
+    componentWillUnmount: function() {
+        window.removeEventListener("resize", this.onResize);
     },
 
     componentDidUpdate: function(prevProps, prevState) {
@@ -36,6 +47,14 @@ var Create = React.createClass({
             });
         }
     },
+
+    onResize: function() {
+		let gridNode = React.findDOMNode(this.refs.grid);
+		this.setState({
+            gridMaxHeight:  window.innerHeight - gridNode.getBoundingClientRect().top - 60,
+            gridMaxWidth: document.querySelector('.container').offsetWidth
+		});
+	},
 
     onRowClick: function(event, rowIndex) {
         let id = this.state.stores.list.assettypes.activeTypes[rowIndex].id
@@ -54,6 +73,14 @@ var Create = React.createClass({
         return date.format("DD.MM.YYYY");
     },
 
+    renderLinkCell() {
+        return <span className="link"><span className="icon icon_chevron-right"></span></span>
+    },
+
+    renderNameCell(cellData) {
+        return <span className="link">{cellData}</span>
+    },
+
     render: function() {
         var assettypes = this.state.stores.list.assettypes;
         return (
@@ -62,37 +89,44 @@ var Create = React.createClass({
                     <h1 className="page-title"><span className="icon icon_create"></span>New Asset</h1>
                     <h2>Please select an asset type</h2>
                     <div className="grid asset-create" ref="grid">
-                        <div className="grid__item ten-twelfths">
+                        <div className="grid__item one-whole" ref="gridContainer">
                             {assettypes && assettypes.activeTypes && assettypes.activeTypes.length > 0
                                 ? <Table
                                     rowHeight={50}
                                     rowGetter={this.rowGetter}
                                     rowsCount={assettypes.activeTypes.length}
-                                    width={1200}
+                                    width={this.state.gridMaxWidth}
                                     maxHeight={this.state.gridMaxHeight}
                                     headerHeight={50}
                                     onRowClick={this.onRowClick}
                                   >
                                         <Column
+                                            cellRenderer={this.renderNameCell}
                                             label="Name"
-                                            width={300}
+                                            width={this.state.gridMaxWidth*0.25}
                                             dataKey="displayName"
                                         />
                                         <Column
                                             label="Description"
-                                            width={600}
+                                            width={this.state.gridMaxWidth*0.45}
                                             dataKey="description"
                                         />
                                         <Column
                                             label="Revision"
-                                            width={120}
+                                            width={this.state.gridMaxWidth*0.12}
                                             dataKey="revision"
                                         />
                                         <Column
                                             cellRenderer={this.renderDateCell}
                                             label="Date"
-                                            width={180}
+                                            width={this.state.gridMaxWidth*0.13}
                                             dataKey="updateDate"
+                                        />
+                                        <Column
+                                            cellRenderer={this.renderLinkCell}
+                                            label=" "
+                                            width={this.state.gridMaxWidth*0.05}
+                                            dataKey="id"
                                         />
                                     </Table>
                                 : null
