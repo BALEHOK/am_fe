@@ -2,7 +2,6 @@ import fetchival from "fetchival";
 import _ from "underscore";
 import LoginActions from "../actions/LoginActions";
 import {store as LoginStore} from "../stores/LoginStore";
-import {param} from "./util";
 
 export default function fetch(url, options = {}) {
     let defOptions = {
@@ -26,7 +25,7 @@ function generate(url, options) {
             if(typeof(data) === 'object') {
                 if(key !== 'get') {
                     args.shift();
-                    options.body = param(data);
+                    options.body = JSON.stringify(data);
                 } else {
                   args.shift();
                   args.unshift(_.pick(data, prop => typeof(prop) !== 'undefined'));

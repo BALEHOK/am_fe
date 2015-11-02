@@ -31,10 +31,14 @@ export default class ValueSelectorDynList extends DeloreanComponent {
 
     onValueChange = (items) => {
         if (!items || !items.length){
-            this.props.onValueChange(false);
+            this.props.onValueChange(null);
         }
 
-        this.props.onValueChange(items[0].id);
+        var value = {
+            id: items[0].id,
+            name: items[0].value
+        };
+        this.props.onValueChange(value);
     }
 
     getItems = (attrId) => {
@@ -43,10 +47,11 @@ export default class ValueSelectorDynList extends DeloreanComponent {
     }
 
     render() {
+        var value = this.props.value ? this.props.value.id : 0;
         return (
             <ReactSelectize
                 items={this.getItems(this.props.attrId)}
-                value={this.props.value}
+                value={value}
                 onChange={this.onValueChange}
                 selectId="selectDynListValue"
                 placeholder="Select value"
