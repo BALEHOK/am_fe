@@ -41,11 +41,13 @@ export default class AttributeRow extends React.Component {
             return;
         }
 
+        var referenceAttrib = values[0];
+        
         var newAttr = this.createNewAttr({
-            referenceAttrib: values[0],
+            referenceAttrib: referenceAttrib,
             operators: [],
             operator: null,
-            value: null
+            value: this.getDefaultValue(referenceAttrib)
         });
         
         this.props.onChange(newAttr);
@@ -85,6 +87,39 @@ export default class AttributeRow extends React.Component {
 
     createNewAttr = (diff) => {
         return Object.assign({}, this.props.selected, diff);
+    }
+
+    getDefaultValue(referenceAttrib){
+        var dataType = referenceAttrib.dataType.toLowerCase();
+        var component;
+        switch(dataType){
+            case 'bool':
+                component = ValueSelectorBool;
+                break;
+
+            case 'currentdate':
+            case 'datetime':
+                component = ValueSelectorDate;
+                break;
+
+            case 'dynlist':
+                component = ValueSelectorDynList;
+                break;
+
+            case 'asset':
+            case 'assets':
+                component = ValueSelectorRelatedAsset;
+                break;
+
+            case 'place':
+                component = ValueSelectorPlace;
+                break;
+
+            default:
+                component = ValueSelectorText;
+        }
+
+        return component.defaultValue || null;
     }
 
     render(){

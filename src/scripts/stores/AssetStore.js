@@ -122,6 +122,13 @@ var AssetStore = Flux.createStore({
           .findIndex({isDefault: true})
           .value();
       this.emitChange();
+    }).catch(err => {
+        if (err.response && err.response.status === 404) {
+            this.asset = null;
+            this.emitChange();
+        } else {
+            throw err;
+        }
     });
   },
 
@@ -181,6 +188,7 @@ var AssetStore = Flux.createStore({
 
   generateBarcode(params) {
       this.barcodeRepo.generate().then((data) => {
+        this.validation[params.id] = {isValid:true};
           this.barcodeBase64 = data.base64Image;
           var attr = this.getAttribute(params.id, params.screenId);
           attr.value = data.barcode;
@@ -303,6 +311,17 @@ var AssetStore = Flux.createStore({
           isValid: false
         };
       });
+
+    // general errors (which aren't related to any attribute)
+    if(validationResult.modelState[""]) {
+        this.validation[""] = [];
+        validationResult.modelState[""].map(e => {
+            this.validation[""].push({
+              message: e,
+              isValid: false
+            });
+        });
+    }
   },
 
   getState() {
@@ -317,7 +336,9 @@ var AssetStore = Flux.createStore({
       calculating: this.calculating,
       topElemDataParamId: this.topElemDataParamId,
       currentScreen: () => {
-        return this.asset.screens[this.screenIndex] || {panels: [], hasFormula:false}
+        return this.asset
+            ? this.asset.screens[this.screenIndex] || {panels: [], hasFormula:false}
+            : null;
       }(),
     };
   }

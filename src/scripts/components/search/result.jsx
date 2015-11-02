@@ -17,6 +17,7 @@ var LoaderMixin = require('../../mixins/LoaderMixin');
 var Flux = require('delorean').Flux;
 var cx = require('classnames');
 import {param} from "../../util/util";
+import SearchQueryDisplay from './byType/searchQueryDisplay';
 
 var ResultPage = React.createClass({
     mixins: [Router.Navigation, LoaderMixin, Flux.mixins.storeListener],
@@ -37,8 +38,13 @@ var ResultPage = React.createClass({
         'xml',
         'xlsx'
     ],
+
+    isSearchByType: function(){
+        var searchQuery = this.context.router.getCurrentQuery();
+        return !searchQuery.query && searchQuery.assetType;
+    },
+
     getInitialState: function() {
-        var query = this.context.router.getCurrentQuery();
         return {
             searchId: null,
             counters: {
@@ -46,7 +52,8 @@ var ResultPage = React.createClass({
                 assetTypes: [],
                 taxonomies: []
             },
-            isTilesView: false
+            isTilesView: false,
+            isSearchByType: this.isSearchByType()
         };
     },
 
@@ -143,7 +150,10 @@ var ResultPage = React.createClass({
             'nav-block': true,
         });
 
-        var assetTypeRefinements = counters.assetTypes.filter(this.filterCounters.bind(this, 'assetType'));
+        var assetTypeRefinements = this.state.isSearchByType
+            ? []
+            : counters.assetTypes.filter(this.filterCounters.bind(this, 'assetType'));
+
         var taxonomyRefinements = counters.taxonomies.filter(this.filterCounters.bind(this, 'taxonomy'));
 
         var postsPerPage = 20;
@@ -157,18 +167,20 @@ var ResultPage = React.createClass({
 
         return (
             <div>
-                <div className="grid">
+                <div className="grid results-grid">
                     <div className="grid__item two-twelfths">
                         <h1 className="page-title page-title_small">Search results</h1>
                     </div>
                     <div className="grid__item ten-twelfths">
-                        {this.context.router.getCurrentQuery().query
+                        {!this.state.isSearchByType
                           ?  <SearchSimpleForm
                                 dispatcher={this.props.dispatcher}
                                 changeFilter={this.loadData}
                                 value={urlQuery.query}
                                 context={urlQuery.context} />
-                          : {}
+                          : <SearchQueryDisplay
+                                typeName={this.state.stores.results.lastSearch.assetType.name}
+                                attributes={this.state.stores.results.lastSearch.attributes} />
                         }
                     </div>
                 </div>
