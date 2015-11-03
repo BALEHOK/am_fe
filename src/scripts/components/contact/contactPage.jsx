@@ -1,10 +1,9 @@
 var React = require('react');
 var Flux = require('delorean').Flux;
-var LoaderMixin = require('../../mixins/LoaderMixin');
 var Loader = require('../common/loader.jsx');
 
 var ContactForm = React.createClass({
-    mixins:[Flux.mixins.storeListener, LoaderMixin],
+    mixins:[Flux.mixins.storeListener],
 
     watchStores: ['contact'],
 
@@ -12,15 +11,15 @@ var ContactForm = React.createClass({
         e.preventDefault();
         var subject = React.findDOMNode(this.refs.subject).value;
         var message = React.findDOMNode(this.refs.message).value;
-        this.waitFor(this.props.actions.sendMessage({
+        this.props.actions.sendMessage({
             subject: subject,
             message: message
-        }));
+        });
     },
 
     render: function() {
         return (
-            <Loader loading={this.state.loading}>
+            <Loader loading={this.state.stores.contact.loading}>
                 <div>
                     <h1 className="page-title">Contact us</h1>
                     <p>If you have any questions, comments or suggestions please contact us</p>

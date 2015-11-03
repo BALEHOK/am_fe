@@ -4,6 +4,7 @@ var ContactRepository = require('../services/ContactRepository');
 var ContactStore = Flux.createStore({
 
     status: '',
+    loading: false,
 
     actions: {
       'contact:send': 'sendMessage',
@@ -14,12 +15,18 @@ var ContactStore = Flux.createStore({
     },
 
     sendMessage(data) {
-        this.contactRepo.sendMessage(data);
+        this.loading = true;
+        this.emitChange();
+        this.contactRepo.sendMessage(data).then((data) => {
+          this.loading = false;
+          this.emitChange();
+        });;
     },
 
     getState() {
       return  {
         status: this.status,
+        loading: this.loading,
       };
     }
 
