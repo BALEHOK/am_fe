@@ -1,22 +1,22 @@
-/**
- * @jsx React.DOM
- */
 var React = require('react');
 var AuthenticatedRouteMixin = require('../../mixins/AuthenticatedRouteMixin');
-var ContactForm = require('./contactForm.jsx');
+var ContactPage = require('./contactPage.jsx');
+var ContactDispatcher = require('../../dispatchers/ContactDispatcher');
+var ContactActions = require('../../actions/ContactActions');
 
 var ContactHandler = React.createClass({
     mixins:[AuthenticatedRouteMixin],
 
     displayName: 'Contact',
 
+    componentWillMount: function() {
+        this.dispatcher = ContactDispatcher;
+        this.actions = new ContactActions(ContactDispatcher);
+    },
+
     render: function() {
         return (
-            <div>
-                <h1 className="page-title">Contact us</h1>
-                <p>If you have any questions, comments or suggestions please contact us</p>
-                <ContactForm/>
-            </div>
+            <ContactPage actions={this.actions} dispatcher={this.dispatcher}/>
         )
     }
 });
