@@ -19,14 +19,15 @@ class StringAttribute extends React.Component {
 
     render() {
         var isMultiline =  this.props.params.datatype == 'text';
+        var isRequired = this.props.params.required;
         var classes = cx('input-txt', 'input-txt_' + (isMultiline ? 'textarea' : 'text'));
-
         return <ControlWrapper
                         id={this.props.params.id}
                         name={this.props.params.name}
                         className={classes}
-                        validationState={this.props.validation}>
-
+                        validationState={this.props.validation}
+                        isRequired={isRequired}
+                >
                     {isMultiline
                         ? <textarea
                             onChange={this.valueChanged}

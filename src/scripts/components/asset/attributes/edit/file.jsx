@@ -71,6 +71,7 @@ var FileEditAttribute = React.createClass({
         let name = this.props.params.value ?
           this.props.params.value.split('/').slice(-1)[0] : "";
         let cnt;
+        var isRequired = this.props.params.required;
         if(name) {
           cnt = (
             <div>
@@ -94,7 +95,9 @@ var FileEditAttribute = React.createClass({
                 id={this.props.params.id}
                 name={this.props.params.name}
                 className="input-txt input-txt_size_small"
-                validationState={this.state.validation}>
+                validationState={this.state.validation}
+                isRequired={isRequired}
+            >
                 {cnt}
             </ControlWrapper>
         );

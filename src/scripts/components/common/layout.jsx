@@ -1,12 +1,11 @@
-/**
- * @jsx React.DOM
- */
-
 var React = require('react');
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
 var LoginStore = require('../../stores/LoginStore').store;
 var LoginActions = require('../../actions/LoginActions');
+var NotificationsDispatcher = require('../../dispatchers/NotificationsDispatcher');
+var NotificationsActions = require('../../actions/NotificationsActions');
+var NotificationsContainer = require('../common/notificationsContainer');
 var UserNav = require('./userNav');
 var HeaderNav = require('./headerNav');
 var Breadcrumbs = require('react-breadcrumbs');
@@ -19,6 +18,11 @@ var Layout = React.createClass({
     },
 
     displayName: 'Home',
+
+    componentWillMount: function() {
+        this.dispatcher = NotificationsDispatcher;
+        this.actions = new NotificationsActions(this.dispatcher);
+    },
 
     handleLogout: function(){
         LoginActions.logoutUser();
@@ -50,6 +54,10 @@ var Layout = React.createClass({
                         <RouteHandler {...this.props} />
                     </div>
                 </div>
+                <NotificationsContainer
+                    dispatcher={this.dispatcher}
+                    actions={this.actions}
+                />
             </div>
         );
     }

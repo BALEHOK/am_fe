@@ -32,6 +32,7 @@
     "react-simpletabs": "^0.6.1",
     "react-sticky": "^2.4.0",
     "react-time-picker": "^1.0.8",
+    "react-toastr": "^1.5.2",
     "underscore": "^1.7.0",
     "whatwg-fetch": "^0.9.0",
     "when": "^3.7.3"
