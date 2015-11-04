@@ -36,6 +36,7 @@ export default class SearchQueryDisplay extends React.Component {
     }
 
     state = {
+        label: null,
         query: null
     }
 
@@ -43,6 +44,7 @@ export default class SearchQueryDisplay extends React.Component {
         super(props);
 
         this.state.query = this.displayQuery(props);
+        this.state.label = this.displayLabel(this.state.query);
     }
 
     componentWillReceiveProps(nextProps){
@@ -50,14 +52,14 @@ export default class SearchQueryDisplay extends React.Component {
     }
 
     updateQuery = _.debounce(props => {
+        var query = this.displayQuery(props);
         this.setState({
-            query: this.displayQuery(props)
+            query: query,
+            label: this.displayLabel(query)
         });
     }, 1000)
 
     displayQuery(props) {
-        console.log('displayQuery');
-
         var attributes = props.attributes;
         var query = [];
 
@@ -101,13 +103,22 @@ export default class SearchQueryDisplay extends React.Component {
         return query;
     }
 
+    displayLabel(query){
+        if (!this.props.typeName){
+            return null;
+        }
+
+        if (query && query.length) {
+            return `Find ${this.props.typeName} where:`;
+        }
+
+        return `Find any ${this.props.typeName}`;
+    }
+
     render() {
         return (
             <div className="type-searh-query">
-                {!!this.props.typeName
-                    ? <span className="type-name">Find {this.props.typeName} where:</span>
-                    : {}
-                }
+                <span className="type-name">{this.state.label}</span>
                 <span className="attributes-query">{this.state.query}</span>
             </div>
         );
