@@ -26,6 +26,7 @@ var SearchResultsStore = Flux.createStore({
   actions: {
     'search:results': 'loadResults',
     'search:counters': 'loadSearchCounters',
+    'search:newFilter': 'setSearchFilter',
     'search:filter': 'applySearchFilter',
     'search:saveTypeSearch': 'saveTypeSearch'
   },
@@ -62,6 +63,13 @@ var SearchResultsStore = Flux.createStore({
     }), () => this.emitChange());
   },
 
+  // overrides search filter (used for new search)
+  setSearchFilter(filter) {
+    this.filter = _.extend({}, filter);
+    this.emitChange();
+  },
+
+  // extends search filter
   applySearchFilter(filter) {
     this.filter = _.extend({}, this.filter, filter);
     this.emitChange();

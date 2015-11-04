@@ -5,6 +5,10 @@ import SearchByTypeStore from '../stores/SearchByTypeStore';
 
 export default Flux.createDispatcher({
 
+  setSearchFilters(filter) {
+    return this.dispatch('search:newFilter', filter);
+  },
+
   applySearchFilters(filter) {
     return this.dispatch('search:filter', filter);
   },

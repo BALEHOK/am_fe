@@ -1,7 +1,9 @@
 var LoaderMixin = {
   startWaiting(attr, ...promises) {
     this.setLoading(attr, true)
-    return Promise.all(promises).then(() => this.setLoading(attr, false));
+    return Promise.all(promises).then(() => {
+      this.setLoading(attr, false);
+    });
   },
 
   waitFor(...promises) {

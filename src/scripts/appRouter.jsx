@@ -14,6 +14,7 @@ var SearchPage = require('./components/search/searchHandler.jsx');
 var SearchSimplePage = require('./components/search/simple/searchSimpleHandler.jsx');
 var SearchByTypePage = require('./components/search/byType/searchByTypeHandler.jsx');
 var ResultPage = require('./components/search/results_handler.jsx');
+var ResultByTypePage = require('./components/search/resultsByType_handler.jsx');
 var LoginPage = require('./components/login/IS3Login.jsx');
 var AssetCreatePage = require('./components/asset/create/createHandler.jsx');
 var AssetViewPage = require('./components/asset/viewHandler.jsx');
@@ -37,6 +38,9 @@ var routes = (
     <Route name="result"
       path="/search/result/?:searchId?"
       handler={ResultPage} />
+    <Route name="resultByType"
+      path="/search/type/result/?:searchId?"
+      handler={ResultByTypePage} />
     <Route
       name="asset-create"
       path="create"
