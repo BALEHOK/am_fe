@@ -59,20 +59,29 @@ var ResultPage = React.createClass({
         this.actions = this.props.actions;
         this.props.dispatcher.stores.results.onChange(this.syncUrl);
         
-        var res = this.actions.setSearchFilter(this.context.router.getCurrentQuery());
-        this.loadExtra(res);
+        var promise = this.actions.setSearchFilter(this.context.router.getCurrentQuery());
+        this.doSearch(promise);
     },
 
     loadData: function(filters, updateCounters = true) {
-        var res = this.actions.changeSearchFilter(filters);
-        this.loadExtra(res, updateCounters);
+        var promise = this.actions.changeSearchFilter(filters);
+        this.doSearch(promise, updateCounters);
     },
 
-    loadExtra: function(resPromise, updateCounters = true){
-        this.waitFor(resPromise);
+    doSearch: function(changeFilterPromise, updateCounters = true){
+        var resultsPromise = changeFilterPromise.then(() => {
+            if (this.isSearchByType()){
+                return this.actions.searchResultsByType();
+            }
+
+            return this.actions.searchResults();
+        });
+
+        this.waitFor(resultsPromise);
+        
         if(updateCounters) {
             this.startWaiting('loadingCounters',
-                resPromise.then(() => {
+                resultsPromise.then(() => {
                     this.actions.fetchSearchCounters();
                     var assetType = this.state.stores.results.filter.assetType;
                     if (assetType) {

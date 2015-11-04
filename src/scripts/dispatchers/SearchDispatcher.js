@@ -13,8 +13,12 @@ export default Flux.createDispatcher({
     return this.dispatch('search:filter', filter);
   },
 
-  searchResults(filters) {
-    return this.dispatch('search:results', filters);
+  searchResults() {
+    return this.dispatch('search:results');
+  },
+
+  searchResultsByType() {
+    return this.dispatch('search:resultsByType');
   },
 
   getCounters(searchId, query, context) {

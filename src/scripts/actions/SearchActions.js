@@ -4,19 +4,20 @@ module.exports = class SearchActions extends Actions {
 
   setSearchFilter(filter) {
     return this._dispatcher
-      .setSearchFilters(filter)
-      .then(() => this.searchResults());
+      .setSearchFilters(filter);
   }
 
   changeSearchFilter(filter) {
     return this._dispatcher
-      .applySearchFilters(filter)
-      .then(() => this.searchResults());
+      .applySearchFilters(filter);
   }
 
   searchResults() {
-    var results = this._dispatcher.getStore('results').getState();
-    return this._dispatcher.searchResults(results.filter);
+    return this._dispatcher.searchResults();
+  }
+
+  searchResultsByType() {
+    return this._dispatcher.searchResultsByType();
   }
 
   fetchSearchCounters(results) {
