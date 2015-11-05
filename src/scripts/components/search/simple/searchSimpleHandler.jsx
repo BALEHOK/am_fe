@@ -6,6 +6,7 @@ var React = require('react');
 var Router = require('react-router');
 var Link = Router.Link;
 var SearchSimpleForm = require('./searchSimpleForm');
+var TranslatedMessage = require('../../intl/TranslatedMessage');
 
 var SearchDispatcher = require('../../../dispatchers/SearchDispatcher');
 var SearchMainActions = require('../../../actions/SearchMainActions');
@@ -25,15 +26,15 @@ var SearchPage = React.createClass({
     render: function() {
         return (
             <div>
-                <h1 className="page-title">Search</h1>
+                <h1 className="page-title"><TranslatedMessage messageId="searchTitle"/></h1>
                 <div className='tabs'>
                     <nav className='tabs-navigation'>
                         <ul className='tabs-menu'>
                             <li className='tabs-menu-item is-active'>
-                                <Link to="/search">Simple</Link>
+                                <Link to="/search"><TranslatedMessage messageId="searchTabSimple"/></Link>
                             </li>
                             <li className='tabs-menu-item'>
-                                <Link to="/search/type">By type</Link>
+                                <Link to="/search/type"><TranslatedMessage messageId="searchTabType"/></Link>
                             </li>
                         </ul>
                     </nav>
