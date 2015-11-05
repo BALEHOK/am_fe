@@ -15,6 +15,8 @@ var HeaderNav = React.createClass({
                         <NavTab to="search">Search</NavTab>
                         <NavTab to="reports">Reports</NavTab>
                         <NavTab to="asset-create">New asset <span className="icon icon_plus"></span></NavTab>
+                        <NavTab to="contact">Contact <span className="icon icon_mail"></span></NavTab>
+                        <NavTab to="faq">FAQ <span className="icon icon_question"></span></NavTab>
                     </ul>
                 </div>
             </nav>
