@@ -16,6 +16,8 @@ var HeaderNav = React.createClass({
                         <NavTab to="search"><TranslatedMessage messageId="search"/></NavTab>)
                         <NavTab to="reports"><TranslatedMessage messageId="reports"/></NavTab>
                         <NavTab to="asset-create"><TranslatedMessage messageId="assetCreate"/> <span className="icon icon_plus"></span></NavTab>
+                        <NavTab to="contact">Contact <span className="icon icon_mail"></span></NavTab>
+                        <NavTab to="faq">FAQ <span className="icon icon_question"></span></NavTab>
                     </ul>
                 </div>
             </nav>

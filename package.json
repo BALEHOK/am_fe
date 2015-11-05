@@ -35,7 +35,7 @@
     "react-time-picker": "^1.0.8",
     "react-toastr": "^1.5.2",
     "underscore": "^1.7.0",
-    "whatwg-fetch": "^0.9.0",
+    "whatwg-fetch": "^0.10.1",
     "when": "^3.7.3"
   },
   "devDependencies": {
