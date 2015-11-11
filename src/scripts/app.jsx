@@ -12,9 +12,9 @@ import {} from "element-closest";
 import {} from "whatwg-fetch";
 import moment from 'moment';
 
-RouterContainer.set(router);
-
 LoginActions.loginUser();
+
+RouterContainer.set(router);
 
 router.run(function (Handler, state) {
   React.render(<Handler {...state} />, document.querySelector('.page-container'));
