@@ -3,7 +3,7 @@ import { OidcClient , OidcTokenManager } from '../libs/oidc/oidc';
 let _lastError = null;
 class AuthService {
   constructor() {
-    let domain = window.location.protocol + "//" + window.location.host;
+    let domain = window.location.protocol + '//' + window.location.host;
     let config = {
       // Auth server settings
       authority: AUTHURL,
@@ -13,9 +13,8 @@ class AuthService {
       scope: 'openid profile webApi',
       response_type: 'id_token token',
 
-      // we're not using these in this sample
-      //silent_redirect_uri: window.location.protocol + "//" + window.location.host + "/silent_renew.html",
-      //silent_renew: true,
+      silent_redirect_uri: domain + '/silent_renew.html',
+      silent_renew: true,
 
       filter_protocol_claims: true
     };
