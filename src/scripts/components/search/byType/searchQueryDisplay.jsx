@@ -57,7 +57,7 @@ export default class SearchQueryDisplay extends React.Component {
             query: query,
             label: this.displayLabel(query)
         });
-    }, 1000)
+    }, 500)
 
     displayQuery(props) {
         var attributes = props.attributes;
