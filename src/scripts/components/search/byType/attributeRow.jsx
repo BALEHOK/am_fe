@@ -218,8 +218,10 @@ export default class AttributeRow extends React.Component {
                             </div>
                         </div>
                     </div>
+
+                    {complexValueSelector}
                 </div>
-                {complexValueSelector}
+
                 <div className="table-search__row_separator">
                 </div>
             </div>

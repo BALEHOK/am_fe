@@ -10,7 +10,7 @@ $thinBorder = 1px solid #c6c6c6
     display flex
     position relative
 
-    &_main, &_complex-value
+    &_main
       display flex
       flex-wrap wrap
 
@@ -129,16 +129,7 @@ $thinBorder = 1px solid #c6c6c6
         margin 0 13%
         padding 20px 15px
 
-      &_complex-value
-        background #f2f2f2
-        width 69%
-
-        &_connector
-          width 5%
-
     &_state_complex
-      .table-search__row-item
-        border-bottom-color transparent
       &::after
         content ""
         display block
@@ -200,8 +191,29 @@ $thinBorder = 1px solid #c6c6c6
           color #fff
         }
 
-    
+  .tabs.tabs-complex-value
+    .tabs-menu
+      margin 0
 
+      li a
+        border none
+
+        &:hover
+          background-color transparent
+
+        &::before
+          border-color transparent
+          border-bottom-color #c9c9c9
+          border-width 8px 12px
+          margin-left -12px
+          margin-top -16px
+
+        &::after
+          border-color transparent
+          border-bottom-color #f6f6f6
+          border-width 8px 12px
+          margin-left -12px
+          margin-top -15px
 
   &__footer
     padding 20px 20px 10px 20px

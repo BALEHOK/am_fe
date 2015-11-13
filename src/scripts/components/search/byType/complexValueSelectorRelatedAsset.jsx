@@ -1,4 +1,6 @@
 import React from 'react';
+import Tabs from 'react-simpletabs';
+import RowActions from './rowActions';
 import ValueSelectorRelatedAsset from './valueSelectorRelatedAsset';
 
 export default class ComplexValueSelectorRelatedAsset extends React.Component {
@@ -11,19 +13,51 @@ export default class ComplexValueSelectorRelatedAsset extends React.Component {
         };
 
         return (
-            <div className="table-search__row_complex-value">
-                <div className="table-search__row-item table-search__row-item_offset-13">
-                </div>
-                <div className="table-search__row-item table-search__row-item_complex-value_connector">
-                    here will be an arrow
-                </div>
-                <div className="table-search__row-item table-search__row-item_complex-value">
-                    <ValueSelectorRelatedAsset
-                        onValueChange={this.props.onValueChange}
-                        params={params}
-                        dispatcher={this.props.dispatcher}
-                        actions={this.props.actions} />
-                </div>
+            <div className="table-search__row-item table-search__row-item_type_inner">
+                <Tabs defaultActiveKey={1} animation={false} className="tabs-complex-value">
+                    <Tabs.Panel key={1} title="Simple condition">
+                        <div className="search-condition">
+                            <div className="search-condition__content">
+                                <div className="search-condition__row">
+                                    <div className="table-search__row-item_complex-value">
+                                        <ValueSelectorRelatedAsset
+                                            onValueChange={this.props.onValueChange}
+                                            params={params}
+                                            dispatcher={this.props.dispatcher}
+                                            actions={this.props.actions} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </Tabs.Panel>
+                    <Tabs.Panel key={2} title="Advanced condition">
+                        <div className="search-condition">
+                            <div className="search-condition__content">
+                                <div className="search-condition__row">
+                                    <RowActions onDelete={this.onDelete} onMoveUp={this.onMoveUp} onMoveDown={this.onMoveDown} />
+                                    <div className="table-search__row-item_complex-value">
+                                        <ValueSelectorRelatedAsset
+                                            onValueChange={this.props.onValueChange}
+                                            params={params}
+                                            dispatcher={this.props.dispatcher}
+                                            actions={this.props.actions} />
+                                    </div>
+                                </div>
+                                <div className="search-condition__row">
+                                    <RowActions onDelete={this.onDelete} onMoveUp={this.onMoveUp} onMoveDown={this.onMoveDown} />
+                                    <div className="table-search__row-item_complex-value">
+                                        <ValueSelectorRelatedAsset
+                                            onValueChange={this.props.onValueChange}
+                                            params={params}
+                                            dispatcher={this.props.dispatcher}
+                                            actions={this.props.actions} />
+                                    </div>
+                                </div>
+                            </div>
+                            <span className="search-condition__add-row">Add a new row</span>
+                        </div>
+                    </Tabs.Panel>
+                </Tabs>
             </div>
         );
     }
