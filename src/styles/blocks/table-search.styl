@@ -1,6 +1,8 @@
+$thinBorder = 1px solid #c6c6c6
+
 .table-search
   display block
-  border 1px solid #c6c6c6
+  border $thinBorder
   font-family $Tahoma
   border-radius $br
 
@@ -14,7 +16,7 @@
 
     &_separator
       width 87%
-      border-bottom 1px solid #c6c6c6
+      border-bottom $thinBorder
 
     &_header
       background #4d4d4d
@@ -38,13 +40,17 @@
       font-size 18px
       line-height 42px
       color #515151
-      margin 0 5px
+      margin 0 3px
 
       &:hover
         color $colorBlack
 
       &_delete
         opacity 0.5
+        padding-right 10px
+        margin-right 7px
+        border-right $thinBorder
+        
         &:hover
           color $colorRed
           opacity 1
@@ -109,7 +115,7 @@
         .connector
           position absolute
           bottom 50%
-          border 1px solid #c6c6c6
+          border $thinBorder
           border-left none
           padding 20px 0
           margin -20px 0px
@@ -140,7 +146,7 @@
         bottom 0
         left 0
         right 13%
-        border-top 1px solid #c6c6c6
+        border-top $thinBorder
 
   &__content
     display block
