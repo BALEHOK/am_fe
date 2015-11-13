@@ -175,6 +175,7 @@ export default class AttributeRow extends React.Component {
 
         return (
             <div className="table-search__row">
+                <div className="table-search__row_main">
                     <RowActions onDelete={this.onDelete} onMoveUp={this.onMoveUp} onMoveDown={this.onMoveDown} />
                     <div className="table-search__row-item table-search__row-item_type_attr">
                         <ReactSelectize
@@ -217,6 +218,10 @@ export default class AttributeRow extends React.Component {
                             </div>
                         </div>
                     </div>
+                </div>
+                {complexValueSelector}
+                <div className="table-search__row_separator">
+                </div>
             </div>
         );
     }
