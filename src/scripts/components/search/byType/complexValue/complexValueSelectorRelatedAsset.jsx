@@ -1,7 +1,7 @@
 import React from 'react';
 import Tabs from 'react-simpletabs';
-import RowActions from './rowActions';
-import ValueSelectorRelatedAsset from './valueSelectorRelatedAsset';
+import RowActions from '../rowActions';
+import ValueSelectorRelatedAsset from '../valueSelectors/valueSelectorRelatedAsset';
 
 export default class ComplexValueSelectorRelatedAsset extends React.Component {
     render(){
@@ -17,9 +17,9 @@ export default class ComplexValueSelectorRelatedAsset extends React.Component {
                 <Tabs defaultActiveKey={1} animation={false} className="tabs-complex-value">
                     <Tabs.Panel key={1} title="Simple condition">
                         <div className="search-condition">
-                            <div className="search-condition__content">
+                            <div className="search-condition__content search-condition__content_simple">
                                 <div className="search-condition__row">
-                                    <div className="table-search__row-item_complex-value">
+                                    <div className="table-search__row-item">
                                         <ValueSelectorRelatedAsset
                                             onValueChange={this.props.onValueChange}
                                             params={params}
@@ -35,7 +35,7 @@ export default class ComplexValueSelectorRelatedAsset extends React.Component {
                             <div className="search-condition__content">
                                 <div className="search-condition__row">
                                     <RowActions onDelete={this.onDelete} onMoveUp={this.onMoveUp} onMoveDown={this.onMoveDown} />
-                                    <div className="table-search__row-item_complex-value">
+                                    <div className="table-search__row-item">
                                         <ValueSelectorRelatedAsset
                                             onValueChange={this.props.onValueChange}
                                             params={params}
@@ -45,7 +45,7 @@ export default class ComplexValueSelectorRelatedAsset extends React.Component {
                                 </div>
                                 <div className="search-condition__row">
                                     <RowActions onDelete={this.onDelete} onMoveUp={this.onMoveUp} onMoveDown={this.onMoveDown} />
-                                    <div className="table-search__row-item_complex-value">
+                                    <div className="table-search__row-item">
                                         <ValueSelectorRelatedAsset
                                             onValueChange={this.props.onValueChange}
                                             params={params}

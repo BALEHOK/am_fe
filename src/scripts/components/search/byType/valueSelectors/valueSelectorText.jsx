@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'underscore';
 
 export default class ValueSelectorText extends React.Component {
     txtValue = null
