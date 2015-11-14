@@ -45,6 +45,10 @@ export default Flux.createDispatcher({
     return this.dispatch('searchByType:addRow', model);
   },
 
+  changeRow(model) {
+    return this.dispatch('searchByType:changeRow', model);
+  },
+
   setSearchModel(modelDiff) {
     return this.dispatch('searchByType:setSearchModel', modelDiff);
   },
@@ -55,10 +59,6 @@ export default Flux.createDispatcher({
   
   loadAssetAttributes(typeId) {
     return this.dispatch('searchByType:assetAttributes', typeId);
-  },
-  
-  loadDataTypeOperators(dataType) {
-    return this.dispatch('searchByType:dataTypeOperators', dataType);
   },
 
   getStores() {

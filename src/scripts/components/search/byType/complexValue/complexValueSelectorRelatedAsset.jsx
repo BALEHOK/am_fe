@@ -33,7 +33,6 @@ export default class ComplexValueSelectorRelatedAsset extends React.Component {
                         <div className="search-condition">
                             <div className="search-condition__content">
                                 <div className="search-condition__row">
-                                    <RowActions onDelete={this.onDelete} onMoveUp={this.onMoveUp} onMoveDown={this.onMoveDown} />
                                     <div className="table-search__row-item">
                                         <ValueSelectorRelatedAsset
                                             onValueChange={this.props.onValueChange}
@@ -43,7 +42,6 @@ export default class ComplexValueSelectorRelatedAsset extends React.Component {
                                     </div>
                                 </div>
                                 <div className="search-condition__row">
-                                    <RowActions onDelete={this.onDelete} onMoveUp={this.onMoveUp} onMoveDown={this.onMoveDown} />
                                     <div className="table-search__row-item">
                                         <ValueSelectorRelatedAsset
                                             onValueChange={this.props.onValueChange}

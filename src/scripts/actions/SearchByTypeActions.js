@@ -6,6 +6,10 @@ export default class SearchByTypeActions extends Actions {
     return this._dispatcher.addRow(model);
   }
 
+  changeRow(model) {
+    return this._dispatcher.changeRow(model);
+  }
+
   setSearchModel(modelDiff) {
     return this._dispatcher.setSearchModel(modelDiff);
   }

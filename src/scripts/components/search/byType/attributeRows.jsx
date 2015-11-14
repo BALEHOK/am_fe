@@ -6,13 +6,10 @@ import Consts from './consts';
 export default class AttributeRows extends React.Component {
 
     rowChanged = (attribute) => {
-        this.state.searchModel.attributes[attribute.index] = attribute;
-
-        if (attribute.parenthesis === Consts.parenthesisType.none && !attribute.operators.length){
-            this.setOperators(attribute);
-        }
-
-        this.forceUpdate();
+        this.props.actions.changeRow({
+            attribute: attribute,
+            attributes: this.props.attributes
+        });
     }
 
     rowDeleted = (index) => {

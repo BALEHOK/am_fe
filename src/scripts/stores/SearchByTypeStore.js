@@ -12,10 +12,10 @@ export default Flux.createStore({
 
     actions: {
         'searchByType:addRow': 'addRow',
+        'searchByType:changeRow': 'changeRow',
         'searchByType:setSearchModel': 'setSearchModel',
         'searchByType:assetTypes': 'loadAssetTypes',
-        'searchByType:assetAttributes': 'loadAssetAttributes',
-        'searchByType:dataTypeOperators': 'loadDataTypeOperators'
+        'searchByType:assetAttributes': 'loadAssetAttributes'
     },
 
     initialize() {
@@ -119,6 +119,18 @@ export default Flux.createStore({
         this.state.searchModel.attributes.push(selectedAttribModel);
 
         this.forceUpdate();
+    },
+
+    changeRow(model) {
+        var attribute = model.attribute;
+
+        model.attributes[attribute.index] = attribute;
+
+        if (attribute.parenthesis === Consts.parenthesisType.none && !attribute.operators.length){
+            this.setOperators(attribute);
+        }
+
+        this.emitChange();
     },
 
     setOperators(selectedAttribute) {
