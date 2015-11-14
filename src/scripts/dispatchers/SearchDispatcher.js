@@ -53,6 +53,18 @@ export default Flux.createDispatcher({
     return this.dispatch('searchByType:addClosingParenthesis', attributes);
   },
 
+  deleteRow(model) {
+    return this.dispatch('searchByType:deleteRow', model);
+  },
+
+  moveRowUp(model) {
+    return this.dispatch('searchByType:moveRowUp', model);
+  },
+
+  moveRowDown(model) {
+    return this.dispatch('searchByType:moveRowDown', model);
+  },
+
   changeRow(model) {
     return this.dispatch('searchByType:changeRow', model);
   },

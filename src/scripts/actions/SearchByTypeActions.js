@@ -9,13 +9,25 @@ export default class SearchByTypeActions extends Actions {
   addOpenParenthesis(attributes) {
     return this._dispatcher.addOpenParenthesis(attributes);
   }
-  
+
   addClosingParenthesis(attributes) {
     return this._dispatcher.addClosingParenthesis(attributes);
   }
 
   changeRow(model) {
     return this._dispatcher.changeRow(model);
+  }
+
+  deleteRow(model) {
+    return this._dispatcher.deleteRow(model);
+  }
+
+  moveRowUp(model) {
+    return this._dispatcher.moveRowUp(model);
+  }
+
+  moveRowDown(model) {
+    return this._dispatcher.moveRowDown(model);
   }
 
   setSearchModel(modelDiff) {

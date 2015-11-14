@@ -72,7 +72,7 @@ export default class SearchByTypeForm extends DeloreanComponent {
 
     doSearch(e) {
         e.preventDefault && e.preventDefault();
-        this.props.actions.doSearch();
+        this.props.actions.doSearch(this.state.stores.searchByType.searchModel);
     }
 
     setSearchModel(diff){

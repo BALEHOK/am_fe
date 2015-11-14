@@ -14,6 +14,9 @@ export default Flux.createStore({
         'searchByType:addRow': 'addRow',
         'searchByType:addOpenParenthesis': 'addOpenParenthesis',
         'searchByType:addClosingParenthesis': 'addClosingParenthesis',
+        'searchByType:deleteRow': 'deleteRow',
+        'searchByType:moveRowUp': 'moveRowUp',
+        'searchByType:moveRowDown': 'moveRowDown',
         'searchByType:changeRow': 'changeRow',
         'searchByType:setSearchModel': 'setSearchModel',
         'searchByType:assetTypes': 'loadAssetTypes',
@@ -30,6 +33,7 @@ export default Flux.createStore({
         };
     },
 
+    // actions
     setSearchModel(modelDiff) {
         Object.assign(this.searchModel, modelDiff);
         this.emitChange();
@@ -110,6 +114,71 @@ export default Flux.createStore({
         this.emitChange();
     },
 
+    deleteRow(model) {
+        var index = model.index;
+        var attribs = model.attributes;
+        
+        attribs.splice(index, 1);
+
+        if (attribs.length !== 0){
+            this.updateRowIndexes(index, attribs);
+
+            if (index > 0){
+                this.fixLogicalOperator(index - 1, attribs);
+            }
+        }
+
+        this.emitChange();
+    },
+
+    moveRowUp(model) {
+        var index = model.index;
+        
+        if (index === 0){
+            return;
+        }
+
+        var attribs = model.attributes;
+        var prevIndex = index - 1;
+        var prev = attribs[prevIndex];
+        attribs[prevIndex] = attribs[index];
+        attribs[index] = prev;
+
+        this.updateRowIndexes(prevIndex, attribs);
+
+        if (index > 1){
+            this.fixLogicalOperator(index - 2, attribs);
+        }
+        this.fixLogicalOperator(index - 1, attribs);
+        this.fixLogicalOperator(index, attribs);
+
+        this.emitChange();
+    },
+
+    moveRowDown(model) {
+        var index = model.index;
+        var attribs = model.attributes;
+
+        if (index === attribs.length - 1){
+            return;
+        }
+
+        var nextIndex = index + 1;
+        var next = attribs[nextIndex];
+        attribs[nextIndex] = attribs[index];
+        attribs[index] = next;
+
+        this.updateRowIndexes(index, attribs);
+
+        if (index > 0){
+            this.fixLogicalOperator(index - 1, attribs);
+        }
+        this.fixLogicalOperator(index, attribs);
+        this.fixLogicalOperator(index + 1, attribs);
+
+        this.emitChange();
+    },
+
     changeRow(model) {
         var attribute = model.attribute;
 
@@ -121,29 +190,6 @@ export default Flux.createStore({
 
         this.emitChange();
     },
-
-    setOperators(selectedAttribute) {
-        var dataTypeOperators = this.dataTypeOperators;
-        var datatype = selectedAttribute.referenceAttrib.dataType;
-        if (!setDataTypeOperators())
-        {
-            this.loadDataTypeOperators(datatype)
-                .then(() => setDataTypeOperators())
-                .then(() => this.emitChange());
-        }
-
-        function setDataTypeOperators() {
-            var ops = dataTypeOperators[datatype];
-            if (ops && ops.length){
-                selectedAttribute.operators = ops;
-                selectedAttribute.operator = ops[0].id;
-                return true;
-            }
-            return false;
-        }
-    },
-
-    // end search model
 
     loadAssetTypes() {
         always(
@@ -207,6 +253,53 @@ export default Flux.createStore({
                 () => {
                     this.dataTypeOperators[dataType] = [];
                 });
+    },
+
+    setOperators(selectedAttribute) {
+        var dataTypeOperators = this.dataTypeOperators;
+        var datatype = selectedAttribute.referenceAttrib.dataType;
+        if (!setDataTypeOperators())
+        {
+            this.loadDataTypeOperators(datatype)
+                .then(() => setDataTypeOperators())
+                .then(() => this.emitChange());
+        }
+
+        function setDataTypeOperators() {
+            var ops = dataTypeOperators[datatype];
+            if (ops && ops.length){
+                selectedAttribute.operators = ops;
+                selectedAttribute.operator = ops[0].id;
+                return true;
+            }
+            return false;
+        }
+    },
+
+    fixLogicalOperator(index, attribs){
+        var curAttrib = attribs[index];
+        // last row has no LO
+        if (index === attribs.length - 1){
+            curAttrib.lo = Consts.logicalOperators.none;
+        }
+
+        // open parenthesis never has LO, skip it
+        else if (curAttrib.parenthesis !== Consts.parenthesisType.open){
+            // no LO before closing parenthesis
+            if (attribs[index + 1].parenthesis === Consts.parenthesisType.closing){
+                curAttrib.lo = Consts.logicalOperators.none;
+            }
+            // ensure there is LO before not closing parenthesis
+            else if (curAttrib.lo === Consts.logicalOperators.none){
+                curAttrib.lo = Consts.logicalOperators.and;
+            }
+        }
+    },
+
+    updateRowIndexes(startFrom, attribs){
+        for (var i = startFrom; i != attribs.length; i++){
+            attribs[i].index = i;
+        }
     },
 
     getState() {
