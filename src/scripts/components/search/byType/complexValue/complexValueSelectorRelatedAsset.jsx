@@ -1,6 +1,5 @@
 import React from 'react';
 import Tabs from 'react-simpletabs';
-import RowActions from '../rowActions';
 import ValueSelectorRelatedAsset from '../valueSelectors/valueSelectorRelatedAsset';
 
 export default class ComplexValueSelectorRelatedAsset extends React.Component {
