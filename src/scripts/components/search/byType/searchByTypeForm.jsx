@@ -55,7 +55,11 @@ export default class SearchByTypeForm extends DeloreanComponent {
     }
 
     addRow = () => {
-        this.props.actions.addRow();
+        var searchModel = this.state.stores.searchByType.searchModel;
+        this.props.actions.addRow({
+            assetType: searchModel.assetType,
+            attributes: searchModel.attributes
+        });
     }
 
     addOpenParenthesis = () => {
@@ -76,6 +80,8 @@ export default class SearchByTypeForm extends DeloreanComponent {
     }
 
     render() {
+        var searchModel = this.state.stores.searchByType.searchModel;
+        var assetTypeId = searchModel.assetType ? searchModel.assetType.id : 0;
         return (
             <Loader  loading={this.state.loading}>
                 <form className="form advanced-search">
@@ -103,7 +109,7 @@ export default class SearchByTypeForm extends DeloreanComponent {
                                     <label className="radio-btn">
                                         <input type="radio" className="radio-btn__input" name="assetTypeState"
                                             value={Consts.assetTypeContext.active}
-                                            checked={this.state.stores.searchByType.searchModel.assetTypeContext == Consts.assetTypeContext.active}
+                                            checked={searchModel.assetTypeContext == Consts.assetTypeContext.active}
                                             onChange={this.onContextChanged} />
                                         <span className="radio-btn__icon"></span>
                                         Active assets
@@ -111,7 +117,7 @@ export default class SearchByTypeForm extends DeloreanComponent {
                                     <label className="radio-btn">
                                         <input type="radio" className="radio-btn__input" name="assetTypeState"
                                             value={Consts.assetTypeContext.history}
-                                            checked={this.state.stores.searchByType.searchModel.assetTypeContext == Consts.assetTypeContext.history}
+                                            checked={searchModel.assetTypeContext == Consts.assetTypeContext.history}
                                             onChange={this.onContextChanged} />
                                         <span className="radio-btn__icon"></span>
                                         History
@@ -122,12 +128,16 @@ export default class SearchByTypeForm extends DeloreanComponent {
                     </header>
 
                     <div className={classNames('table-search', { hide: !assetTypeId })}>
-                        <div className={classNames({ hide: !selectedAttributes.length })}>
+                        <div className={classNames({ hide: !searchModel.attributes.length })}>
                             <AttributesTableHeader />
                             <div className="table-search__content">
                                 <AttributeRows
-                                    actions={this.actions}
-                                    dispatcher={this.dispatcher} />
+                                    actions={this.props.actions}
+                                    assetType={searchModel.assetType}
+                                    attributes={searchModel.attributes}
+                                    allTypeAttribs={searchModel.assetType
+                                                        ? this.state.stores.searchByType.assetAttributes[searchModel.assetType.id]
+                                                        : []} />
                             </div>
                         </div>
                         <footer className="table-search__footer">
@@ -145,13 +155,13 @@ export default class SearchByTypeForm extends DeloreanComponent {
                             </span>
                             <div className="table-search__footer-actions clearfix">
                                 <button className="btn pull-right"
-                                    disabled={!this.state.stores.searchByType.searchModel.assetType}
+                                    disabled={!searchModel.assetType}
                                     onClick={this.doSearch.bind(this)}>
                                     <i className="btn__icon btn__icon_search"></i>Start search
                                 </button>
 
                                 <SearchQueryDisplay
-                                    attributes={this.state.stores.searchByType.searchModel.selectedAttributes} />
+                                    attributes={searchModel.attributes} />
                             </div>
                         </footer>
                     </div>

@@ -1,6 +1,15 @@
 import Actions from './Actions';
 
 export default class SearchByTypeActions extends Actions {
+
+  addRow(model) {
+    return this._dispatcher.addRow(model);
+  }
+
+  setSearchModel(modelDiff) {
+    return this._dispatcher.setSearchModel(modelDiff);
+  }
+
   loadAssetTypes() {
     return this._dispatcher.loadAssetTypes();
   }

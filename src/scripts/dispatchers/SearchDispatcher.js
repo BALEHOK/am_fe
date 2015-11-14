@@ -41,6 +41,14 @@ export default Flux.createDispatcher({
     return this.dispatch('search:saveTypeSearch', model);
   },
 
+  addRow(model) {
+    return this.dispatch('searchByType:addRow', model);
+  },
+
+  setSearchModel(modelDiff) {
+    return this.dispatch('searchByType:setSearchModel', modelDiff);
+  },
+
   loadAssetTypes() {
     return this.dispatch('searchByType:assetTypes');
   },

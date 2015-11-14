@@ -1,5 +1,6 @@
 import {Flux} from 'delorean';
 import {always} from '../util/util';
+import Consts from '../components/search/byType/consts';
 
 import AssetTypeRepository from '../services/AssetTypeRepository';
 
@@ -10,6 +11,8 @@ export default Flux.createStore({
     dataTypeOperators: {},
 
     actions: {
+        'searchByType:addRow': 'addRow',
+        'searchByType:setSearchModel': 'setSearchModel',
         'searchByType:assetTypes': 'loadAssetTypes',
         'searchByType:assetAttributes': 'loadAssetAttributes',
         'searchByType:dataTypeOperators': 'loadDataTypeOperators'
@@ -18,28 +21,32 @@ export default Flux.createStore({
     initialize() {
         this.assetTypeRepo = new AssetTypeRepository();
 
-        searchModel = {
+        this.searchModel = {
             assetType: null,
             assetTypeContext: Consts.assetTypeContext.active,
             attributes: []
         };
     },
 
-    // search model
-    addRow = () => {
-        var assetType = this.props.assetType;
-        var allAttribs = this.state.stores.searchByType.assetAttributes;
-        if (!assetType || !allAttribs[assetType.id]){
+    setSearchModel(modelDiff) {
+        Object.assign(this.searchModel, modelDiff);
+        this.emitChange();
+    },
+
+    // add another attribute row to a collection
+    addRow(model) {
+        var assetType = model.assetType;
+        if (!assetType || !this.assetAttributes[assetType.id]){
             return;
         }
 
-        var selectedAttribs = this.state.attributes;
+        var selectedAttribs = model.attributes;
         var index = selectedAttribs.length;
         if (index != 0 && selectedAttribs[index - 1].parenthesis !== Consts.parenthesisType.open){
             selectedAttribs[index - 1].lo = Consts.logicalOperators.and;
         }
 
-        var attribute = allAttribs[assetType.id][0];
+        var attribute = this.assetAttributes[assetType.id][0];
 
         var selectedAttribModel = {
             index: index,
@@ -56,10 +63,10 @@ export default Flux.createStore({
 
         selectedAttribs.push(selectedAttribModel);
 
-        this.props.onChange();
-    }
+        this.emitChange();
+    },
 
-    addOpenParenthesis = () => {
+    addOpenParenthesis() {
         var assetType = this.state.searchModel.assetType;
         var allAttribs = this.state.stores.searchByType.assetAttributes;
         if (!assetType || !allAttribs[assetType.id]){
@@ -87,9 +94,9 @@ export default Flux.createStore({
         selectedAttribs.push(selectedAttribModel);
 
         this.forceUpdate();
-    }
+    },
 
-    addClosingParenthesis = () => {
+    addClosingParenthesis() {
         var assetType = this.state.searchModel.assetType;
         var allAttribs = this.state.stores.searchByType.assetAttributes;
         if (!assetType || !allAttribs[assetType.id]){
@@ -112,7 +119,28 @@ export default Flux.createStore({
         this.state.searchModel.attributes.push(selectedAttribModel);
 
         this.forceUpdate();
-    }
+    },
+
+    setOperators(selectedAttribute) {
+        var dataTypeOperators = this.dataTypeOperators;
+        var datatype = selectedAttribute.referenceAttrib.dataType;
+        if (!setDataTypeOperators())
+        {
+            this.loadDataTypeOperators(datatype)
+                .then(() => setDataTypeOperators())
+                .then(() => this.emitChange());
+        }
+
+        function setDataTypeOperators() {
+            var ops = dataTypeOperators[datatype];
+            if (ops && ops.length){
+                selectedAttribute.operators = ops;
+                selectedAttribute.operator = ops[0].id;
+                return true;
+            }
+            return false;
+        }
+    },
 
     // end search model
 
@@ -165,12 +193,8 @@ export default Flux.createStore({
     },
 
     loadDataTypeOperators(dataType) {
-        if (!!this.dataTypeOperators[dataType]){
-            this.emitChange();
-        }
-
-        always(
-            this.assetTypeRepo.loadDataTypeOperators(dataType).then(
+        return this.assetTypeRepo.loadDataTypeOperators(dataType)
+            .then(
                 (data) => {
                     if (!data || !data.length){
                         this.dataTypeOperators[dataType] = [];
@@ -181,14 +205,12 @@ export default Flux.createStore({
                 },
                 () => {
                     this.dataTypeOperators[dataType] = [];
-                }
-            ),
-            () => this.emitChange()
-        );
+                });
     },
 
     getState() {
         return {
+            searchModel: this.searchModel,
             assetTypes: this.assetTypes,
             assetAttributes: this.assetAttributes,
             dataTypeOperators: this.dataTypeOperators

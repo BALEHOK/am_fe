@@ -1,10 +1,8 @@
 import React from 'react';
 import ParenthesisRow from './parenthesisRow';
 import AttributeRow from './attributeRow';
-import reactMixin from 'react-mixin';
-import {Flux} from 'delorean';
+import Consts from './consts';
 
-@reactMixin.decorate(Flux.mixins.storeListener)
 export default class AttributeRows extends React.Component {
 
     rowChanged = (attribute) => {
@@ -15,31 +13,6 @@ export default class AttributeRows extends React.Component {
         }
 
         this.forceUpdate();
-    }
-
-    setOperators(selectedAttribute) {
-        var dataTypeOperators = this.state.stores.searchByType.dataTypeOperators;
-        var datatype = selectedAttribute.referenceAttrib.dataType;
-        if (!loadFromStore())
-        {
-            // rerender required after call to loadFromStore()
-            // this.waitFor() does it implicitly
-            // otherwise call this.forceUpdate()
-            this.waitFor(
-                this.props.actions.loadDataTypeOperators(datatype)
-                    .then(() => loadFromStore())
-            );
-        }
-
-        function loadFromStore() {
-            var ops = dataTypeOperators[datatype];
-            if (ops && ops.length){
-                selectedAttribute.operators = ops;
-                selectedAttribute.operator = ops[0].id;
-                return true;
-            }
-            return false;
-        }
     }
 
     rowDeleted = (index) => {
@@ -139,7 +112,6 @@ export default class AttributeRows extends React.Component {
         if (!!assetType && selectedAttributes.length)
         {
             assetTypeId = assetType.id;
-            var allTypeAttribs = this.state.stores.searchByType.assetAttributes[assetTypeId];
             for (var i = 0; i < selectedAttributes.length; i++) {
                 var attr = selectedAttributes[i];
                 if (attr.parenthesis > Consts.parenthesisType.none){
@@ -152,7 +124,7 @@ export default class AttributeRows extends React.Component {
                             onMoveDown={this.rowMoveDown} />);
                 } else {
                     attributeRows.push(
-                        <AttributeRow attributes={allTypeAttribs}
+                        <AttributeRow attributes={this.props.allTypeAttribs}
                             selected={attr}
                             onChange={this.rowChanged}
                             onDelete={this.rowDeleted}
