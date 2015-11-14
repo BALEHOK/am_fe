@@ -11,6 +11,8 @@ export default Flux.createStore({
     dataTypeOperators: {},
 
     actions: {
+        'searchByType:setContext': 'setContext',
+        'searchByType:chooseAssetType': 'chooseAssetType',
         'searchByType:addRow': 'addRow',
         'searchByType:addOpenParenthesis': 'addOpenParenthesis',
         'searchByType:addClosingParenthesis': 'addClosingParenthesis',
@@ -18,9 +20,7 @@ export default Flux.createStore({
         'searchByType:moveRowUp': 'moveRowUp',
         'searchByType:moveRowDown': 'moveRowDown',
         'searchByType:changeRow': 'changeRow',
-        'searchByType:setSearchModel': 'setSearchModel',
-        'searchByType:assetTypes': 'loadAssetTypes',
-        'searchByType:assetAttributes': 'loadAssetAttributes'
+        'searchByType:assetTypes': 'loadAssetTypes'
     },
 
     initialize() {
@@ -33,9 +33,24 @@ export default Flux.createStore({
         };
     },
 
-    // actions
-    setSearchModel(modelDiff) {
-        Object.assign(this.searchModel, modelDiff);
+    setContext(context) {
+        this.searchModel.assetTypeContext = context;
+
+        this.emitChange();
+    },
+
+    chooseAssetType(assetType) {
+        this.searchModel.assetType = assetType;
+        this.searchModel.attributes = [];
+
+        if (assetType && assetType.id){
+            if (!this.assetAttributes[assetType.id]){
+                this.loadAssetAttributes(assetType.id)
+                    .then(() => this.emitChange());
+                return;
+            }
+        }
+
         this.emitChange();
     },
 
@@ -221,22 +236,20 @@ export default Flux.createStore({
     },
 
     loadAssetAttributes(typeId) {
-        always(
-            this.assetTypeRepo.loadAssetAttributes(typeId).then(
-                (data) => {
-                    if (!data.attributes || !data.attributes.length){
+        return this.assetTypeRepo.loadAssetAttributes(typeId)
+                .then(
+                    (data) => {
+                        if (!data.attributes || !data.attributes.length){
+                            this.assetAttributes[typeId] = [];
+                            return;
+                        }
+                        
+                        this.assetAttributes[typeId] = data.attributes;
+                    },
+                    () => {
                         this.assetAttributes[typeId] = [];
-                        return;
                     }
-                    
-                    this.assetAttributes[typeId] = data.attributes;
-                },
-                () => {
-                    this.assetAttributes[typeId] = [];
-                }
-            ),
-            () => this.emitChange()
-      );
+                );
     },
 
     loadDataTypeOperators(dataType) {

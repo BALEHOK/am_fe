@@ -2,6 +2,14 @@ import Actions from './Actions';
 
 export default class SearchByTypeActions extends Actions {
 
+  chooseAssetType(assetType) {
+    return this._dispatcher.chooseAssetType(assetType);
+  }
+
+  setContext(context) {
+    return this._dispatcher.setContext(context);
+  }
+
   addRow(model) {
     return this._dispatcher.addRow(model);
   }
@@ -30,16 +38,8 @@ export default class SearchByTypeActions extends Actions {
     return this._dispatcher.moveRowDown(model);
   }
 
-  setSearchModel(modelDiff) {
-    return this._dispatcher.setSearchModel(modelDiff);
-  }
-
   loadAssetTypes() {
     return this._dispatcher.loadAssetTypes();
-  }
-
-  loadAssetAttributes(typeId) {
-    return this._dispatcher.loadAssetAttributes(typeId);
   }
 
   loadDataTypeOperators(dataType) {

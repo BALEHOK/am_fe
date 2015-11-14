@@ -32,26 +32,17 @@ export default class SearchByTypeForm extends DeloreanComponent {
 
     handleAssetTypeChanged = (values) => {
         if (!values || !values.length){
-            this.setSearchModel({
-                assetType: null,
-                attributes: []
-            });
+            this.props.actions.chooseAssetType(null);
             return;
         }
 
         this.waitFor(
-            this.props.actions.loadAssetAttributes(values[0].id)
+            this.props.actions.chooseAssetType(values[0])
         )
-        this.setSearchModel({
-            assetType: values[0],
-            attributes: []
-        });
     }
 
     onContextChanged = (e) => {
-        this.setSearchModel({
-            assetTypeContext: e.currentTarget.value
-        });
+        this.props.actions.setContext(e.currentTarget.value);
     }
 
     addRow = () => {
@@ -73,10 +64,6 @@ export default class SearchByTypeForm extends DeloreanComponent {
     doSearch(e) {
         e.preventDefault && e.preventDefault();
         this.props.actions.doSearch(this.state.stores.searchByType.searchModel);
-    }
-
-    setSearchModel(diff){
-        this.props.actions.setSearchModel(diff);
     }
 
     render() {

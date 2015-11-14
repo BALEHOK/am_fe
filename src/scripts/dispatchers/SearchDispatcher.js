@@ -41,6 +41,14 @@ export default Flux.createDispatcher({
     return this.dispatch('search:saveTypeSearch', model);
   },
 
+  setContext(context) {
+    return this.dispatch('searchByType:setContext', context);
+  },
+
+  chooseAssetType(assetType) {
+    return this.dispatch('searchByType:chooseAssetType', assetType);
+  },
+
   addRow(model) {
     return this.dispatch('searchByType:addRow', model);
   },
@@ -69,16 +77,8 @@ export default Flux.createDispatcher({
     return this.dispatch('searchByType:changeRow', model);
   },
 
-  setSearchModel(modelDiff) {
-    return this.dispatch('searchByType:setSearchModel', modelDiff);
-  },
-
   loadAssetTypes() {
     return this.dispatch('searchByType:assetTypes');
-  },
-  
-  loadAssetAttributes(typeId) {
-    return this.dispatch('searchByType:assetAttributes', typeId);
   },
 
   getStores() {
