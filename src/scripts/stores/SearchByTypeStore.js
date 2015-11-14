@@ -12,6 +12,8 @@ export default Flux.createStore({
 
     actions: {
         'searchByType:addRow': 'addRow',
+        'searchByType:addOpenParenthesis': 'addOpenParenthesis',
+        'searchByType:addClosingParenthesis': 'addClosingParenthesis',
         'searchByType:changeRow': 'changeRow',
         'searchByType:setSearchModel': 'setSearchModel',
         'searchByType:assetTypes': 'loadAssetTypes',
@@ -66,18 +68,11 @@ export default Flux.createStore({
         this.emitChange();
     },
 
-    addOpenParenthesis() {
-        var assetType = this.state.searchModel.assetType;
-        var allAttribs = this.state.stores.searchByType.assetAttributes;
-        if (!assetType || !allAttribs[assetType.id]){
-            return;
-        }
+    addOpenParenthesis(attributes) {
+        var index = attributes.length;
 
-        var selectedAttribs = this.state.searchModel.attributes;
-        var index = selectedAttribs.length;
-
-        if (index != 0 && selectedAttribs[index - 1].parenthesis !== Consts.parenthesisType.open){
-            selectedAttribs[index - 1].lo = Consts.logicalOperators.and;
+        if (index != 0 && attributes[index - 1].parenthesis !== Consts.parenthesisType.open){
+            attributes[index - 1].lo = Consts.logicalOperators.and;
         }
 
         var selectedAttribModel = {
@@ -91,19 +86,13 @@ export default Flux.createStore({
             lo: Consts.logicalOperators.none
         };
 
-        selectedAttribs.push(selectedAttribModel);
+        attributes.push(selectedAttribModel);
 
-        this.forceUpdate();
+        this.emitChange();
     },
 
-    addClosingParenthesis() {
-        var assetType = this.state.searchModel.assetType;
-        var allAttribs = this.state.stores.searchByType.assetAttributes;
-        if (!assetType || !allAttribs[assetType.id]){
-            return;
-        }
-
-        var index = this.state.searchModel.attributes.length;
+    addClosingParenthesis(attributes) {
+        var index = attributes.length;
 
         var selectedAttribModel = {
             index: index,
@@ -116,9 +105,9 @@ export default Flux.createStore({
             lo: Consts.logicalOperators.none
         };
 
-        this.state.searchModel.attributes.push(selectedAttribModel);
+        attributes.push(selectedAttribModel);
 
-        this.forceUpdate();
+        this.emitChange();
     },
 
     changeRow(model) {

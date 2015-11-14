@@ -45,6 +45,14 @@ export default Flux.createDispatcher({
     return this.dispatch('searchByType:addRow', model);
   },
 
+  addOpenParenthesis(attributes) {
+    return this.dispatch('searchByType:addOpenParenthesis', attributes);
+  },
+
+  addClosingParenthesis(attributes) {
+    return this.dispatch('searchByType:addClosingParenthesis', attributes);
+  },
+
   changeRow(model) {
     return this.dispatch('searchByType:changeRow', model);
   },

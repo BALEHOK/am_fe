@@ -63,11 +63,11 @@ export default class SearchByTypeForm extends DeloreanComponent {
     }
 
     addOpenParenthesis = () => {
-        this.props.actions.addOpenParenthesis();
+        this.props.actions.addOpenParenthesis(this.state.stores.searchByType.searchModel.attributes);
     }
 
     addClosingParenthesis = () => {
-        this.props.actions.addClosingParenthesis();
+        this.props.actions.addClosingParenthesis(this.state.stores.searchByType.searchModel.attributes);
     }
 
     doSearch(e) {

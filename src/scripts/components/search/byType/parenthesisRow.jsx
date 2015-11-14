@@ -41,35 +41,40 @@ export default class ParenthesisRow extends React.Component {
 
         return (
             <div className="table-search__row">
-                <div className="table-search__row-item table-search__row-item_type_actions">
-                    <span className="table-search__row-action table-search__row-action_delete" title="Delete"
-                        onClick={this.onDelete}></span>
-                    <span className="table-search__row-action table-search__row-action_up" title="Mover up"
-                        onClick={this.onMoveUp}></span>
-                    <span className="table-search__row-action table-search__row-action_down" title="Move down"
-                        onClick={this.onMoveDown}></span>
-                </div>
-                <div className="table-search__row-item table-search__row-item_type_attr">
-                    <span className="parenthesis">{this.props.selected.parenthesis == 1 ? '(' : ')'}</span>
-                </div>
-                <div className="table-search__row-item table-search__row-item_type_oper">
-                </div>
-                <div className="table-search__row-item table-search__row-item_type_value">
-                </div>
-                <div className="table-search__row-item table-search__row-item_type_additional">
-                    <div className={'connector-container ' + (showLo ? '' : 'hide')}>
-                        <div className="connector">
-                           <ReactSelectize
-                                items={this.logicalOperators}
-                                value={this.props.selected.lo || 1}
-                                onChange={this.onLoChange}
-                                selectId="logicalOperator"
-                                placeholder="Select operator"
-                                label=" "
-                                clearable={false}
-                            />
+                <div className="table-search__row_main">
+                    <div className="table-search__row-item table-search__row-item_type_actions">
+                        <span className="table-search__row-action table-search__row-action_delete" title="Delete"
+                            onClick={this.onDelete}></span>
+                        <span className="table-search__row-action table-search__row-action_up" title="Mover up"
+                            onClick={this.onMoveUp}></span>
+                        <span className="table-search__row-action table-search__row-action_down" title="Move down"
+                            onClick={this.onMoveDown}></span>
+                    </div>
+                    <div className="table-search__row-item table-search__row-item_type_attr">
+                        <span className="parenthesis">{this.props.selected.parenthesis == 1 ? '(' : ')'}</span>
+                    </div>
+                    <div className="table-search__row-item table-search__row-item_type_oper">
+                    </div>
+                    <div className="table-search__row-item table-search__row-item_type_value">
+                    </div>
+                    <div className="table-search__row-item table-search__row-item_type_additional">
+                        <div className={'connector-container ' + (showLo ? '' : 'hide')}>
+                            <div className="connector">
+                               <ReactSelectize
+                                    items={this.logicalOperators}
+                                    value={this.props.selected.lo || 1}
+                                    onChange={this.onLoChange}
+                                    selectId="logicalOperator"
+                                    placeholder="Select operator"
+                                    label=" "
+                                    clearable={false}
+                                />
+                            </div>
                         </div>
                     </div>
+                </div>
+
+                <div className="table-search__row_separator">
                 </div>
             </div>
         );

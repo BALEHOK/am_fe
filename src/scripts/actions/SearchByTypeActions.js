@@ -6,6 +6,14 @@ export default class SearchByTypeActions extends Actions {
     return this._dispatcher.addRow(model);
   }
 
+  addOpenParenthesis(attributes) {
+    return this._dispatcher.addOpenParenthesis(attributes);
+  }
+  
+  addClosingParenthesis(attributes) {
+    return this._dispatcher.addClosingParenthesis(attributes);
+  }
+
   changeRow(model) {
     return this._dispatcher.changeRow(model);
   }
