@@ -66,32 +66,34 @@ export default class RouteEdit extends React.Component {
             return (
                 <div className="asset-data__param">
                     <span className="asset-data__param-title">{this.props.params.name}:</span>
-                    <GoogleMapsComponent
-                        googleMapsApi={this.google.maps}
-                        points={points}
-                        viewOnly={true}
-                        directions={this.state.directions}
-                        onChange={this.handleMapChange} />
-                    { this.state.noResults ? <div>No results for your query</div> : null }
-                    { distance ? <div>Distance: {Math.round(distance/1000)}km</div> : null }
-                    <div className="inputs-line inputs-line_float">
-                        <label>
-                            Source:
-                            <input
-                                type="text"
-                                ref="source"
-                                onChange={_.debounce(this.requestRoute.bind(this), 1000)}
-                                className="input-txt__field form-control" />
-                        </label>
-                        <label>
-                            Destination:
-                            <input
-                                type="text"
-                                ref="dest"
-                                onChange={_.debounce(this.requestRoute.bind(this), 1000)}
-                                className="input-txt__field form-control" />
-                        </label>
-                    </div>
+                    <span className="asset-data__param-content">
+                        <GoogleMapsComponent
+                            googleMapsApi={this.google.maps}
+                            points={points}
+                            viewOnly={true}
+                            directions={this.state.directions}
+                            onChange={this.handleMapChange} />
+                        { this.state.noResults ? <div>No results for your query</div> : null }
+                        { distance ? <div>Distance: {Math.round(distance/1000)}km</div> : null }
+                        <div className="inputs-line inputs-line_float">
+                            <label>
+                                Source:
+                                <input
+                                    type="text"
+                                    ref="source"
+                                    onChange={_.debounce(this.requestRoute.bind(this), 1000)}
+                                    className="input-txt__field form-control" />
+                            </label>
+                            <label>
+                                Destination:
+                                <input
+                                    type="text"
+                                    ref="dest"
+                                    onChange={_.debounce(this.requestRoute.bind(this), 1000)}
+                                    className="input-txt__field form-control" />
+                            </label>
+                        </div>
+                    </span>
                 </div>
             );
         } else {

@@ -13,7 +13,9 @@ var Attribute = React.createClass({
         return (
             <div className="asset-data__param" data-param-id={params.id}>
                 <span className="asset-data__param-title">permissions:</span>
-                <Permission params={params} />
+                <span className="asset-data__param-content">
+                    <Permission params={params} />
+                </span>
             </div>
         );
     }
