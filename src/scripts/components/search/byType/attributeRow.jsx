@@ -166,7 +166,8 @@ export default class AttributeRow extends React.Component {
                     assetDispatcher={this.assetDispatcher}
                     assetActions={this.assetActions}
                     dispatcher={this.searchByTypeDispatcher}
-                    actions={this.searchByTypeActions} />
+                    actions={this.searchByTypeActions}
+                    level={this.props.level} />
                 break;
 
             case 'place':

@@ -65,15 +65,30 @@ export default class ComplexValueSelectorRelatedAsset extends DeloreanComponent 
     render(){
         var selected = this.props.selected;
         var referenceAttrib = selected.referenceAttrib;
-        var simpleConditionParams = {
-            id: referenceAttrib.id,
-            relatedAssetTypeId: referenceAttrib.relationId,
-            datatype: referenceAttrib.dataType,
-            value: selected.value || []
-        };
+
+        var tabs = this.props.level > 1
+            ? null
+            : (
+                <nav className="tabs-navigation">
+                    <ul className="tabs-menu">
+                        <li className={classNames('tabs-menu-item', {'is-active': !selected.useComplexValue})}>
+                            <a onClick={this.onSimpleConditionSelected}>Simple condition</a>
+                        </li>
+                        <li className={classNames('tabs-menu-item', {'is-active': selected.useComplexValue})}>
+                            <a onClick={this.onAdvancedConditionSelected}>Advanced condition</a>
+                        </li>
+                    </ul>
+                </nav>
+            );
 
         var valueSelector;
-        if (!selected.useComplexValue){
+        if (this.props.level > 1 || !selected.useComplexValue){
+            var simpleConditionParams = {
+                id: referenceAttrib.id,
+                relatedAssetTypeId: referenceAttrib.relationId,
+                datatype: referenceAttrib.dataType,
+                value: selected.value || []
+            };
             valueSelector = (
                 <div className="search-condition search-condition_simple">
                     <div className="table-search__row">
@@ -94,7 +109,8 @@ export default class ComplexValueSelectorRelatedAsset extends DeloreanComponent 
                         actions={this.props.actions}
                         assetType={referenceAttrib.relationId}
                         attributes={selected.complexValue}
-                        allTypeAttribs={this.state.stores.searchByType.assetAttributes[referenceAttrib.relationId]} />
+                        allTypeAttribs={this.state.stores.searchByType.assetAttributes[referenceAttrib.relationId]}
+                        level={this.props.level + 1} />
                     
                     <RowsControls
                                 addRow={this.addRow}
@@ -107,16 +123,7 @@ export default class ComplexValueSelectorRelatedAsset extends DeloreanComponent 
         return (
             <div className="table-search__row-item table-search__row-item_type_inner">
                 <div className="tabs tabs-complex-value">
-                    <nav className="tabs-navigation">
-                        <ul className="tabs-menu">
-                            <li className={classNames('tabs-menu-item', {'is-active': !selected.useComplexValue})}>
-                                <a onClick={this.onSimpleConditionSelected}>Simple condition</a>
-                            </li>
-                            <li className={classNames('tabs-menu-item', {'is-active': selected.useComplexValue})}>
-                                <a onClick={this.onAdvancedConditionSelected}>Advanced condition</a>
-                            </li>
-                        </ul>
-                    </nav>
+                    {tabs}
                     <article className="tab-panel">
                         {valueSelector}
                     </article>

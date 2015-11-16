@@ -58,7 +58,9 @@ export default class AttributeRows extends React.Component {
                             onChange={this.rowChanged}
                             onDelete={this.rowDeleted}
                             onMoveUp={this.rowMoveUp}
-                            onMoveDown={this.rowMoveDown} />);
+                            onMoveDown={this.rowMoveDown}
+                            level={this.props.level || 1} 
+                         />);
                 }
             };
         }
