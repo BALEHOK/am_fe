@@ -60,47 +60,59 @@ export default class SearchQueryDisplay extends React.Component {
     }, 500)
 
     displayQuery(props) {
-        var attributes = props.attributes;
         var query = [];
 
-        for (var i = 0; i < attributes.length; i++) {
-            var a = attributes[i];
-
-            if (a.parenthesis === Consts.parenthesisType.open){
-                var Parenthesis = SearchQueryDisplay.queryComponents.parenthesis;
-                query.push(<Parenthesis parenthesis={'('} />);
-            } else if (a.parenthesis === Consts.parenthesisType.closing){
-                var Parenthesis = SearchQueryDisplay.queryComponents.parenthesis;
-                query.push(<Parenthesis parenthesis={')'} />);
-            } else {
-
-                var name = a.referenceAttrib.displayName;
-                var operator = a.operators && a.operators.length
-                    ? a.operators.find((o) => o.id === a.operator).name
-                    : '';
-                var value;
-                if (!!a.value){
-                    if (a.value instanceof Array){
-                        value = a.value.map(v => v.name).join('; ');
-                    } else {
-                        value = a.value.name;
-                    }
-                }
-                else {
-                    value = '';
-                }
-
-                var Condition = SearchQueryDisplay.queryComponents.condition;
-                query.push(<Condition field={name} operator={operator} value={value}/>);
-            }
-
-            if (a.lo !== Consts.logicalOperators.none) {
-                var Lo = SearchQueryDisplay.queryComponents.lo;
-                query.push(<Lo lo={a.lo} />);
-            }
-        };
+        processAttributes(props.attributes, query);
 
         return query;
+
+        function processAttributes(attributes, query){
+            for (var i = 0; i < attributes.length; i++) {
+                var a = attributes[i];
+
+                if (a.parenthesis === Consts.parenthesisType.open){
+                    var Parenthesis = SearchQueryDisplay.queryComponents.parenthesis;
+                    query.push(<Parenthesis parenthesis={'('} />);
+                } else if (a.parenthesis === Consts.parenthesisType.closing){
+                    var Parenthesis = SearchQueryDisplay.queryComponents.parenthesis;
+                    query.push(<Parenthesis parenthesis={')'} />);
+                } else {
+                    var name = a.referenceAttrib.displayName;
+                    var operator = a.operators && a.operators.length
+                        ? a.operators.find((o) => o.id === a.operator).name
+                        : '';
+
+                    var Condition = SearchQueryDisplay.queryComponents.condition;
+                    if (!a.useComplexValue){
+                        let value;
+                        if (typeof a.value !== 'undefined' && a.value !== null){
+                            if (a.value instanceof Array){
+                                value = a.value.map(v => v.name).join('; ');
+                            } else {
+                                value = a.value.name;
+                            }
+                        }
+                        else {
+                            value = '';
+                        }
+
+                        query.push(<Condition field={name} operator={operator} value={value}/>);
+                    } else {
+                        var Parenthesis = SearchQueryDisplay.queryComponents.parenthesis;
+                        query.push(<Condition field={name} operator={operator} value={''}/>);
+
+                        query.push(<Parenthesis parenthesis={'['} />);
+                        processAttributes(a.complexValue, query);
+                        query.push(<Parenthesis parenthesis={']'} />);
+                    }
+                }
+
+                if (a.lo !== Consts.logicalOperators.none) {
+                    var Lo = SearchQueryDisplay.queryComponents.lo;
+                    query.push(<Lo lo={a.lo} />);
+                }
+            };
+        }
     }
 
     displayLabel(query){
