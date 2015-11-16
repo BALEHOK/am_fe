@@ -193,9 +193,16 @@ var ResultPage = React.createClass({
                                 changeFilter={this.loadData}
                                 value={urlQuery.query}
                                 context={urlQuery.context} />
-                          : <SearchQueryDisplay
-                                typeName={this.state.stores.results.lastSearch.assetType.name}
-                                attributes={this.state.stores.results.lastSearch.attributes} />
+                          : <div>
+                                <div>
+                                    <SearchQueryDisplay
+                                        typeName={this.state.stores.results.lastSearch.assetType.name}
+                                        attributes={this.state.stores.results.lastSearch.attributes} />
+                                </div>
+                                <div>
+                                    <Link to="type-search">edit search</Link>
+                                </div>
+                            </div>
                         }
                     </div>
                 </div>

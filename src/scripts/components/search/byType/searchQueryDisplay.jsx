@@ -1,5 +1,5 @@
 import React from 'react';
-import Consts from './consts';
+import Consts from '../../../util/searchConsts';
 import Loader from'../../common/loader.jsx';
 
 export default class SearchQueryDisplay extends React.Component {

@@ -1,7 +1,7 @@
 import React from 'react';
 import ParenthesisRow from './parenthesisRow';
 import AttributeRow from './attributeRow';
-import Consts from './consts';
+import Consts from '../../../util/searchConsts';
 
 export default class AttributeRows extends React.Component {
 

@@ -1,6 +1,6 @@
 import {Flux} from 'delorean';
 import {always} from '../util/util';
-import Consts from '../components/search/byType/consts';
+import Consts from '../util/searchConsts';
 
 import AssetTypeRepository from '../services/AssetTypeRepository';
 

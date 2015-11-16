@@ -8,7 +8,7 @@ import AttributesTableHeader from './attributesTableHeader';
 import AttributeRows from './attributeRows';
 import RowsControls from './rowsControls';
 import SearchQueryDisplay from './searchQueryDisplay';
-import Consts from './consts';
+import Consts from '../../../util/searchConsts';
 
 import reactMixin from 'react-mixin';
 import {Flux} from 'delorean';
