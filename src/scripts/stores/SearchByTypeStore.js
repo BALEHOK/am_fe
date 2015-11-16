@@ -20,6 +20,7 @@ export default Flux.createStore({
         'searchByType:moveRowUp': 'moveRowUp',
         'searchByType:moveRowDown': 'moveRowDown',
         'searchByType:changeRow': 'changeRow',
+        'searchByType:ensureAttributesLoaded': 'ensureAttributesLoaded',
         'searchByType:assetTypes': 'loadAssetTypes'
     },
 
@@ -33,6 +34,7 @@ export default Flux.createStore({
         };
     },
 
+    // actions
     setContext(context) {
         this.searchModel.assetTypeContext = context;
 
@@ -56,8 +58,8 @@ export default Flux.createStore({
 
     // add another attribute row to a collection
     addRow(model) {
-        var assetType = model.assetType;
-        if (!assetType || !this.assetAttributes[assetType.id]){
+        var assetTypeId = model.assetTypeId;
+        if (!assetTypeId || !this.assetAttributes[assetTypeId]){
             return;
         }
 
@@ -67,18 +69,14 @@ export default Flux.createStore({
             selectedAttribs[index - 1].lo = Consts.logicalOperators.and;
         }
 
-        var attribute = this.assetAttributes[assetType.id][0];
+        var attribute = this.assetAttributes[assetTypeId][0];
 
-        var selectedAttribModel = {
+        var selectedAttribModel = this.createNewAttribModel({
             index: index,
-            parenthesis: Consts.parenthesisType.none,
             referenceAttrib: attribute,
             operators: [],
-            operator: null,
-            value: null,
-            // logical operator
-            lo: Consts.logicalOperators.none
-        };
+            complexValue: []
+        });
 
         this.setOperators(selectedAttribModel);
 
@@ -94,16 +92,10 @@ export default Flux.createStore({
             attributes[index - 1].lo = Consts.logicalOperators.and;
         }
 
-        var selectedAttribModel = {
+        var selectedAttribModel = this.createNewAttribModel({
             index: index,
-            parenthesis: Consts.parenthesisType.open,
-            referenceAttrib: null,
-            operators: null,
-            operator: null,
-            value: null,
-            // logical operator
-            lo: Consts.logicalOperators.none
-        };
+            parenthesis: Consts.parenthesisType.open
+        });
 
         attributes.push(selectedAttribModel);
 
@@ -113,16 +105,10 @@ export default Flux.createStore({
     addClosingParenthesis(attributes) {
         var index = attributes.length;
 
-        var selectedAttribModel = {
+        var selectedAttribModel = this.createNewAttribModel({
             index: index,
-            parenthesis: Consts.parenthesisType.closing,
-            referenceAttrib: null,
-            operators: null,
-            operator: null,
-            value: null,
-            // logical operator
-            lo: Consts.logicalOperators.none
-        };
+            parenthesis: Consts.parenthesisType.closing
+        });
 
         attributes.push(selectedAttribModel);
 
@@ -233,6 +219,30 @@ export default Flux.createStore({
                 }
             ),
             () => this.emitChange());
+    },
+
+    ensureAttributesLoaded(typeId){
+        if (!this.assetAttributes[typeId]){
+            this.loadAssetAttributes(typeId)
+                .then(() => this.emitChange());
+        }
+    },
+
+    // end actions
+
+    createNewAttribModel(initializer){
+        return Object.assign({
+            index: 0,
+            parenthesis: Consts.parenthesisType.none,
+            referenceAttrib: null,
+            operators: null,
+            operator: null,
+            value: null,
+            useComplexValue: false,
+            complexValue: null,
+            // logical operator
+            lo: Consts.logicalOperators.none
+        }, initializer);
     },
 
     loadAssetAttributes(typeId) {

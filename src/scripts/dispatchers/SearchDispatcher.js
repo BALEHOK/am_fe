@@ -81,6 +81,10 @@ export default Flux.createDispatcher({
     return this.dispatch('searchByType:assetTypes');
   },
 
+  ensureAttributesLoaded(typeId) {
+    return this.dispatch('searchByType:ensureAttributesLoaded', typeId);
+  },
+
   getStores() {
     return {
       searchByType: new SearchByTypeStore(),

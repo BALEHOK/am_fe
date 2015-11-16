@@ -42,6 +42,10 @@ export default class SearchByTypeActions extends Actions {
     return this._dispatcher.loadAssetTypes();
   }
 
+  ensureAttributesLoaded(typeId) {
+    return this._dispatcher.ensureAttributesLoaded(typeId);
+  }
+
   loadDataTypeOperators(dataType) {
     return this._dispatcher.loadDataTypeOperators(dataType);
   }

@@ -1,60 +1,126 @@
 import React from 'react';
 import Tabs from 'react-simpletabs';
+import classNames from 'classnames';
 import ValueSelectorRelatedAsset from '../valueSelectors/valueSelectorRelatedAsset';
+import AttributeRows from '../attributeRows';
+import RowsControls from '../rowsControls';
 
-export default class ComplexValueSelectorRelatedAsset extends React.Component {
+import DeloreanComponent from '../../../common/DeloreanComponent';
+import reactMixin from 'react-mixin';
+import {Flux} from 'delorean';
+
+@reactMixin.decorate(Flux.mixins.storeListener)
+export default class ComplexValueSelectorRelatedAsset extends DeloreanComponent {
+
+    watchStores = ['searchByType']
+
+    componentDidMount(){
+        this.props.actions.ensureAttributesLoaded(this.props.selected.referenceAttrib.relationId);
+    }
+
+    onSimpleConditionSelected = () => {
+        this.onConditionChange(false);
+    }
+
+    onAdvancedConditionSelected = () => {
+        this.onConditionChange(true);
+    }
+
+    onConditionChange(useComplexValue) {
+        var newAttr = this.createNewAttr({
+            useComplexValue: useComplexValue
+        });
+
+        this.props.onChange(newAttr);
+    }
+
+    onSimpleValueChange = (value) => {
+        var newAttr = this.createNewAttr({
+            value: value
+        });
+
+        this.props.onChange(newAttr);
+    }
+
+    addRow = () => {
+        var selected = this.props.selected;
+        this.props.actions.addRow({
+            assetTypeId: selected.referenceAttrib.relationId,
+            attributes: selected.complexValue
+        });
+    }
+
+    addOpenParenthesis = () => {
+        this.props.actions.addOpenParenthesis(this.props.selected.complexValue);
+    }
+
+    addClosingParenthesis = () => {
+        this.props.actions.addClosingParenthesis(this.props.selected.complexValue);
+    }
+
+    createNewAttr = (diff) => {
+        return Object.assign({}, this.props.selected, diff);
+    }
+
     render(){
-        var params = {
-            id: this.props.selected.referenceAttrib.id,
-            relatedAssetTypeId: this.props.selected.referenceAttrib.relationId,
-            datatype: this.props.selected.referenceAttrib.dataType,
-            value: this.props.selected.value || []
+        var selected = this.props.selected;
+        var referenceAttrib = selected.referenceAttrib;
+        var simpleConditionParams = {
+            id: referenceAttrib.id,
+            relatedAssetTypeId: referenceAttrib.relationId,
+            datatype: referenceAttrib.dataType,
+            value: selected.value || []
         };
+
+        var valueSelector;
+        if (!selected.useComplexValue){
+            valueSelector = (
+                <div className="search-condition search-condition_simple">
+                    <div className="table-search__row">
+                        <div className="table-search__row-item">
+                            <ValueSelectorRelatedAsset
+                                onValueChange={this.onSimpleValueChange}
+                                params={simpleConditionParams}
+                                dispatcher={this.props.assetDispatcher}
+                                actions={this.props.assetActions} />
+                        </div>
+                    </div>
+                </div>
+            );
+        } else {
+            valueSelector = (
+                <div className="search-condition">
+                    <AttributeRows
+                        actions={this.props.actions}
+                        assetType={referenceAttrib.relationId}
+                        attributes={selected.complexValue}
+                        allTypeAttribs={this.state.stores.searchByType.assetAttributes[referenceAttrib.relationId]} />
+                    
+                    <RowsControls
+                                addRow={this.addRow}
+                                addOpenParenthesis={this.addOpenParenthesis}
+                                addClosingParenthesis={this.addClosingParenthesis} />
+                </div>
+            );
+        }
 
         return (
             <div className="table-search__row-item table-search__row-item_type_inner">
-                <Tabs defaultActiveKey={1} animation={false} className="tabs-complex-value">
-                    <Tabs.Panel key={1} title="Simple condition">
-                        <div className="search-condition">
-                            <div className="search-condition__content search-condition__content_simple">
-                                <div className="search-condition__row">
-                                    <div className="table-search__row-item">
-                                        <ValueSelectorRelatedAsset
-                                            onValueChange={this.props.onValueChange}
-                                            params={params}
-                                            dispatcher={this.props.dispatcher}
-                                            actions={this.props.actions} />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </Tabs.Panel>
-                    <Tabs.Panel key={2} title="Advanced condition">
-                        <div className="search-condition">
-                            <div className="search-condition__content">
-                                <div className="search-condition__row">
-                                    <div className="table-search__row-item">
-                                        <ValueSelectorRelatedAsset
-                                            onValueChange={this.props.onValueChange}
-                                            params={params}
-                                            dispatcher={this.props.dispatcher}
-                                            actions={this.props.actions} />
-                                    </div>
-                                </div>
-                                <div className="search-condition__row">
-                                    <div className="table-search__row-item">
-                                        <ValueSelectorRelatedAsset
-                                            onValueChange={this.props.onValueChange}
-                                            params={params}
-                                            dispatcher={this.props.dispatcher}
-                                            actions={this.props.actions} />
-                                    </div>
-                                </div>
-                            </div>
-                            <span className="search-condition__add-row">Add a new row</span>
-                        </div>
-                    </Tabs.Panel>
-                </Tabs>
+                <div className="tabs tabs-complex-value">
+                    <nav className="tabs-navigation">
+                        <ul className="tabs-menu">
+                            <li className={classNames('tabs-menu-item', {'is-active': !selected.useComplexValue})}>
+                                <a onClick={this.onSimpleConditionSelected}>Simple condition</a>
+                            </li>
+                            <li className={classNames('tabs-menu-item', {'is-active': selected.useComplexValue})}>
+                                <a onClick={this.onAdvancedConditionSelected}>Advanced condition</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <article className="tab-panel">
+                        {valueSelector}
+                    </article>
+                </div>
             </div>
         );
     }

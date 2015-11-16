@@ -11,6 +11,9 @@ import ComplexValueSelectorRelatedAsset from './complexValue/ComplexValueSelecto
 import AssetDispatcher from '../../../dispatchers/AssetDispatcher';
 import AssetActions from '../../../actions/AssetActions';
 
+import SearchDispatcher from '../../../dispatchers/SearchDispatcher';
+import SearchByTypeActions from '../../../actions/SearchByTypeActions';
+
 export default class AttributeRow extends React.Component {
 
     logicalOperators = [
@@ -23,6 +26,9 @@ export default class AttributeRow extends React.Component {
 
         this.assetDispatcher = AssetDispatcher;
         this.assetActions = new AssetActions(this.assetDispatcher);
+
+        this.searchByTypeDispatcher = SearchDispatcher;
+        this.searchByTypeActions = new SearchByTypeActions(this.searchByTypeDispatcher);
     }
 
     onMoveUp = () => {
@@ -48,7 +54,9 @@ export default class AttributeRow extends React.Component {
             referenceAttrib: referenceAttrib,
             operators: [],
             operator: null,
-            value: this.getDefaultValue(referenceAttrib)
+            value: this.getDefaultValue(referenceAttrib),
+            useComplexValue: false,
+            complexValue: []
         });
         
         this.props.onChange(newAttr);
@@ -153,10 +161,12 @@ export default class AttributeRow extends React.Component {
             case 'asset':
             case 'assets':
                 complexValueSelector = <ComplexValueSelectorRelatedAsset 
-                    onValueChange={this.onValueChange}
+                    onChange={this.props.onChange}
                     selected={this.props.selected}
-                    dispatcher={this.assetDispatcher}
-                    actions={this.assetActions} />
+                    assetDispatcher={this.assetDispatcher}
+                    assetActions={this.assetActions}
+                    dispatcher={this.searchByTypeDispatcher}
+                    actions={this.searchByTypeActions} />
                 break;
 
             case 'place':
@@ -175,7 +185,6 @@ export default class AttributeRow extends React.Component {
 
         return (
             <div className="table-search__row">
-                <div className="table-search__row_main">
                     <RowActions onDelete={this.onDelete} onMoveUp={this.onMoveUp} onMoveDown={this.onMoveDown} />
                     <div className="table-search__row-item table-search__row-item_type_attr">
                         <ReactSelectize
@@ -220,7 +229,6 @@ export default class AttributeRow extends React.Component {
                     </div>
 
                     {complexValueSelector}
-                </div>
 
                 <div className="table-search__row_separator">
                 </div>

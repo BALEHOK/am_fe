@@ -6,6 +6,7 @@ import LoaderMixin from'../../../mixins/LoaderMixin';
 import ReactSelectize from '../../common/react-selectize';
 import AttributesTableHeader from './attributesTableHeader';
 import AttributeRows from './attributeRows';
+import RowsControls from './rowsControls';
 import SearchQueryDisplay from './searchQueryDisplay';
 import Consts from './consts';
 
@@ -48,7 +49,7 @@ export default class SearchByTypeForm extends DeloreanComponent {
     addRow = () => {
         var searchModel = this.state.stores.searchByType.searchModel;
         this.props.actions.addRow({
-            assetType: searchModel.assetType,
+            assetTypeId: searchModel.assetType.id,
             attributes: searchModel.attributes
         });
     }
@@ -128,18 +129,10 @@ export default class SearchByTypeForm extends DeloreanComponent {
                             </div>
                         </div>
                         <footer className="table-search__footer">
-                            <span className="table-search__add-row" onClick={this.addRow}>
-                                <i className="icon icon-plus"></i>
-                                Add a new row
-                            </span>
-                            <span className="table-search__add-row icon-stack" onClick={this.addOpenParenthesis}>
-                                <i className="icon icon-openpar icon-circle"></i>
-                                Add open parenthesis
-                            </span>
-                            <span className="table-search__add-row closepar" onClick={this.addClosingParenthesis}>
-                                <i className="icon icon-closepar icon-circle"></i>
-                                Add closing parenthesis
-                            </span>
+                            <RowsControls
+                                addRow={this.addRow}
+                                addOpenParenthesis={this.addOpenParenthesis}
+                                addClosingParenthesis={this.addClosingParenthesis} />
                             <div className="table-search__footer-actions clearfix">
                                 <button className="btn pull-right"
                                     disabled={!searchModel.assetType}
