@@ -1,4 +1,4 @@
 module.exports = {
-  APIURL: JSON.stringify('#{APIURL}'),
-  AUTHURL: JSON.stringify('#{AUTHURL}'),
+  APIURL: JSON.stringify('#{if APIURL}#{APIURL}#{/if}'),
+  AUTHURL: JSON.stringify('#{if AUTHURL}#{AUTHURL}#{/if}'),
 };
