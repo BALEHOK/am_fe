@@ -11,17 +11,19 @@ var ControlWrapper = React.createClass({
         return (
             <div className="asset-data__param" data-param-id={this.props.id}>
                 <span className="asset-data__param-title">{this.props.name}:</span>
-                <label className={groupClasses}  title={this.props.validationState.message}>
-                    {this.props.children}
-                    {this.props.validationState.hasFeedback
-                        ? <span className={this.props.validationState.feedbackClasses}></span>
-                        : ''
+                <span className="asset-data__param-content">
+                    <label className={groupClasses}  title={this.props.validationState.message}>
+                        {this.props.children}
+                        {this.props.validationState.hasFeedback
+                            ? <span className={this.props.validationState.feedbackClasses}></span>
+                            : ''
+                        }
+                    </label>
+                    {this.props.isRequired
+                        ? <span className="asset-data__param-required">*</span>
+                        : null
                     }
-                </label>
-                {this.props.isRequired
-                    ? <span className="asset-data__param-required">*</span>
-                    : null
-                }
+                </span>
             </div>
         );
     }

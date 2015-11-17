@@ -15,17 +15,19 @@ var SelectWrapper = React.createClass({
         return (
             <div className="asset-data__param" data-param-id={this.props.id}>
                 <span className="asset-data__param-title">{this.props.name}:</span>
-                <span className={groupClasses}  title={this.props.validationState.message}>
-                    {this.props.children}
-                    {this.props.validationState.hasFeedback
-                        ? <span className={this.props.validationState.feedbackClasses}></span>
-                        : ''
+                <span className="asset-data__param-content">
+                    <span className={groupClasses}  title={this.props.validationState.message}>
+                        {this.props.children}
+                        {this.props.validationState.hasFeedback
+                            ? <span className={this.props.validationState.feedbackClasses}></span>
+                            : ''
+                        }
+                    </span>
+                    {this.props.isRequired
+                        ? <span className="asset-data__param-required">*</span>
+                        : null
                     }
                 </span>
-                {this.props.isRequired
-                    ? <span className="asset-data__param-required">*</span>
-                    : null
-                }
             </div>
         );
     }

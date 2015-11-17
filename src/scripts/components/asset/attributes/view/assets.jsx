@@ -12,10 +12,12 @@ var Attribute = React.createClass({
         return (
             <div className="asset-data__param" data-param-id={params.id}>
                 <span className="asset-data__param-title">{params.name}:</span>
-                {assets.map(asset => {
-                    var assetLink = linkFactory.getDisplayValue(params.relatedAssetTypeId, asset.id, asset.name);
-                    return <div>{assetLink}</div>;
-                })}
+                <span className="asset-data__param-content">
+                    {assets.map(asset => {
+                        var assetLink = linkFactory.getDisplayValue(params.relatedAssetTypeId, asset.id, asset.name);
+                        return <div>{assetLink}</div>;
+                    })}
+                </span>
             </div>
         );
     }
