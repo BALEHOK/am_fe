@@ -36,12 +36,14 @@ var Attribute = React.createClass({
         return (
             <div className="asset-data__param" data-param-id={params.id}>
                 <span className="asset-data__param-title">{params.name}:</span>
-                <div className="image-wrapper">
-                    <div className="image-wrapper__subwrapper">
-                        {component()}
+                <span className="asset-data__param-content">
+                    <div className="image-wrapper">
+                        <div className="image-wrapper__subwrapper">
+                            {component()}
+                        </div>
+                        <div className="image-wrapper__name">{file}</div>
                     </div>
-                    <div className="image-wrapper__name">{file}</div>
-                </div>
+                </span>
             </div>
         );
     }
