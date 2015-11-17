@@ -14,7 +14,7 @@ export default class Login extends React.Component {
     render() {
         return (
             <div className="auth-screen">
-                Logging in to #{AUTHURL}...
+                Logging in...
             </div>
         );
     }
