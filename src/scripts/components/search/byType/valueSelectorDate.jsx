@@ -40,11 +40,13 @@ export default class ValueSelectorDate extends React.Component {
     }
 
     updateValue(){
-        var dateString = this.formatDate(this.state.date);
-        this.props.onValueChange({id: dateString, name: dateString});
+        this.props.onValueChange({
+            id: this.state.date.format('YYYY-MM-DDTHH:mm:ssZ'),
+            name: this.displayDateFormat(this.state.date)
+        });
     }
 
-    formatDate(d) {
+    displayDateFormat(d) {
         return d ? d.format('M/D/YYYY HH:mm') : d;
     }
 
@@ -80,7 +82,7 @@ export default class ValueSelectorDate extends React.Component {
                 <input type="text"
                     className="input-txt__field form-control"
                     onClick={this.showDatePicker}
-                    value={this.props.value ? this.formatDate(this.state.date) : ''} />
+                    value={this.props.value ? this.displayDateFormat(this.state.date) : ''} />
                 {picker}
             </div>
         );

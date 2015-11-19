@@ -25,7 +25,9 @@ var SearchResultsStore = Flux.createStore({
 
   actions: {
     'search:results': 'loadResults',
+    'search:resultsByType': 'loadResultsByType',
     'search:counters': 'loadSearchCounters',
+    'search:newFilter': 'setSearchFilter',
     'search:filter': 'applySearchFilter',
     'search:saveTypeSearch': 'saveTypeSearch'
   },
@@ -45,12 +47,19 @@ var SearchResultsStore = Flux.createStore({
     };
   },
 
-  loadResults(filters) {
+  loadResults() {
+    always(this.searchRepo.search(this.filter).then((data) => {
+      this.models = data.entities;
+      this.searchId = data.searchId;
+    }), () => this.emitChange());
+  },
+
+  loadResultsByType(){
     var attribs = this.lastSearch
       ? this.lastSearch.attributes
       : null;
 
-    always(this.searchRepo.search(filters, attribs).then((data) => {
+    always(this.searchRepo.searchByType(this.filter, attribs).then((data) => {
       this.models = data.entities;
       this.searchId = data.searchId;
     }), () => this.emitChange());
@@ -62,6 +71,13 @@ var SearchResultsStore = Flux.createStore({
     }), () => this.emitChange());
   },
 
+  // overrides search filter (used for new search)
+  setSearchFilter(filter) {
+    this.filter = _.extend({}, filter);
+    this.emitChange();
+  },
+
+  // extends search filter
   applySearchFilter(filter) {
     this.filter = _.extend({}, this.filter, filter);
     this.emitChange();

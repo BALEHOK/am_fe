@@ -1,19 +1,7 @@
 import fetch from "../util/fetch";
 
 export default class SearchRepository {
-    search(params, typeSearchAttribs) {
-        if (!params.query && params.assetType){
-            return fetch('/api/search/bytype').post({
-                searchId: params.searchId,
-                page: params.page,
-                assetType: params.assetType,
-                taxonomy: params.taxonomy,
-                sortBy: params.sortBy,
-                context: params.context,
-                attribs: typeSearchAttribs
-            });
-        }
-
+    search(params) {
         return fetch('/api/search').get({
             searchId: params.searchId,
             query: params.query,
@@ -22,6 +10,18 @@ export default class SearchRepository {
             taxonomy: params.taxonomy,
             sortBy: params.sortBy,
             context: params.context
+        });
+    }
+
+    searchByType(params, typeSearchAttribs) {
+        return fetch('/api/search/bytype').post({
+            searchId: params.searchId,
+            page: params.page,
+            assetType: params.assetType,
+            taxonomy: params.taxonomy,
+            sortBy: params.sortBy,
+            context: params.context,
+            attribs: typeSearchAttribs
         });
     }
 

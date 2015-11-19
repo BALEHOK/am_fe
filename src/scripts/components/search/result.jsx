@@ -40,8 +40,7 @@ var ResultPage = React.createClass({
     ],
 
     isSearchByType: function(){
-        var searchQuery = this.context.router.getCurrentQuery();
-        return !searchQuery.query && searchQuery.assetType;
+        return !!this.props.byType;
     },
 
     getInitialState: function() {
@@ -52,26 +51,41 @@ var ResultPage = React.createClass({
                 assetTypes: [],
                 taxonomies: []
             },
-            isTilesView: false,
-            isSearchByType: this.isSearchByType()
+            isTilesView: false
         };
     },
 
     componentDidMount: function() {
         this.actions = this.props.actions;
         this.props.dispatcher.stores.results.onChange(this.syncUrl);
-        this.loadData(this.context.router.getCurrentQuery());
+        
+        var promise = this.actions.setSearchFilter(this.context.router.getCurrentQuery());
+        this.doSearch(promise);
     },
 
     loadData: function(filters, updateCounters = true) {
-        var res = this.actions.changeSearchFilter(filters);
-        this.waitFor(res);
+        var promise = this.actions.changeSearchFilter(filters);
+        this.doSearch(promise, updateCounters);
+    },
+
+    doSearch: function(changeFilterPromise, updateCounters = true){
+        var resultsPromise = changeFilterPromise.then(() => {
+            if (this.isSearchByType()){
+                return this.actions.searchResultsByType();
+            }
+
+            return this.actions.searchResults();
+        });
+
+        this.waitFor(resultsPromise);
+        
         if(updateCounters) {
             this.startWaiting('loadingCounters',
-                res.then(() => {
+                resultsPromise.then(() => {
                     this.actions.fetchSearchCounters();
-                    if (filters.assetType) {
-                        this.actions.fetchCustomReportsByType(filters.assetType);
+                    var assetType = this.state.stores.results.filter.assetType;
+                    if (assetType) {
+                        this.actions.fetchCustomReportsByType(assetType);
                     } else {
                         this.actions.resetCustomReports();
                     }
@@ -87,7 +101,8 @@ var ResultPage = React.createClass({
             }
             return acc;
         }, {});
-        this.context.router.transitionTo('/search/result?' + param(clean));
+        var router = this.context.router;
+        router.transitionTo(router.getCurrentPathname() + '?' + param(clean));
     },
 
     filterCounters: function(param, counter) {
@@ -150,7 +165,7 @@ var ResultPage = React.createClass({
             'nav-block': true,
         });
 
-        var assetTypeRefinements = this.state.isSearchByType
+        var assetTypeRefinements = this.isSearchByType()
             ? []
             : counters.assetTypes.filter(this.filterCounters.bind(this, 'assetType'));
 
@@ -172,7 +187,7 @@ var ResultPage = React.createClass({
                         <h1 className="page-title page-title_small">Search results</h1>
                     </div>
                     <div className="grid__item ten-twelfths">
-                        {!this.state.isSearchByType
+                        {!this.isSearchByType()
                           ?  <SearchSimpleForm
                                 dispatcher={this.props.dispatcher}
                                 changeFilter={this.loadData}
