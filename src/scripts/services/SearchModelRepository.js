@@ -4,23 +4,6 @@ import Consts from '../util/searchConsts';
 class SearchModelRepository {
     models = {}
 
-    searchByType(params, typeSearchAttribs) {
-        var model = {
-            searchId: params.searchId,
-            page: params.page,
-            assetType: params.assetType,
-            taxonomy: params.taxonomy,
-            sortBy: params.sortBy,
-            context: params.context,
-            attribs: typeSearchAttribs
-        };
-        
-        fetch('/api/search/bytype/model').post(model)
-            .then(r => console.log(r));
-
-        return fetch('/api/search/bytype').post(model);
-    }
-
     createSearchModel(){
         var searchId = new Date().getTime() % 1000;
 
@@ -53,7 +36,7 @@ class SearchModelRepository {
         this.models[model.searchId] = model;
 
         // save in localStore (page reloads)
-        localStorage.searchByTypeModel = model;
+        localStorage.searchByTypeModel = JSON.stringify(model);
 
         // store on server
         // (page reloads and search in different tabs - the slowest one but survives any cllient actions)

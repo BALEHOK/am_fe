@@ -13,15 +13,15 @@ export default class SearchRepository {
         });
     }
 
-    searchByType(params, typeSearchAttribs) {
+    searchByType(params, model) {
         return fetch('/api/search/bytype').post({
-            searchId: params.searchId,
+            searchId: model.searchId,
+            assetTypeId: model.assetType.id,
+            assetTypeContext: model.assetTypeContext,
+            attributes: model.attributes,
             page: params.page,
-            assetType: params.assetType,
             taxonomy: params.taxonomy,
             sortBy: params.sortBy,
-            context: params.context,
-            attribs: typeSearchAttribs
         });
     }
 

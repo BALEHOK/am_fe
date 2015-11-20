@@ -34,12 +34,14 @@ var ResultPage = React.createClass({
         { name: "Location", id: 2 },
         { name: "User", id: 3 },
     ],
-    
+
     exportItems: [
         'txt',
         'xml',
         'xlsx'
     ],
+
+    searchId: 0,
 
     isSearchByType: function(){
         return !!this.props.byType;
@@ -60,7 +62,7 @@ var ResultPage = React.createClass({
     componentDidMount: function() {
         this.actions = this.props.actions;
         this.props.dispatcher.stores.results.onChange(this.syncUrl);
-        
+
         var promise = this.actions.setSearchFilter(this.context.router.getCurrentQuery());
         this.doSearch(promise);
     },
@@ -211,7 +213,9 @@ var ResultPage = React.createClass({
                                         attributes={attributes} />
                                 </div>
                                 <div>
-                                    <Link to="type-search">edit search</Link>
+                                    <Link to="type-search" query={{ searchId: urlQuery.searchId }}>
+                                        edit search
+                                    </Link>
                                 </div>
                             </div>
                         }

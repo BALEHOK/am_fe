@@ -57,16 +57,16 @@ var SearchResultsStore = Flux.createStore({
 
   loadResultsByType(){
     if (!this.searchByTypeModel) {
-      this.getSearchByTypeModelModel()
-        .then(() => this.loadResultsByType())
+      this.searchModelRepo.getSerchModel(this.filter.searchId)
+       .then(d => {
+          console.log(d);
+          this.searchByTypeModel = d;
+          this.loadResultsByType();
+        });
       return;
     }
 
-    var attribs = this.searchByTypeModel
-      ? this.searchByTypeModel.attributes
-      : null;
-
-    always(this.searchRepo.searchByType(this.filter, attribs).then((data) => {
+    always(this.searchRepo.searchByType(this.filter, this.searchByTypeModel).then((data) => {
       this.models = data.entities;
       this.searchId = data.searchId;
     }), () => this.emitChange());
@@ -92,11 +92,6 @@ var SearchResultsStore = Flux.createStore({
 
   setTypeSearchModel(model) {
     this.searchByTypeModel = model;
-  },
-
-  getSearchByTypeModelModel() {
-    return this.searchModelRepo.getSerchModel(this.filter.searchId)
-      then(d => this.searchByTypeModel = d);
   }
 });
 
