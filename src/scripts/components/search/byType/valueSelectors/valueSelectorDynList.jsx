@@ -1,6 +1,6 @@
 import React from 'react';
-import DeloreanComponent from '../../common/DeloreanComponent';
-import ReactSelectize from '../../common/react-selectize';
+import DeloreanComponent from '../../../common/DeloreanComponent';
+import ReactSelectize from '../../../common/react-selectize';
 
 import reactMixin from 'react-mixin';
 import {Flux} from 'delorean';

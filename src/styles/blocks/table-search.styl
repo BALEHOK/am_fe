@@ -1,6 +1,8 @@
+$thinBorder = 1px solid #c6c6c6
+
 .table-search
   display block
-  border 1px solid #c6c6c6
+  border $thinBorder
   font-family $Tahoma
   border-radius $br
 
@@ -8,6 +10,10 @@
     display flex
     flex-wrap wrap
     position relative
+
+    &_separator
+      width 87%
+      border-bottom $thinBorder
 
     &_header
       background #4d4d4d
@@ -31,13 +37,17 @@
       font-size 18px
       line-height 42px
       color #515151
-      margin 0 5px
+      margin 0 3px
 
       &:hover
         color $colorBlack
 
       &_delete
         opacity 0.5
+        padding-right 10px
+        margin-right 7px
+        border-right $thinBorder
+        
         &:hover
           color $colorRed
           opacity 1
@@ -56,7 +66,6 @@
       display inline-block
       vertical-align top
       padding 20px 15px
-      border-bottom 1px solid #c6c6c6
 
       .select
         min-width 75px
@@ -66,9 +75,21 @@
         font-size 36px
         line-height 42px
 
+      .with-action_wrapper
+        margin-right 50px
+        position relative
+
+        .btn.btn_size_small
+          position absolute
+          right -50px
+          top 0
+          margin-top 3px
+
+      &_offset-13
+        width 13%
+
       &_type_actions
         width 13%
-        padding-left 20px
 
       &_type_attr
         width 27%
@@ -78,16 +99,6 @@
 
       &_type_value
         width 32%
-
-        .with-action_wrapper
-            margin-right 50px
-            position relative
-
-          .btn.btn_size_small
-            position absolute
-            right -50px
-            top 0
-            margin-top 3px
 
       &_type_additional
         width 13%
@@ -100,7 +111,7 @@
         .connector
           position absolute
           bottom 50%
-          border 1px solid #c6c6c6
+          border $thinBorder
           border-left none
           padding 20px 0
           margin -20px 0px
@@ -115,8 +126,6 @@
         padding 20px 15px
 
     &_state_complex
-      .table-search__row-item
-        border-bottom-color transparent
       &::after
         content ""
         display block
@@ -124,7 +133,7 @@
         bottom 0
         left 0
         right 13%
-        border-top 1px solid #c6c6c6
+        border-top $thinBorder
 
   &__content
     display block
@@ -175,8 +184,29 @@
           color #fff
         }
 
-    
+  .tabs.tabs-complex-value
+    .tabs-menu
+      margin 0
 
+      li a
+        border none
+
+        &:hover
+          background-color transparent
+
+        &::before
+          border-color transparent
+          border-bottom-color #c9c9c9
+          border-width 8px 12px
+          margin-left -12px
+          margin-top -16px
+
+        &::after
+          border-color transparent
+          border-bottom-color #f6f6f6
+          border-width 8px 12px
+          margin-left -12px
+          margin-top -15px
 
   &__footer
     padding 20px 20px 10px 20px

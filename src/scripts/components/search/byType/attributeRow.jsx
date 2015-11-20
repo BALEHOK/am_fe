@@ -1,14 +1,18 @@
 import React from 'react';
 import ReactSelectize from '../../common/react-selectize';
-import ValueSelectorBool from './valueSelectorBool';
-import ValueSelectorDate from './valueSelectorDate';
-import ValueSelectorDynList from './valueSelectorDynList';
-import ValueSelectorPlace from './valueSelectorPlace';
-import ValueSelectorRelatedAsset from './valueSelectorRelatedAsset';
-import ValueSelectorText from './valueSelectorText';
+import RowActions from './rowActions';
+import ValueSelectorBool from './valueSelectors/valueSelectorBool';
+import ValueSelectorDate from './valueSelectors/valueSelectorDate';
+import ValueSelectorDynList from './valueSelectors/valueSelectorDynList';
+import ValueSelectorPlace from './valueSelectors/valueSelectorPlace';
+import ValueSelectorText from './valueSelectors/valueSelectorText';
+import ComplexValueSelectorRelatedAsset from './complexValue/ComplexValueSelectorRelatedAsset';
 
 import AssetDispatcher from '../../../dispatchers/AssetDispatcher';
 import AssetActions from '../../../actions/AssetActions';
+
+import SearchDispatcher from '../../../dispatchers/SearchDispatcher';
+import SearchByTypeActions from '../../../actions/SearchByTypeActions';
 
 export default class AttributeRow extends React.Component {
 
@@ -22,6 +26,9 @@ export default class AttributeRow extends React.Component {
 
         this.assetDispatcher = AssetDispatcher;
         this.assetActions = new AssetActions(this.assetDispatcher);
+
+        this.searchByTypeDispatcher = SearchDispatcher;
+        this.searchByTypeActions = new SearchByTypeActions(this.searchByTypeDispatcher);
     }
 
     onMoveUp = () => {
@@ -47,7 +54,9 @@ export default class AttributeRow extends React.Component {
             referenceAttrib: referenceAttrib,
             operators: [],
             operator: null,
-            value: this.getDefaultValue(referenceAttrib)
+            value: this.getDefaultValue(referenceAttrib),
+            useComplexValue: false,
+            complexValue: []
         });
         
         this.props.onChange(newAttr);
@@ -108,7 +117,7 @@ export default class AttributeRow extends React.Component {
 
             case 'asset':
             case 'assets':
-                component = ValueSelectorRelatedAsset;
+                component = ComplexValueSelectorRelatedAsset;
                 break;
 
             case 'place':
@@ -123,7 +132,7 @@ export default class AttributeRow extends React.Component {
     }
 
     render(){
-        var valueSelector;
+        var valueSelector = null, complexValueSelector = null;
         var params;
         var dataType = this.props.selected.referenceAttrib.dataType.toLowerCase();
         switch(dataType){
@@ -151,17 +160,14 @@ export default class AttributeRow extends React.Component {
 
             case 'asset':
             case 'assets':
-                params = {
-                    id: this.props.selected.referenceAttrib.id,
-                    relatedAssetTypeId: this.props.selected.referenceAttrib.relationId,
-                    datatype: this.props.selected.referenceAttrib.dataType,
-                    value: this.props.selected.value || []
-                };
-                valueSelector = <ValueSelectorRelatedAsset
-                    onValueChange={this.onValueChange}
-                    params={params}
-                    dispatcher={this.assetDispatcher}
-                    actions={this.assetActions} />
+                complexValueSelector = <ComplexValueSelectorRelatedAsset 
+                    onChange={this.props.onChange}
+                    selected={this.props.selected}
+                    assetDispatcher={this.assetDispatcher}
+                    assetActions={this.assetActions}
+                    dispatcher={this.searchByTypeDispatcher}
+                    actions={this.searchByTypeActions}
+                    level={this.props.level} />
                 break;
 
             case 'place':
@@ -180,54 +186,52 @@ export default class AttributeRow extends React.Component {
 
         return (
             <div className="table-search__row">
-                <div className="table-search__row-item table-search__row-item_type_actions">
-                    <span className="table-search__row-action table-search__row-action_delete" title="Delete"
-                        onClick={this.onDelete}></span>
-                    <span className="table-search__row-action table-search__row-action_up" title="Mover up"
-                        onClick={this.onMoveUp}></span>
-                    <span className="table-search__row-action table-search__row-action_down" title="Move down"
-                        onClick={this.onMoveDown}></span>
-                </div>
-                <div className="table-search__row-item table-search__row-item_type_attr">
-                    <ReactSelectize
-                        items={this.props.attributes}
-                        value={this.props.selected.referenceAttrib.id}
-                        onChange={this.onAttrChange}
-                        selectId="selectAttr"
-                        placeholder="Select attribute"
-                        label=" "
-                        clearable={false}
-                        labelField={'displayName'}
-                    />
-                </div>
-                <div className="table-search__row-item table-search__row-item_type_oper">
-                    <ReactSelectize
-                        items={this.props.selected.operators}
-                        value={this.props.selected.operator || 0}
-                        onChange={this.onOperChange}
-                        selectId="selectOperator"
-                        placeholder="Select operator"
-                        label=" "
-                        clearable={false}
-                    />
-                </div>
-                <div className="table-search__row-item table-search__row-item_type_value">
-                    {valueSelector}
-                </div>
-                <div className="table-search__row-item table-search__row-item_type_additional">
-                    <div className={'connector-container ' + (!this.props.selected.lo ? 'hide' : '')}>
-                        <div className="connector">
-                           <ReactSelectize
-                                items={this.logicalOperators}
-                                value={this.props.selected.lo || 1}
-                                onChange={this.onLoChange}
-                                selectId="logicalOperator"
-                                placeholder="Select operator"
-                                label=" "
-                                clearable={false}
-                            />
+                    <RowActions onDelete={this.onDelete} onMoveUp={this.onMoveUp} onMoveDown={this.onMoveDown} />
+                    <div className="table-search__row-item table-search__row-item_type_attr">
+                        <ReactSelectize
+                            items={this.props.attributes}
+                            value={this.props.selected.referenceAttrib.id}
+                            onChange={this.onAttrChange}
+                            selectId="selectAttr"
+                            placeholder="Select attribute"
+                            label=" "
+                            clearable={false}
+                            labelField={'displayName'}
+                        />
+                    </div>
+                    <div className="table-search__row-item table-search__row-item_type_oper">
+                        <ReactSelectize
+                            items={this.props.selected.operators}
+                            value={this.props.selected.operator || 0}
+                            onChange={this.onOperChange}
+                            selectId="selectOperator"
+                            placeholder="Select operator"
+                            label=" "
+                            clearable={false}
+                        />
+                    </div>
+                    <div className="table-search__row-item table-search__row-item_type_value">
+                        {valueSelector}
+                    </div>
+                    <div className="table-search__row-item table-search__row-item_type_additional">
+                        <div className={'connector-container ' + (!this.props.selected.lo ? 'hide' : '')}>
+                            <div className="connector">
+                               <ReactSelectize
+                                    items={this.logicalOperators}
+                                    value={this.props.selected.lo || 1}
+                                    onChange={this.onLoChange}
+                                    selectId="logicalOperator"
+                                    placeholder="Select operator"
+                                    label=" "
+                                    clearable={false}
+                                />
+                            </div>
                         </div>
                     </div>
+
+                    {complexValueSelector}
+
+                <div className="table-search__row_separator">
                 </div>
             </div>
         );
