@@ -1,16 +1,19 @@
 import {Flux} from 'delorean';
 import {always} from '../util/util';
 import Consts from '../util/searchConsts';
+import appRouter from '../appRouter';
 
 import AssetTypeRepository from '../services/AssetTypeRepository';
+import SearchModelRepository from '../services/SearchModelRepository';
 
 export default Flux.createStore({
-    searchModel: {},
+    searchModel: null,
     assetTypes: [],
     assetAttributes: {},
     dataTypeOperators: {},
 
     actions: {
+        'searchByType:getTypeSearchModel': 'getTypeSearchModel',
         'searchByType:setContext': 'setContext',
         'searchByType:chooseAssetType': 'chooseAssetType',
         'searchByType:addRow': 'addRow',
@@ -26,15 +29,23 @@ export default Flux.createStore({
 
     initialize() {
         this.assetTypeRepo = new AssetTypeRepository();
-
-        this.searchModel = {
-            assetType: null,
-            assetTypeContext: Consts.assetTypeContext.active,
-            attributes: []
-        };
+        this.searchModelRepo = SearchModelRepository;
     },
 
     // actions
+    getTypeSearchModel(searchId){
+        if (!searchId){
+            this.searchModel = this.searchModelRepo.createSearchModel();
+            this.emitChange();
+        } else {
+            this.searchModelRepo.getSerchModel(searchId)
+                .then(d => {
+                    this.searchModel = d;
+                    this.emitChange();
+                });
+        }
+    },
+
     setContext(context) {
         this.searchModel.assetTypeContext = context;
 

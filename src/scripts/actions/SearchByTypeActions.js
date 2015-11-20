@@ -1,6 +1,11 @@
 import Actions from './Actions';
+import SearchModelRepository from '../services/SearchModelRepository';
 
 export default class SearchByTypeActions extends Actions {
+
+  getTypeSearchModel(searchId) {
+    return this._dispatcher.getTypeSearchModel(searchId);
+  }
 
   chooseAssetType(assetType) {
     return this._dispatcher.chooseAssetType(assetType);
@@ -51,9 +56,10 @@ export default class SearchByTypeActions extends Actions {
   }
 
   doSearch(searchModel) {
+    SearchModelRepository.saveSerchModel(searchModel);
     this._dispatcher.saveTypeSearchModel(searchModel);
 
     var appRouter = require('../appRouter');
-    appRouter.transitionTo(`/search/type/result?assetType=${searchModel.assetType.id}&context=${searchModel.assetTypeContext}`);
+    appRouter.transitionTo(`/search/type/result?searchId=${searchModel.searchId}`);
   }
 }

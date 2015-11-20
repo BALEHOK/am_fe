@@ -15,6 +15,7 @@ export default class ComplexValueSelectorRelatedAsset extends DeloreanComponent 
     watchStores = ['searchByType']
 
     componentDidMount(){
+        super.componentDidMount();
         this.props.actions.ensureAttributesLoaded(this.props.selected.referenceAttrib.relationId);
     }
 

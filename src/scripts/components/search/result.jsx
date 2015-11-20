@@ -27,12 +27,14 @@ var ResultPage = React.createClass({
     contextTypes: {
         router: React.PropTypes.func
     },
+
     sortItems: [
         { name: "Rank", id: 0 },
         { name: "Date", id: 1 },
         { name: "Location", id: 2 },
         { name: "User", id: 3 },
     ],
+    
     exportItems: [
         'txt',
         'xml',
@@ -89,7 +91,7 @@ var ResultPage = React.createClass({
                     } else {
                         this.actions.resetCustomReports();
                     }
-                }));
+            }));
         }
     },
 
@@ -180,6 +182,15 @@ var ResultPage = React.createClass({
         var urlQuery = this.context.router.getCurrentQuery();
         var isHistory = urlQuery.context == 2;
 
+        var assetTypeName, attributes;
+        if (!this.state.stores.results.searchByTypeModel){
+            assetTypeName = '';
+            attributes = [];
+        } else {
+            assetTypeName = this.state.stores.results.searchByTypeModel.assetType.name;
+            attributes = this.state.stores.results.searchByTypeModel.attributes;
+        }
+
         return (
             <div>
                 <div className="grid results-grid">
@@ -196,8 +207,8 @@ var ResultPage = React.createClass({
                           : <div>
                                 <div>
                                     <SearchQueryDisplay
-                                        typeName={this.state.stores.results.lastSearch.assetType.name}
-                                        attributes={this.state.stores.results.lastSearch.attributes} />
+                                        typeName={assetTypeName}
+                                        attributes={attributes} />
                                 </div>
                                 <div>
                                     <Link to="type-search">edit search</Link>

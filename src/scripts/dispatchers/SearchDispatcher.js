@@ -37,8 +37,12 @@ export default Flux.createDispatcher({
     this.dispatch('reports:reset');
   },
 
+  getTypeSearchModel(searchId){
+    return this.dispatch('searchByType:getTypeSearchModel', searchId);
+  },
+
   saveTypeSearchModel(model){
-    return this.dispatch('search:saveTypeSearch', model);
+    return this.dispatch('search:setTypeSearchModel', model);
   },
 
   setContext(context) {
