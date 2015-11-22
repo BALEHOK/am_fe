@@ -37,8 +37,8 @@ export default Flux.createDispatcher({
     this.dispatch('reports:reset');
   },
 
-  getTypeSearchModel(searchId){
-    return this.dispatch('searchByType:getTypeSearchModel', searchId);
+  initTypeSearch(searchId){
+    return this.dispatch('searchByType:initTypeSearch', searchId);
   },
 
   saveTypeSearchModel(model){
@@ -79,10 +79,6 @@ export default Flux.createDispatcher({
 
   changeRow(model) {
     return this.dispatch('searchByType:changeRow', model);
-  },
-
-  loadAssetTypes() {
-    return this.dispatch('searchByType:assetTypes');
   },
 
   ensureAttributesLoaded(typeId) {

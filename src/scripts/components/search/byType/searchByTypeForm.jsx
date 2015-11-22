@@ -31,8 +31,7 @@ export default class SearchByTypeForm extends DeloreanComponent {
         super.componentDidMount();
 
         this.waitFor(
-            this.props.actions.loadAssetTypes(),
-            this.props.actions.getTypeSearchModel(this.context.router.getCurrentQuery().searchId)
+            this.props.actions.initTypeSearch(this.context.router.getCurrentQuery().searchId)
         );
     }
 

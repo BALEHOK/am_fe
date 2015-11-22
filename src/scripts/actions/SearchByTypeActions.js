@@ -3,8 +3,8 @@ import SearchModelRepository from '../services/SearchModelRepository';
 
 export default class SearchByTypeActions extends Actions {
 
-  getTypeSearchModel(searchId) {
-    return this._dispatcher.getTypeSearchModel(searchId);
+  initTypeSearch(searchId) {
+    return this._dispatcher.initTypeSearch(searchId);
   }
 
   chooseAssetType(assetType) {
@@ -41,10 +41,6 @@ export default class SearchByTypeActions extends Actions {
 
   moveRowDown(model) {
     return this._dispatcher.moveRowDown(model);
-  }
-
-  loadAssetTypes() {
-    return this._dispatcher.loadAssetTypes();
   }
 
   ensureAttributesLoaded(typeId) {

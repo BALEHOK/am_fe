@@ -75,7 +75,8 @@ export default class ValueSelectorRelatedAsset extends DeloreanComponent {
                     onChange={this.onValueChange}
                     value={this.props.params.value.map(i => i.id)}
                     placeholder=" "
-                    label=" " />
+                    label=" "
+                    clearable={false} />
                 <a className="btn btn_type_one btn_size_small asset-data__param-btn"
                     href={this.getUrlForNew()}
                     target="_blank">

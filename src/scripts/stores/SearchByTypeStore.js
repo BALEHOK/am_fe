@@ -13,7 +13,7 @@ export default Flux.createStore({
     dataTypeOperators: {},
 
     actions: {
-        'searchByType:getTypeSearchModel': 'getTypeSearchModel',
+        'searchByType:initTypeSearch': 'initTypeSearch',
         'searchByType:setContext': 'setContext',
         'searchByType:chooseAssetType': 'chooseAssetType',
         'searchByType:addRow': 'addRow',
@@ -23,8 +23,7 @@ export default Flux.createStore({
         'searchByType:moveRowUp': 'moveRowUp',
         'searchByType:moveRowDown': 'moveRowDown',
         'searchByType:changeRow': 'changeRow',
-        'searchByType:ensureAttributesLoaded': 'ensureAttributesLoaded',
-        'searchByType:assetTypes': 'loadAssetTypes'
+        'searchByType:ensureAttributesLoaded': 'ensureAttributesLoaded'
     },
 
     initialize() {
@@ -33,17 +32,11 @@ export default Flux.createStore({
     },
 
     // actions
-    getTypeSearchModel(searchId){
-        if (!searchId){
-            this.searchModel = this.searchModelRepo.createSearchModel();
-            this.emitChange();
-        } else {
-            this.searchModelRepo.getSerchModel(searchId)
-                .then(d => {
-                    this.searchModel = d;
-                    this.emitChange();
-                });
-        }
+    initTypeSearch(searchId){
+        var assetTypesPromise = this.loadAssetTypes();
+        var searchModelPromise = this.getTypeSearchModel(searchId);
+
+        Promise.all([assetTypesPromise, searchModelPromise]).then(() => this.emitChange());
     },
 
     setContext(context) {
@@ -203,37 +196,9 @@ export default Flux.createStore({
         this.emitChange();
     },
 
-    loadAssetTypes() {
-        always(
-            this.assetTypeRepo.loadAssetTypes().then(
-                (data) => {
-                    if (!data.activeTypes || !data.activeTypes.length){
-                        this.assetTypes = [];
-                        return;
-                    }
-
-                    var assetTypes = [];
-                    for (var i = 0; i < data.activeTypes.length; i++) {
-                        var type = data.activeTypes[i];
-                        var typeModel = {
-                            id: type.id,
-                            name: type.displayName
-                        }
-
-                        assetTypes.push(typeModel);
-                    };
-                    
-                    this.assetTypes = assetTypes;
-                },
-                () => {
-                    this.assetTypes = [];
-                }
-            ),
-            () => this.emitChange());
-    },
-
     ensureAttributesLoaded(typeId){
         if (!this.assetAttributes[typeId]){
+            this.assetAttributes[typeId] = [];
             this.loadAssetAttributes(typeId)
                 .then(() => this.emitChange());
         }
@@ -334,6 +299,86 @@ export default Flux.createStore({
         for (var i = startFrom; i != attribs.length; i++){
             attribs[i].index = i;
         }
+    },
+
+    loadAssetTypes() {
+        return this.assetTypeRepo.loadAssetTypes().then(
+            (data) => {
+                if (!data.activeTypes || !data.activeTypes.length){
+                    this.assetTypes = [];
+                    return;
+                }
+
+                var assetTypes = [];
+                for (var i = 0; i < data.activeTypes.length; i++) {
+                    var type = data.activeTypes[i];
+                    var typeModel = {
+                        id: type.id,
+                        name: type.displayName
+                    }
+
+                    assetTypes.push(typeModel);
+                };
+                
+                this.assetTypes = assetTypes;
+            },
+            () => {
+                this.assetTypes = [];
+            }
+        );
+    },
+
+    getTypeSearchModel(searchId){
+        if (!searchId){
+            this.searchModel = this.searchModelRepo.createSearchModel();
+            return Promise.resolve(true);
+        } else {
+            return this.searchModelRepo.getSerchModel(searchId)
+                .then(d => {
+                    this.searchModel = d;
+
+                    var typeId = d.assetType.id;
+                    var promises = [];
+                    this.ensureAssetType(typeId, promises);
+
+                    d.attributes
+                        .filter(a => {
+                            return !!a.referenceAttrib.relationId;
+                        })
+                        .forEach(a => {
+                            this.ensureAssetType(a.referenceAttrib.relationId, promises);
+                        });
+
+                    promises.push(this.ensureOperators(d.attributes))
+
+                    return promises.length ? Promise.all(promises) : Promise.resolve(true);
+                });
+        }        
+    },
+
+    ensureAssetType(typeId, promises){
+        if (!this.assetAttributes[typeId]){
+            this.assetAttributes[typeId] = []; // to prevent another request ot server
+            promises.push(this.loadAssetAttributes(typeId));
+        }
+    },
+
+    ensureOperators(attribs){
+        var promises = [];
+        
+        attribs.forEach(attr => {
+            var datatype = attr.referenceAttrib.dataType;
+            if (!this.dataTypeOperators[datatype]){
+                this.dataTypeOperators[datatype] = []; // to prevent another request ot server
+                promises.push(this.loadDataTypeOperators(datatype));
+            }
+
+            if (attr.complexValue.length){
+                promises.push(this.ensureOperators(attr.complexValue));
+            }
+        });
+
+        return promises.length ? Promise.all(promises) : Promise.resolve(true);
     },
 
     getState() {
