@@ -52,6 +52,7 @@ export default class SearchByTypeActions extends Actions {
   }
 
   doSearch(searchModel) {
+    searchModel.searchId = SearchModelRepository.generateSearchId();
     SearchModelRepository.saveSerchModel(searchModel);
     this._dispatcher.saveTypeSearchModel(searchModel);
 

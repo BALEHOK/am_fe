@@ -340,13 +340,16 @@ export default Flux.createStore({
                     var typeId = d.assetType.id;
                     var promises = [];
                     this.ensureAssetType(typeId, promises);
+                    this.ensureOperators(d.attributes, promises);
 
                     d.attributes
-                        .filter(a => {
-                            return !!a.referenceAttrib.relationId;
-                        })
+                        .filter(a => a.useComplexValue)
                         .forEach(a => {
                             this.ensureAssetType(a.referenceAttrib.relationId, promises);
+
+                            if (a.complexValue && a.complexValue.length){
+                                this.ensureOperators(a.complexValue, promises);
+                            }
                         });
 
                     promises.push(this.ensureOperators(d.attributes))
@@ -363,22 +366,14 @@ export default Flux.createStore({
         }
     },
 
-    ensureOperators(attribs){
-        var promises = [];
-        
+    ensureOperators(attribs, promises){
         attribs.forEach(attr => {
             var datatype = attr.referenceAttrib.dataType;
             if (!this.dataTypeOperators[datatype]){
                 this.dataTypeOperators[datatype] = []; // to prevent another request ot server
                 promises.push(this.loadDataTypeOperators(datatype));
             }
-
-            if (attr.complexValue.length){
-                promises.push(this.ensureOperators(attr.complexValue));
-            }
         });
-
-        return promises.length ? Promise.all(promises) : Promise.resolve(true);
     },
 
     getState() {

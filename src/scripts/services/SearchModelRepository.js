@@ -4,11 +4,13 @@ import Consts from '../util/searchConsts';
 class SearchModelRepository {
     models = {}
 
-    createSearchModel(){
-        var searchId = new Date().getTime() % 1000;
+    generateSearchId(){
+        return new Date().getTime() % 1000;
+    }
 
+    createSearchModel(){
         return {
-            searchId: searchId,
+            searchId: '',
             assetType: null,
             assetTypeContext: Consts.assetTypeContext.active,
             attributes: []
@@ -28,7 +30,7 @@ class SearchModelRepository {
           };
         }
 
-        return fetch('/api/search/bytype/model').get(searchId);
+        return fetch('/api/search/bytype/model').get({searchId: searchId});
     }
 
     saveSerchModel(model){

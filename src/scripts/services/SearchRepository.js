@@ -16,7 +16,7 @@ export default class SearchRepository {
     searchByType(params, model) {
         return fetch('/api/search/bytype').post({
             searchId: model.searchId,
-            assetTypeId: model.assetType.id,
+            assetType: model.assetType,
             assetTypeContext: model.assetTypeContext,
             attributes: model.attributes,
             page: params.page,
