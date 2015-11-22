@@ -332,31 +332,45 @@ export default Flux.createStore({
         if (!searchId){
             this.searchModel = this.searchModelRepo.createSearchModel();
             return Promise.resolve(true);
-        } else {
-            return this.searchModelRepo.getSerchModel(searchId)
-                .then(d => {
-                    this.searchModel = d;
+        }
+            
+        return this.searchModelRepo.getSerchModel(searchId)
+            .then(d => {
+                this.searchModel = d;
 
-                    var typeId = d.assetType.id;
-                    var promises = [];
-                    this.ensureAssetType(typeId, promises);
-                    this.ensureOperators(d.attributes, promises);
-
-                    d.attributes
-                        .filter(a => a.useComplexValue)
-                        .forEach(a => {
-                            this.ensureAssetType(a.referenceAttrib.relationId, promises);
-
-                            if (a.complexValue && a.complexValue.length){
-                                this.ensureOperators(a.complexValue, promises);
-                            }
-                        });
-
-                    promises.push(this.ensureOperators(d.attributes))
-
-                    return promises.length ? Promise.all(promises) : Promise.resolve(true);
+                var typeId = d.assetType.id;
+                var promises = [];
+                this.ensureAssetType(typeId, promises);
+                d.attributes.forEach((attr, i) => {
+                    this.ensureOperators(attr, promises);
+                    attr.index = i;
                 });
-        }        
+
+                d.attributes
+                    .filter(a => a.useComplexValue)
+                    .forEach(a => {
+                        this.ensureAssetType(a.referenceAttrib.relationId, promises);
+                        a.complexValue.forEach((attr, i) => {
+                            this.ensureOperators(attr, promises);
+                            attr.index = i;
+                        });
+                    });
+
+                return (promises.length ? Promise.all(promises) : Promise.resolve(true))
+                    // set operators in each attribute
+                    // at this point we are sure that all of them are loaded from server
+                    .then(() => setOperators(d.attributes, this.dataTypeOperators));
+            });
+
+        function setOperators(attributes, allOperators){
+            attributes.forEach(attr => {
+                var datatype = attr.referenceAttrib.dataType;
+                attr.operators = allOperators[datatype];
+                if (attr.useComplexValue){
+                    setOperators(attr.complexValue, allOperators);
+                }
+            });
+        }
     },
 
     ensureAssetType(typeId, promises){
@@ -366,14 +380,13 @@ export default Flux.createStore({
         }
     },
 
-    ensureOperators(attribs, promises){
-        attribs.forEach(attr => {
-            var datatype = attr.referenceAttrib.dataType;
-            if (!this.dataTypeOperators[datatype]){
-                this.dataTypeOperators[datatype] = []; // to prevent another request ot server
-                promises.push(this.loadDataTypeOperators(datatype));
-            }
-        });
+    ensureOperators(attr, promises){
+        var datatype = attr.referenceAttrib.dataType;
+        var typeOperators = this.dataTypeOperators[datatype];
+        if (!this.dataTypeOperators[datatype]){
+            this.dataTypeOperators[datatype] = []; // to prevent another request ot server
+            promises.push(this.loadDataTypeOperators(datatype));
+        }
     },
 
     getState() {
