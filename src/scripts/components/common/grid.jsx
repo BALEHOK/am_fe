@@ -13,7 +13,7 @@ export default class DataGrid extends React.Component {
 
     state = {
         filterParams: {},
-        filteredRows: [],
+        filteredRows: this.props.source,
     }
 
     constructor(props) {
@@ -26,13 +26,16 @@ export default class DataGrid extends React.Component {
 
     filterRows() {
         var self = this;
-        var filteredRows = self.props.source.slice();
+        var filteredRows;;
         if (Object.keys(self.state.filterParams).length) {
+            filteredRows = self.props.source.slice();
             Object.keys(self.state.filterParams).forEach(function(name){
                 filteredRows = filteredRows.filter(function(row){
                     return row[name].toLowerCase().indexOf(self.state.filterParams[name].toLowerCase()) >= 0
                 });
         	});
+        } else {
+            filteredRows = self.props.source;
         }
         this.setState({
             filteredRows: filteredRows
@@ -78,9 +81,6 @@ export default class DataGrid extends React.Component {
                     rowsCount={this.state.filteredRows.length}
                     headerHeight={this.props.filtering ? this.props.headerHeight + 55 : this.props.headerHeight}
                 >
-                    {this.props.children.map(item => {
-                        //console.log(item.props);
-                    })}
                     {this.props.children}
                 </Table>
             </div>
