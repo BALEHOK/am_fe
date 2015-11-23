@@ -5,8 +5,8 @@ var Router = require('react-router');
 var moment = require('moment');
 var Loader = require('../../common/loader.jsx');
 var LoaderMixin = require('../../../mixins/LoaderMixin');
+var DataGrid = require('../../common/grid');
 
-var Table = FixedDataTable.Table;
 var Column = FixedDataTable.Column;
 
 var Create = React.createClass({
@@ -64,10 +64,6 @@ var Create = React.createClass({
         );
     },
 
-    rowGetter(rowIndex) {
-        return this.state.stores.list.assettypes.activeTypes[rowIndex];
-    },
-
     renderDateCell(cellData) {
         var date = moment(cellData);
         return date.format("DD.MM.YYYY");
@@ -91,14 +87,18 @@ var Create = React.createClass({
                     <div className="grid asset-create" ref="grid">
                         <div className="grid__item one-whole" ref="gridContainer">
                             {assettypes && assettypes.activeTypes && assettypes.activeTypes.length > 0
-                                ? <Table
+                                ? <DataGrid
+                                    source={this.state.stores.list.assettypes.activeTypes}
                                     rowHeight={50}
-                                    rowGetter={this.rowGetter}
-                                    rowsCount={assettypes.activeTypes.length}
                                     width={this.state.gridMaxWidth}
                                     maxHeight={this.state.gridMaxHeight}
                                     headerHeight={50}
                                     onRowClick={this.onRowClick}
+                                    filtering={true}
+                                    filterFields={[
+                                        {dataKey: 'displayName', label: 'Name', width: this.state.gridMaxWidth*0.25},
+                                        {dataKey: 'description', label: 'Description', width: this.state.gridMaxWidth*0.45},
+                                    ]}
                                   >
                                         <Column
                                             cellRenderer={this.renderNameCell}
@@ -128,7 +128,7 @@ var Create = React.createClass({
                                             width={this.state.gridMaxWidth*0.05}
                                             dataKey="id"
                                         />
-                                    </Table>
+                                </DataGrid>
                                 : null
                             }
                         </div>
