@@ -65,7 +65,6 @@ export default class DataGrid extends React.Component {
                                         onChange={this.onFilterChange.bind(this, filterItem.dataKey)}
                                         type="text"
                                         className="input-txt__field"
-                                        placeholder={filterItem.label}
                                     />
                                 </label>
                             </div>
