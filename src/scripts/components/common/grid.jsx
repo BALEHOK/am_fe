@@ -1,10 +1,15 @@
 import React from "react";
 import FixedDataTable from 'fixed-data-table';
+import classNames from 'classnames';
 
 var Table = FixedDataTable.Table;
 var Column = FixedDataTable.Column;
 
 export default class DataGrid extends React.Component {
+
+    static defaultProps = {
+        source: []
+    }
 
     state = {
         filterParams: {},
@@ -45,13 +50,17 @@ export default class DataGrid extends React.Component {
 
     render() {
         var filtering = this.props.filtering;
+        var datagridClasses = classNames({
+            'datagrid' : true,
+            'datagrid_with_filter' : filtering
+        });
         return (
-            <div className="datagrid">
+            <div className={datagridClasses}>
                 {filtering
                     ? <div className="datagrid__filter">
                         {this.props.filterFields.map(filterItem =>
                             <div className="datagrid__filter-item" style={{width: filterItem.width ? filterItem.width : 'auto'}}>
-                                <label className="input-txt input-txt_width_full">
+                                <label className="input-txt input-txt_size_small input-txt_type_third input-txt_width_full">
                                     <input
                                         onChange={this.onFilterChange.bind(this, filterItem.dataKey)}
                                         type="text"
@@ -68,6 +77,7 @@ export default class DataGrid extends React.Component {
                     {...this.props}
                     rowGetter={this.rowGetter.bind(this)}
                     rowsCount={this.state.filteredRows.length}
+                    headerHeight={this.props.filtering ? this.props.headerHeight + 55 : this.props.headerHeight}
                 >
                     {this.props.children.map(item => {
                         //console.log(item.props);
