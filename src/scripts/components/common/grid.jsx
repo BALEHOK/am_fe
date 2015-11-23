@@ -6,38 +6,37 @@ var Column = FixedDataTable.Column;
 
 export default class DataGrid extends React.Component {
 
+    state = {
+        filterParams: {},
+        filteredRows: [],
+    }
+
     constructor(props) {
         super(props);
     }
 
-    state = {
-        source: [],
-        filterBy: null,
-        filteredRows: [],
+    componentWillReceiveProps(nextProps) {
+        this.filterRows();
     }
 
-    componentWillReceiveProps(nextProps) {
+    filterRows() {
+        var self = this;
+        var filteredRows = self.props.source.slice();
+        if (Object.keys(self.state.filterParams).length) {
+            Object.keys(self.state.filterParams).forEach(function(name){
+                filteredRows = filteredRows.filter(function(row){
+                    return row[name].toLowerCase().indexOf(self.state.filterParams[name].toLowerCase()) >= 0
+                });
+        	});
+        }
         this.setState({
-            source: nextProps.source,
-            filteredRows: nextProps.source
+            filteredRows: filteredRows
         });
     }
 
-    filterRowsBy(key, filterBy) {
-        var rows = this.state.source.slice();
-        var filteredRows = filterBy ? rows.filter(function(row){
-            return row[key].toLowerCase().indexOf(filterBy.toLowerCase()) >= 0
-        }) : rows;
-
-        console.log(filteredRows);
-
-        this.setState({
-            filteredRows: filteredRows
-        })
-    }
-
     onFilterChange(dataKey, e) {
-        this.filterRowsBy(dataKey, e.target.value);
+        this.state.filterParams[dataKey] = e.target.value;
+        this.filterRows();
     }
 
     rowGetter(rowIndex) {
@@ -46,7 +45,6 @@ export default class DataGrid extends React.Component {
 
     render() {
         var filtering = this.props.filtering;
-        console.log(this.state.filteredRows.length);
         return (
             <div className="datagrid">
                 {filtering
