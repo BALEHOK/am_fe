@@ -342,25 +342,29 @@ export default Flux.createStore({
                 var promises = [];
                 this.ensureAssetType(typeId, promises);
                 d.attributes.forEach((attr, i) => {
-                        this.ensureOperators(attr, promises);
-                        attr.index = i;
-                    });
+                    this.ensureOperators(attr, promises);
+                });
 
                 d.attributes
-                    .filter(a => a.useComplexValue)
                     .forEach(a => {
-                        this.ensureAssetType(a.referenceAttrib.relationId, promises);
-                        a.complexValue.forEach((attr, i) => {
-                            this.ensureOperators(attr, promises);
-                            attr.index = i;
-                        });
+                        if (!a.useComplexValue){
+                            a.complexValue = a.complexValue || [];
+                        } else {
+                            this.ensureAssetType(a.referenceAttrib.relationId, promises);
+                            a.complexValue.forEach((attr, i) => {
+                                this.ensureOperators(attr, promises);
+                                attr.index = i;
+                            });
+                        }
                     });
 
                 return (promises.length ? Promise.all(promises) : Promise.resolve(true))
                     // set operators in each attribute
                     // at this point we are sure that all of them are loaded from server
                     .then(() => setOperators(d.attributes, this.dataTypeOperators));
-            });
+            },
+                () => this.searchModel = this.searchModelRepo.createSearchModel()
+            );
 
         function setOperators(attributes, allOperators){
             attributes
@@ -383,7 +387,7 @@ export default Flux.createStore({
     },
 
     ensureOperators(attr, promises){
-        if (!attr.referenceAttrib || attr.referenceAttrib.dataType){
+        if (!attr.referenceAttrib || !attr.referenceAttrib.dataType){
             return;
         }
 
