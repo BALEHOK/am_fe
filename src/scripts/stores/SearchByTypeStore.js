@@ -342,9 +342,9 @@ export default Flux.createStore({
                 var promises = [];
                 this.ensureAssetType(typeId, promises);
                 d.attributes.forEach((attr, i) => {
-                    this.ensureOperators(attr, promises);
-                    attr.index = i;
-                });
+                        this.ensureOperators(attr, promises);
+                        attr.index = i;
+                    });
 
                 d.attributes
                     .filter(a => a.useComplexValue)
@@ -363,12 +363,14 @@ export default Flux.createStore({
             });
 
         function setOperators(attributes, allOperators){
-            attributes.forEach(attr => {
-                var datatype = attr.referenceAttrib.dataType;
-                attr.operators = allOperators[datatype];
-                if (attr.useComplexValue){
-                    setOperators(attr.complexValue, allOperators);
-                }
+            attributes
+                .filter(attr => attr.referenceAttrib && attr.referenceAttrib.dataType)
+                .forEach(attr => {
+                    var datatype = attr.referenceAttrib.dataType;
+                    attr.operators = allOperators[datatype];
+                    if (attr.useComplexValue){
+                        setOperators(attr.complexValue, allOperators);
+                    }
             });
         }
     },
@@ -381,6 +383,10 @@ export default Flux.createStore({
     },
 
     ensureOperators(attr, promises){
+        if (!attr.referenceAttrib || attr.referenceAttrib.dataType){
+            return;
+        }
+
         var datatype = attr.referenceAttrib.dataType;
         var typeOperators = this.dataTypeOperators[datatype];
         if (!this.dataTypeOperators[datatype]){
