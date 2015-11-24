@@ -28,8 +28,8 @@ var Create = React.createClass({
         this.waitFor(this.props.actions.loadAssetTypes());
     },
 
-    onRowClick: function(event, rowIndex) {
-        let id = this.state.stores.list.assettypes.activeTypes[rowIndex].id
+    onRowClick: function(event, rowIndex, data) {
+        let id = data.id
         this.context.router.transitionTo(
             'asset-create-from-type',
             {assetTypeId : id}
