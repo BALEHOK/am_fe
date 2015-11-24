@@ -47,23 +47,22 @@ var FaqAssets = React.createClass({
                                 ? <DataGrid
                                     source={this.state.stores.faq.list}
                                     rowHeight={50}
-                                    width={1000}
                                     maxHeight={600}
                                     headerHeight={50}
                                     filtering={true}
                                     filterFields={[
-                                        {dataKey: 'question', label: 'Question', width: 500},
-                                        {dataKey: 'answer', label: 'Answer', width: 500},
+                                        {dataKey: 'question', label: 'Question', width: 0.5},
+                                        {dataKey: 'answer', label: 'Answer', width: 0.5},
                                     ]}
                                   >
                                     <Column
                                         label="Question"
-                                        width={500}
+                                        width={0.5}
                                         dataKey="question"
                                     />
                                     <Column
                                         label="Answer"
-                                        width={500}
+                                        width={0.5}
                                         dataKey="answer"
                                     />
                                   </DataGrid>

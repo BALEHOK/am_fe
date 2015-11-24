@@ -21,40 +21,12 @@ var Create = React.createClass({
     getInitialState: function() {
         return {
             gridMaxHeight: 600,
-            gridMaxWidth: 1200,
         };
     },
 
     componentWillMount: function() {
         this.waitFor(this.props.actions.loadAssetTypes());
     },
-
-    componentDidMount: function() {
-        window.addEventListener("resize", this.onResize);
-        this.setState({
-            gridMaxWidth: document.querySelector('.container').offsetWidth
-        });
-    },
-    componentWillUnmount: function() {
-        window.removeEventListener("resize", this.onResize);
-    },
-
-    componentDidUpdate: function(prevProps, prevState) {
-        if (prevState.loading && !this.state.loading) {
-            let gridNode = React.findDOMNode(this.refs.grid);
-            this.setState({
-                gridMaxHeight:  window.innerHeight - gridNode.getBoundingClientRect().top - 60
-            });
-        }
-    },
-
-    onResize: function() {
-		let gridNode = React.findDOMNode(this.refs.grid);
-		this.setState({
-            gridMaxHeight:  window.innerHeight - gridNode.getBoundingClientRect().top - 60,
-            gridMaxWidth: document.querySelector('.container').offsetWidth
-		});
-	},
 
     onRowClick: function(event, rowIndex) {
         let id = this.state.stores.list.assettypes.activeTypes[rowIndex].id
@@ -84,48 +56,47 @@ var Create = React.createClass({
                 <div>
                     <h1 className="page-title"><span className="icon icon_create"></span>New Asset</h1>
                     <h2>Please select an asset type</h2>
-                    <div className="grid asset-create" ref="grid">
-                        <div className="grid__item one-whole" ref="gridContainer">
+                    <div className="grid asset-create">
+                        <div className="grid__item one-whole">
                             {assettypes && assettypes.activeTypes && assettypes.activeTypes.length > 0
                                 ? <DataGrid
                                     source={this.state.stores.list.assettypes.activeTypes}
                                     rowHeight={50}
-                                    width={this.state.gridMaxWidth}
                                     maxHeight={this.state.gridMaxHeight}
                                     headerHeight={50}
                                     onRowClick={this.onRowClick}
                                     filtering={true}
                                     filterFields={[
-                                        {dataKey: 'displayName', label: 'Name', width: this.state.gridMaxWidth*0.25},
-                                        {dataKey: 'description', label: 'Description', width: this.state.gridMaxWidth*0.45},
+                                        {dataKey: 'displayName', label: 'Name', width: 0.25},
+                                        {dataKey: 'description', label: 'Description', width: 0.45},
                                     ]}
                                   >
                                         <Column
                                             cellRenderer={this.renderNameCell}
                                             label="Name"
-                                            width={this.state.gridMaxWidth*0.25}
+                                            width={0.25}
                                             dataKey="displayName"
                                         />
                                         <Column
                                             label="Description"
-                                            width={this.state.gridMaxWidth*0.45}
+                                            width={0.45}
                                             dataKey="description"
                                         />
                                         <Column
                                             label="Revision"
-                                            width={this.state.gridMaxWidth*0.12}
+                                            width={0.12}
                                             dataKey="revision"
                                         />
                                         <Column
                                             cellRenderer={this.renderDateCell}
                                             label="Date"
-                                            width={this.state.gridMaxWidth*0.13}
+                                            width={0.13}
                                             dataKey="updateDate"
                                         />
                                         <Column
                                             cellRenderer={this.renderLinkCell}
                                             label=" "
-                                            width={this.state.gridMaxWidth*0.05}
+                                            width={0.05}
                                             dataKey="id"
                                         />
                                 </DataGrid>
