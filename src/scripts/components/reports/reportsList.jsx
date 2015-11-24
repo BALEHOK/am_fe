@@ -30,8 +30,8 @@ var ReportsList = React.createClass({
         return cellData ? 'Financial' : ''
     },
 
-    onRowClick: function(event, rowIndex) {
-        var id = this.state.stores.report.reports[rowIndex].id;
+    onRowClick: function(event, rowIndex, data) {
+        var id = data.id;
         var url = APIURL + '/customreports/index/' + id;
         var win = window.open(url, '_blank');
         win.focus();
