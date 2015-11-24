@@ -7,14 +7,16 @@
     position absolute
     left 0
     top 50px
-    right 0
+    right 1px
     font-size 0
     background-color #4d4d4d
     color #ffffff
     border 1px solid #d3d3d3
+    border-right none
     border-bottom none
     z-index 10
     white-space nowrap
+    overflow hidden
 
     &-item
       display inline-block
@@ -22,9 +24,6 @@
       font-size $baseFontSize
       padding 12px 19px
       border-right 1px solid #d3d3d3
-
-      &:last-child
-        border-right none
 
   .public_fixedDataTable_header
     .fixedDataTableCellLayout_wrap3
