@@ -1,11 +1,15 @@
 var React = require('react');
 var Router = require('react-router');
+var FixedDataTable = require('fixed-data-table');
 var Link = Router.Link;
 var Flux = require('delorean').Flux;
 var cx = require('classnames');
 var FaqItem = require('./faqItem.jsx');
 var LoaderMixin = require('../../mixins/LoaderMixin');
 var Loader = require('../common/loader.jsx');
+var DataGrid = require('../common/grid');
+
+var Column = FixedDataTable.Column;
 
 var FaqAssets = React.createClass({
     mixins:[Flux.mixins.storeListener, LoaderMixin],
@@ -39,9 +43,31 @@ var FaqAssets = React.createClass({
                             </Link>
                         </div>
                         <div className="grid__item ten-twelfths">
-                            <div className="accordion">
-                                {this.state.stores.faq.list.map(this.renderItem)}
-                            </div>
+                            {this.state.stores.faq.list.length > 0
+                                ? <DataGrid
+                                    source={this.state.stores.faq.list}
+                                    rowHeight={50}
+                                    maxHeight={600}
+                                    headerHeight={50}
+                                    filtering={true}
+                                    filterFields={[
+                                        {dataKey: 'question', label: 'Question', width: 0.5},
+                                        {dataKey: 'answer', label: 'Answer', width: 0.5},
+                                    ]}
+                                  >
+                                    <Column
+                                        label="Question"
+                                        width={0.5}
+                                        dataKey="question"
+                                    />
+                                    <Column
+                                        label="Answer"
+                                        width={0.5}
+                                        dataKey="answer"
+                                    />
+                                  </DataGrid>
+                                : null
+                            }
                         </div>
                     </div>
                 </Loader>

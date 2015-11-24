@@ -1,0 +1,30 @@
+.datagrid
+  display block
+  position relative
+
+  &__filter
+    display block
+    position absolute
+    left 0
+    top 50px
+    right 1px
+    font-size 0
+    background-color #4d4d4d
+    color #ffffff
+    border 1px solid #d3d3d3
+    border-right none
+    border-bottom none
+    z-index 10
+    white-space nowrap
+    overflow hidden
+
+    &-item
+      display inline-block
+      vertical-align top
+      font-size $baseFontSize
+      padding 12px 19px
+      border-right 1px solid #d3d3d3
+
+  .public_fixedDataTable_header
+    .fixedDataTableCellLayout_wrap3
+      padding-bottom 55px
