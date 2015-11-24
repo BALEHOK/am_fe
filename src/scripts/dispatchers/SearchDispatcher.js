@@ -41,16 +41,48 @@ export default Flux.createDispatcher({
     return this.dispatch('search:saveTypeSearch', model);
   },
 
+  setContext(context) {
+    return this.dispatch('searchByType:setContext', context);
+  },
+
+  chooseAssetType(assetType) {
+    return this.dispatch('searchByType:chooseAssetType', assetType);
+  },
+
+  addRow(model) {
+    return this.dispatch('searchByType:addRow', model);
+  },
+
+  addOpenParenthesis(attributes) {
+    return this.dispatch('searchByType:addOpenParenthesis', attributes);
+  },
+
+  addClosingParenthesis(attributes) {
+    return this.dispatch('searchByType:addClosingParenthesis', attributes);
+  },
+
+  deleteRow(model) {
+    return this.dispatch('searchByType:deleteRow', model);
+  },
+
+  moveRowUp(model) {
+    return this.dispatch('searchByType:moveRowUp', model);
+  },
+
+  moveRowDown(model) {
+    return this.dispatch('searchByType:moveRowDown', model);
+  },
+
+  changeRow(model) {
+    return this.dispatch('searchByType:changeRow', model);
+  },
+
   loadAssetTypes() {
     return this.dispatch('searchByType:assetTypes');
   },
-  
-  loadAssetAttributes(typeId) {
-    return this.dispatch('searchByType:assetAttributes', typeId);
-  },
-  
-  loadDataTypeOperators(dataType) {
-    return this.dispatch('searchByType:dataTypeOperators', dataType);
+
+  ensureAttributesLoaded(typeId) {
+    return this.dispatch('searchByType:ensureAttributesLoaded', typeId);
   },
 
   getStores() {

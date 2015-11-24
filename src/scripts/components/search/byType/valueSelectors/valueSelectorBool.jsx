@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactSelectize from '../../common/react-selectize';
+import ReactSelectize from '../../../common/react-selectize';
 
 export default class ValueSelectorBool extends React.Component {
     static items = [

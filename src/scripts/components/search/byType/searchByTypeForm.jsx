@@ -5,10 +5,10 @@ import Loader from'../../common/loader.jsx';
 import LoaderMixin from'../../../mixins/LoaderMixin';
 import ReactSelectize from '../../common/react-selectize';
 import AttributesTableHeader from './attributesTableHeader';
-import ParenthesisRow from './parenthesisRow';
-import AttributeRow from './attributeRow';
+import AttributeRows from './attributeRows';
+import RowsControls from './rowsControls';
 import SearchQueryDisplay from './searchQueryDisplay';
-import Consts from './consts';
+import Consts from '../../../util/searchConsts';
 
 import reactMixin from 'react-mixin';
 import {Flux} from 'delorean';
@@ -17,21 +17,9 @@ import {Flux} from 'delorean';
 @reactMixin.decorate(LoaderMixin)
 export default class SearchByTypeForm extends DeloreanComponent {
 
-    static logicalOperators = {
-        none: 0,
-        and: 1,
-        or: 2
-    }
-
     watchStores = ['searchByType']
 
     state = {
-        searchModel: {
-            assetType: null,
-            assetTypeContext: Consts.assetTypeContext.active,
-            attributes: []
-        },
-        assetTypes: [],
         loading: true
     }
 
@@ -45,280 +33,43 @@ export default class SearchByTypeForm extends DeloreanComponent {
 
     handleAssetTypeChanged = (values) => {
         if (!values || !values.length){
-            this.setSearchModel({
-                assetType: null,
-                attributes: []
-            });
+            this.props.actions.chooseAssetType(null);
             return;
         }
 
         this.waitFor(
-            this.props.actions.loadAssetAttributes(values[0].id)
+            this.props.actions.chooseAssetType(values[0])
         )
-        this.setSearchModel({
-            assetType: values[0],
-            attributes: []
-        });
     }
 
     onContextChanged = (e) => {
-        this.setSearchModel({
-            assetTypeContext: e.currentTarget.value
-        });
+        this.props.actions.setContext(e.currentTarget.value);
     }
 
     addRow = () => {
-        var assetType = this.state.searchModel.assetType;
-        var allAttribs = this.state.stores.searchByType.assetAttributes;
-        if (!assetType || !allAttribs[assetType.id]){
-            return;
-        }
-
-        var selectedAttribs = this.state.searchModel.attributes;
-        var index = selectedAttribs.length;
-        if (index != 0 && selectedAttribs[index - 1].parenthesis !== Consts.parenthesisType.open){
-            selectedAttribs[index - 1].lo = Consts.logicalOperators.and;
-        }
-
-        var attribute = allAttribs[assetType.id][0];
-
-        var selectedAttribModel = {
-            index: index,
-            parenthesis: Consts.parenthesisType.none,
-            referenceAttrib: attribute,
-            operators: [],
-            operator: null,
-            value: null,
-            // logical operator
-            lo: Consts.logicalOperators.none
-        };
-
-        this.setOperators(selectedAttribModel);
-
-        selectedAttribs.push(selectedAttribModel);
-
-        this.forceUpdate();
+        var searchModel = this.state.stores.searchByType.searchModel;
+        this.props.actions.addRow({
+            assetTypeId: searchModel.assetType.id,
+            attributes: searchModel.attributes
+        });
     }
 
     addOpenParenthesis = () => {
-        var assetType = this.state.searchModel.assetType;
-        var allAttribs = this.state.stores.searchByType.assetAttributes;
-        if (!assetType || !allAttribs[assetType.id]){
-            return;
-        }
-
-        var selectedAttribs = this.state.searchModel.attributes;
-        var index = selectedAttribs.length;
-
-        if (index != 0 && selectedAttribs[index - 1].parenthesis !== Consts.parenthesisType.open){
-            selectedAttribs[index - 1].lo = Consts.logicalOperators.and;
-        }
-
-        var selectedAttribModel = {
-            index: index,
-            parenthesis: Consts.parenthesisType.open,
-            referenceAttrib: null,
-            operators: null,
-            operator: null,
-            value: null,
-            // logical operator
-            lo: Consts.logicalOperators.none
-        };
-
-        selectedAttribs.push(selectedAttribModel);
-
-        this.forceUpdate();
+        this.props.actions.addOpenParenthesis(this.state.stores.searchByType.searchModel.attributes);
     }
 
     addClosingParenthesis = () => {
-        var assetType = this.state.searchModel.assetType;
-        var allAttribs = this.state.stores.searchByType.assetAttributes;
-        if (!assetType || !allAttribs[assetType.id]){
-            return;
-        }
-
-        var index = this.state.searchModel.attributes.length;
-
-        var selectedAttribModel = {
-            index: index,
-            parenthesis: Consts.parenthesisType.closing,
-            referenceAttrib: null,
-            operators: null,
-            operator: null,
-            value: null,
-            // logical operator
-            lo: Consts.logicalOperators.none
-        };
-
-        this.state.searchModel.attributes.push(selectedAttribModel);
-
-        this.forceUpdate();
-    }
-
-    rowChanged = (attribute) => {
-        this.state.searchModel.attributes[attribute.index] = attribute;
-
-        if (attribute.parenthesis === Consts.parenthesisType.none && !attribute.operators.length){
-            this.setOperators(attribute);
-        }
-
-        this.forceUpdate();
-    }
-
-    setOperators(selectedAttribute) {
-        var dataTypeOperators = this.state.stores.searchByType.dataTypeOperators;
-        var datatype = selectedAttribute.referenceAttrib.dataType;
-        if (!loadFromStore())
-        {
-            // rerender required after call to loadFromStore()
-            // this.waitFor() does it implicitly
-            // otherwise call this.forceUpdate()
-            this.waitFor(
-                this.props.actions.loadDataTypeOperators(datatype)
-                    .then(() => loadFromStore())
-            );
-        }
-
-        function loadFromStore() {
-            var ops = dataTypeOperators[datatype];
-            if (ops && ops.length){
-                selectedAttribute.operators = ops;
-                selectedAttribute.operator = ops[0].id;
-                return true;
-            }
-            return false;
-        }
-    }
-
-    rowDeleted = (index) => {
-        var attribs = this.state.searchModel.attributes;
-        attribs.splice(index, 1);
-
-        if (attribs.length !== 0){
-
-            this.updateRowIndexes(index);
-
-            this.fixLogicalOperator(index - 1);
-        }
-
-        this.forceUpdate();
-    }
-
-    fixLogicalOperator(index){
-        var attribs = this.state.searchModel.attributes;
-        var curAttrib = attribs[index];
-        // last row has no LO
-        if (index === attribs.length - 1){
-            curAttrib.lo = Consts.logicalOperators.none;
-        }
-
-        // open parenthesis never has LO, skip it
-        else if (curAttrib.parenthesis !== Consts.parenthesisType.open){
-            // no LO before closing parenthesis
-            if (attribs[index + 1].parenthesis === Consts.parenthesisType.closing){
-                curAttrib.lo = Consts.logicalOperators.none;
-            }
-            // ensure there is LO before not closing parenthesis
-            else if (curAttrib.lo === Consts.logicalOperators.none){
-                curAttrib.lo = Consts.logicalOperators.and;
-            }
-        }
-    }
-
-    rowMoveUp = (index) => {
-        if (index === 0){
-            return;
-        }
-
-        var attribs = this.state.searchModel.attributes;
-        var prevIndex = index - 1;
-        var prev = attribs[prevIndex];
-        attribs[prevIndex] = attribs[index];
-        attribs[index] = prev;
-
-        this.updateRowIndexes(prevIndex);
-
-        if (index > 1){
-            this.fixLogicalOperator(index - 2);
-        }
-        this.fixLogicalOperator(index - 1);
-        this.fixLogicalOperator(index);
-
-        this.forceUpdate();
-    }
-
-    rowMoveDown = (index) => {
-        var attribs = this.state.searchModel.attributes;
-
-        if (index === attribs.length - 1){
-            return;
-        }
-
-        var nextIndex = index + 1;
-        var next = attribs[nextIndex];
-        attribs[nextIndex] = attribs[index];
-        attribs[index] = next;
-
-        this.updateRowIndexes(index);
-
-        if (index > 0){
-            this.fixLogicalOperator(index - 1);
-        }
-        this.fixLogicalOperator(index);
-        this.fixLogicalOperator(index + 1);
-
-        this.forceUpdate();
-    }
-
-    updateRowIndexes(startFrom){
-        var attribs = this.state.searchModel.attributes;
-        for (var i = startFrom; i != attribs.length; i++){
-            attribs[i].index = i;
-        }
+        this.props.actions.addClosingParenthesis(this.state.stores.searchByType.searchModel.attributes);
     }
 
     doSearch(e) {
         e.preventDefault && e.preventDefault();
-        this.props.actions.doSearch(this.state.searchModel);
-    }
-
-    setSearchModel(diff){
-        this.setState({
-            searchModel: Object.assign(this.state.searchModel, diff)
-        });
+        this.props.actions.doSearch(this.state.stores.searchByType.searchModel);
     }
 
     render() {
-        var attributeRows = [];
-        var assetType = this.state.searchModel.assetType;
-        var assetTypeId = assetType ? assetType.id : 0;
-        var selectedAttributes = this.state.searchModel.attributes;
-        if (!!assetType && selectedAttributes.length)
-        {
-            assetTypeId = assetType.id;
-            var allTypeAttribs = this.state.stores.searchByType.assetAttributes[assetTypeId];
-            for (var i = 0; i < selectedAttributes.length; i++) {
-                var attr = selectedAttributes[i];
-                if (attr.parenthesis > Consts.parenthesisType.none){
-                    attributeRows.push(
-                        <ParenthesisRow
-                            selected={attr}
-                            onChange={this.rowChanged}
-                            onDelete={this.rowDeleted}
-                            onMoveUp={this.rowMoveUp}
-                            onMoveDown={this.rowMoveDown} />);
-                } else {
-                    attributeRows.push(
-                        <AttributeRow attributes={allTypeAttribs}
-                            selected={attr}
-                            onChange={this.rowChanged}
-                            onDelete={this.rowDeleted}
-                            onMoveUp={this.rowMoveUp}
-                            onMoveDown={this.rowMoveDown} />);
-                }
-            };
-        }
-
+        var searchModel = this.state.stores.searchByType.searchModel;
+        var assetTypeId = searchModel.assetType ? searchModel.assetType.id : 0;
         return (
             <Loader  loading={this.state.loading}>
                 <form className="form advanced-search">
@@ -346,7 +97,7 @@ export default class SearchByTypeForm extends DeloreanComponent {
                                     <label className="radio-btn">
                                         <input type="radio" className="radio-btn__input" name="assetTypeState"
                                             value={Consts.assetTypeContext.active}
-                                            checked={this.state.searchModel.assetTypeContext == Consts.assetTypeContext.active}
+                                            checked={searchModel.assetTypeContext == Consts.assetTypeContext.active}
                                             onChange={this.onContextChanged} />
                                         <span className="radio-btn__icon"></span>
                                         Active assets
@@ -354,7 +105,7 @@ export default class SearchByTypeForm extends DeloreanComponent {
                                     <label className="radio-btn">
                                         <input type="radio" className="radio-btn__input" name="assetTypeState"
                                             value={Consts.assetTypeContext.history}
-                                            checked={this.state.searchModel.assetTypeContext == Consts.assetTypeContext.history}
+                                            checked={searchModel.assetTypeContext == Consts.assetTypeContext.history}
                                             onChange={this.onContextChanged} />
                                         <span className="radio-btn__icon"></span>
                                         History
@@ -365,34 +116,32 @@ export default class SearchByTypeForm extends DeloreanComponent {
                     </header>
 
                     <div className={classNames('table-search', { hide: !assetTypeId })}>
-                        <div className={classNames({ hide: !selectedAttributes.length })}>
+                        <div className={classNames({ hide: !searchModel.attributes.length })}>
                             <AttributesTableHeader />
                             <div className="table-search__content">
-                                {attributeRows}
+                                <AttributeRows
+                                    actions={this.props.actions}
+                                    assetType={searchModel.assetType}
+                                    attributes={searchModel.attributes}
+                                    allTypeAttribs={searchModel.assetType
+                                                        ? this.state.stores.searchByType.assetAttributes[searchModel.assetType.id]
+                                                        : []} />
                             </div>
                         </div>
                         <footer className="table-search__footer">
-                            <span className="table-search__add-row" onClick={this.addRow}>
-                                <i className="icon icon-plus"></i>
-                                Add a new row
-                            </span>
-                            <span className="table-search__add-row icon-stack" onClick={this.addOpenParenthesis}>
-                                <i className="icon icon-openpar icon-circle"></i>
-                                Add open parenthesis
-                            </span>
-                            <span className="table-search__add-row closepar" onClick={this.addClosingParenthesis}>
-                                <i className="icon icon-closepar icon-circle"></i>
-                                Add closing parenthesis
-                            </span>
+                            <RowsControls
+                                addRow={this.addRow}
+                                addOpenParenthesis={this.addOpenParenthesis}
+                                addClosingParenthesis={this.addClosingParenthesis} />
                             <div className="table-search__footer-actions clearfix">
                                 <button className="btn pull-right"
-                                    disabled={!this.state.searchModel.assetType}
+                                    disabled={!searchModel.assetType}
                                     onClick={this.doSearch.bind(this)}>
                                     <i className="btn__icon btn__icon_search"></i>Start search
                                 </button>
 
                                 <SearchQueryDisplay
-                                    attributes={selectedAttributes} />
+                                    attributes={searchModel.attributes} />
                             </div>
                         </footer>
                     </div>

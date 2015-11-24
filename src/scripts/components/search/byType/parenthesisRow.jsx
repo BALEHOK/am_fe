@@ -71,6 +71,9 @@ export default class ParenthesisRow extends React.Component {
                         </div>
                     </div>
                 </div>
+
+                <div className="table-search__row_separator">
+                </div>
             </div>
         );
     }
