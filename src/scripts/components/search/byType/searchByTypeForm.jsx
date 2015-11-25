@@ -17,18 +17,41 @@ import {Flux} from 'delorean';
 @reactMixin.decorate(LoaderMixin)
 export default class SearchByTypeForm extends DeloreanComponent {
 
+    static contextTypes = {
+        router: React.PropTypes.func
+    }
+
     watchStores = ['searchByType']
 
     state = {
         loading: true
     }
 
-    constructor(props){
-        super(props);
+    requestedSearchId = null;
+
+    componentDidMount(){
+        super.componentDidMount();
+
+        this.requestedSearchId = this.context.router.getCurrentQuery().searchId;
+        this.context.router.getLocation().addChangeListener(this.requestedSearchIdChanged);
 
         this.waitFor(
-            this.props.actions.loadAssetTypes()
+            this.props.actions.initTypeSearch(this.requestedSearchId)
         );
+    }
+
+    componentWillUnmount() {
+        this.context.router.getLocation().removeChangeListener(this.requestedSearchIdChanged);
+    }
+
+    requestedSearchIdChanged = () => {
+        var currentSearchId = this.context.router.getCurrentQuery().searchId;
+        if (this.requestedSearchId != currentSearchId){
+            this.requestedSearchId = currentSearchId;
+            this.waitFor(
+                this.props.actions.initTypeSearch(this.requestedSearchId)
+            );
+        }
     }
 
     handleAssetTypeChanged = (values) => {
@@ -69,6 +92,10 @@ export default class SearchByTypeForm extends DeloreanComponent {
 
     render() {
         var searchModel = this.state.stores.searchByType.searchModel;
+        if (!searchModel){
+            return (<Loader loading={this.state.loading} />)
+        }
+
         var assetTypeId = searchModel.assetType ? searchModel.assetType.id : 0;
         return (
             <Loader  loading={this.state.loading}>
