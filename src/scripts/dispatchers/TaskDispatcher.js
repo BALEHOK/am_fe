@@ -1,7 +1,7 @@
 var Flux = require('delorean').Flux;
 var TaskStore = require('../stores/TaskStore');
 
-var AssetDispatcher = Flux.createDispatcher({
+var TaskDispatcher = Flux.createDispatcher({
 
   loadTasksList() {
     return this.dispatch('tasks:loadList');
@@ -22,4 +22,4 @@ var AssetDispatcher = Flux.createDispatcher({
   }
 });
 
-module.exports = AssetDispatcher;
+module.exports = TaskDispatcher;
