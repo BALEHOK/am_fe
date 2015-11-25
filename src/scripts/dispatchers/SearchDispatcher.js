@@ -37,8 +37,12 @@ export default Flux.createDispatcher({
     this.dispatch('reports:reset');
   },
 
+  initTypeSearch(searchId){
+    return this.dispatch('searchByType:initTypeSearch', searchId);
+  },
+
   saveTypeSearchModel(model){
-    return this.dispatch('search:saveTypeSearch', model);
+    return this.dispatch('search:setTypeSearchModel', model);
   },
 
   setContext(context) {
@@ -75,10 +79,6 @@ export default Flux.createDispatcher({
 
   changeRow(model) {
     return this.dispatch('searchByType:changeRow', model);
-  },
-
-  loadAssetTypes() {
-    return this.dispatch('searchByType:assetTypes');
   },
 
   ensureAttributesLoaded(typeId) {

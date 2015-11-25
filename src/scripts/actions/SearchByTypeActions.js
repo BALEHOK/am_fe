@@ -1,6 +1,11 @@
 import Actions from './Actions';
+import SearchModelRepository from '../services/SearchModelRepository';
 
 export default class SearchByTypeActions extends Actions {
+
+  initTypeSearch(searchId) {
+    return this._dispatcher.initTypeSearch(searchId);
+  }
 
   chooseAssetType(assetType) {
     return this._dispatcher.chooseAssetType(assetType);
@@ -38,10 +43,6 @@ export default class SearchByTypeActions extends Actions {
     return this._dispatcher.moveRowDown(model);
   }
 
-  loadAssetTypes() {
-    return this._dispatcher.loadAssetTypes();
-  }
-
   ensureAttributesLoaded(typeId) {
     return this._dispatcher.ensureAttributesLoaded(typeId);
   }
@@ -51,9 +52,11 @@ export default class SearchByTypeActions extends Actions {
   }
 
   doSearch(searchModel) {
+    searchModel.searchId = SearchModelRepository.generateSearchId();
+    SearchModelRepository.saveSerchModel(searchModel);
     this._dispatcher.saveTypeSearchModel(searchModel);
 
     var appRouter = require('../appRouter');
-    appRouter.transitionTo(`/search/type/result?assetType=${searchModel.assetType.id}&context=${searchModel.assetTypeContext}`);
+    appRouter.transitionTo(`/search/type/result?searchId=${searchModel.searchId}`);
   }
 }
