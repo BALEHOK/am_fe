@@ -27,12 +27,33 @@ export default class SearchByTypeForm extends DeloreanComponent {
         loading: true
     }
 
+    requestedSearchId = null;
+
     componentDidMount(){
         super.componentDidMount();
 
+        this.requestedSearchId = this.context.router.getCurrentQuery().searchId;
+        this.context.router.getLocation().addChangeListener(this.requestedSearchIdChanged);
+
         this.waitFor(
-            this.props.actions.initTypeSearch(this.context.router.getCurrentQuery().searchId)
+            this.props.actions.initTypeSearch(this.requestedSearchId)
         );
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+
+        this.context.router.getLocation().removeChangeListener(this.requestedSearchIdChanged);
+    }
+
+    requestedSearchIdChanged = () => {
+        var currentSearchId = this.context.router.getCurrentQuery().searchId;
+        if (this.requestedSearchId != currentSearchId){
+            this.requestedSearchId = currentSearchId;
+            this.waitFor(
+                this.props.actions.initTypeSearch(this.requestedSearchId)
+            );
+        }
     }
 
     handleAssetTypeChanged = (values) => {
