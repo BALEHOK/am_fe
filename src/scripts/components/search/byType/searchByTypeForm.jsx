@@ -41,8 +41,6 @@ export default class SearchByTypeForm extends DeloreanComponent {
     }
 
     componentWillUnmount() {
-        super.componentWillUnmount();
-
         this.context.router.getLocation().removeChangeListener(this.requestedSearchIdChanged);
     }
 
