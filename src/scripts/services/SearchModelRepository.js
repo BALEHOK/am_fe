@@ -1,3 +1,4 @@
+import uuid from 'uuid';
 import fetch from '../util/fetch';
 import Consts from '../util/searchConsts';
 
@@ -5,14 +6,7 @@ class SearchModelRepository {
     models = {}
 
     generateSearchId(){
-        return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-            s4() + '-' + s4() + s4() + s4();
-            
-        function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000)
-                .toString(16)
-                .substring(1);
-        }
+        return uuid.v4();
     }
 
     createSearchModel(){
