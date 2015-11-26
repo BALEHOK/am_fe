@@ -86,7 +86,8 @@ export default class DataGrid extends React.Component {
         var filtering = this.props.filtering;
         var datagridClasses = classNames({
             'datagrid' : true,
-            'datagrid_with_filter' : filtering
+            'datagrid_with_filter' : filtering,
+            'datagrid_click': this.props.onRowClick
         });
         var self = this;
         return (

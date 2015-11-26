@@ -28,3 +28,15 @@
   .public_fixedDataTable_header
     .fixedDataTableCellLayout_wrap3
       padding-bottom 55px
+
+  .public_fixedDataTableCell_cellContent
+    div
+      & > :first-child
+        margin-top 0
+
+      & > :last-child
+        margin-bottom 0
+
+  &_click
+    .public_fixedDataTable_bodyRow:hover
+      cursor pointer
