@@ -70,6 +70,7 @@
     &-content
       display inline-block
       vertical-align top
+      position relative
 
     .select
       margin-bottom 0
@@ -80,6 +81,9 @@
       vertical-align top
       color red
       margin 0 0 0 20px
+      position absolute
+      top 0
+      left 100%
 
     .has-error ~ &-required
     .has-success ~ &-required
@@ -119,6 +123,9 @@
         &_size_small
           .form-control
             top -6px
+
+      .rich-editor
+        margin-top -6px
 
 
   & + &
