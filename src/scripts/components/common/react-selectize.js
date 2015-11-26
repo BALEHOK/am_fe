@@ -46,7 +46,7 @@ export default class Select extends React.Component {
     if (!this.props.onItemsRequest || this.loading) {
       return;
     }
-    
+
     let left = event.target.scrollTop + event.target.getBoundingClientRect().height;
     if (event.target.scrollHeight - left < 50) {
       this.loading = true;
@@ -68,7 +68,7 @@ export default class Select extends React.Component {
 
   render() {
     let items = this.mapValues(this.props.items || []);
-    return <span className="select" for={this.props.selectId}>
+    return <span className="select" htmlFor={this.props.selectId}>
       <ReactSelect
         ref={"selector"}
         value={this.getValue()}
