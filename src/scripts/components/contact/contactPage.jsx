@@ -1,6 +1,7 @@
 var React = require('react');
 var Flux = require('delorean').Flux;
 var Loader = require('../common/loader.jsx');
+var TranslatedMessage = require('../intl/TranslatedMessage');
 
 var ContactForm = React.createClass({
     mixins:[Flux.mixins.storeListener],
@@ -21,19 +22,19 @@ var ContactForm = React.createClass({
         return (
             <Loader loading={this.state.stores.contact.loading}>
                 <div>
-                    <h1 className="page-title">Contact us</h1>
-                    <p>If you have any questions, comments or suggestions please contact us</p>
+                    <h1 className="page-title"><TranslatedMessage messageId="contactTitle"/></h1>
+                    <p><TranslatedMessage messageId="contactIntro"/></p>
                     <form onSubmit={this.onSubmit} className="contact-form">
                         <label className="input-txt input-txt_width_full">
-                            <span className="input-txt__title">Subject *</span>
+                            <span className="input-txt__title"><TranslatedMessage messageId="contactSubject"/> *</span>
                             <input type="text" className="input-txt__field" ref="subject" required/>
                         </label>
                         <label className="input-txt input-txt_width_full">
-                            <span className="input-txt__title">Message *</span>
+                            <span className="input-txt__title"><TranslatedMessage messageId="contactMsg"/> *</span>
                             <textarea name="" id="" className="input-txt__field input-txt__field_area" ref="message" required></textarea>
                         </label>
                         <div className="contact-form__controls txt-right">
-                            <button className="btn">Send</button>
+                            <button className="btn"><TranslatedMessage messageId="contactSend"/></button>
                         </div>
                     </form>
                 </div>
