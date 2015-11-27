@@ -6,13 +6,16 @@
 
   &_width_full
     width 100% !important
-    margin 0 0 20px 0
+    // margin 0 0 20px 0 // Alexey will fix this
 
     &:last-child
       margin-bottom 0
 
   &_width_wide
     width 425px
+
+  img
+    margin 0 0 10px 0
 
   &__field
     display block
@@ -78,11 +81,25 @@
       &::placeholder
         text-align right
 
+  &_type_third &
+
+    &__field
+
+      &:focus
+        border-color #ccc
+        box-shadow none
+
   &_text
 
     .input-txt__field
       height 36px
       padding 8px 15px
+
+  &_size_small
+
+    .input-txt__field
+      height 30px
+      padding 5px 15px
 
   &_textarea
 

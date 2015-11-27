@@ -37,20 +37,52 @@ export default Flux.createDispatcher({
     this.dispatch('reports:reset');
   },
 
-  saveTypeSearchModel(model){
-    return this.dispatch('search:saveTypeSearch', model);
+  initTypeSearch(searchId){
+    return this.dispatch('searchByType:initTypeSearch', searchId);
   },
 
-  loadAssetTypes() {
-    return this.dispatch('searchByType:assetTypes');
+  saveTypeSearchModel(model){
+    return this.dispatch('search:setTypeSearchModel', model);
   },
-  
-  loadAssetAttributes(typeId) {
-    return this.dispatch('searchByType:assetAttributes', typeId);
+
+  setContext(context) {
+    return this.dispatch('searchByType:setContext', context);
   },
-  
-  loadDataTypeOperators(dataType) {
-    return this.dispatch('searchByType:dataTypeOperators', dataType);
+
+  chooseAssetType(assetType) {
+    return this.dispatch('searchByType:chooseAssetType', assetType);
+  },
+
+  addRow(model) {
+    return this.dispatch('searchByType:addRow', model);
+  },
+
+  addOpenParenthesis(attributes) {
+    return this.dispatch('searchByType:addOpenParenthesis', attributes);
+  },
+
+  addClosingParenthesis(attributes) {
+    return this.dispatch('searchByType:addClosingParenthesis', attributes);
+  },
+
+  deleteRow(model) {
+    return this.dispatch('searchByType:deleteRow', model);
+  },
+
+  moveRowUp(model) {
+    return this.dispatch('searchByType:moveRowUp', model);
+  },
+
+  moveRowDown(model) {
+    return this.dispatch('searchByType:moveRowDown', model);
+  },
+
+  changeRow(model) {
+    return this.dispatch('searchByType:changeRow', model);
+  },
+
+  ensureAttributesLoaded(typeId) {
+    return this.dispatch('searchByType:ensureAttributesLoaded', typeId);
   },
 
   getStores() {

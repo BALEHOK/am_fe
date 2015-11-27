@@ -1,4 +1,4 @@
-export default class Consts {
+export default class SearchConsts {
     static assetTypeContext = {
         history: 0,
         active: 1

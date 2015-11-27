@@ -16,6 +16,7 @@ var TaskStore = Flux.createStore({
 
     actions: {
         'tasks:load': 'loadTasks',
+        'tasks:loadList': 'loadTasksList',
         'tasks:exec': 'executeTask',
         'tasks:clearResponse': 'clearResponse',
     },
@@ -26,6 +27,13 @@ var TaskStore = Flux.createStore({
 
     loadTasks(assetTypeId) {
         this.taskRepo.loadTasks(assetTypeId).then((data) => {
+            this.tasks = data;
+            this.emitChange();
+        });
+    },
+
+    loadTasksList(assetTypeId) {
+        this.taskRepo.loadTasksList().then((data) => {
             this.tasks = data;
             this.emitChange();
         });

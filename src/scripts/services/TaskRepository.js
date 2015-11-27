@@ -8,6 +8,11 @@ export default class TaskRepository {
         return fetch(url).get();
     }
 
+    loadTasksList() {
+        var url = `/api/tasks`;
+        return fetch(url).get();
+    }
+
     executeTask(taskId) {
         var url = `/api/tasks/${taskId}/execute`;
         return fetch(url).post();

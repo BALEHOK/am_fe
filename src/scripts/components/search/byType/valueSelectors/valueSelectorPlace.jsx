@@ -1,11 +1,11 @@
 import React from 'react';
-import DeloreanComponent from '../../common/DeloreanComponent';
-import ReactSelectize from '../../common/react-selectize';
+import DeloreanComponent from '../../../common/DeloreanComponent';
+import ReactSelectize from '../../../common/react-selectize';
 
 import reactMixin from 'react-mixin';
 import {Flux} from 'delorean';
 
-import List from '../../asset/attributes/edit/list';
+import List from '../../../asset/attributes/edit/list';
 
 @reactMixin.decorate(Flux.mixins.storeListener)
 export default class ValueSelectorDynList extends DeloreanComponent {

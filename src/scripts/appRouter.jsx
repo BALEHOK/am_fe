@@ -24,6 +24,7 @@ var ReportsHandler = require('./components/reports/reportsHandler.jsx');
 var NotFound = require('./components/errorPages/notFound.jsx');
 var ContactHandler = require('./components/contact/contactHandler.jsx');
 var FaqHandler = require('./components/faq/faqHandler.jsx');
+var TasksHandler = require('./components/tasks/tasksHandler');
 
 var routes = (
   <Route name="app" path="/" handler={Layout}>
@@ -39,6 +40,7 @@ var routes = (
         handler={SearchByTypePage} />
     </Route>
     <Route name="reports" handler={ReportsHandler} />
+    <Route name="tasks" handler={TasksHandler} />
     <Route name="result"
       path="/search/result/?:searchId?"
       handler={ResultPage} />

@@ -3,7 +3,7 @@
  */
 
 var React = require('react');
-var StringAttribute = require('./string');
+var StringAttribute = require('./stringHtml');
 
 var Attribute = React.createClass({
     render: function() {

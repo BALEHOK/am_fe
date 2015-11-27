@@ -4,7 +4,7 @@ import reactMixin from 'react-mixin';
 import moment from 'moment';
 import DatePicker from 'react-date-picker';
 import TimePicker from 'react-time-picker';
-import FocusOutMixin from '../../../mixins/FocusOutMixin';
+import FocusOutMixin from '../../../../mixins/FocusOutMixin';
 
 @reactMixin.decorate(FocusOutMixin)
 export default class ValueSelectorDate extends React.Component {

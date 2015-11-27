@@ -1,9 +1,10 @@
 var Flux = require('delorean').Flux;
 var SearchRepository = require('../services/SearchRepository');
-import {always} from "../util/util";
+import {always} from '../util/util';
+import SearchModelRepository from '../services/SearchModelRepository';
 
 var SearchResultsStore = Flux.createStore({
-  lastSearch: null,
+  searchByTypeModel: null,
   models: [],
   searchId: undefined,
 
@@ -29,12 +30,12 @@ var SearchResultsStore = Flux.createStore({
     'search:counters': 'loadSearchCounters',
     'search:newFilter': 'setSearchFilter',
     'search:filter': 'applySearchFilter',
-    'search:saveTypeSearch': 'saveTypeSearch'
+    'search:setTypeSearchModel': 'setTypeSearchModel'
   },
 
   initialize() {
     this.searchRepo = new SearchRepository();
-    this.lastSearch = this.getLastSearchModel();
+    this.searchModelRepo = SearchModelRepository;
   },
 
   getState() {
@@ -43,7 +44,7 @@ var SearchResultsStore = Flux.createStore({
       searchId: this.searchId,
       counters: this.counters,
       filter: this.filter,
-      lastSearch: this.lastSearch
+      searchByTypeModel: this.searchByTypeModel
     };
   },
 
@@ -55,11 +56,17 @@ var SearchResultsStore = Flux.createStore({
   },
 
   loadResultsByType(){
-    var attribs = this.lastSearch
-      ? this.lastSearch.attributes
-      : null;
+    if (!this.searchByTypeModel) {
+      this.searchModelRepo.getSerchModel(this.filter.searchId)
+       .then(d => {
+          console.log(d);
+          this.searchByTypeModel = d;
+          this.loadResultsByType();
+        });
+      return;
+    }
 
-    always(this.searchRepo.searchByType(this.filter, attribs).then((data) => {
+    always(this.searchRepo.searchByType(this.filter, this.searchByTypeModel).then((data) => {
       this.models = data.entities;
       this.searchId = data.searchId;
     }), () => this.emitChange());
@@ -83,18 +90,8 @@ var SearchResultsStore = Flux.createStore({
     this.emitChange();
   },
 
-  saveTypeSearch(model) {
-    this.lastSearch = model;
-    localStorage.lastSearch = JSON.stringify(model);
-  },
-
-  getLastSearchModel() {
-    var json = localStorage.lastSearch;
-    if (json){
-      return JSON.parse(json);
-    }
-
-    return null;
+  setTypeSearchModel(model) {
+    this.searchByTypeModel = model;
   }
 });
 
