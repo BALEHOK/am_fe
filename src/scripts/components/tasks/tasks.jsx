@@ -4,7 +4,7 @@ var FixedDataTable = require('fixed-data-table');
 var Loader = require('../common/loader.jsx');
 var LoaderMixin = require('../../mixins/LoaderMixin');
 var TaskRepository = require('../../services/TaskRepository');
-var TranslatedMessage = require('../intl/TranslatedMessage');
+var L20nMessage = require('../intl/l20n-message');
 
 var DataGrid = require('../common/grid');
 
@@ -65,7 +65,7 @@ var Tasks = React.createClass({
         return (
                 <Loader loading={this.state.loading}>
                     <div>
-                        <h1 className="page-title"><TranslatedMessage messageId="tasksTitle"/></h1>
+                        <h1 className="page-title">{L20nMessage('tasksTitle', 'Tasks')}</h1>
                         {<DataGrid
                             source={this.state.stores.tasks.tasks}
                             onRowClick={this.onRowClick}
@@ -79,13 +79,13 @@ var Tasks = React.createClass({
                             ]}
                           >
                             <Column
-                                label="Name"
+                                label={L20nMessage('tasksColumnName', 'Name')}
                                 width={0.6}
                                 dataKey="name"
                                 cellRenderer={this.renderNameCell}
                             />
                             <Column
-                                label="Asset"
+                                label={L20nMessage('tasksColumnAsset', 'Asset')}
                                 width={0.35}
                                 dataKey="dynEntityConfigName"
                             />

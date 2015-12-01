@@ -22,7 +22,7 @@ var LocaleContainer = React.createClass({
     render: function() {
         let locale = this.state.stores.locale;
         if (locale.ready) {
-            return(this.props.children)
+            return this.props.children
         } else return null
     }
 

@@ -1,7 +1,7 @@
 var React = require('react');
 var Flux = require('delorean').Flux;
 var Loader = require('../common/loader.jsx');
-var TranslatedMessage = require('../intl/TranslatedMessage');
+var L20nMessage = require('../intl/l20n-message');
 
 var ContactForm = React.createClass({
     mixins:[Flux.mixins.storeListener],
@@ -22,19 +22,19 @@ var ContactForm = React.createClass({
         return (
             <Loader loading={this.state.stores.contact.loading}>
                 <div>
-                    <h1 className="page-title"><TranslatedMessage messageId="contactTitle"/></h1>
-                    <p><TranslatedMessage messageId="contactIntro"/></p>
+                    <h1 className="page-title">{L20nMessage('contactTitle', 'Contact us')}</h1>
+                    <p>{L20nMessage('contactIntro', 'If you have any questions, comments or suggestions please contact us')}</p>
                     <form onSubmit={this.onSubmit} className="contact-form">
                         <label className="input-txt input-txt_width_full">
-                            <span className="input-txt__title"><TranslatedMessage messageId="contactSubject"/> *</span>
+                            <span className="input-txt__title">{L20nMessage('contactSubject', 'Subject')} *</span>
                             <input type="text" className="input-txt__field" ref="subject" required/>
                         </label>
                         <label className="input-txt input-txt_width_full">
-                            <span className="input-txt__title"><TranslatedMessage messageId="contactMsg"/> *</span>
+                            <span className="input-txt__title">{L20nMessage('contactMsg', 'Message')} *</span>
                             <textarea name="" id="" className="input-txt__field input-txt__field_area" ref="message" required></textarea>
                         </label>
                         <div className="contact-form__controls txt-right">
-                            <button className="btn"><TranslatedMessage messageId="contactSend"/></button>
+                            <button className="btn">{L20nMessage('contactSend', 'Send')}</button>
                         </div>
                     </form>
                 </div>
