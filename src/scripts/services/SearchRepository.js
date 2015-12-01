@@ -9,7 +9,9 @@ export default class SearchRepository {
             assetType: params.assetType,
             taxonomy: params.taxonomy,
             sortBy: params.sortBy,
-            context: params.context
+            context: params.context,
+            attributeId: params.attributeId,
+            assetId: params.assetId
         });
     }
 
@@ -21,7 +23,7 @@ export default class SearchRepository {
             attributes: model.attributes,
             page: params.page,
             taxonomy: params.taxonomy,
-            sortBy: params.sortBy,
+            sortBy: params.sortBy
         });
     }
 
