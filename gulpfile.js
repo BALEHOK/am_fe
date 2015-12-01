@@ -3,7 +3,7 @@ var path = require('path');
 var gutil = require('gulp-util');
 var concat = require('gulp-concat');
 var webpack = require('webpack');
-var gwebpack = require('webpack-stream');
+var gwebpack = require('gulp-webpack');
 var autoprefixer = require('gulp-autoprefixer');
 var webpackConfig = require('./webpack.config.js');
 var stylus = require('gulp-stylus');
@@ -34,8 +34,9 @@ function handleError(err) {
 }
 
 gulp.task('webpack:build', function (callback) {
-    return gulp.src('webpack_entries/*.js')
-        .pipe(gwebpack(webpackConfig, webpack))
+    var myConfig = Object.create(webpackConfig);
+     return gulp.src('webpack_entries/*.js')
+        .pipe(gwebpack(myConfig))
         .pipe(gulp.dest(jsDest));
 });
 gulp.task('css:fonts', function () {
@@ -69,12 +70,10 @@ gulp.task('css', function () {
             browsers: ['last 2 versions', '> 1%', 'ie 8', 'ie 9', 'Opera 12.1']
         }))
         .pipe(gulp.dest(cssDest))
-        .pipe(browserSync.stream())
         .pipe(rename({ suffix: '.min' }))
         .pipe(minifycss())
         .on('error', handleError)
-        .pipe(gulp.dest(cssDest))
-        .pipe(browserSync.stream());
+        .pipe(gulp.dest(cssDest));
 });
 
 gulp.task('views', function() {
@@ -125,10 +124,7 @@ gulp.task("dev-server", function(callback) {
         noInfo: false,
         publicPath: '/assets/js',
         contentBase: "./dist",
-        watchOptions: {
-            aggregateTimeout: 300,
-            poll: true
-        },
+        watchDelay: 300,
         stats: { colors: true },
     });
     browserSync.init({
