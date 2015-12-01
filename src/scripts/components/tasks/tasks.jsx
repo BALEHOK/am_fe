@@ -4,6 +4,7 @@ var FixedDataTable = require('fixed-data-table');
 var Loader = require('../common/loader.jsx');
 var LoaderMixin = require('../../mixins/LoaderMixin');
 var TaskRepository = require('../../services/TaskRepository');
+var TranslatedMessage = require('../intl/TranslatedMessage');
 
 var DataGrid = require('../common/grid');
 
@@ -64,7 +65,7 @@ var Tasks = React.createClass({
         return (
                 <Loader loading={this.state.loading}>
                     <div>
-                        <h1 className="page-title">Tasks</h1>
+                        <h1 className="page-title"><TranslatedMessage messageId="tasksTitle"/></h1>
                         {<DataGrid
                             source={this.state.stores.tasks.tasks}
                             onRowClick={this.onRowClick}

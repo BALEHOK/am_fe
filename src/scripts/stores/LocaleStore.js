@@ -3,7 +3,7 @@ var LocalesManifest = require('json!../../locales/browser.json');
 
 var LocaleStore = Flux.createStore({
 
-    currentLocale: LocalesManifest.default_locale,
+    currentLocale: null,
     ctx: document.l10n,
     ready: false,
 
@@ -21,7 +21,11 @@ var LocaleStore = Flux.createStore({
     },
 
     changeLocale(locale) {
-        this.ctx.requestLocales(locale);
+        this.ready = false;
+        this.emitChange();
+        window.setTimeout(() => {
+            this.ctx.requestLocales(locale);
+        }, 1);
     },
 
     getState() {
