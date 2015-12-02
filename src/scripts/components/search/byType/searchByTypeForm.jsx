@@ -10,6 +10,8 @@ import RowsControls from './rowsControls';
 import SearchQueryDisplay from './searchQueryDisplay';
 import Consts from '../../../util/searchConsts';
 
+import L20nMessage from '../../intl/l20n-message';
+
 import reactMixin from 'react-mixin';
 import {Flux} from 'delorean';
 
@@ -104,14 +106,14 @@ export default class SearchByTypeForm extends DeloreanComponent {
                         <div className="input-group">
                             <span className="input-group__item">
                                 <span className="input-group__item-title">
-                                    Asset type
+                                    {L20nMessage('searchTypeSelect', 'Asset type')}
                                 </span>
                                 <ReactSelectize
                                     items={this.state.stores.searchByType.assetTypes}
                                     value={assetTypeId}
                                     onChange={this.handleAssetTypeChanged}
                                     selectId="asset-type"
-                                    placeholder="Select asset"
+                                    placeholder={L20nMessage('searchSelectAsset', 'Select asset')}
                                     label=" "
                                     clearable={false}
                                 />
@@ -127,7 +129,7 @@ export default class SearchByTypeForm extends DeloreanComponent {
                                             checked={searchModel.assetTypeContext == Consts.assetTypeContext.active}
                                             onChange={this.onContextChanged} />
                                         <span className="radio-btn__icon"></span>
-                                        Active assets
+                                        {L20nMessage('searchContextAssets', 'Active assets')}
                                     </label>
                                     <label className="radio-btn">
                                         <input type="radio" className="radio-btn__input" name="assetTypeState"
@@ -135,7 +137,7 @@ export default class SearchByTypeForm extends DeloreanComponent {
                                             checked={searchModel.assetTypeContext == Consts.assetTypeContext.history}
                                             onChange={this.onContextChanged} />
                                         <span className="radio-btn__icon"></span>
-                                        History
+                                        {L20nMessage('searchContextHistory', 'History')}
                                     </label>
                                 </span>
                             </span>
@@ -164,7 +166,7 @@ export default class SearchByTypeForm extends DeloreanComponent {
                                 <button className="btn pull-right"
                                     disabled={!searchModel.assetType}
                                     onClick={this.doSearch.bind(this)}>
-                                    <i className="btn__icon btn__icon_search"></i>Start search
+                                    <i className="btn__icon btn__icon_search"></i> {L20nMessage('searchStart', 'Start search')}
                                 </button>
 
                                 <SearchQueryDisplay

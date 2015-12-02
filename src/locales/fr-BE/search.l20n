@@ -1,5 +1,21 @@
 <searchTitle "Recherchez">
+<searchTypeTitle "Recherche par type">
 <searchTabSimple "Simple">
 <searchTabType "Par type">
 <searchContextAssets "Ressource active">
 <searchContextHistory "History">
+<searchTypeSelect "Type de article">
+<searchAddRow "Ajoutez une règle">
+<searchOpenParenthesis "Add open parenthesis">
+<searchCloseParenthesis "Add closing parenthesis">
+<searchAnd "Et">
+<searchOr "Ou">
+<searchColumnAttr "Attribut">
+<searchColumnOper "Opérateur">
+<searchColumnVal "Recherchez paramètres">
+<searchColumnSelect "Et / Ou">
+<searchSelectOperator "Select operator">
+<searchSelectAsset "Select asset">
+<searchConditionSimple "Simple condition">
+<searchConditionAdvanced "Advanced condition">
+<searchStart "Start search">

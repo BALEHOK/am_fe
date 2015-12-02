@@ -1,5 +1,21 @@
 <searchTitle "Zoek">
+<searchTypeTitle "Zoek op type">
 <searchTabSimple "Simple">
 <searchTabType "Op type">
 <searchContextAssets "Actuele assets">
 <searchContextHistory "Archief">
+<searchTypeSelect "Asset type">
+<searchAddRow "Voeg regel toe">
+<searchOpenParenthesis "Add open parenthesis">
+<searchCloseParenthesis "Add closing parenthesis">
+<searchAnd "En">
+<searchOr "Of">
+<searchColumnAttr "Atribuut">
+<searchColumnOper "Operator">
+<searchColumnVal "Zoek parameter">
+<searchColumnSelect "En / Of">
+<searchSelectOperator "Select operator">
+<searchSelectAsset "Select asset">
+<searchConditionSimple "Simple condition">
+<searchConditionAdvanced "Advanced condition">
+<searchStart "Start search">
