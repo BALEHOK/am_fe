@@ -3,6 +3,7 @@ var Flux = require('delorean').Flux;
 var FixedDataTable = require('fixed-data-table');
 var Loader = require('../common/loader.jsx');
 var LoaderMixin = require('../../mixins/LoaderMixin');
+var L20nMessage = require('../intl/l20n-message')
 
 var DataGrid = require('../common/grid');
 
@@ -41,7 +42,7 @@ var ReportsList = React.createClass({
         return (
                 <Loader loading={this.state.loading}>
                     <div>
-                        <h1 className="page-title">Reports list</h1>
+                        <h1 className="page-title">{L20nMessage('reportsTitle', 'Reports list')}</h1>
                         <DataGrid
                             source={this.state.stores.report.reports}
                             onRowClick={this.onRowClick}
@@ -55,18 +56,18 @@ var ReportsList = React.createClass({
                             ]}
                           >
                             <Column
-                                label="Name"
+                                label={L20nMessage('reportsColumnName', 'Name')}
                                 width={0.4}
                                 dataKey="name"
                                 cellRenderer={this.renderNameCell}
                             />
                             <Column
-                                label="Asset"
+                                label={L20nMessage('reportsColumnAsset', 'Asset')}
                                 width={0.3}
                                 dataKey="assetTypeName"
                             />
                             <Column
-                                label="Financial"
+                                label={L20nMessage('reportsColumnFinancial', 'Financial')}
                                 width={0.25}
                                 dataKey="isFinancial"
                                 cellRenderer={this.renderFinancialCell}
