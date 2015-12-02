@@ -6,6 +6,7 @@ var moment = require('moment');
 var Loader = require('../../common/loader.jsx');
 var LoaderMixin = require('../../../mixins/LoaderMixin');
 var DataGrid = require('../../common/grid');
+var L20nMessage = require('../../intl/l20n-message')
 
 var Column = FixedDataTable.Column;
 
@@ -54,8 +55,8 @@ var Create = React.createClass({
         return (
             <Loader loading={this.state.loading}>
                 <div>
-                    <h1 className="page-title"><span className="icon icon_create"></span>New Asset</h1>
-                    <h2>Please select an asset type</h2>
+                    <h1 className="page-title"><span className="icon icon_create"></span>{L20nMessage('newAssetsTitle', 'New Asset')}</h1>
+                    <h2>{L20nMessage('newAssetsIntro', 'Please select an asset type')}</h2>
                     <div className="grid asset-create">
                         <div className="grid__item one-whole">
                             {assettypes && assettypes.activeTypes && assettypes.activeTypes.length > 0
@@ -73,23 +74,23 @@ var Create = React.createClass({
                                   >
                                         <Column
                                             cellRenderer={this.renderNameCell}
-                                            label="Name"
+                                            label={L20nMessage('newAssetsColumnName', 'Name')}
                                             width={0.25}
                                             dataKey="displayName"
                                         />
                                         <Column
-                                            label="Description"
+                                            label={L20nMessage('newAssetsColumnDesc', 'Description')}
                                             width={0.45}
                                             dataKey="description"
                                         />
                                         <Column
-                                            label="Revision"
+                                            label={L20nMessage('newAssetsColumnRev', 'Revision')}
                                             width={0.12}
                                             dataKey="revision"
                                         />
                                         <Column
                                             cellRenderer={this.renderDateCell}
-                                            label="Date"
+                                            label={L20nMessage('newAssetsColumnDate', 'Date')}
                                             width={0.13}
                                             dataKey="updateDate"
                                         />
