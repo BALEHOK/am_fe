@@ -9,6 +9,8 @@ import DeloreanComponent from '../../../common/DeloreanComponent';
 import reactMixin from 'react-mixin';
 import {Flux} from 'delorean';
 
+import L20nMessage from '../../../intl/l20n-message';
+
 @reactMixin.decorate(Flux.mixins.storeListener)
 export default class ComplexValueSelectorRelatedAsset extends DeloreanComponent {
 
@@ -73,10 +75,10 @@ export default class ComplexValueSelectorRelatedAsset extends DeloreanComponent 
                 <nav className="tabs-navigation">
                     <ul className="tabs-menu">
                         <li className={classNames('tabs-menu-item', {'is-active': !selected.useComplexValue})}>
-                            <a onClick={this.onSimpleConditionSelected}>Simple condition</a>
+                            <a onClick={this.onSimpleConditionSelected}>{L20nMessage('searchConditionSimple', 'Simple condition')}</a>
                         </li>
                         <li className={classNames('tabs-menu-item', {'is-active': selected.useComplexValue})}>
-                            <a onClick={this.onAdvancedConditionSelected}>Advanced condition</a>
+                            <a onClick={this.onAdvancedConditionSelected}>{L20nMessage('searchConditionAdvanced', 'Advanced condition')}</a>
                         </li>
                     </ul>
                 </nav>
@@ -112,7 +114,7 @@ export default class ComplexValueSelectorRelatedAsset extends DeloreanComponent 
                         attributes={selected.complexValue}
                         allTypeAttribs={this.state.stores.searchByType.assetAttributes[referenceAttrib.relationId]}
                         level={this.props.level + 1} />
-                    
+
                     <RowsControls
                                 addRow={this.addRow}
                                 addOpenParenthesis={this.addOpenParenthesis}

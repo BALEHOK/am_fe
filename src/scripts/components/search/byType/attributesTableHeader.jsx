@@ -1,4 +1,5 @@
 import React from 'react';
+import L20nMessage from '../../intl/l20n-message';
 
 export default class AttributesTableHeader extends React.Component {
   render(){
@@ -8,16 +9,16 @@ export default class AttributesTableHeader extends React.Component {
           &#x23;
         </div>
         <div className="table-search__row-item table-search__row-item_type_attr">
-          Attribute
+          {L20nMessage('searchColumnAttr', 'Attribute')}
         </div>
         <div className="table-search__row-item table-search__row-item_type_oper">
-          Operator
+          {L20nMessage('searchColumnOper', 'Operator')}
         </div>
         <div className="table-search__row-item table-search__row-item_type_value">
-          Search value
+          {L20nMessage('searchColumnVal', 'Search value')}
         </div>
         <div className="table-search__row-item table-search__row-item_type_additional">
-          And / Or
+          {L20nMessage('searchColumnSelect', 'And / Or')}
         </div>
       </div>
     );

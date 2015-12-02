@@ -10,6 +10,8 @@ var FaqActions = require('../../actions/FaqActions');
 var FaqHandler = React.createClass({
     mixins:[AuthenticatedRouteMixin],
 
+    displayName: 'FAQ',
+
     componentWillMount: function() {
         this.dispatcher = FaqDispatcher;
         this.actions = new FaqActions(FaqDispatcher);

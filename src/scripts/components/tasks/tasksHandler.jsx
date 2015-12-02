@@ -28,3 +28,5 @@ export default class TasksHandler extends React.Component {
             );
     }
 }
+
+TasksHandler.displayName = "Tasks"
