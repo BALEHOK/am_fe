@@ -1,0 +1,13 @@
+{
+  "locales": [
+    "en-GB",
+    "fr-BE",
+    "nl-BE"
+  ],
+
+  "default_locale": "en-GB",
+
+  "resources": [
+    "/assets/locales/locale.{{locale}}.l20n"
+  ]
+}

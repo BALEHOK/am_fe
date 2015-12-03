@@ -8,6 +8,7 @@ var FaqItem = require('./faqItem.jsx');
 var LoaderMixin = require('../../mixins/LoaderMixin');
 var Loader = require('../common/loader.jsx');
 var DataGrid = require('../common/grid');
+var L20nMessage = require('../intl/l20n-message')
 
 var Column = FixedDataTable.Column;
 
@@ -81,18 +82,18 @@ var FaqAssets = React.createClass({
                                 to="asset-create-from-type"
                                 params={{assetTypeId: 93}}
                             >
-                                Add FAQ item
+                                {L20nMessage('faqNewItem', 'Add FAQ item')}
                             </Link>
                         </div>
                         <div className="grid__item ten-twelfths">
                             {this.state.faqItem
                                 ? <div className="asset-data " style={{marginBottom: '30px'}}>
                                     <div className="asset-data__header">
-                                        <span className="asset-data__title">Selected FAQ item</span>
+                                        <span className="asset-data__title">{L20nMessage('faqSelectedItem', 'Selected FAQ item')}</span>
                                     </div>
                                     <div className="asset-data__content">
                                         <div className="asset-data__param">
-                                            <span className="asset-data__param-title">Question: </span>
+                                            <span className="asset-data__param-title">{L20nMessage('faqColumnQeustion', 'Question')}: </span>
                                             <span className="asset-data__param-content">
                                                 <div dangerouslySetInnerHTML={{__html: this.state.faqItem.question}}/>
                                             </span>
@@ -100,7 +101,7 @@ var FaqAssets = React.createClass({
                                     </div>
                                     <div className="asset-data__content">
                                         <div className="asset-data__param">
-                                            <span className="asset-data__param-title">Answer: </span>
+                                            <span className="asset-data__param-title">{L20nMessage('faqColumnAnswer', 'Answer')}: </span>
                                             <span className="asset-data__param-content">
                                                 <div dangerouslySetInnerHTML={{__html: this.state.faqItem.answer}}/>
                                             </span>
@@ -123,13 +124,13 @@ var FaqAssets = React.createClass({
                                     ]}
                                   >
                                     <Column
-                                        label="Question"
+                                        label={L20nMessage('faqColumnQeustion', 'Question')}
                                         width={0.5}
                                         dataKey="question"
                                         cellRenderer={this.faqCellRenderer}
                                     />
                                     <Column
-                                        label="Answer"
+                                        label={L20nMessage('faqColumnAnswer', 'Answer')}
                                         width={0.5}
                                         dataKey="answer"
                                         cellRenderer={this.faqCellRenderer}

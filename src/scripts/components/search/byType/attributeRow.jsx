@@ -14,12 +14,9 @@ import AssetActions from '../../../actions/AssetActions';
 import SearchDispatcher from '../../../dispatchers/SearchDispatcher';
 import SearchByTypeActions from '../../../actions/SearchByTypeActions';
 
-export default class AttributeRow extends React.Component {
+import L20nMessage from '../../intl/l20n-message';
 
-    logicalOperators = [
-        { name: 'And', id: 1},
-        { name: 'Or', id: 2}
-    ]
+export default class AttributeRow extends React.Component {
 
     constructor(props){
         super(props);
@@ -49,7 +46,7 @@ export default class AttributeRow extends React.Component {
         }
 
         var referenceAttrib = values[0];
-        
+
         var newAttr = this.createNewAttr({
             referenceAttrib: referenceAttrib,
             operators: [],
@@ -58,7 +55,7 @@ export default class AttributeRow extends React.Component {
             useComplexValue: false,
             complexValue: []
         });
-        
+
         this.props.onChange(newAttr);
     }
 
@@ -135,6 +132,12 @@ export default class AttributeRow extends React.Component {
         var valueSelector = null, complexValueSelector = null;
         var params;
         var dataType = this.props.selected.referenceAttrib.dataType.toLowerCase();
+
+        var logicalOperators = [
+            { name: L20nMessage('searchAnd', 'And'), id: 1},
+            { name: L20nMessage('searchOr', 'Or'), id: 2}
+        ];
+
         switch(dataType){
             case 'bool':
                 valueSelector = <ValueSelectorBool
@@ -160,7 +163,7 @@ export default class AttributeRow extends React.Component {
 
             case 'asset':
             case 'assets':
-                complexValueSelector = <ComplexValueSelectorRelatedAsset 
+                complexValueSelector = <ComplexValueSelectorRelatedAsset
                     onChange={this.props.onChange}
                     selected={this.props.selected}
                     assetDispatcher={this.assetDispatcher}
@@ -182,7 +185,7 @@ export default class AttributeRow extends React.Component {
             default:
                 valueSelector = <ValueSelectorText value={this.props.selected.value}
                     onValueChange={this.onValueChange} />;
-        }      
+        }
 
         return (
             <div className="table-search__row">
@@ -217,7 +220,7 @@ export default class AttributeRow extends React.Component {
                         <div className={'connector-container ' + (!this.props.selected.lo ? 'hide' : '')}>
                             <div className="connector">
                                <ReactSelectize
-                                    items={this.logicalOperators}
+                                    items={logicalOperators}
                                     value={this.props.selected.lo || 1}
                                     onChange={this.onLoChange}
                                     selectId="logicalOperator"

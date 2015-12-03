@@ -20,3 +20,5 @@ export default class ReportsHandler extends React.Component {
             );
     }
 }
+
+ReportsHandler.displayName = "Reports"
