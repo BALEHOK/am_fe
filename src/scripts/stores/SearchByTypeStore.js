@@ -222,20 +222,46 @@ export default Flux.createStore({
     },
 
     loadAssetAttributes(typeId) {
-        return this.assetTypeRepo.loadAssetAttributes(typeId)
-                .then(
-                    (data) => {
-                        if (!data.attributes || !data.attributes.length){
-                            this.assetAttributes[typeId] = [];
-                            return;
-                        }
-                        
-                        this.assetAttributes[typeId] = data.attributes;
-                    },
-                    () => {
-                        this.assetAttributes[typeId] = [];
+        var attributes, relatedAttributes;
+
+        var loadAttributes = this.assetTypeRepo.loadAssetAttributes(typeId)
+            .then(
+                (data) => {
+                    if (!data.attributes || !data.attributes.length){
+                        attributes = [];
+                        return;
                     }
-                );
+                    
+                    attributes = data.attributes.filter(a => a.dataType !== 'assets');
+                },
+                () => attributes = []
+            );
+
+        var loadRelatedAttributes = this.assetTypeRepo.loadChildAssetTypes(typeId)
+            .then(
+                (data => {
+                    relatedAttributes = [];
+                    if (!data || !data.length){
+                        return;
+                    }
+
+                    data.forEach((relatedType) =>
+                        relatedAttributes.push({
+                            id: relatedType.dynEntityAttribConfigId,
+                            name: `&#149; ${relatedType.AssetTypeName}`,
+                            relationId: relatedType.dynEntityConfigId,
+                            dataType: 'assets',
+                            isChildAssets: true
+                        })
+                    );
+                }),
+                () => relatedAttributes = []
+            );
+
+        return Promise.all(loadAttributes, loadRelatedAttributes)
+            .then(() => {
+                this.assetAttributes[typeId] = attributes.concat(relatedAttributes);
+            });
     },
 
     loadDataTypeOperators(dataType) {
