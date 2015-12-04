@@ -5,6 +5,7 @@
 var React = require('react/addons');
 var Router = require('react-router');
 var closestToOffset = require('../../util/closestToOffsetTop');
+var L20nMessage = require('../intl/l20n-message');
 
 var AssetToolbar = React.createClass({
     contextTypes: {
@@ -63,12 +64,12 @@ var AssetToolbar = React.createClass({
                     <div className="inputs-line inputs-line_width_full">
                         <button className="btn btn_type_second btn_size_small"
                                 onClick={window.print}>
-                            <i className="btn__icon btn__icon_print"></i>Print
+                            <i className="btn__icon btn__icon_print"></i>{L20nMessage('toolBarBtnPrint', 'Print')}
                         </button>
                         {this.isCurrentButtonVisible()
                             ?   <button className="btn btn_type_second btn_size_small"
                                                 onClick={this.handleTransition.bind(this, 'asset-view')}>
-                                    <i className="btn__icon btn__icon_history"></i>Current version
+                                    <i className="btn__icon btn__icon_history"></i>{L20nMessage('toolBarBtnCurrentVersion', 'Current version')}
                                 </button>
                             :   null
                         }
@@ -76,7 +77,8 @@ var AssetToolbar = React.createClass({
                         {this.isHistoryButtonVisible()
                             ?   <button className="btn btn_type_second btn_size_small"
                                                 onClick={this.handleTransition.bind(this, 'asset-history')}>
-                                    <i className="btn__icon btn__icon_history"></i>History
+                                    <i className="btn__icon btn__icon_history"></i>
+                                    {L20nMessage('toolBarBtnHistory', 'History')}
                                 </button>
                             :   null
                         }
@@ -84,7 +86,8 @@ var AssetToolbar = React.createClass({
                         {this.isEditButtonVisible()
                             ?   <button className="btn btn_type_second btn_size_small"
                                               onClick={this.handleTransition.bind(this, 'asset-edit')}>
-                                    <i className="btn__icon btn__icon_edit"></i>Edit
+                                    <i className="btn__icon btn__icon_edit"></i>
+                                    {L20nMessage('toolBarBtnEdit', 'Edit')}
                                 </button>
                             :   null
                         }
@@ -93,7 +96,7 @@ var AssetToolbar = React.createClass({
                             ?   <button className='btn btn_type_warning btn_size_small pull-right'
                                       onClick={this.handleAssetDeletion}>
                                     <i className='btn__icon btn__icon_cross'></i>
-                                    Delete
+                                    {L20nMessage('toolBarBtnDelete', 'Delete')}
                                 </button>
                             :   null
                         }
@@ -102,7 +105,7 @@ var AssetToolbar = React.createClass({
                             ?   <button className='btn btn_type_second btn_size_small pull-right'
                                       onClick={this.handleAssetRestoration}>
                                     <i className='btn__icon btn__icon_undo'></i>
-                                    Restore
+                                    {L20nMessage('toolBarBtnRestore', 'Restore')}
                                 </button>
                             :   null
                         }
