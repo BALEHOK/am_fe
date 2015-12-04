@@ -248,9 +248,9 @@ export default Flux.createStore({
                     data.forEach((relatedType) =>
                         relatedAttributes.push({
                             id: relatedType.dynEntityAttribConfigId,
-                            name: `&#149; ${relatedType.AssetTypeName}`,
+                            displayName: `• ${relatedType.assetTypeName}`,
                             relationId: relatedType.dynEntityConfigId,
-                            dataType: 'assets',
+                            dataType: 'childAssets',
                             isChildAssets: true
                         })
                     );
@@ -258,10 +258,11 @@ export default Flux.createStore({
                 () => relatedAttributes = []
             );
 
-        return Promise.all(loadAttributes, loadRelatedAttributes)
-            .then(() => {
-                this.assetAttributes[typeId] = attributes.concat(relatedAttributes);
-            });
+        return Promise.all([loadAttributes, loadRelatedAttributes])
+            .then(
+                () => this.assetAttributes[typeId] = attributes.concat(relatedAttributes),
+                () => this.assetAttributes[typeId] = null
+            );
     },
 
     loadDataTypeOperators(dataType) {
