@@ -248,7 +248,7 @@ export default Flux.createStore({
                     data.forEach((relatedType) =>
                         relatedAttributes.push({
                             id: relatedType.dynEntityAttribConfigId,
-                            displayName: `• ${relatedType.assetTypeName}`,
+                            displayName: `*${relatedType.assetTypeName}`,
                             relationId: relatedType.dynEntityConfigId,
                             dataType: 'childAssets',
                             isChildAssets: true
