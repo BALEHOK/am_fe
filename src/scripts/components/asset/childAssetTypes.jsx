@@ -1,6 +1,7 @@
 import React from 'react/addons'
 import Router from 'react-router'
 import {_} from 'underscore'
+import L20nMessage from '../intl/l20n-message'
 
 export default class ChildAssetTypes extends React.Component {
 
@@ -18,7 +19,9 @@ export default class ChildAssetTypes extends React.Component {
         });
         return _.size(items) > 0
             ? <nav className="nav-block">
-                <span className="nav-block__title nav-block__title_type_second">Child asset types</span>
+                <span className="nav-block__title nav-block__title_type_second">
+                    {L20nMessage('assetPageChildType', 'Child asset types')}
+                </span>
                 <ul className="nav-block__list">
                     {items}
                 </ul>

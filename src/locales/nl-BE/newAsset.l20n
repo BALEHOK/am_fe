@@ -1,6 +1,6 @@
 <newAssetsTitle "Nieuwe asset">
-<newAssetsIntro "Please select an asset type">
-<newAssetsColumnName "Name">
-<newAssetsColumnDesc "Description">
-<newAssetsColumnRev "Revision">
-<newAssetsColumnDate "Date">
+<newAssetsIntro "Selecteer aub een asset type">
+<newAssetsColumnName "Naam">
+<newAssetsColumnDesc "Beschrijving">
+<newAssetsColumnRev "revisie">
+<newAssetsColumnDate "Datum">
