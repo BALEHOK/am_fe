@@ -6,6 +6,7 @@ var React = require('react');
 var Flux = require('delorean').Flux;
 var Router = require('react-router');
 var Link = Router.Link;
+var L20nMessage = require('../intl/l20n-message');
 
 var TaxonomyLink = React.createClass({
     render: function() {
@@ -22,13 +23,13 @@ var TaxonomyLink = React.createClass({
 });
 
 var TaxonomyPath = React.createClass({
-    render: function() {        
+    render: function() {
     	return <nav className="nav-block">
-    			    <span className="nav-block__title nav-block__title_type_second">Asset type</span>
-    			    <div className="nav-block__item">  
-                        {this.props.taxonomyPath ? <TaxonomyLink taxonomy={this.props.taxonomyPath} /> : false} 
+    			    <span className="nav-block__title nav-block__title_type_second">{L20nMessage('assetPageType', 'Asset type')}</span>
+    			    <div className="nav-block__item">
+                        {this.props.taxonomyPath ? <TaxonomyLink taxonomy={this.props.taxonomyPath} /> : false}
     			    </div>
-    			</nav>           
+    			</nav>
     }
 });
 module.exports = TaxonomyPath;

@@ -18,6 +18,7 @@ var Flux = require('delorean').Flux;
 var cx = require('classnames');
 import {param} from "../../util/util";
 import SearchQueryDisplay from './byType/searchQueryDisplay';
+import L20nMessage from '../intl/l20n-message';
 
 var ResultPage = React.createClass({
     mixins: [Router.Navigation, LoaderMixin, Flux.mixins.storeListener],
@@ -27,13 +28,6 @@ var ResultPage = React.createClass({
     contextTypes: {
         router: React.PropTypes.func
     },
-
-    sortItems: [
-        { name: "Rank", id: 0 },
-        { name: "Date", id: 1 },
-        { name: "Location", id: 2 },
-        { name: "User", id: 3 },
-    ],
 
     exportItems: [
         'txt',
@@ -82,7 +76,7 @@ var ResultPage = React.createClass({
         });
 
         this.waitFor(resultsPromise);
-        
+
         if(updateCounters) {
             this.startWaiting('loadingCounters',
                 resultsPromise.then(() => {
@@ -150,6 +144,13 @@ var ResultPage = React.createClass({
         var counters = results.counters;
         var filters = results.filter;
 
+        var sortItems = [
+            { name: L20nMessage('searchResultsSortByRank', 'Rank'), id: 0 },
+            { name: L20nMessage('searchResultsSortByDate', 'Date'), id: 1 },
+            { name: L20nMessage('searchResultsSortByLocation', 'Location'), id: 2 },
+            { name: L20nMessage('searchResultsSortByUser', 'User'), id: 3 },
+        ];
+
         var searchResultsClasses = cx({
             'search-results': true,
             'search-results_type_tiles': this.state.isTilesView,
@@ -197,7 +198,7 @@ var ResultPage = React.createClass({
             <div>
                 <div className="grid results-grid">
                     <div className="grid__item two-twelfths">
-                        <h1 className="page-title page-title_small">Search results</h1>
+                        <h1 className="page-title page-title_small">{L20nMessage('searchResultsTitle', 'Search results')}</h1>
                     </div>
                     <div className="grid__item ten-twelfths">
                         {!this.isSearchByType()
@@ -239,9 +240,9 @@ var ResultPage = React.createClass({
                                         </button>
                                     </div>
                                     <span className="input-group__item">
-                                        <span className="input-group__item-title">Sort by</span>
+                                        <span className="input-group__item-title">{L20nMessage('searchResultsSort', 'Sort by')}</span>
                                         <ReactSelectize
-                                            items={this.sortItems}
+                                            items={sortItems}
                                             value={filters.sortBy}
                                             onChange={this.handleSortChange}
                                             selectId="select-sortby"
@@ -268,7 +269,7 @@ var ResultPage = React.createClass({
                                 <div>
                                     {assetTypeRefinements.length !== 0
                                         ? <RefinementBlock
-                                            title="Refine by assets"
+                                            title={L20nMessage('searchResultsRefineAssets', 'Refine by assets')}
                                             list={assetTypeRefinements}
                                             type="assetType"
                                             changeFilter={self.loadData}
@@ -279,7 +280,7 @@ var ResultPage = React.createClass({
                                     }
                                     {taxonomyRefinements.length !== 0
                                         ? <RefinementBlock
-                                            title="Refine by taxonomies"
+                                            title={L20nMessage('searchResultsRefineTax', 'Refine by taxonomies')}
                                             list={taxonomyRefinements}
                                             type="taxonomy"
                                             changeFilter={self.loadData}
@@ -292,7 +293,7 @@ var ResultPage = React.createClass({
                                         <ReportsBlock searchId={results.searchId} reports={this.state.stores.report.reports} />
                                     </nav>
                                     <nav className={navBlockClasses}>
-                                        <span className="nav-block__title">Export</span>
+                                        <span className="nav-block__title">{L20nMessage('searchResultsExport', 'Export')}</span>
                                         <ul className="nav-block__list">
                                             {this.exportItems.map(function(format){
                                                 return <li className="nav-block__item">
@@ -310,10 +311,10 @@ var ResultPage = React.createClass({
                             <Loader loading={this.state.loading} >
                                 <div className={searchResultsClasses}>
                                     <header className="search-results__header">
-                                        <span className="search-results__header-item search-results__header-item_name">Assets path</span>
-                                        <span className="search-results__header-item search-results__header-item_category">Category</span>
-                                        <span className="search-results__header-item search-results__header-item_attr">Attributes set</span>
-                                        <span className="search-results__header-item search-results__header-item_link">Go to result</span>
+                                        <span className="search-results__header-item search-results__header-item_name">{L20nMessage('searchResultsColumnName', 'Assets path')}</span>
+                                        <span className="search-results__header-item search-results__header-item_category">{L20nMessage('searchResultsColumnCategory', 'Category')}</span>
+                                        <span className="search-results__header-item search-results__header-item_attr">{L20nMessage('searchResultsColumnAttr', 'Attributes set')}</span>
+                                        <span className="search-results__header-item search-results__header-item_link">{L20nMessage('searchResultsColumnLink', 'Go to result')}</span>
                                     </header>
                                     <ul className="search-results__list">
                                         {results.models.length !== 0
@@ -327,7 +328,7 @@ var ResultPage = React.createClass({
                                             : {}
                                         }
                                         {results.models.length === 0 && this.state.loading === false
-                                            ? <li className="search-results__item search-results__item_empty"><span className="search-results__item-msg"><strong>Nothing was found</strong> for the specified search parameters</span></li>
+                                            ? <li className="search-results__item search-results__item_empty"><span className="search-results__item-msg">{L20nMessage('searchResultsNotFound', 'Nothing was found for the specified search parameters')}</span></li>
                                             : {}
                                         }
                                     </ul>

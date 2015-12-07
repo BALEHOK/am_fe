@@ -1,11 +1,11 @@
 {
   "locales": [
-    "en-GB",
+    "en-US",
     "fr-BE",
     "nl-BE"
   ],
 
-  "default_locale": "en-GB",
+  "default_locale": "en-US",
 
   "resources": [
     "/assets/locales/locale.{{locale}}.l20n"
