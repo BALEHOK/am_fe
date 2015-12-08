@@ -7,10 +7,6 @@ var FaqDispatcher = Flux.createDispatcher({
         return this.dispatch("faq:load");
     },
 
-    loadFaqId() {
-        return this.dispatch("faq:loadId");
-    },
-
     getStores() {
       return {
         faq: new FaqStore(),

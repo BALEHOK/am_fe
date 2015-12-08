@@ -8,7 +8,6 @@ var FaqStore = Flux.createStore({
 
     actions: {
       'faq:load': 'loadFaq',
-      'faq:loadId': 'loadFaqId',
     },
 
     initialize() {
@@ -17,14 +16,8 @@ var FaqStore = Flux.createStore({
 
     loadFaq() {
         this.faqRepo.loadFaq().then((data) => {
-          this.list = data;
-          this.emitChange();
-        });
-    },
-
-    loadFaqId() {
-        this.faqRepo.loadFaqId().then((id) => {
-          this.id = id;
+          this.list = data.items;
+          this.id = data.faqAssetTypeId;
           this.emitChange();
         });
     },

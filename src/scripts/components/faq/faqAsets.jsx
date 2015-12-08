@@ -25,7 +25,6 @@ var FaqAssets = React.createClass({
 
     componentDidMount: function() {
         this.waitFor(this.props.actions.loadFaq());
-        this.waitFor(this.props.actions.loadFaqId());
     },
 
     renderItem: function(item, index) {

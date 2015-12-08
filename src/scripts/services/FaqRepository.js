@@ -7,9 +7,4 @@ export default class FaqRepository {
         return fetch(url).get();
     }
 
-    loadFaqId() {
-        var url = `/api/faq/assettype`;
-        return fetch(url).get();
-    }
-
 }
