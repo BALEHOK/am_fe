@@ -23,6 +23,7 @@ var Childs = require('./childAssetTypes');
 var LoaderMixin = require('../../mixins/LoaderMixin');
 var NotFound = require('../errorPages/notFound.jsx');
 var TaskRepository = require('../../services/TaskRepository');
+var L20nMessage = require('../intl/l20n-message');
 
 var AssetView = React.createClass({
     mixins:[Flux.mixins.storeListener, LoaderMixin],
@@ -148,7 +149,7 @@ var AssetView = React.createClass({
                             <TaxonomyPath taxonomyPath={taxonomyPath} />
 
                             <nav className="nav-block">
-                                <span className="nav-block__title nav-block__title_type_second">Linked assets</span>
+                                <span className="nav-block__title nav-block__title_type_second">{L20nMessage('assetPageLinkedAssets', 'Linked assets')}</span>
                                 <div className="nav-block__item">
                                     {assetLinks}
                                 </div>

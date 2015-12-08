@@ -1,4 +1,5 @@
 import React from 'react/addons'
+import L20nMessage from '../intl/l20n-message'
 
 export default class TasksSidebar extends React.Component {
 
@@ -14,7 +15,7 @@ export default class TasksSidebar extends React.Component {
         });
     	return  _.size(this.props.tasks) > 0
             ? <nav className="nav-block">
-    			<span className="nav-block__title nav-block__title_type_second">Tasks</span>
+    			<span className="nav-block__title nav-block__title_type_second">{L20nMessage('tasksTitle', 'Tasks')}</span>
                 <ul className="nav-block__list">
                     {tasks}
                 </ul>
