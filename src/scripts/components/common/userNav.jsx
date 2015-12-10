@@ -1,8 +1,5 @@
-/**
- * @jsx React.DOM
- */
-
 import React from 'react';
+import {Link} from 'react-router';
 
 var UserNav = React.createClass({
     render: function() {
@@ -13,7 +10,7 @@ var UserNav = React.createClass({
                 </a>
                 <a className="user-nav__profile-link" href="/MySettings.aspx">{this.props.user.userName}</a>
                 <span className="user-nav__actions">
-                    <a className="user-nav__actions-item user-nav__actions-item_icon_settings" href="/admin" title="Dashboard"></a>
+                    <Link className="user-nav__actions-item user-nav__actions-item_icon_settings" to="admin" title="Dashboard"></Link>
                     <a className="user-nav__actions-item user-nav__actions-item_icon_logout" onClick={this.props.onLogout} title="Logout"></a>
                 </span>
                 <span className="user-nav__login-date">Last login: {this.props.user.lastLogin.format('dddd, D MMMM YYYY HH:mm:ss')}</span>
