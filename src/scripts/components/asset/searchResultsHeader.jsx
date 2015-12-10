@@ -25,12 +25,12 @@ var SearchResultsHeader = React.createClass({
     render: function() {
         var tracking = this.state.stores.search.tracking;
         var query = this.context.router.getCurrentQuery();
-
+        var resultRoute = query.searchType.toLowerCase() === "bytype" ? "resultByType" : "result";
         return tracking ? (
             <div>
     			<h1 className="page-title">{L20nMessage('searchResultsTitle', 'Search results')}: <span className="page-title__param">{tracking.verboseString}</span></h1>
     			<nav className="back-nav">
-                    <Link to="result" params={{searchId : query.searchId}} className="link link_second">
+                    <Link to={resultRoute} query={{searchId : query.searchId}} className="link link_second">
                         <span className="icon icon_arrow-c_right"></span>{L20nMessage('backToSearch', 'Back to search')}
                     </Link>
     			</nav>

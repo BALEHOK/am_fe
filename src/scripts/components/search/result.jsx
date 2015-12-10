@@ -140,6 +140,8 @@ var ResultPage = React.createClass({
     render: function() {
         var self = this;
 
+        var searchType = this.isSearchByType() ? "byType" : "simple";
+
         var results = this.state.stores.results;
         var counters = results.counters;
         var filters = results.filter;
@@ -323,6 +325,7 @@ var ResultPage = React.createClass({
                                                         key={result.indexUid}
                                                         model={result}
                                                         searchId={results.searchId}
+                                                        searchType={searchType}
                                                         isHistory={isHistory} />
                                               })
                                             : {}

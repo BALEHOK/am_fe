@@ -10,7 +10,7 @@ var ResultItem = React.createClass({
         router: React.PropTypes.func
     },
     render: function() {
-        var query = {searchId: this.props.searchId};
+        var query = {searchId: this.props.searchId, searchType: this.props.searchType};
         if (this.props.isHistory)
             query.uid = this.props.model.dynEntityUid;
         var assetLink = this.context.router.makeHref('asset-view', {
