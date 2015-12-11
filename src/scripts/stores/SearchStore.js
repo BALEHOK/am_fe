@@ -51,8 +51,9 @@ var SearchResultsStore = Flux.createStore({
 
   loadResults() {
     if (typeof this.filter.query === 'undefined'
-      && this.filter.searchId === this.searchId
-      && this.simpleSearchModel !== null){
+        && this.filter.searchId === this.searchId
+        && this.simpleSearchModel !== null) {
+      this.simpleSearchModel.searchId = this.searchId;
       this.applySearchFilter(this.simpleSearchModel);
     } else {
       this.simpleSearchModel = this.filter;
