@@ -77,13 +77,16 @@ var FaqAssets = React.createClass({
                 <Loader loading={this.state.loading}>
                     <div className="grid">
                         <div className="grid__item two-twelfths">
-                            <Link
-                                className="btn"
-                                to="asset-create-from-type"
-                                params={{assetTypeId: 93}}
-                            >
-                                {L20nMessage('faqNewItem', 'Add FAQ item')}
-                            </Link>
+                            {this.state.stores.faq.id
+                                ? <Link
+                                    className="btn"
+                                    to="asset-create-from-type"
+                                    params={{assetTypeId: this.state.stores.faq.id}}
+                                  >
+                                    {L20nMessage('faqNewItem', 'Add FAQ item')}
+                                  </Link>
+                                : null
+                            }
                         </div>
                         <div className="grid__item ten-twelfths">
                             {this.state.faqItem

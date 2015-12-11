@@ -4,6 +4,7 @@ var FaqRepository = require('../services/FaqRepository');
 var FaqStore = Flux.createStore({
 
     list: [],
+    id: null,
 
     actions: {
       'faq:load': 'loadFaq',
@@ -15,7 +16,8 @@ var FaqStore = Flux.createStore({
 
     loadFaq() {
         this.faqRepo.loadFaq().then((data) => {
-          this.list = data;
+          this.list = data.items;
+          this.id = data.faqAssetTypeId;
           this.emitChange();
         });
     },
@@ -23,6 +25,7 @@ var FaqStore = Flux.createStore({
     getState() {
       return  {
         list: this.list,
+        id: this.id,
       };
     }
 
