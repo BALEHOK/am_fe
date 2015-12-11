@@ -1,6 +1,6 @@
 import fetch from "../util/fetch";
 
-export default class AssetRepository {
+export default class AssetTypeRepository {
     loadAssetTypes() {
         var url = '/api/assettype';
         return fetch(url).get();
@@ -8,6 +8,11 @@ export default class AssetRepository {
 
     loadAssetAttributes(typeId) {
         var url = `/api/assettype/${typeId}`;
+        return fetch(url).get();
+    }
+
+    loadChildAssetTypes(typeId) {
+        var url = `/api/assettype/${typeId}/child`;
         return fetch(url).get();
     }
 
