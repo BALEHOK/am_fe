@@ -14,6 +14,12 @@ var SearchSimpleForm = React.createClass({
             query: this.props.value
         }
     },
+
+    componentWillReceiveProps: function(next) {
+        this.state.searchContextId = next.context || 1;
+        this.state.query = next.value;
+    },
+
     handleSelectChange: function (e) {
         this.setState({ searchContextId : e[0].id });
     },
@@ -57,7 +63,7 @@ var SearchSimpleForm = React.createClass({
                     />
                     <label className="input-txt input-txt_width_475">
                         <input type="text"
-                            defaultValue={this.state.query}
+                            value={this.state.query}
                             className="input-txt__field"
                             placeholder="Search asset"
                             onChange={this.handleQueryChange}
