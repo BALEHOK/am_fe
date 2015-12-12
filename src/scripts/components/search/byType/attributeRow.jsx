@@ -114,6 +114,7 @@ export default class AttributeRow extends React.Component {
 
             case 'asset':
             case 'assets':
+            case 'childassets':
                 component = ComplexValueSelectorRelatedAsset;
                 break;
 
@@ -163,6 +164,7 @@ export default class AttributeRow extends React.Component {
 
             case 'asset':
             case 'assets':
+            case 'childassets':
                 complexValueSelector = <ComplexValueSelectorRelatedAsset
                     onChange={this.props.onChange}
                     selected={this.props.selected}
