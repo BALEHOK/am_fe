@@ -42,10 +42,10 @@ var routes = (
     <Route name="reports" handler={ReportsHandler} />
     <Route name="tasks" handler={TasksHandler} />
     <Route name="result"
-      path="/search/result/?:searchId?"
+      path="/search/result"
       handler={ResultPage} />
     <Route name="resultByType"
-      path="/search/type/result/?:searchId?"
+      path="/search/type/result"
       handler={ResultByTypePage} />
     <Route
       name="asset-create"

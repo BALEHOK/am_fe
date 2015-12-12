@@ -61,6 +61,10 @@ var ResultPage = React.createClass({
         this.doSearch(promise);
     },
 
+    componentWillUnmount: function() {
+        this.props.dispatcher.stores.results.listener.removeListener('change', this.syncUrl);
+    },
+
     loadData: function(filters, updateCounters = true) {
         var promise = this.actions.changeSearchFilter(filters);
         this.doSearch(promise, updateCounters);
