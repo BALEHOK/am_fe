@@ -25,12 +25,14 @@ var NotFound = require('./components/errorPages/notFound.jsx');
 var ContactHandler = require('./components/contact/contactHandler.jsx');
 var FaqHandler = require('./components/faq/faqHandler.jsx');
 var TasksHandler = require('./components/tasks/tasksHandler');
+var AdminHanlder = require('./components/admin/adminHandler');
 
 var routes = (
   <Route name="app" path="/" handler={Layout}>
     <Route name="login" handler={LoginPage}/>
     <Route name="contact" handler={ContactHandler} />
     <Route name="faq" handler={FaqHandler}/>
+    <Route name="admin" handler={AdminHanlder}/>
     <Route name="search" handler={SearchPage}>
       <Route name="simple-search"
         path="/search"
@@ -68,7 +70,7 @@ var routes = (
       path="/assettype/:assetTypeId/asset/:assetId/history"
       handler={HistoryHandler} />
     <Redirect from="/" to="simple-search" />
-    <NotFoundRoute name="404" path="/404" handler={NotFound}/>
+    <NotFoundRoute name="404" handler={NotFound}/>
   </Route>
 );
 
