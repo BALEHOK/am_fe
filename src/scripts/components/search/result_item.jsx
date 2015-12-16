@@ -24,14 +24,21 @@ var ResultItem = React.createClass({
                         <span className="link">{this.props.model.displayValues}</span>
                     </span>
                     <span className="search-results__item-param search-results__item-param_category">
-                        <span className="label">{this.props.model.categoryKeywords}</span>
+                        {this.props.model.categoryKeywords
+                            ? <span className="label">{this.props.model.categoryKeywords}</span>
+                            : null
+                        }
                     </span>
                     <span className="search-results__item-param search-results__item-param_attr">
                         <span className="search-results__item-attr">
-                            {this.props.model.allAttrib2IndexValues}
+                            {this.props.model.displayValues.map((item) => {
+                                return <p><strong>{item.key}:</strong> {item.value}</p>
+                            })}
                         </span>
-                    <span className="search-results__item-attr search-results__item-attr_extended">
-                            {this.props.model.allAttribValues}
+                        <span className="search-results__item-attr search-results__item-attr_extended">
+                            {this.props.model.displayExtValues.map((item) => {
+                                return <p><strong>{item.key}:</strong> {item.value}</p>
+                            })}
                         </span>
                     </span>
                     <span className="search-results__item-param search-results__item-param_link">
