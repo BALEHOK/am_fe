@@ -7,7 +7,7 @@
 <searchResultsRefineAssets "Refine by assets">
 <searchResultsRefineTax "Refine by taxonomies">
 <searchResultsExport "Export">
-<searchResultsColumnName "Assets path">
+<searchResultsColumnName "Name">
 <searchResultsColumnCategory "Category">
 <searchResultsColumnAttr "Attributes set">
 <searchResultsColumnLink "Go to result">
