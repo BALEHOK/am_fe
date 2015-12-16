@@ -21,7 +21,7 @@ var ResultItem = React.createClass({
             <li className="search-results__item">
                 <a className="search-results__item-link" href={assetLink}>
                     <span className="search-results__item-param search-results__item-param_name">
-                        <span className="link">{this.props.model.displayValues}</span>
+                        <span className="link">{this.props.model.name}</span>
                     </span>
                     <span className="search-results__item-param search-results__item-param_category">
                         {this.props.model.categoryKeywords
