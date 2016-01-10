@@ -10,14 +10,17 @@ var L20nMessage = require('../intl/l20n-message');
 
 var TaxonomyLink = React.createClass({
     render: function() {
-        var taxonomy = this.props.taxonomy;
+        var assetTypeName = this.props.assetTypeName;
+        var taxonomyPath = this.props.taxonomyPath || {};
         return (
             <span>
                 <span>
-                    {taxonomy.name}
+                    {taxonomyPath.name}
                     &nbsp;<span className="icon icon_arrow_right"></span>&nbsp;
-                    {taxonomy.child ? <TaxonomyLink taxonomy={taxonomy.child} /> : false}
-                    {taxonomy.assetType ? taxonomy.assetType.displayName : false}
+                    {taxonomyPath.child ? <TaxonomyLink assetTypeName={assetTypeName}
+                                            taxonomyPath={taxonomyPath.child} />
+                                        : false}
+                    {assetTypeName ? assetTypeName : false}
                 </span>
                 <br/>
             </span>
@@ -27,9 +30,16 @@ var TaxonomyLink = React.createClass({
 
 var TaxonomyPath = React.createClass({
     render: function() {
+
         var taxonomies = [];
-        if (this.props.taxonomyPath && this.props.taxonomyPath.length){
-            taxonomies = this.props.taxonomyPath.map(t => <TaxonomyLink taxonomy={t} />)
+        if (this.props.taxonomy){
+            if (this.props.taxonomy.taxonomyPath && this.props.taxonomy.taxonomyPath.length){
+                taxonomies = this.props.taxonomy.taxonomyPath.map(t =>
+                    <TaxonomyLink assetTypeName={this.props.taxonomy.assetType.displayName}
+                        taxonomyPath={t} />)
+            } else {
+                taxonomies.push(<TaxonomyLink assetTypeName={this.props.taxonomy.assetType.displayName} />)
+            }
         }
 
     	return <nav className="nav-block">
