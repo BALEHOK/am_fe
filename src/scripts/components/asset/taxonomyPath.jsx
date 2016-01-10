@@ -11,15 +11,22 @@ var L20nMessage = require('../intl/l20n-message');
 var TaxonomyLink = React.createClass({
     render: function() {
         var assetTypeName = this.props.assetTypeName;
-        var taxonomyPath = this.props.taxonomyPath || {};
+        var taxonomyPath = this.props.taxonomyPath
+            ? <span>
+                {this.props.taxonomyPath.name}
+                &nbsp;<span className="icon icon_arrow_right"></span>&nbsp;
+                {this.props.taxonomyPath.child
+                    ? <TaxonomyLink assetTypeName={assetTypeName}
+                                        taxonomyPath={this.props.taxonomyPath.child} />
+                    : false}
+              </span>
+            : false;
+
+
         return (
             <span>
+                {taxonomyPath}
                 <span>
-                    {taxonomyPath.name}
-                    &nbsp;<span className="icon icon_arrow_right"></span>&nbsp;
-                    {taxonomyPath.child ? <TaxonomyLink assetTypeName={assetTypeName}
-                                            taxonomyPath={taxonomyPath.child} />
-                                        : false}
                     {assetTypeName ? assetTypeName : false}
                 </span>
                 <br/>
