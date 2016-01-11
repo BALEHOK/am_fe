@@ -18,7 +18,7 @@ var AssetToolbar = React.createClass({
     },
     handleTransition(route) {
         var params = this.context.router.getCurrentParams();
-        let offsetTop = document.querySelector('.asset-controls-panel').offsetHeight + 20;
+        let offsetTop = document.querySelector('.asset-controls-panel').offsetHeight*2 + 20;
         let elem = closestToOffset('[data-param-id]', offsetTop, 0);
         this.props.actions.saveTopElemPos(elem.getAttribute('data-param-id'));
         this.context.router.transitionTo(route, params);
