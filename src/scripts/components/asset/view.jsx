@@ -98,7 +98,7 @@ var AssetView = React.createClass({
         }
 
         var linkedAssets = assetStore.relatedAssets;
-        var taxonomyPath = assetStore.taxonomyPath;
+        var taxonomy = assetStore.taxonomyPath;
         var reports = this.state.stores.report.reports || [];
         var tasks = this.state.stores.task.tasks || [];
         var childAssetTypes = asset.childAssetTypes || [];
@@ -146,7 +146,7 @@ var AssetView = React.createClass({
                                 selectedScreen={assetStore.currentScreen}
                                 onChange={this.onScreenChange} />
 
-                            <TaxonomyPath taxonomyPath={taxonomyPath} />
+                            <TaxonomyPath taxonomy={taxonomy} />
 
                             <nav className="nav-block">
                                 <span className="nav-block__title nav-block__title_type_second">{L20nMessage('assetPageLinkedAssets', 'Linked assets')}</span>
