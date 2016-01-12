@@ -96,7 +96,7 @@ var DateTimeAttribute = React.createClass({
             <ControlWrapper
                 id={this.props.params.id}
                 name={this.props.params.name}
-                className="input-txt input-txt_size_small"
+                className="input-txt input-txt_text"
                 validationState={this.state.validation}
                 isRequired={isRequired}
             >
