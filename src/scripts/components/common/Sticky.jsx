@@ -19,14 +19,14 @@ export default class Sticky extends React.Component {
     }
 
     getElementOuterHeight(el) {
-      var styles = window.getComputedStyle(el);
-      var margin = parseFloat(styles['marginTop']) + parseFloat(styles['marginBottom']);
-      return Math.ceil(el.offsetHeight + margin);
+      let styles = window.getComputedStyle(el);
+      //var margin = parseFloat(styles['marginTop']) + parseFloat(styles['marginBottom']);
+      return Math.ceil(el.offsetHeight);
     }
 
     render() {
         return(
-            <div style={{height: this.state.wrapperHeight}}>
+            <div style={{minHeight: this.state.wrapperHeight}}>
                 <StickyComponent {...this.props}>
                     <div className="sticky-panel" ref="stickyChildrens">
                         {this.props.children}
