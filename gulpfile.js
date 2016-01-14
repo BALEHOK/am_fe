@@ -123,7 +123,7 @@ gulp.task('browser-sync', function() {
 });
 
 gulp.task('fonts', function() {
-    return gulp.src(['src/fonts/**/*', 'src/scripts/libs/bootstrap-stylus/fonts/*'])
+    return gulp.src(['src/fonts/**/*'])
         .pipe(gulp.dest(path.join(buildDest, assetsDest, 'fonts')));
 });
 
