@@ -62,8 +62,8 @@ export default class Select extends React.Component {
     );
   }
 
-  queryChanged(ev) {
-    this.props.onItemsRequest && this.props.onItemsRequest(ev.target.value);
+  queryChanged(query) {
+    this.props.onItemsRequest && this.props.onItemsRequest(query);
   }
 
   render() {
@@ -72,14 +72,15 @@ export default class Select extends React.Component {
       <ReactSelect
         ref={"selector"}
         value={this.getValue()}
-        options={items}
+        options={items/*!this.props.onItemsRequest ? items : null*/}
+        asyncOptions={null/*this.props.onItemsRequest*/}
         onChange={this.onChange.bind(this)}
         onFocus={this.onFocus.bind(this)}
         clearable={this.props.clearable}
         multi={!!this.props.maxItems}
         name={this.props.selectId}
         placeholder={this.props.placeholder}
-        inputProps={{ onKeyUp: this.queryChanged.bind(this)}}
+        onInputChange={this.queryChanged.bind(this)}
         className="form-control"
         onScroll={this.loadMore.bind(this)}/>
     </span>;

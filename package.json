@@ -29,7 +29,7 @@
     "react-mixin": "^2.0.2",
     "react-quill": "^0.2.2",
     "react-router": "^0.13.4",
-    "react-select": "git://github.com/taifen/react-select.git#add-onscroll",
+    "react-select": "git://github.com/taifen/react-select.git#custom/AM",
     "react-simpletabs": "^0.6.1",
     "react-sticky": "^2.4.0",
     "react-time-picker": "^1.0.8",
