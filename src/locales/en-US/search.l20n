@@ -1,0 +1,21 @@
+<searchTitle "Search">
+<searchTypeTitle "Search by type">
+<searchTabSimple "Simple">
+<searchTabType "By type">
+<searchContextAssets "Active assets">
+<searchContextHistory "History">
+<searchTypeSelect "Asset type">
+<searchAddRow "Add a new row">
+<searchOpenParenthesis "Add open parenthesis">
+<searchCloseParenthesis "Add closing parenthesis">
+<searchAnd "And">
+<searchOr "Or">
+<searchColumnAttr "Attribute">
+<searchColumnOper "Operator">
+<searchColumnVal "Search value">
+<searchColumnSelect "And / Or">
+<searchSelectOperator "Select operator">
+<searchSelectAsset "Select asset">
+<searchConditionSimple "Simple condition">
+<searchConditionAdvanced "Advanced condition">
+<searchStart "Start search">

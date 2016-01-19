@@ -1,7 +1,7 @@
 import React from 'react';
 import Router from 'react-router';
-import DeloreanComponent from '../../common/DeloreanComponent';
-import ReactSelectize from '../../common/react-selectize';
+import DeloreanComponent from '../../../common/DeloreanComponent';
+import ReactSelectize from '../../../common/react-selectize';
 
 import reactMixin from 'react-mixin';
 import {Flux} from 'delorean';
@@ -25,16 +25,10 @@ export default class ValueSelectorRelatedAsset extends DeloreanComponent {
 
     onValueChange = (items) => {
         if (!items || !items.length){
-            this.props.onValueChange(false);
-        }
-        var value;
-        if (this.props.params.datatype == 'assets') {
-            value = items.map(i => i.id);
-        } else {
-            value = [items[0].id];
+            this.props.onValueChange(null);
         }
 
-        this.props.onValueChange(value);
+        this.props.onValueChange(items[0]);
     }
 
     getUrlForNew = () => {
@@ -57,25 +51,21 @@ export default class ValueSelectorRelatedAsset extends DeloreanComponent {
     render() {
         var attrId = this.props.params.id;
         var itemsStore = this.state.stores.list.assets[attrId];
-        var items = (itemsStore && itemsStore.items) ? itemsStore.items : [];
-        var maxItems = undefined;
-        if (this.props.params.datatype == 'assets') {
-            maxItems = 100;
-        }
+        var items = (itemsStore && itemsStore.items) ? itemsStore.items : [this.props.params.value];
 
         return (
             <div className="with-action_wrapper">
                 <ReactSelectize
-                    maxItems={maxItems}
                     valueField="id"
                     labelField="name"
                     sortField="id"
                     items={items}
                     onItemsRequest={this.onItemsRequest}
                     onChange={this.onValueChange}
-                    value={this.props.params.value}
+                    value={this.props.params.value.id}
                     placeholder=" "
-                    label=" " />
+                    label=" "
+                    clearable={false} />
                 <a className="btn btn_type_one btn_size_small asset-data__param-btn"
                     href={this.getUrlForNew()}
                     target="_blank">

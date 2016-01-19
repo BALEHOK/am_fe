@@ -4,12 +4,9 @@
 
 var React = require('react');
 var ReactSelectize = require('../../common/react-selectize');
+var L20nMessage = require('../../intl/l20n-message');
 
 var SearchSimpleForm = React.createClass({
-    searchContext: [
-        { name: "Active assets", id: 1 },
-        { name: "History", id: 2 }
-    ],
     getInitialState: function () {
         return {
             searchContextId: this.props.context || 1,
@@ -17,6 +14,12 @@ var SearchSimpleForm = React.createClass({
             query: this.props.value
         }
     },
+
+    componentWillReceiveProps: function(next) {
+        this.state.searchContextId = next.context || 1;
+        this.state.query = next.value;
+    },
+
     handleSelectChange: function (e) {
         this.setState({ searchContextId : e[0].id });
     },
@@ -41,29 +44,31 @@ var SearchSimpleForm = React.createClass({
         });
     },
     render: function() {
+        var searchContext = [
+            { name: L20nMessage('searchContextAssets', 'Active assets'), id: 1 },
+            { name: L20nMessage('searchContextHistory', 'History'), id: 2 }
+        ];
         return (
             <form className="form">
                 <div className="input-group">
-
                     <ReactSelectize
-                        items={this.searchContext}
+                        items={searchContext}
                         value={this.state.searchContextId}
                         onChange={this.handleSelectChange}
                         selectId="search-type"
                         placeholder=" "
                         clearable={false}
                         searchable={false}
-                        label=" " />
-
+                        label=" "
+                    />
                     <label className="input-txt input-txt_width_475">
                         <input type="text"
-                            defaultValue={this.state.query}
+                            value={this.state.query}
                             className="input-txt__field"
                             placeholder="Search asset"
                             onChange={this.handleQueryChange}
                             onKeyUp={this.handleKeyPress} />
                     </label>
-
                     <button
                         type="button"
                         disabled={!this.props.value ? this.state.disabled : false}

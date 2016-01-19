@@ -10,7 +10,9 @@ var Attribute = React.createClass({
         return (
             <div className="asset-data__param" data-param-id={params.id}>
                 <span className="asset-data__param-title">{params.name}:</span>
-                € {parseFloat(params.value).toFixed(2)}
+                <span className="asset-data__param-content">
+                    € {parseFloat(params.value).toFixed(2)}
+                </span>
             </div>
         );
     }

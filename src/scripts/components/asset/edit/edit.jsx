@@ -5,8 +5,8 @@
 var React = require('react');
 var Flux = require('delorean').Flux;
 var Router = require('react-router');
-var Sticky = require('react-sticky');
 var moment = require('moment');
+var Sticky = require('../../common/Sticky');
 var TaxonomyPath = require('../taxonomyPath');
 var Panel = require('./panel');
 var RevisionInfo = require('../revisionInfo');
@@ -16,6 +16,7 @@ var ViewsFactory = require('../viewsFactory');
 var Loader = require('../../common/loader.jsx');
 var LoaderMixin = require('../../../mixins/LoaderMixin');
 var ValueTransformer = require('../../../util/valueTransformer').ValueTransformer;
+var L20nMessage = require('../../intl/l20n-message');
 
 var Edit = React.createClass({
     mixins:[Flux.mixins.storeListener, LoaderMixin],
@@ -150,26 +151,22 @@ var Edit = React.createClass({
                                                     <button
                                                         disabled={!assetStore.isValid || this.state.loading}
                                                         onClick={this.handleSave}
-                                                        className="btn btn_size_small">Save
+                                                        className="btn btn_size_small">
+                                                        {L20nMessage('toolBarBtnSave', 'Save')}
                                                     </button>
-                                                    {/*<button
-                                                     disabled={!this.state.isValid}
-                                                     className="btn btn_type_second btn_size_small">Save and Add new
-                                                     </button>*/}
                                                     <button
                                                         disabled={this.state.loading}
                                                         className="btn btn_type_second btn_size_small"
                                                         onClick={this.handleUndo}>
-                                                        <i className="btn__icon btn__icon_undo"></i>Undo
+                                                        <i className="btn__icon btn__icon_undo"></i>{L20nMessage('toolBarBtnUndo', 'Undo')}
                                                     </button>
-
                                                     {assetStore.currentScreen.hasFormula && assetStore.isEdited
                                                         ? <button
                                                             type="button"
                                                             className="btn btn_type_second btn_size_small"
                                                             onClick={this.onRecalc}>
                                                                 <i className="btn__icon btn__icon_refresh"></i>
-                                                                <span>Recalc</span>
+                                                                <span>{L20nMessage('toolBarBtnRecalc', 'Recalc')}</span>
                                                           </button>
                                                         : ''
                                                     }

@@ -1,0 +1,14 @@
+<searchResultsTitle "Search results">
+<searchResultsSort "Sort by">
+<searchResultsSortByRank "Rank">
+<searchResultsSortByDate "Date">
+<searchResultsSortByLocation "Location">
+<searchResultsSortByUser "User">
+<searchResultsRefineAssets "Refine by assets">
+<searchResultsRefineTax "Refine by taxonomies">
+<searchResultsExport "Export">
+<searchResultsColumnName "Name">
+<searchResultsColumnCategory "Category">
+<searchResultsColumnAttr "Attributes set">
+<searchResultsColumnLink "Go to result">
+<searchResultsNotFound "Nothing was found for the specified search parameters">

@@ -5,10 +5,10 @@
 var React = require('react');
 var moment = require('moment');
 var Router = require('react-router');
-var Sticky = require('react-sticky');
 var Link = Router.Link;
 var Flux = require('delorean').Flux;
 var cx = require('classnames');
+var Sticky = require('../common/Sticky');
 var SearchResultsHeader = require('./searchResultsHeader');
 var TaxonomyPath = require('./taxonomyPath');
 var AssetToolbar = require('./assetToolbar');
@@ -23,6 +23,7 @@ var Childs = require('./childAssetTypes');
 var LoaderMixin = require('../../mixins/LoaderMixin');
 var NotFound = require('../errorPages/notFound.jsx');
 var TaskRepository = require('../../services/TaskRepository');
+var L20nMessage = require('../intl/l20n-message');
 
 var AssetView = React.createClass({
     mixins:[Flux.mixins.storeListener, LoaderMixin],
@@ -97,7 +98,7 @@ var AssetView = React.createClass({
         }
 
         var linkedAssets = assetStore.relatedAssets;
-        var taxonomyPath = assetStore.taxonomyPath;
+        var taxonomy = assetStore.taxonomyPath;
         var reports = this.state.stores.report.reports || [];
         var tasks = this.state.stores.task.tasks || [];
         var childAssetTypes = asset.childAssetTypes || [];
@@ -145,10 +146,10 @@ var AssetView = React.createClass({
                                 selectedScreen={assetStore.currentScreen}
                                 onChange={this.onScreenChange} />
 
-                            <TaxonomyPath taxonomyPath={taxonomyPath} />
+                            <TaxonomyPath taxonomy={taxonomy} />
 
                             <nav className="nav-block">
-                                <span className="nav-block__title nav-block__title_type_second">Linked assets</span>
+                                <span className="nav-block__title nav-block__title_type_second">{L20nMessage('assetPageLinkedAssets', 'Linked assets')}</span>
                                 <div className="nav-block__item">
                                     {assetLinks}
                                 </div>

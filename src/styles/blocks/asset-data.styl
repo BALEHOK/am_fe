@@ -50,7 +50,6 @@
   &__param
     display block
     position relative
-    padding 0 0 0 145px
     margin 0 0 25px 0
     min-height 24px
 
@@ -61,12 +60,20 @@
       margin-top 15px
 
     &-title
-      position absolute
+      display inline-block
+      vertical-align top
       width 125px
-      left -15px
-      top 0
+      margin 0 20px 0 0
       font-family $Bold
       text-align right
+
+    &-content
+      display inline-block
+      vertical-align top
+      position relative
+
+      p
+        margin 0 0 15px 0
 
     .select
       margin-bottom 0
@@ -77,6 +84,9 @@
       vertical-align top
       color red
       margin 0 0 0 20px
+      position absolute
+      top 0
+      left 100%
 
     .has-error ~ &-required
     .has-success ~ &-required
@@ -95,8 +105,7 @@
   &__form
 
     .asset-data__param
-      line-height 36px
-      margin-bottom 20px
+      margin-bottom 28px
 
       &:last-child
         margin-bottom 0
@@ -104,6 +113,28 @@
       .input-txt
       .select
         width 280px
+
+      .input-txt
+        &_text
+          .form-control
+          .form-control-feedback
+            top -6px
+
+          .input-txt__clear
+            top -3px
+
+        &_size_small
+          .form-control
+            top -9px
+
+      .select
+        &_size_small
+          .form-control
+            top -6px
+
+      .rich-editor
+        margin-top -6px
+
 
   & + &
     margin-top 45px

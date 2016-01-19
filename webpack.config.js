@@ -12,8 +12,9 @@ module.exports = {
         reasons: false
     },
     entry: {
-        main: ['./webpack_entries/app.js'],
-        authCallback: ['./webpack_entries/authCallback.js']
+        main:           ['./webpack_entries/app.js'],
+        authCallback:   ['./webpack_entries/authCallback.js'],
+        silentRenew:    ['./webpack_entries/silentRenew.js']
     },
     output: {
         path: path.join(__dirname, '/dist/assets/js'),

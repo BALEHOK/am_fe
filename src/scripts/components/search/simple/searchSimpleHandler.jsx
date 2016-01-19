@@ -6,6 +6,7 @@ var React = require('react');
 var Router = require('react-router');
 var Link = Router.Link;
 var SearchSimpleForm = require('./searchSimpleForm');
+var L20nMessage = require('../../intl/l20n-message');
 
 var SearchDispatcher = require('../../../dispatchers/SearchDispatcher');
 var SearchMainActions = require('../../../actions/SearchMainActions');
@@ -15,7 +16,7 @@ var SearchPage = React.createClass({
         router: React.PropTypes.func
     },
 
-    displayName: 'Simple',
+    displayName: L20nMessage('searchTabSimple', 'Simple'),
 
     componentWillMount: function() {
         this.dispatcher = SearchDispatcher;
@@ -25,15 +26,15 @@ var SearchPage = React.createClass({
     render: function() {
         return (
             <div>
-                <h1 className="page-title">Search</h1>
+                <h1 className="page-title">{L20nMessage('searchTitle', 'Search')}</h1>
                 <div className='tabs'>
                     <nav className='tabs-navigation'>
                         <ul className='tabs-menu'>
                             <li className='tabs-menu-item is-active'>
-                                <Link to="/search">Simple</Link>
+                                <Link to="/search">{L20nMessage('searchTabSimple', 'Simple')}</Link>
                             </li>
                             <li className='tabs-menu-item'>
-                                <Link to="/search/type">By type</Link>
+                                <Link to="/search/type">{L20nMessage('searchTabType', 'By type')}</Link>
                             </li>
                         </ul>
                     </nav>

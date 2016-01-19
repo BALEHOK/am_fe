@@ -15,7 +15,9 @@ var Attribute = React.createClass({
         return (
             <div className="asset-data__param" data-param-id={params.id}>
                 <span className="asset-data__param-title">{params.name}:</span>
-                <a href={url} target="_blank">{value}</a>
+                <span className="asset-data__param-content">
+                    <a href={url} target="_blank">{value}</a>
+                </span>
             </div>
         );
     }

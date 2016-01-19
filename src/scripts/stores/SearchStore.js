@@ -1,8 +1,11 @@
 var Flux = require('delorean').Flux;
 var SearchRepository = require('../services/SearchRepository');
-import {always} from "../util/util";
+import {always} from '../util/util';
+import SearchModelRepository from '../services/SearchModelRepository';
 
 var SearchResultsStore = Flux.createStore({
+  simpleSearchModel: null,
+  searchByTypeModel: null,
   models: [],
   searchId: undefined,
 
@@ -18,17 +21,22 @@ var SearchResultsStore = Flux.createStore({
     assetType: undefined,
     taxonomy: undefined,
     page: undefined,
-    context: 1
+    context: 1,
+    attribs: null
   },
 
   actions: {
     'search:results': 'loadResults',
+    'search:resultsByType': 'loadResultsByType',
     'search:counters': 'loadSearchCounters',
-    'search:filter': 'applySearchFilter'
+    'search:newFilter': 'setSearchFilter',
+    'search:filter': 'applySearchFilter',
+    'search:setTypeSearchModel': 'setTypeSearchModel'
   },
 
   initialize() {
     this.searchRepo = new SearchRepository();
+    this.searchModelRepo = SearchModelRepository;
   },
 
   getState() {
@@ -36,12 +44,39 @@ var SearchResultsStore = Flux.createStore({
       models: this.models,
       searchId: this.searchId,
       counters: this.counters,
-      filter: this.filter
+      filter: this.filter,
+      searchByTypeModel: this.searchByTypeModel
     };
   },
 
-  loadResults(filters) {
-    always(this.searchRepo.search(filters).then((data) => {
+  loadResults() {
+    if (typeof this.filter.query === 'undefined'
+        && this.filter.searchId === this.searchId
+        && this.simpleSearchModel !== null) {
+      this.simpleSearchModel.searchId = this.searchId;
+      this.applySearchFilter(this.simpleSearchModel);
+    } else {
+      this.simpleSearchModel = this.filter;
+    }
+
+    always(this.searchRepo.search(this.filter).then((data) => {
+      this.models = data.entities;
+      this.searchId = data.searchId;
+    }), () => this.emitChange());
+  },
+
+  loadResultsByType(){
+    if (!this.searchByTypeModel) {
+      this.searchModelRepo.getSerchModel(this.filter.searchId)
+       .then(d => {
+          console.log(d);
+          this.searchByTypeModel = d;
+          this.loadResultsByType();
+        });
+      return;
+    }
+
+    always(this.searchRepo.searchByType(this.filter, this.searchByTypeModel).then((data) => {
       this.models = data.entities;
       this.searchId = data.searchId;
     }), () => this.emitChange());
@@ -53,11 +88,21 @@ var SearchResultsStore = Flux.createStore({
     }), () => this.emitChange());
   },
 
+  // overrides search filter (used for new search)
+  setSearchFilter(filter) {
+    this.filter = _.extend({}, filter);
+    this.emitChange();
+  },
+
+  // extends search filter
   applySearchFilter(filter) {
     this.filter = _.extend({}, this.filter, filter);
     this.emitChange();
-  }
+  },
 
+  setTypeSearchModel(model) {
+    this.searchByTypeModel = model;
+  }
 });
 
 module.exports = SearchResultsStore;

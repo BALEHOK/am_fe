@@ -188,6 +188,7 @@ var AssetStore = Flux.createStore({
 
   generateBarcode(params) {
       this.barcodeRepo.generate().then((data) => {
+        this.validation[params.id] = {isValid:true};
           this.barcodeBase64 = data.base64Image;
           var attr = this.getAttribute(params.id, params.screenId);
           attr.value = data.barcode;

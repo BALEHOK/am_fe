@@ -10,6 +10,15 @@ export default class Select extends React.Component {
     searchable: true
   };
 
+  state = {
+      loading: false
+  }
+
+  constructor(props) {
+    super(props);
+    this.queryChanged = _.debounce(this.queryChanged, 300);
+  }
+
   getValue() {
     let value;
     if(this.props.value instanceof Array) {
@@ -43,14 +52,20 @@ export default class Select extends React.Component {
   }
 
   loadMore(event) {
-    if (!this.props.onItemsRequest || this.loading) {
+    if (!this.props.onItemsRequest || this.state.loading) {
       return;
     }
-    
+
     let left = event.target.scrollTop + event.target.getBoundingClientRect().height;
     if (event.target.scrollHeight - left < 50) {
-      this.loading = true;
-      this.props.onItemsRequest("").then(() => this.loading = false);
+      this.setState({
+          loading: true
+      });
+      this.props.onItemsRequest("").then(() =>
+          this.setState({
+              loading: false
+          })
+      );
     }
   }
 
@@ -62,16 +77,17 @@ export default class Select extends React.Component {
     );
   }
 
-  queryChanged(ev) {
-    this.props.onItemsRequest && this.props.onItemsRequest(ev.target.value);
+  queryChanged(query) {
+    this.props.onItemsRequest && this.props.onItemsRequest(query);
   }
 
   render() {
     let items = this.mapValues(this.props.items || []);
-    return <span className="select" for={this.props.selectId}>
+    return <span className="select" htmlFor={this.props.selectId}>
       <ReactSelect
         ref={"selector"}
         value={this.getValue()}
+        isLoading={this.state.loading}
         options={items}
         onChange={this.onChange.bind(this)}
         onFocus={this.onFocus.bind(this)}
@@ -79,7 +95,7 @@ export default class Select extends React.Component {
         multi={!!this.props.maxItems}
         name={this.props.selectId}
         placeholder={this.props.placeholder}
-        inputProps={{ onKeyUp: this.queryChanged.bind(this)}}
+        onInputChange={this.queryChanged.bind(this)}
         className="form-control"
         onScroll={this.loadMore.bind(this)}/>
     </span>;

@@ -4,12 +4,12 @@ import reactMixin from 'react-mixin';
 import moment from 'moment';
 import DatePicker from 'react-date-picker';
 import TimePicker from 'react-time-picker';
-import FocusOutMixin from '../../../mixins/FocusOutMixin';
+import FocusOutMixin from '../../../../mixins/FocusOutMixin';
 
 @reactMixin.decorate(FocusOutMixin)
-export default class ValueSelectorBool extends React.Component {
+export default class ValueSelectorDate extends React.Component {
 
-    date = null
+    focusOutCls = '.asset-date-picker'
 
     state = {
         opened: false,
@@ -19,14 +19,12 @@ export default class ValueSelectorBool extends React.Component {
     constructor(props){
         super(props);
 
-        this.state.date = props.value ? moment(props.value) : moment();
+        this.state.date = props.value ? moment(props.value.id) : moment();
     }
 
     componentWillReceiveProps(nextProps) {
-        this.state.date = nextProps.value ? moment(nextProps.value) : moment();
+        this.state.date = nextProps.value ? moment(nextProps.value.id) : moment();
     }
-
-    focusOutCls = '.asset-date-picker'
 
     onDateChange = (e, date) => {
         this.state.date.set({year: date.year(), month: date.month(), date: date.date()});
@@ -41,11 +39,14 @@ export default class ValueSelectorBool extends React.Component {
         this.forceUpdate();
     }
 
-    updateValue(value){
-        this.props.onValueChange(this.formatDate(this.state.date));
+    updateValue(){
+        this.props.onValueChange({
+            id: this.state.date.format('YYYY-MM-DDTHH:mm:ssZ'),
+            name: this.displayDateFormat(this.state.date)
+        });
     }
 
-    formatDate(d) {
+    displayDateFormat(d) {
         return d ? d.format('M/D/YYYY HH:mm') : d;
     }
 
@@ -81,7 +82,7 @@ export default class ValueSelectorBool extends React.Component {
                 <input type="text"
                     className="input-txt__field form-control"
                     onClick={this.showDatePicker}
-                    value={this.formatDate(this.state.date)} />
+                    value={this.props.value ? this.displayDateFormat(this.state.date) : ''} />
                 {picker}
             </div>
         );

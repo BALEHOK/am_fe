@@ -1,12 +1,8 @@
 import React from 'react';
 import ReactSelectize from '../../common/react-selectize';
+import L20nMessage from '../../intl/l20n-message';
 
 export default class ParenthesisRow extends React.Component {
-
-    logicalOperators = [
-        { name: 'And', id: 1},
-        { name: 'Or', id: 2}
-    ]
 
     onMoveUp = () => {
         this.props.onMoveUp(this.props.selected.index);
@@ -39,6 +35,11 @@ export default class ParenthesisRow extends React.Component {
     render(){
         var showLo = this.props.selected.lo && this.props.selected.parenthesis > 1;
 
+        var logicalOperators = [
+            { name: L20nMessage('searchAnd', 'And'), id: 1},
+            { name: L20nMessage('searchOr', 'Or'), id: 2}
+        ];
+
         return (
             <div className="table-search__row">
                 <div className="table-search__row-item table-search__row-item_type_actions">
@@ -60,16 +61,19 @@ export default class ParenthesisRow extends React.Component {
                     <div className={'connector-container ' + (showLo ? '' : 'hide')}>
                         <div className="connector">
                            <ReactSelectize
-                                items={this.logicalOperators}
+                                items={logicalOperators}
                                 value={this.props.selected.lo || 1}
                                 onChange={this.onLoChange}
                                 selectId="logicalOperator"
-                                placeholder="Select operator"
+                                placeholder={L20nMessage('searchSelectOperator', 'Select operator')}
                                 label=" "
                                 clearable={false}
                             />
                         </div>
                     </div>
+                </div>
+
+                <div className="table-search__row_separator">
                 </div>
             </div>
         );

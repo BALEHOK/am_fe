@@ -1,11 +1,11 @@
 import React from 'react';
-import DeloreanComponent from '../../common/DeloreanComponent';
-import ReactSelectize from '../../common/react-selectize';
+import DeloreanComponent from '../../../common/DeloreanComponent';
+import ReactSelectize from '../../../common/react-selectize';
 
 import reactMixin from 'react-mixin';
 import {Flux} from 'delorean';
 
-import List from '../../asset/attributes/edit/list';
+import List from '../../../asset/attributes/edit/list';
 
 @reactMixin.decorate(Flux.mixins.storeListener)
 export default class ValueSelectorDynList extends DeloreanComponent {
@@ -13,13 +13,13 @@ export default class ValueSelectorDynList extends DeloreanComponent {
     watchStores = ['list']
 
     onValueChange = (value) => {
-        this.props.onValueChange(!value ? null : value.id);
+        this.props.onValueChange(!value ? null : value);
     }
 
     render() {
         var params = {
             id: this.props.attrId,
-            value: {id: this.props.value}
+            value: {id: this.props.value ? this.props.value.id : 0}
         };
 
         return (

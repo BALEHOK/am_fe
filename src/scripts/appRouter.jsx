@@ -14,6 +14,7 @@ var SearchPage = require('./components/search/searchHandler.jsx');
 var SearchSimplePage = require('./components/search/simple/searchSimpleHandler.jsx');
 var SearchByTypePage = require('./components/search/byType/searchByTypeHandler.jsx');
 var ResultPage = require('./components/search/results_handler.jsx');
+var ResultByTypePage = require('./components/search/resultsByType_handler.jsx');
 var LoginPage = require('./components/login/IS3Login.jsx');
 var AssetCreatePage = require('./components/asset/create/createHandler.jsx');
 var AssetViewPage = require('./components/asset/viewHandler.jsx');
@@ -21,10 +22,17 @@ var AssetEditPage = require('./components/asset/edit/editHandler.jsx');
 var HistoryHandler = require('./components/history/historyHandler.jsx');
 var ReportsHandler = require('./components/reports/reportsHandler.jsx');
 var NotFound = require('./components/errorPages/notFound.jsx');
+var ContactHandler = require('./components/contact/contactHandler.jsx');
+var FaqHandler = require('./components/faq/faqHandler.jsx');
+var TasksHandler = require('./components/tasks/tasksHandler');
+var AdminHanlder = require('./components/admin/adminHandler');
 
 var routes = (
   <Route name="app" path="/" handler={Layout}>
     <Route name="login" handler={LoginPage}/>
+    <Route name="contact" handler={ContactHandler} />
+    <Route name="faq" handler={FaqHandler}/>
+    <Route name="admin" handler={AdminHanlder}/>
     <Route name="search" handler={SearchPage}>
       <Route name="simple-search"
         path="/search"
@@ -34,9 +42,13 @@ var routes = (
         handler={SearchByTypePage} />
     </Route>
     <Route name="reports" handler={ReportsHandler} />
+    <Route name="tasks" handler={TasksHandler} />
     <Route name="result"
-      path="/search/result/?:searchId?"
+      path="/search/result"
       handler={ResultPage} />
+    <Route name="resultByType"
+      path="/search/type/result"
+      handler={ResultByTypePage} />
     <Route
       name="asset-create"
       path="create"
@@ -58,7 +70,7 @@ var routes = (
       path="/assettype/:assetTypeId/asset/:assetId/history"
       handler={HistoryHandler} />
     <Redirect from="/" to="simple-search" />
-    <NotFoundRoute name="404" path="/404" handler={NotFound}/>
+    <NotFoundRoute name="404" handler={NotFound}/>
   </Route>
 );
 

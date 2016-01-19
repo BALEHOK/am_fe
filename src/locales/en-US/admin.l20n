@@ -1,0 +1,17 @@
+<adminTitle "Admin">
+<adminUserSection "Configuratie gebruikers en gebruikersgroepen">
+<adminUserRights "Rights to users">
+<adminUserRightsText "Give rights to users">
+<adminDataSection "Data manipulations">
+<adminImport "Import">
+<adminExport "Export">
+<adminSync "Synchronisation">
+<adminAppSection "Application configuration and settings">
+<adminBatchSystem "Batch System">
+<adminInventScanner "InventScanner">
+<adminStockScanner "StockScanner">
+<adminSearchSettings "Search settings">
+<adminLocationMovement "Location movement">
+<adminZipCodes "Zipcode and places">
+<adminServiceOps "Service operations">
+<adminServiceOpsText "Additional service operations for reindexing search, monitoring cache">

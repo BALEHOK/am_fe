@@ -10,7 +10,9 @@ var Attribute = React.createClass({
         return (
             <div className="asset-data__param" data-param-id={params.id}>
                 <span className="asset-data__param-title">{params.name}:</span>
-                <strong>{params.value}</strong>
+                <span className="asset-data__param-content">
+                    <strong>{params.value}</strong>
+                </span>
             </div>
         );
     }
