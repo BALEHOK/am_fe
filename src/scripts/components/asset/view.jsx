@@ -64,7 +64,6 @@ var AssetView = React.createClass({
                     break;
             }
             this.props.notifications.show(params);
-            console.log(response);
             if(response.shouldRedirectOnComplete) {
                 this.taskRepo.redirectOnComlete(response.taskFunctionType, response.result);
             }
