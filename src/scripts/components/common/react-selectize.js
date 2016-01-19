@@ -10,6 +10,15 @@ export default class Select extends React.Component {
     searchable: true
   };
 
+  state = {
+      loading: false
+  }
+
+  constructor(props) {
+    super(props);
+    this.queryChanged = _.debounce(this.queryChanged, 300);
+  }
+
   getValue() {
     let value;
     if(this.props.value instanceof Array) {
@@ -43,14 +52,20 @@ export default class Select extends React.Component {
   }
 
   loadMore(event) {
-    if (!this.props.onItemsRequest || this.loading) {
+    if (!this.props.onItemsRequest || this.state.loading) {
       return;
     }
 
     let left = event.target.scrollTop + event.target.getBoundingClientRect().height;
     if (event.target.scrollHeight - left < 50) {
-      this.loading = true;
-      this.props.onItemsRequest("").then(() => this.loading = false);
+      this.setState({
+          loading: true
+      });
+      this.props.onItemsRequest("").then(() =>
+          this.setState({
+              loading: false
+          })
+      );
     }
   }
 
@@ -72,8 +87,8 @@ export default class Select extends React.Component {
       <ReactSelect
         ref={"selector"}
         value={this.getValue()}
-        options={items/*!this.props.onItemsRequest ? items : null*/}
-        asyncOptions={null/*this.props.onItemsRequest*/}
+        isLoading={this.state.loading}
+        options={items}
         onChange={this.onChange.bind(this)}
         onFocus={this.onFocus.bind(this)}
         clearable={this.props.clearable}
