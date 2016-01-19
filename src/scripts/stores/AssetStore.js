@@ -1,6 +1,7 @@
 var Flux = require('delorean').Flux;
 var AssetRepository = require('../services/AssetRepository');
 var BarcodeRepository = require('../services/BarcodeRepository');
+var TaskRepository = require('../services/TaskRepository');
 var _ = require('underscore');
 
 var defaultAsset = {
@@ -36,6 +37,17 @@ var AssetStore = Flux.createStore({
 
   topElemDataParamId: null,
 
+  tasksList: [],
+
+  taskResponse: {
+      status: null,
+      result: null,
+      errors: [],
+      shouldRedirectOnComplete: false,
+      taskFunctionType: null,
+      taskName: null,
+  },
+
   actions: {
     'asset:load': 'loadAsset',
     'asset:load-related': 'loadRelatedAssets',
@@ -55,11 +67,15 @@ var AssetStore = Flux.createStore({
     'asset:clear-attribute-validation': 'clearAttributeValidation',
     'asset:change-screen': 'changeScreen',
     'asset:save-position': 'saveTopElemPos',
+    'asset:loadTasks': 'loadTasks',
+    'asset:taskExec': 'executeTask',
+    'asset:clearTaskResponse': 'clearTaskResponse',
   },
 
   initialize() {
     this.assetRepo = new AssetRepository();
     this.barcodeRepo = new BarcodeRepository();
+    this.taskRepo = new TaskRepository();
     var self = this;
     this.delayedCalculation = _.debounce((forceRecalc) => {
         self.calculateAsset(forceRecalc);
@@ -299,6 +315,32 @@ var AssetStore = Flux.createStore({
     this.emitChange();
   },
 
+  loadTasks(assetTypeId) {
+      this.taskRepo.loadTasks(assetTypeId).then((data) => {
+          this.tasksList = data;
+          this.emitChange();
+      });
+  },
+
+  executeTask(taskId) {
+      this.taskRepo.executeTask(taskId).then((data) => {
+          this.taskResponse = data;
+          this.emitChange();
+      });
+  },
+
+  clearTaskResponse() {
+      this.taskResponse = {
+          status: null,
+          result: null,
+          errors: [],
+          shouldRedirectOnComplete: false,
+          taskFunctionType: null,
+          taskName: null,
+      };
+      this.emitChange();
+  },
+
   _setValidationResult(validationResult) {
     _.chain(validationResult.modelState)
       .keys()
@@ -340,6 +382,8 @@ var AssetStore = Flux.createStore({
             ? this.asset.screens[this.screenIndex] || {panels: [], hasFormula:false}
             : null;
       }(),
+      tasksList: this.tasksList,
+      taskResponse: this.taskResponse
     };
   }
 });

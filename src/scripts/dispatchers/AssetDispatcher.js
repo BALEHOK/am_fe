@@ -101,15 +101,15 @@ var AssetDispatcher = Flux.createDispatcher({
   },
 
   loadTasks(assetTypeId) {
-    return this.dispatch('tasks:load', assetTypeId);
+    return this.dispatch('asset:loadTasks', assetTypeId);
   },
 
   executeTask(taskId) {
-    return this.dispatch('tasks:exec', taskId);
+    return this.dispatch('asset:taskExec', taskId);
   },
 
   clearTaskResponse() {
-      return this.dispatch('tasks:clearResponse');
+    return this.dispatch('asset:clearTaskResponse');
   },
 
   setValidationResult(result) {
@@ -134,8 +134,7 @@ var AssetDispatcher = Flux.createDispatcher({
       list: new ListStore(),
       search: new SearchTrackingStore(),
       history: new HistoryStore(),
-      report: new ReportStore(),
-      task: new TaskStore(),
+      report: new ReportStore()
     }
   }
 });
