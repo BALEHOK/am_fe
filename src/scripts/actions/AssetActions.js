@@ -8,6 +8,7 @@ class AssetActions extends Actions {
 
         var asset = this._dispatcher.getStore('asset').getState().asset;
         this._dispatcher.loadTaxonomyPath(asset.assetTypeId);
+        this._dispatcher.loadTasks(asset.assetTypeId);
 
         if (asset.barcode) {
           this._dispatcher.loadBarcode(asset.barcode);
