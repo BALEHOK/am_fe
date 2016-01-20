@@ -99,6 +99,7 @@ var DateTimeAttribute = React.createClass({
                 className="input-txt input-txt_text"
                 validationState={this.state.validation}
                 isRequired={isRequired}
+                notUseLabelTag={true}
             >
                 <input type="text"
                     className="input-txt__field form-control"
