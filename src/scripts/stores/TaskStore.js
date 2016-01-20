@@ -41,14 +41,7 @@ var TaskStore = Flux.createStore({
 
     executeTask(taskId) {
         this.taskRepo.executeTask(taskId).then((data) => {
-            this.response = {
-                status: data.status,
-                result: data.result,
-                errors: data.errors,
-                shouldRedirectOnComplete: data.shouldRedirectOnComplete,
-                taskFunctionType: data.taskFunctionType,
-                taskName: data.taskName,
-            };
+            this.response = data;
             this.emitChange();
         });
     },

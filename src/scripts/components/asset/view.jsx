@@ -28,7 +28,7 @@ var L20nMessage = require('../intl/l20n-message');
 var AssetView = React.createClass({
     mixins:[Flux.mixins.storeListener, LoaderMixin],
 
-    watchStores: ['asset', 'report', 'task'],
+    watchStores: ['asset', 'report'],
 
     componentWillMount: function() {
         var params = _.extend({}, this.props.params, this.props.query);
@@ -47,8 +47,8 @@ var AssetView = React.createClass({
     },
 
     componentWillUpdate: function(nextProps, nextState) {
-        if (!_.isEqual(this.state.stores.task.response, nextState.stores.task.response) && nextState.stores.task.response.status) {
-            let response = nextState.stores.task.response;
+        if (!_.isEqual(this.state.stores.asset.taskResponse, nextState.stores.asset.taskResponse) && nextState.stores.asset.taskResponse.status) {
+            let response = nextState.stores.asset.taskResponse;
             let params = {
                 type: '',
                 msg: ''
@@ -100,7 +100,7 @@ var AssetView = React.createClass({
         var linkedAssets = assetStore.relatedAssets;
         var taxonomy = assetStore.taxonomyPath;
         var reports = this.state.stores.report.reports || [];
-        var tasks = this.state.stores.task.tasks || [];
+        var tasks = this.state.stores.asset.tasksList || [];
         var childAssetTypes = asset.childAssetTypes || [];
 
         var assetLinks = linkedAssets
