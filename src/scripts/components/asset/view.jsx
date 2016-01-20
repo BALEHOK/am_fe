@@ -34,7 +34,6 @@ var AssetView = React.createClass({
         var params = _.extend({}, this.props.params, this.props.query);
         this.waitFor(this.props.actions.loadAsset(params));
         this.props.actions.loadReports(this.props.params.assetTypeId);
-        this.props.actions.loadTasks(this.props.params.assetTypeId);
         this.taskRepo = new TaskRepository();
     },
 
