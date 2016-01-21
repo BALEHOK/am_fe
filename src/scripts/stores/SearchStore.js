@@ -25,6 +25,9 @@ var SearchResultsStore = Flux.createStore({
     attribs: null
   },
 
+  error: false,
+  errorMsg: '',
+
   actions: {
     'search:results': 'loadResults',
     'search:resultsByType': 'loadResultsByType',
@@ -45,7 +48,9 @@ var SearchResultsStore = Flux.createStore({
       searchId: this.searchId,
       counters: this.counters,
       filter: this.filter,
-      searchByTypeModel: this.searchByTypeModel
+      searchByTypeModel: this.searchByTypeModel,
+      error: this.error,
+      errorMsg: this.errorMsg
     };
   },
 
@@ -62,6 +67,16 @@ var SearchResultsStore = Flux.createStore({
     always(this.searchRepo.search(this.filter).then((data) => {
       this.models = data.entities;
       this.searchId = data.searchId;
+      this.clearError();
+    }).catch(err => {
+        if (err.response && err.response.status == 500) {
+            this.models = [];
+            this.searchId = undefined;
+            this.error = true;
+            this.errorMsg = err.response.statusText;
+        } else {
+            throw err;
+        }
     }), () => this.emitChange());
   },
 
@@ -79,6 +94,16 @@ var SearchResultsStore = Flux.createStore({
     always(this.searchRepo.searchByType(this.filter, this.searchByTypeModel).then((data) => {
       this.models = data.entities;
       this.searchId = data.searchId;
+      this.clearError();
+    }).catch(err => {
+        if (err.response && err.response.status == 500) {
+            this.models = [];
+            this.searchId = undefined;
+            this.error = true;
+            this.errorMsg = err.response.statusText;
+        } else {
+            throw err;
+        }
     }), () => this.emitChange());
   },
 
@@ -102,7 +127,13 @@ var SearchResultsStore = Flux.createStore({
 
   setTypeSearchModel(model) {
     this.searchByTypeModel = model;
+  },
+
+  clearError() {
+      this.error = false;
+      this.errorMsg = '';
   }
+
 });
 
 module.exports = SearchResultsStore;
