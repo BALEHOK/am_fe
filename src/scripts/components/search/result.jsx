@@ -147,6 +147,8 @@ var ResultPage = React.createClass({
         var results = this.state.stores.results;
         var counters = results.counters;
         var filters = results.filter;
+        var searchError = results.error;
+        var searchErrorMsg = results.errorMsg;
 
         var sortItems = [
             { name: L20nMessage('searchResultsSortByRank', 'Rank'), id: 0 },
@@ -227,51 +229,54 @@ var ResultPage = React.createClass({
                     </div>
                 </div>
                 <div className="results-form">
-                    <header className="results-form__header">
-                        <div className="grid grid_right">
-                            <div className="grid__item ten-twelfths">
-                                <div className="input-group">
+                    {!searchError
+                        ? <header className="results-form__header">
+                            <div className="grid grid_right">
+                                <div className="grid__item ten-twelfths">
                                     <div className="input-group">
-                                        <button type="button"
-                                            className={activeTileClasses}
-                                            onClick={this.toggleTilesView.bind(this, false)}>
-                                            <i className="btn__icon btn__icon_list"></i>
-                                        </button>
-                                        <button type="button"
-                                            className={deactiveTileClasses}
-                                            onClick={this.toggleTilesView.bind(this, true)}>
-                                            <i className="btn__icon btn__icon_tiles"></i>
-                                        </button>
+                                        <div className="input-group">
+                                            <button type="button"
+                                                className={activeTileClasses}
+                                                onClick={this.toggleTilesView.bind(this, false)}>
+                                                <i className="btn__icon btn__icon_list"></i>
+                                            </button>
+                                            <button type="button"
+                                                className={deactiveTileClasses}
+                                                onClick={this.toggleTilesView.bind(this, true)}>
+                                                <i className="btn__icon btn__icon_tiles"></i>
+                                            </button>
+                                        </div>
+                                        <span className="input-group__item">
+                                            <span className="input-group__item-title">{L20nMessage('searchResultsSort', 'Sort by')}</span>
+                                            <ReactSelectize
+                                                items={sortItems}
+                                                value={filters.sortBy}
+                                                onChange={this.handleSortChange}
+                                                selectId="select-sortby"
+                                                placeholder=" "
+                                                label=" "
+                                            />
+                                        </span>
                                     </div>
-                                    <span className="input-group__item">
-                                        <span className="input-group__item-title">{L20nMessage('searchResultsSort', 'Sort by')}</span>
-                                        <ReactSelectize
-                                            items={sortItems}
-                                            value={filters.sortBy}
-                                            onChange={this.handleSortChange}
-                                            selectId="select-sortby"
-                                            placeholder=" "
-                                            label=" "
-                                        />
-                                    </span>
+                                    {counters.totalCount
+                                        ? <ResultHeaderPagination pages={pages}
+                                                                  currentPage={currentPage}
+                                                                  firstShowedItem={firstShowedItem}
+                                                                  totalCount={counters.totalCount}
+                                                                  lastShowedItem={lastShowedItem}
+                                                                  onPageChanged={this.handlePageChange}/>
+                                        : <div/>
+                                        }
                                 </div>
-                                {counters.totalCount
-                                    ? <ResultHeaderPagination pages={pages}
-                                                              currentPage={currentPage}
-                                                              firstShowedItem={firstShowedItem}
-                                                              totalCount={counters.totalCount}
-                                                              lastShowedItem={lastShowedItem}
-                                                              onPageChanged={this.handlePageChange}/>
-                                    : <div/>
-                                    }
                             </div>
-                        </div>
-                    </header>
+                          </header>
+                        : null
+                    }
                     <div className="grid">
                         <div className="grid__item two-twelfths">
                             <Loader loading={this.state.loadingCounters}>
                                 <div>
-                                    {assetTypeRefinements.length !== 0
+                                    {assetTypeRefinements.length !== 0 && !searchError
                                         ? <RefinementBlock
                                             title={L20nMessage('searchResultsRefineAssets', 'Refine by assets')}
                                             list={assetTypeRefinements}
@@ -282,7 +287,7 @@ var ResultPage = React.createClass({
                                             navBlockClasses={navBlockClasses}/>
                                         : {}
                                     }
-                                    {taxonomyRefinements.length !== 0
+                                    {taxonomyRefinements.length !== 0 && !searchError
                                         ? <RefinementBlock
                                             title={L20nMessage('searchResultsRefineTax', 'Refine by taxonomies')}
                                             list={taxonomyRefinements}
@@ -293,21 +298,27 @@ var ResultPage = React.createClass({
                                             navBlockClasses={navBlockClasses}/>
                                         : {}
                                     }
-                                    <nav className={navBlockClasses}>
-                                        <ReportsBlock searchId={results.searchId} reports={this.state.stores.report.reports} />
-                                    </nav>
-                                    <nav className={navBlockClasses}>
-                                        <span className="nav-block__title">{L20nMessage('searchResultsExport', 'Export')}</span>
-                                        <ul className="nav-block__list">
-                                            {this.exportItems.map(function(format){
-                                                return <li className="nav-block__item">
-                                                            <a className="link link_second" onClick={this.handleExportClick.bind(this, format)}>
-                                                                <span className="icon icon_download"></span>.{format}
-                                                            </a>
-                                                        </li>;
-                                            }, this)}
-                                        </ul>
-                                    </nav>
+                                    {!searchError
+                                        ? <nav className={navBlockClasses}>
+                                            <ReportsBlock searchId={results.searchId} reports={this.state.stores.report.reports} />
+                                          </nav>
+                                        : null
+                                    }
+                                    {!searchError
+                                        ? <nav className={navBlockClasses}>
+                                            <span className="nav-block__title">{L20nMessage('searchResultsExport', 'Export')}</span>
+                                            <ul className="nav-block__list">
+                                                {this.exportItems.map(function(format){
+                                                    return <li className="nav-block__item">
+                                                                <a className="link link_second" onClick={this.handleExportClick.bind(this, format)}>
+                                                                    <span className="icon icon_download"></span>.{format}
+                                                                </a>
+                                                            </li>;
+                                                }, this)}
+                                            </ul>
+                                        </nav>
+                                        : null
+                                    }
                                 </div>
                             </Loader>
                         </div>
@@ -331,12 +342,24 @@ var ResultPage = React.createClass({
                                               })
                                             : {}
                                         }
-                                        {results.models.length === 0 && this.state.loading === false
-                                            ? <li className="search-results__item search-results__item_empty"><span className="search-results__item-msg">{L20nMessage('searchResultsNotFound', 'Nothing was found for the specified search parameters')}</span></li>
+                                        {results.models.length === 0 && this.state.loading === false && !searchError
+                                            ? <li className="search-results__item search-results__item_empty">
+                                                <span className="search-results__item-msg">
+                                                    {L20nMessage('searchResultsNotFound', 'Nothing was found for the specified search parameters')}
+                                                </span>
+                                              </li>
+                                            : {}
+                                        }
+                                        {results.models.length === 0 && this.state.loading === false && searchError
+                                            ? <li className="search-results__item search-results__item_empty">
+                                                <span className="search-results__item-msg">
+                                                    {searchErrorMsg}
+                                                </span>
+                                               </li>
                                             : {}
                                         }
                                     </ul>
-                                    {counters.totalCount
+                                    {counters.totalCount && !searchError
                                         ? <ResultPagination pages={pages}
                                                             currentPage={currentPage}
                                                             firstShowedItem={firstShowedItem}
