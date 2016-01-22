@@ -36,13 +36,19 @@ var SearchResultsHeader = React.createClass({
         var query = this.context.router.getCurrentQuery();
         var resultRoute = searchResultRoutes[tracking.searchType];
         return (
-            <div>
-    			<h1 className="page-title">{L20nMessage('searchResultsTitle', 'Search results')}: <span className="page-title__param">{tracking.verboseString}</span></h1>
-    			<nav className="back-nav">
-                    <Link to={resultRoute} query={{searchId : query.searchId}} className="link link_second">
-                        <span className="icon icon_arrow-c_right"></span>{L20nMessage('backToSearch', 'Back to search')}
-                    </Link>
-    			</nav>
+            <div className="grid assets-search-result-header">
+                <div className="grid__item two-twelfths">
+                    <nav className="back-nav assets-search-result-header__backnav">
+                        <Link to={resultRoute} query={{searchId : query.searchId}} className="link link_second">
+                            <span className="icon icon_arrow-c_right"></span>{L20nMessage('backToSearch', 'Back to search')}
+                        </Link>
+        			</nav>
+                </div>
+                <div className="grid__item ten-twelfths">
+                    <h1 className="page-title assets-search-result-header__title">
+                        {L20nMessage('searchResultsTitle', 'Search results')}: <span className="page-title__param">{tracking.verboseString}</span>
+                    </h1>
+                </div>
             </div>
         );
     }
