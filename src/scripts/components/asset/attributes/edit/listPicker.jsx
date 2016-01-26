@@ -11,6 +11,8 @@ var cx = require('classnames');
 //var ControlWrapper = require('./controlWrapper');
 var SelectWrapper = require('./selectWrapper');
 
+var undefined;
+
 var ListPicker = React.createClass({
     mixins:[Flux.mixins.storeListener, ValidationMixin],
 
@@ -33,7 +35,7 @@ var ListPicker = React.createClass({
 
     render: function() {
         var items = [this.props.params.value];
-        var value = this.props.params.value.id;
+        var value = this.props.params.value && this.props.params.value.id || undefined;
         var attributeId = this.props.params.id;
         var selectId = "attribute-dynlist-" + attributeId;
         var listStore = this.state.stores.list.dynlists[attributeId];
