@@ -17,6 +17,7 @@ var Attribute = React.createClass({
             urlParams.assetTypeId,
             urlParams.assetId,
             this.props.params.id);
+        return url;
     },
 
     render: function() {
@@ -29,7 +30,7 @@ var Attribute = React.createClass({
             <div className="asset-data__param" data-param-id={params.id}>
                 <span className="asset-data__param-title">{params.name}:</span>
                 <span className="asset-data__param-content">
-                    <a onClick={this.handleDonwload} target="_blank">{value}</a>
+                    <a href={this.handleDonwload()} target="_blank">{value}</a>
                 </span>
             </div>
         );
