@@ -1,6 +1,7 @@
 import {Flux} from 'delorean';
 import SearchStore from '../stores/SearchStore';
 import ReportStore from '../stores/ReportStore';
+import LoginStore from '../stores/LoginStore';
 import SearchByTypeStore from '../stores/SearchByTypeStore';
 
 export default Flux.createDispatcher({
@@ -89,7 +90,8 @@ export default Flux.createDispatcher({
     return {
       searchByType: new SearchByTypeStore(),
       results: new SearchStore(),
-      report: new ReportStore()
+      report: new ReportStore(),
+      login: LoginStore
     }
   }
 });
