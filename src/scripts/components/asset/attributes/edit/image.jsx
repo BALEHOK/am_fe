@@ -22,7 +22,7 @@ var ImageEditAttribute = React.createClass({
 
     handleUpload: function(filename, imageUrl) {
         this.setState({
-            url: FileUrlProvider.getInstantImageUrl(imageUrl)
+            url: FileUrlProvider.getImageUrl(imageUrl)
         });
     },
 

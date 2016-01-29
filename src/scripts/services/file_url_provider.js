@@ -6,10 +6,7 @@ module.exports = {
     },
 
     getImageUrl(filename) {
-        return `${APIURL}${filename}?${this.imageParams}`;
+        return `${filename}?${this.imageParams}`;
     },
 
-    getInstantImageUrl(imageUrl) {
-        return `${APIURL}${imageUrl}?${this.imageParams}`;
-    },
 }
