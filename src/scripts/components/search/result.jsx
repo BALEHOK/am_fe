@@ -23,7 +23,7 @@ import L20nMessage from '../intl/l20n-message';
 var ResultPage = React.createClass({
     mixins: [Router.Navigation, LoaderMixin, Flux.mixins.storeListener],
 
-    watchStores: ['results', 'report'],
+    watchStores: ['results', 'report', 'login'],
 
     contextTypes: {
         router: React.PropTypes.func
@@ -304,7 +304,7 @@ var ResultPage = React.createClass({
                                           </nav>
                                         : null
                                     }
-                                    {!searchError
+                                    {!searchError && this.state.stores.login.user.isAdmin
                                         ? <nav className={navBlockClasses}>
                                             <span className="nav-block__title">{L20nMessage('searchResultsExport', 'Export')}</span>
                                             <ul className="nav-block__list">

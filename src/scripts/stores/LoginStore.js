@@ -29,7 +29,8 @@ var LoginStore = Flux.createStore({
         this.user = {
             userName: profile.userName,
             lastLogin:  moment(profile.lastLogin),
-            email: profile.email
+            email: profile.email,
+            isAdmin: profile.userRole === 'Administrators'
         };
 
         this.access_token = AuthService.accessToken;

@@ -10,7 +10,10 @@ var UserNav = React.createClass({
                 </a>
                 <a className="user-nav__profile-link" href="/MySettings.aspx">{this.props.user.userName}</a>
                 <span className="user-nav__actions">
-                    <Link className="user-nav__actions-item user-nav__actions-item_icon_settings" to="admin" title="Dashboard"></Link>
+                    {this.props.user.isAdmin
+                        ? <Link className="user-nav__actions-item user-nav__actions-item_icon_settings" to="admin" title="Dashboard"></Link>
+                        : null
+                    }
                     <a className="user-nav__actions-item user-nav__actions-item_icon_logout" onClick={this.props.onLogout} title="Logout"></a>
                 </span>
                 <span className="user-nav__login-date">Last login: {this.props.user.lastLogin.format('dddd, D MMMM YYYY HH:mm:ss')}</span>
